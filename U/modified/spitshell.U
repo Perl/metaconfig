@@ -42,7 +42,7 @@
 ?S:.
 ?T:xcat p
 ?X: paths comes from Head
-?LINT:extern paths
+?LINT:extern paths _exe
 : see if sh knows # comments
 ?X: This is loaded up early, so avoid being chatty.
 ?X: echo " "
@@ -54,11 +54,11 @@ if `$sh -c '#' >/dev/null 2>&1`; then
 ?X:	echo " "
 ?X:	echo "Okay, let's see if #! works on this system..."
 	xcat=/bin/cat
-	test -f $xcat || xcat=/usr/bin/cat
-	if test ! -f $xcat; then
+	test -f $xcat$_exe || xcat=/usr/bin/cat
+	if test ! -f $xcat$_exe; then
 		for p in $paths; do
-			if test -f $p/cat; then
-				xcat=$p/cat
+			if test -f $p/cat$_exe; then
+				xcat=$p/cat$_exe
 				break
 			fi
 		done
