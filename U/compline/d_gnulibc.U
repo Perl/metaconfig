@@ -25,6 +25,9 @@
 ?C:	the GNU C library is being used.
 ?C:.
 ?H:#$d_gnulibc HAS_GNULIBC  	/**/
+?H:?%<:#if defined(HAS_GNULIBC) && !defined(_GNU_SOURCE)
+?H:?%<:#   define _GNU_SOURCE
+?H:?%<:#endif
 ?H.
 ?LINT: set d_gnulibc
 ?X:	gnulibc can be executed by calling this entry point.

@@ -120,8 +120,6 @@ if $cc -o gccvers gccvers.c; then
 	case "$gccversion" in
 	'') echo "You are not using GNU cc." ;;
 	*)  echo "You are using GNU cc $gccversion."
-	    echo "Adding -D_GNU_SOURCE to ccflags."
-	    ccflags="$ccflags -D_GNU_SOURCE" # expose glibc interfaces
 	    ;;
 	esac
 else
