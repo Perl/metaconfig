@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0.1.1	1994/10/29  16:12:51  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_Gconvert: Compile cat Inlibc rm _o uselongdouble d_qgcvt
+?MAKE:d_Gconvert: Compile cat Inlibc rm _o i_stdlib d_longdbl uselongdouble
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
 ?S:	This variable holds what Gconvert is defined as to convert
@@ -56,7 +56,7 @@
 if test "X$d_Gconvert" = X; then
 	echo " "
 	echo "Checking for an efficient way to convert floats to strings."
-	$cat >try.c <<'EOP'
+	$cat >try.c <<EOP
 #ifdef TRY_gconvert
 #define Gconvert(x,n,t,b) gconvert((x),(n),(t),(b))
 char *myname = "gconvert";
@@ -68,13 +68,22 @@ char *myname = "gcvt";
 #ifdef TRY_qgcvt
 #define Gconvert(x,n,t,b) qgcvt((x),(n),(b))
 char *myname = "qgcvt";
+#define DOUBLETYPE long double
 #endif
 #ifdef TRY_sprintf
 #define Gconvert(x,n,t,b) sprintf((b),"%.*g",(n),(x))
 char *myname = "sprintf";
 #endif
 
+#ifndef DOUBLETYPE
+#define DOUBLETYPE double
+#endif
+
 #include <stdio.h>
+
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 
 int
 checkit(expect, got)
@@ -95,24 +104,24 @@ int main()
 
 	/* This must be 1st test on (which?) platform */
 	/* Alan Burlison <AlanBurlsin@unn.unisys.com> */
-	Gconvert(0.1, 8, 0, buf);
+	Gconvert((DOUBLETYPE)0.1, 8, 0, buf);
 	checkit("0.1", buf);
 
-	Gconvert(1.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.0, 8, 0, buf); 
 	checkit("1", buf);
 
-	Gconvert(0.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)0.0, 8, 0, buf); 
 	checkit("0", buf);
 
-	Gconvert(-1.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)-1.0, 8, 0, buf); 
 	checkit("-1", buf);
 
 	/* Some Linux gcvt's give 1.e+5 here. */
-	Gconvert(100000.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)100000.0, 8, 0, buf); 
 	checkit("100000", buf);
 	
 	/* Some Linux gcvt's give -1.e+5 here. */
-	Gconvert(-100000.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)-100000.0, 8, 0, buf); 
 	checkit("-100000", buf);
 
 	exit(0);
@@ -132,8 +141,8 @@ EOP
 	*) xxx_list='gconvert gcvt sprintf' ;;
 	esac
 
-        case "$uselongdouble$d_qgcvt" in
-        definedefine) xxx_list="`echo $xxx_list|sed s/gcvt/qgcvt/`" ;;
+        case "$d_longdbl$uselongdouble" in
+        definedefine) xxx_list="`echo $xxx_list|sed 's/gcvt/qgcvt gcvt/'`" ;;
 	esac
 
 	for xxx_convert in $xxx_list; do
@@ -141,7 +150,7 @@ EOP
 		$rm -f try try$_o
 		set try -DTRY_$xxx_convert
 		if eval $compile; then
-			echo "$xxx_convert" found. >&4
+			echo "$xxx_convert() found." >&4
 			if ./try; then
 				echo "I'll use $xxx_convert to convert floats into a string." >&4
 				break;
