@@ -1,0 +1,39 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_faststdio: Setvar \
+	d_stdstdio d_stdio_ptr_lval d_stdio_cnt_lval d_stdio_ptr_lval_sets_cnt
+?MAKE:	-pick add $@ %<
+?S:d_faststdio:
+?S:	This variable conditionally defines the HAS_FAST_STDIO symbol,
+?S:	which indicates to the C program that the "fast stdio" is available
+?S:	to manipulate the stdio buffers directly.
+?S:.
+?C:HAS_FAST_STDIO:
+?C:	This symbol, if defined, indicates that the "fast stdio"
+?C:	is available to manipulate the stdio buffers directly.
+?C:.
+?H:#$d_faststdio HAS_FAST_STDIO		/**/
+?H:.
+?LINT:set d_faststdio
+: see if fast_stdio exists
+val="$undef"
+case "$d_stdstdio:$d_stdio_ptr_lval" in
+"$define:$define")
+	case "$d_stdio_cnt_lval$d_stdio_ptr_lval_sets_cnt" in
+	*$define*)
+		echo "You seem to have 'fast stdio' to directly manipulate the stdio buffers." >& 4
+		val="$define"
+		;;
+	esac
+	;;
+esac
+set d_faststdio
+eval $setvar
+
+
+

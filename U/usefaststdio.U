@@ -1,0 +1,54 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usefaststdio: Myread Oldconfig Setvar rsrc
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usefaststdio:
+?S:	This variable conditionally defines the USE_FAST_STDIO symbol,
+?S:	and indicates that Perl should be built to use 'fast stdio'.
+?S:.
+?C:USE_FAST_STDIO:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	be built to use 'fast stdio'.
+?C:.
+?H:?%<:#ifndef USE_FAST_STDIO
+?H:?%<:#$usefaststdio	USE_FAST_STDIO		/**/
+?H:?%<:#endif
+?H:.
+?T:xversion
+?LINT:set usefaststdio
+case "$usefaststdio" in
+$define|true|[yY]*|'')
+	xversion=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
+	case "$xversion" in
+	[68])	dflt='y' ;;
+	*)	dflt='n' ;;
+	esac
+	;;
+*) dflt='n';;
+esac
+cat <<EOM
+
+Perl can be built to use 'fast stdio', which means using the stdio
+library but also directly manipulating the stdio buffers to enable
+faster I/O.  Using stdio is better for backward compatibility (especially
+for Perl extensions), but on the other hand since Perl 5.8 the 'perlio'
+interface has been preferred instead of stdio.
+
+If this doesn't make any sense to you, just accept the default '$dflt'.
+EOM
+rp='Use the "fast stdio" if available?'
+. ./myread
+case "$ans" in
+y|Y)	val="$define" ;;     
+*)      val="$undef" ;;
+esac
+set usefaststdio
+eval $setvar
+
+
