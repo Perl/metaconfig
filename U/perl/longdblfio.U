@@ -6,32 +6,38 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_PRIfldbl sPRIfldbl d_PRIgldbl d_PRIFldbl sPRIGldbl d_PRIEldbl \
-	sPRIgldbl d_PRIeldbl sPRIeldbl sPRIFldbl d_PRIGldbl sPRIEldbl: \
+	sPRIgldbl d_PRIeldbl sPRIeldbl sPRIFldbl d_PRIGldbl sPRIEldbl \
+	d_SCNfldbl \
+	sSCNfldbl: \
 	d_longdbl longdblsize doublesize test cat rm Setvar Compile exe_ext
 ?MAKE:	-pick add $@ %<
 ?S:d_PRIfldbl:
-?S:	This variable conditionally defines the PERL_PRIfldlbl symbol, which
+?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
 ?S:	indiciates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIgldbl:
-?S:	This variable conditionally defines the PERL_PRIfldlbl symbol, which
+?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
 ?S:	indiciates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIeldbl:
-?S:	This variable conditionally defines the PERL_PRIfldlbl symbol, which
+?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
 ?S:	indiciates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIFldbl:
-?S:	This variable conditionally defines the PERL_PRIfldlbl symbol, which
+?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
 ?S:	indiciates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIGldbl:
-?S:	This variable conditionally defines the PERL_PRIfldlbl symbol, which
+?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
 ?S:	indiciates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIEldbl:
-?S:	This variable conditionally defines the PERL_PRIfldlbl symbol, which
+?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
 ?S:	indiciates that stdio has a symbol to print long doubles.
+?S:.
+?S:d_SCNfldbl:
+?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
+?S:	indiciates that stdio has a symbol to scan long doubles.
 ?S:.
 ?S:sPRIfldbl:
 ?S:	This variable, if defined, contains the string used by stdio to
@@ -57,6 +63,10 @@
 ?S:	This variable, if defined, contains the string used by stdio to
 ?S:	format long doubles (format 'E') for output.
 ?S:.
+?S:sSCNfldbl:
+?S:	This variable, if defined, contains the string used by stdio to
+?S:	format long doubles (format 'f') for input.
+?S:.
 ?C:PERL_PRIfldbl:
 ?C:	This symbol, if defined, contains the string used by stdio to
 ?C:	format long doubles (format 'f') for output.
@@ -81,12 +91,17 @@
 ?C:	This symbol, if defined, contains the string used by stdio to
 ?C:	format long doubles (format 'e') for output.
 ?C:.
+?C:PERL_SCNfldbl:
+?C:	This symbol, if defined, contains the string used by stdio to
+?C:	format long doubles (format 'f') for input.
+?C:.
 ?H:#$d_PRIfldbl PERL_PRIfldbl	$sPRIfldbl	/**/
 ?H:#$d_PRIgldbl PERL_PRIgldbl	$sPRIgldbl	/**/
 ?H:#$d_PRIeldbl PERL_PRIeldbl	$sPRIeldbl	/**/
 ?H:#$d_PRIFldbl PERL_PRIFldbl	$sPRIFldbl	/**/
 ?H:#$d_PRIGldbl PERL_PRIGldbl	$sPRIGldbl	/**/
 ?H:#$d_PRIEldbl PERL_PRIEldbl	$sPRIEldbl	/**/
+?H:#$d_SCNfldbl PERL_SCNfldbl	$sSCNfldbl	/**/
 ?H:.
 ?F:!try
 ?T:yyy
@@ -186,6 +201,8 @@ fi
 
 if $test X"$sPRIfldbl" = X; then
 	echo "Cannot figure out how to print long doubles." >&4
+else
+	sSCNfldbl=$sPRIfldbl	# expect consistency
 fi
 
 $rm -f try try.*
@@ -195,9 +212,11 @@ fi # d_longdbl
 case "$sPRIfldbl" in
 '')	d_PRIfldbl="$undef"; d_PRIgldbl="$undef"; d_PRIeldbl="$undef"; 
 	d_PRIFldbl="$undef"; d_PRIGldbl="$undef"; d_PRIEldbl="$undef"; 
+	d_SCNfldbl="$undef";
 	;;
 *)	d_PRIfldbl="$define"; d_PRIgldbl="$define"; d_PRIeldbl="$define"; 
 	d_PRIFldbl="$define"; d_PRIGldbl="$define"; d_PRIEldbl="$define"; 
+	d_SCNfldbl="$define";
 	;;
 esac
 
