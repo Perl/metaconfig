@@ -105,7 +105,9 @@ case "$config_sh" in
 ?X: Leave a white space between first two '(' for ksh. The sub-shell is needed
 ?X: on some machines to avoid the error message when uname is not found; e.g.
 ?X: old SUN-OS 3.2 would not execute hostname in (uname -a || hostname). Sigh!
-myuname=`( ($uname -a) 2>/dev/null || hostname) 2>&1`
+?X: Now not using a subshell but instead $test.
+myuname=`$uname -a 2>/dev/null`
+$test -z "$myuname" && myuname=`hostname 2>/dev/null`
 ?X: Special mention for Xenix, whose 'uname -a' gives us output like this:
 ?X:  sysname=XENIX
 ?X:  nodename=whatever

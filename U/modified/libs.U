@@ -33,7 +33,8 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:libs ignore_versioned_solibs: \
-	test cat Myread Oldconfig Loc libpth package xlibpth so _a usesocks
+	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
+	usesocks use64bits
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
@@ -44,7 +45,7 @@
 ?S:	libraries (libfoo.so.x.y) are to be ignored (because they
 ?S:	cannot be linked against).
 ?S:.
-?T:xxx thislib libswanted
+?T:xxx thislib libswanted libstyle libname
 ?D:libs=''
 ?X:
 ?X: This order is chosen so that libraries  -lndir, -ldir, -lucb, -lbsd,
@@ -96,43 +97,44 @@ for thislib in $libswanted; do
 ?X: like *"-l$thislib "*, we ensure we find -lm and not -lmalloc (which was
 ?X: the case with the old looking pattern *-l$thislib*.
 ?X:
-	if xxx=`./loc lib$thislib.$so.[0-9]'*' X $libpth`;
-		$test -f "$xxx" -a "X$ignore_versioned_solibs" = "X"; then
-		echo "Found -l$thislib (shared)."
-		case " $dflt " in
-		*"-l$thislib "*);;
-		*) dflt="$dflt -l$thislib";;
-		esac
+	libname="$thislib"
+	if xxx=`./loc lib$thislib.$so.[0-9]'*' X $libpth`; $test -f "$xxx"; then
+		if $test -a "X$ignore_versioned_solibs" = "X"; then
+			xxx=/ignored/$xxx
+		else
+			libstyle=shared
+		fi
 	elif xxx=`./loc lib$thislib.$so X $libpth` ; $test -f "$xxx"; then
-		echo "Found -l$thislib (shared)."
-		case " $dflt " in
-		*"-l$thislib "*);;
-		*) dflt="$dflt -l$thislib";;
-		esac
+		libstyle=shared
 	elif xxx=`./loc lib$thislib$_a X $libpth`; $test -f "$xxx"; then
-		echo "Found -l$thislib."
-		case " $dflt " in
-		*"-l$thislib "*);;
-		*) dflt="$dflt -l$thislib";;
-		esac
+		libstyle=static
 ?X: Don't forget about OS/2 where -lmalloc is spelled out malloc.a
 	elif xxx=`./loc $thislib$_a X $libpth`; $test -f "$xxx"; then
-		echo "Found -l$thislib."
-		case " $dflt " in
-		*"-l$thislib "*);;
-		*) dflt="$dflt -l$thislib";;
-		esac
+		libstyle=static
 	elif xxx=`./loc lib${thislib}_s$_a X $libpth`; $test -f "$xxx"; then
-		echo "Found -l${thislib}_s."
-		case " $dflt " in
-		*"-l$thislib "*);;
-		*) dflt="$dflt -l${thislib}_s";;
-		esac
+		libstyle=static
+		libname=${thislib}_s
 	elif xxx=`./loc Slib$thislib$_a X $xlibpth`; $test -f "$xxx"; then
-		echo "Found -l$thislib."
+		libstyle="static"
+	fi
+	if $test -f "$xxx"; then
+?X: HP-UX 64-bit compilation works only with 64-bit libraries.
+		if test X"$osname" = Xhpux -a -f /lib/pa20_64/libc.sl; then
+			case "`file $xxx`" in
+			*LP64*) ;;
+			*) xxx=/non/64/bit/$xxx ;;
+			esac
+		fi
+	fi
+	if $test -f "$xxx"; then
+		case "$libstyle" in
+		shared) echo "Found -l$libname (shared)." ;;
+		static) echo "Found -l$libname." ;;
+		*)      echo "Found -l$libname ($libstyle)." ;;
+		esac
 		case " $dflt " in
 		*"-l$thislib "*);;
-		*) dflt="$dflt -l$thislib";;
+		*) dflt="$dflt -l$libname";;
 		esac
 	else
 		echo "No -l$thislib."
