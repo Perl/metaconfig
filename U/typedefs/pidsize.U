@@ -18,11 +18,15 @@
 ?H:#define Pid_t_SIZE $pidsize		/* PID size */
 ?H:.
 ?F:!try
-?T:yyy
+?T:yyy zzz
 ?LINT: set pidsize
 echo " "
-echo "Checking the size of $pidtype..." >&4 
-cat > try.c <<'EOCP'
+case "$pidtype" in
+*_t) zzz="$pidtype"	;;
+*)   zzz="pid"		;;
+esac
+echo "Checking the size of $zzz..." >&4 
+cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
@@ -36,12 +40,11 @@ if eval $compile_ok; then
 		echo "(I can't execute the test program--guessing $pidsize.)" >&4
 		;;
 	*)	pidsize=$yyy
-		echo "Your $pidtype size is $pidsize bytes."
+		echo "Your $zzz size is $pidsize bytes."
 		;;
 	esac
 else
 	pidsize=4
 	echo "(I can't compile the test program--guessing $pidsize.)" >&4
 fi
-
 

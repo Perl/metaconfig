@@ -20,11 +20,15 @@
 ?H:#define Uid_t_SIGN	$uidsign		/* UID sign */
 ?H:.
 ?F:!try
-?T:yyy
+?T:yyy zzz
 ?LINT: set uidsign
 echo " "
-echo "Checking the sign of $uidtype..." >&4 
-cat > try.c <<'EOCP'
+case "$uidtype" in
+*_t) zzz="$uidtype"	;;
+*)   zzz="uid"		;;
+esac
+echo "Checking the sign of $zzz..." >&4
+cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
@@ -43,9 +47,10 @@ if eval $compile; then
 		;;
 	*)	uidsign=$yyy
 		case "$uidsign" in
-		 1) echo "Your $uidtype is unsigned." ;;
-		-1) echo "Your $uidtype is signed."   ;;
+		 1) echo "Your $zzz is unsigned." ;;
+		-1) echo "Your $zzz is signed."   ;;
 		esac
+		;;
 	esac
 else
 	uidsign=1

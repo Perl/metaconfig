@@ -41,7 +41,7 @@ if eval $compile_ok; then
 		echo "You have EBCDIC." >&4
 		val="$define"
 	else
-		echo "Nope, no EBCDIC.  Assuming ASCII or some ISO Latin, or UTF." >&4
+		echo "Nope, no EBCDIC, probably ASCII or some ISO Latin." >&4
 	fi
 else
 	echo "I'm unable to compile the test program." >&4

@@ -18,11 +18,15 @@
 ?H:#define Gid_t_SIZE $gidsize		/* GID size */
 ?H:.
 ?F:!try
-?T:yyy
+?T:yyy zzz
 ?LINT: set gidsize
 echo " "
-echo "Checking the size of $gidtype..." >&4 
-cat > try.c <<'EOCP'
+case "$gidtype" in
+*_t) zzz="$gidtype"	;;
+*)   zzz="gid"		;;
+esac
+echo "Checking the size of zzz..." >&4 
+cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
@@ -36,7 +40,7 @@ if eval $compile_ok; then
 		echo "(I can't execute the test program--guessing $gidsize.)" >&4
 		;;
 	*)	gidsize=$yyy
-		echo "Your $gidtype size is $gidsize bytes."
+		echo "Your $zzz size is $gidsize bytes."
 		;;
 	esac
 else

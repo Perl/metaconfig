@@ -20,11 +20,15 @@
 ?H:#define Pid_t_SIGN	$pidsign		/* PID sign */
 ?H:.
 ?F:!try
-?T:yyy
+?T:yyy zzz
 ?LINT: set pidsign
 echo " "
-echo "Checking the sign of $pidtype..." >&4 
-cat > try.c <<'EOCP'
+case "$pidtype" in
+*_t) zzz="$pidtype"	;;
+*)   zzz="pid"		;;
+esac
+echo "Checking the sign of $zzz..." >&4 
+cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
@@ -46,6 +50,7 @@ if eval $compile; then
 		 1) echo "Your $pidtype is unsigned." ;;
 		-1) echo "Your $pidtype is signed."   ;;
 		esac
+		;;
 	esac
 else
 	pidsign=1

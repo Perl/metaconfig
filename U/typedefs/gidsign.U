@@ -20,11 +20,15 @@
 ?H:#define Gid_t_SIGN	$gidsign		/* GID sign */
 ?H:.
 ?F:!try
-?T:yyy
+?T:yyy zzz
 ?LINT: set gidsign
 echo " "
-echo "Checking the sign of $gidtype..." >&4 
-cat > try.c <<'EOCP'
+case "$gidtype" in
+*_t) zzz="$gidtype"	;;
+*)   zzz="gid"		;;
+esac
+echo "Checking the sign of $zzz..." >&4 
+cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
@@ -43,9 +47,10 @@ if eval $compile; then
 		;;
 	*)	gidsign=$yyy
 		case "$gidsign" in
-		 1) echo "Your $gidtype is unsigned." ;;
-		-1) echo "Your $gidtype is signed."   ;;
+		 1) echo "Your $zzz is unsigned." ;;
+		-1) echo "Your $zzz is signed."   ;;
 		esac
+		;;
 	esac
 else
 	gidsign=1

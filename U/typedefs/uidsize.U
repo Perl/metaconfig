@@ -18,11 +18,15 @@
 ?H:#define Uid_t_SIZE $uidsize		/* UID size */
 ?H:.
 ?F:!try
-?T:yyy
+?T:yyy zzz
 ?LINT: set uidsize
 echo " "
-echo "Checking the size of $uidtype..." >&4 
-cat > try.c <<'EOCP'
+case "$uidtype" in
+*_t) zzz="$uidtype"	;;
+*)   zzz="uid"		;;
+esac
+echo "Checking the size of $zzz..." >&4 
+cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
@@ -36,12 +40,11 @@ if eval $compile_ok; then
 		echo "(I can't execute the test program--guessing $uidsize.)" >&4
 		;;
 	*)	uidsize=$yyy
-		echo "Your $uidtype size is $uidsize bytes."
+		echo "Your $zzz size is $uidsize bytes."
 		;;
 	esac
 else
 	uidsize=4
 	echo "(I can't compile the test program--guessing $uidsize.)" >&4
 fi
-
 
