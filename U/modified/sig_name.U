@@ -27,7 +27,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:47  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:sig_name sig_name_init sig_num sig_num_init sig_count: \
+?MAKE:sig_name sig_name_init sig_num sig_num_init sig_count sig_size: \
 	awk Signal Oldconfig rm
 ?MAKE:	-pick add $@ %<
 ?S:sig_name:
@@ -58,6 +58,10 @@
 ?S:sig_count (sig_name.U):
 ?S: 	This variable holds a number larger than the largest valid
 ?S: 	signal number.  This is usually the same as the NSIG macro.
+?S:.
+?S:sig_size:
+?S: 	This variable contains the number of elements of the sig_name
+?S: 	and sig_num arrays, including the final NULL entry.
 ?S:.
 ?C:SIG_NAME:
 ?C:	This symbol contains a list of signal names in order of
@@ -91,9 +95,14 @@
 ?C:	This variable contains a number larger than the largest
 ?C:	signal number.  This is usually the same as the NSIG macro.
 ?C:.
+?C:SIG_SIZE:
+?C:	This variable contains the number of elements of the sig_name
+?C:	and sig_num arrays, including the final NULL entry.
+?C:.
 ?H:#define SIG_NAME $sig_name_init		/**/
 ?H:#define SIG_NUM  $sig_num_init		/**/
 ?H:#define SIG_COUNT $sig_count			/**/
+?H:#define SIG_SIZE $sig_size			/**/
 ?H:.
 ?T:i doinit
 ?F:!signal_cmd
@@ -143,5 +152,6 @@ echo $sig_name | $awk \
 	}
 	printf "\n"
 }'
+sig_size=`echo $sig_name | awk '{print NF}'`
 $rm -f signal signal.c signal.awk signal.lst signal_cmd 
 

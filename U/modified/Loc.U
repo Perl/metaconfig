@@ -310,7 +310,6 @@ test)
 ?X: value to systematically restore computed paths, which may be wrong if
 ?X: we choose to load an old config.sh generated on another platform.
 ?X:
-		echo "Using the test built into your sh."
 		test=test
 		_test=test
 	fi
