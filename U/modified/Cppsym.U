@@ -199,7 +199,7 @@ ccflags="$ccflags"
 ldflags="$ldflags"
 libs="$libs"
 exe_ext="$exe_ext"
-$cc $optimize $ccflags $ldflags -o try$exe_ext try.c $libs && ./try$exe_ext
+$cc $optimize $ccflags $ldflags -o try try.c $libs && ./try$exe_ext
 EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try
