@@ -24,7 +24,7 @@
 ?X: 2- A signal.awk script to parse the output of signal.c, fill
 ?X: in gaps (up to NSIG) and move duplicates to the end.
 ?X: 3- A signal_cmd script to compile signal.c and run it
-?X: through sort -n +1 | uniq | awk -f signal.awk.
+?X: through sort -n -k 2 | uniq | awk -f signal.awk.
 ?X: (This is called signal_cmd to avoid OS/2 confusion with
 ?X: signal.cmd vs. signal.
 ?X: The signal_cmd script also falls back on checking signals one at a
@@ -205,7 +205,7 @@ $cat >>signal_cmd <<'EOS'
 
 set signal
 if eval $compile_ok; then
-	$run ./signal$_exe | $sort -n +1 | $uniq | $awk -f signal.awk >signal.lst
+	$run ./signal$_exe | $sort -n -k 2 | $uniq | $awk -f signal.awk >signal.lst
 else
 	echo "(I can't seem be able to compile the whole test program)" >&4
 	echo "(I'll try it in little pieces.)" >&4
@@ -239,7 +239,7 @@ EOCP
 	done
 	if $test -s signal.ls1; then
 		$cat signal.nsg signal.ls1 |
-			$sort -n +1 | $uniq | $awk -f signal.awk >signal.lst
+			$sort -n -k 2 | $uniq | $awk -f signal.awk >signal.lst
 	fi
 
 fi
