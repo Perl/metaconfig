@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:49  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:spitshell shsharp sharpbang: eunicefix sh
+?MAKE:spitshell shsharp sharpbang: eunicefix sh paths
 ?MAKE:	-pick add $@ %<
 ?S:spitshell:
 ?S:	This variable contains the command necessary to spit out a runnable
@@ -40,7 +40,7 @@
 ?S:	This variable contains the string #! if this system supports that
 ?S:	construct.
 ?S:.
-?T:xcat
+?T:xcat p
 : see if sh knows # comments
 ?X: This is loaded up early, so avoid being chatty.
 ?X: echo " "
@@ -53,6 +53,18 @@ if `$sh -c '#' >/dev/null 2>&1`; then
 ?X:	echo "Okay, let's see if #! works on this system..."
 	xcat=/bin/cat
 	test -f $xcat || xcat=/usr/bin/cat
+	if test ! -f $xcat; then
+		for p in $paths; do
+			if test -f $p/cat; then
+				xcat=$p/cat
+				break
+			fi
+		done
+		if test ! -f $xcat; then
+			echo "Can't find cat anywhere!" >&4
+			exit 1
+		fi
+	fi
 	echo "#!$xcat" >sharp
 	$eunicefix sharp
 	chmod +x sharp
