@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_pthread_atfork: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_pthread_atfork:
+?S:	This variable conditionally defines the HAS_PTHREAD_ATFORK symbol,
+?S:	which indicates to the C program that the pthread_atfork()
+?S:	routine is available.
+?S:.
+?C:HAS_PTHREAD_ATFORK:
+?C:	This symbol, if defined, indicates that the pthread_atfork routine
+?C:	is available setup fork handlers.
+?C:.
+?H:#$d_pthread_atfork HAS_PTHREAD_ATFORK		/**/
+?H:.
+?LINT:set d_pthread_atfork
+: see if pthread_atfork exists
+set pthread_atfork d_pthread_atfork
+eval $inlibc
+
