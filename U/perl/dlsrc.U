@@ -226,7 +226,7 @@ EOM
 	esac
 	for thisflag in $ldflags; do
 		case "$thisflag" in
-		-L*)
+		-L*|-R*)
 			case " $dflt " in
 			*" $thisflag "*) ;;
 			*) dflt="$dflt $thisflag" ;;
