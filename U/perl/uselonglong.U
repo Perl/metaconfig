@@ -39,8 +39,7 @@ case "$ccflags" in
 esac
 
 case "$uselonglong" in
-$define|true|[yY]*)	dflt='y';;
-*) dflt='n';;
+'')	dflt='y';;
 esac
 rp='Try to use long longs if available?'
 . ./myread

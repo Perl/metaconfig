@@ -40,9 +40,10 @@
 ?X: 
 ?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: \
 	eunicefix Guess awk cat tr sed sort rm startsh osname exe_ext \
-	Compile +cc +gccversion test comm uniq echo Options trnl
+	+cc +gccversion test comm uniq echo Options trnl \
+	optimize ccflags ldflags libs
 ?MAKE:	-pick add $@ %<
-?T:also symbols i postprocess_cc_v xxx
+?T:also symbols i postprocess_cc_v
 ?X:
 ?X: The symbol list is in alpha order for ease of maintenance...
 ?X:
@@ -72,6 +73,17 @@
 ?F:!ccsym.com
 ?F:!ccsym.cpp
 ?F:!ccsym.own
+?X: fake LINT hints
+?LINT:change cc
+?LINT:change exe_ext
+?LINT:change optimize
+?LINT:change ccflags
+?LINT:change ldflags
+?LINT:change libs
+?LINT:extern s
+?LINT:change s
+?LINT:extern s__
+?LINT:change s__
 echo " "
 $echo "Guessing which symbols your C compiler and preprocessor define..." >&4 
 ?X: If your symbol is mixed case, just add it as-is.
@@ -148,16 +160,25 @@ $rm -f Cppsym.a Cppsym.b
 cat <<EOSH > Cppsym
 $startsh
 if $test \$# -gt 0; then
- echo \$* | $tr " " "$trnl" | ./Cppsym.try > Cppsym.got
+    echo \$* | $tr " " "$trnl" | ./Cppsym.try > Cppsym.got
+    if $test -s Cppsym.got; then
+        $rm -f Cppsym.got
+        exit 0
+    fi
+    $rm -f Cppsym.got
+    exit 1
 else
-  $tr " " "$trnl" | ./Cppsym.try > Cppsym.got
+    $tr " " "$trnl" | ./Cppsym.try
+    exit 0
 fi
-$test -s Cppsym.got && exit 0
-exit 1
 EOSH
 chmod +x Cppsym
 $eunicefix Cppsym
+?X: The below awk script will die a horrible death if
+?X: some of the tested symbols are not long ints.
+?X: Also, we do not make difference between just defined and defined zero.
 cat <<EOSH > Cppsym.try
+$startsh
 cat <<'EOCP' > try.c
 #include <stdio.h>
 int main() {
@@ -167,16 +188,21 @@ $awk \\
 EOSH
 cat <<'EOSH' >> Cppsym.try
 'length($1) > 0 {
-    printf "#ifdef %s\nprintf(\"%s\\n\");\n#endif\n", $1, $1
-    printf "#ifdef _%s\nprintf(\"_%s\\n\");\n#endif\n", $1, $1
-    printf "#ifdef __%s\nprintf(\"__%s\\n\");\n#endif\n", $1, $1
-    printf "#ifdef __%s__\nprintf(\"__%s__\\n\");\n#endif\n", $1, $1 }' \
-	 >> try.c
+    printf "#ifdef %s\n#if %s+0\nprintf(\"%s=%%ld\\n\", %s);\n#else\nprintf(\"%s\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
+    printf "#ifdef _%s\n#if _%s+0\nprintf(\"_%s=%%ld\\n\", _%s);\n#else\nprintf(\"_%s\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
+    printf "#ifdef __%s\n#if __%s+0\nprintf(\"__%s=%%ld\\n\", __%s);\n#else\nprintf(\"__%s\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
+    printf "#ifdef __%s__\n#if __%s__+0\nprintf(\"__%s__=%%ld\\n\", __%s__);\n#else\nprintf(\"__%s__\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
+}'	 >> try.c
 echo '}' >> try.c
 EOSH
-cat <<'EOSH' >> Cppsym.try
-set try
-eval $compile_ok && ./try$exe_ext
+cat <<EOSH >> Cppsym.try
+cc="$cc"
+optimize="$optimize"
+ccflags="$ccflags"
+ldflags="$ldflags"
+libs="$libs"
+exe_ext="$exe_ext"
+$cc $optimize $ccflags $ldflags -o try$exe_ext try.c $libs && ./try$exe_ext
 EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try
@@ -217,7 +243,8 @@ fi
 ?X: the awk script must be on two lines for older awk programs, sigh! -- ADO
 $awk '/\=/ { print $0; next }
 	{ print $0"=1" }' ccsym.raw >ccsym.list
-$awk '{ print $0"=1" }' Cppsym.true >ccsym.true
+$awk '/\=/ { print $0; next }
+	{ print $0"=1" }' Cppsym.true >ccsym.true
 $comm -13 ccsym.true ccsym.list >ccsym.own
 $comm -12 ccsym.true ccsym.list >ccsym.com
 $comm -23 ccsym.true ccsym.list >ccsym.cpp

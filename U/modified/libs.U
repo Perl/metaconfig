@@ -32,20 +32,32 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:03  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:libs ignore_versioned_solibs: \
+?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
-	usesocks use64bits
+	usesocks ccflags
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
 ?S:	It is up to the Makefile to deal with it.
+?S:.
+?S:libsfound:
+?S:	This variable holds the full pathnames of the libraries
+?S:	we found and accepted.
+?S:.
+?S:libsfiles:
+?S:	This variable holds the filenames aka basenames of the libraries
+?S:	we found and accepted.
+?S:.
+?S:libsdirs:
+?S:	This variable holds the directory names aka dirnames of the libraries
+?S:	we found and accepted, duplicates are removed.
 ?S:.
 ?S:ignore_versioned_solibs:
 ?S:	This variable should be non-empty if non-versioned shared
 ?S:	libraries (libfoo.so.x.y) are to be ignored (because they
 ?S:	cannot be linked against).
 ?S:.
-?T:xxx thislib libswanted libstyle libname
+?T:xxx yyy thislib libswanted libstyle libname
 ?D:libs=''
 ?X:
 ?X: This order is chosen so that libraries  -lndir, -ldir, -lucb, -lbsd,
@@ -67,12 +79,13 @@
 ?X:: default ordered library list
 ?X:libswanted='net socket inet nsl nm sdbm gdbm ndbm dbm malloc dl'
 ?X:libswanted="$libswanted dld sun m c_s c posix cposix ndir dir ucb"
-?X:libswanted="$libswanted bsd BSD PW x"
+?X:libswanted="$libswanted bsd BSD PW x iconv"
 ?X:
 ?INIT:: default library list
 ?INIT:libswanted=''
 ?INIT:: some systems want to use only the non-versioned libso:s
 ?INIT:ignore_versioned_solibs=''
+?LINT:extern libscheck
 : Looking for optional libraries
 echo " "
 echo "Checking for optional libraries..." >&4
@@ -100,7 +113,7 @@ for thislib in $libswanted; do
 	libname="$thislib"
 	if xxx=`./loc lib$thislib.$so.[0-9]'*' X $libpth`; $test -f "$xxx"; then
 		if $test -a "X$ignore_versioned_solibs" = "X"; then
-			xxx=/ignored/$xxx
+			xxx=/ignored$xxx
 		else
 			libstyle=shared
 		fi
@@ -118,13 +131,9 @@ for thislib in $libswanted; do
 		libstyle="static"
 	fi
 	if $test -f "$xxx"; then
-?X: HP-UX 64-bit compilation works only with 64-bit libraries.
-		if test X"$osname" = Xhpux -a -f /lib/pa20_64/libc.sl; then
-			case "`file $xxx`" in
-			*LP64*) ;;
-			*) xxx=/non/64/bit/$xxx ;;
-			esac
-		fi
+?X: If $xxx is not to be used as a library, $libscheck (set in
+?X: some hints file, most likely) should set the $xxx to a non-file.
+		eval $libscheck
 	fi
 	if $test -f "$xxx"; then
 		case "$libstyle" in
@@ -134,7 +143,16 @@ for thislib in $libswanted; do
 		esac
 		case " $dflt " in
 		*"-l$thislib "*);;
-		*) dflt="$dflt -l$libname";;
+		*) dflt="$dflt -l$libname"
+                   libsfound="$libsfound $xxx"
+                   yyy=`basename $xxx`
+                   libsfiles="$libsfiles $yyy"
+                   yyy=`echo $xxx|sed "s@/$yyy\\$@@"`
+                   case " $libsdirs " in
+                   *" $yyy "*) ;;
+                   *) libsdirs="$libsdirs $yyy" ;;
+                   esac
+		   ;;
 		esac
 	else
 		echo "No -l$thislib."

@@ -16,7 +16,7 @@
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use multiplicity.
 ?C:.
-?H:?%<:#ifndef MULTIPLICTY
+?H:?%<:#ifndef MULTIPLICITY
 ?H:?%<:#$usemultiplicity	MULTIPLICITY		/**/
 ?H:?%<:#endif
 ?H:.

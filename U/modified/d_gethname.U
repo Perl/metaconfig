@@ -63,7 +63,7 @@
 ?C:.
 ?H:?%<:#$d_gethname HAS_GETHOSTNAME	/**/
 ?H:?%<:#$d_uname HAS_UNAME		/**/
-?H:?%<:#$d_phostname HAS_PHOSTNAME
+?H:?%<:#$d_phostname HAS_PHOSTNAME	/**/
 ?H:?%<:#ifdef HAS_PHOSTNAME
 ?H:?%<:#define PHOSTNAME "$aphostname"	/* How to get the host name */
 ?H:?%<:#endif

@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS: $Log: xs_apiversion.U,v $
 ?RCS:
-?MAKE:xs_apiversion pm_apiversion: apiversion bincompat5005
+?MAKE:xs_apiversion pm_apiversion: version bincompat5005
 ?MAKE:	-pick add $@ %<
 ?S:xs_apiversion:
 ?S:	This variable contains the version of the oldest perl binary
@@ -76,13 +76,13 @@
 ?C:	(presumably) be similar.
 ?C:	See the INSTALL file for how this works.
 ?C:.
-?H:#define PERL_XS_APIVERSION $xs_apiversion /* Change to string for tuples?*/
-?H:#define PERL_PM_APIVERSION $pm_apiversion /* Change to string for tuples?*/
+?H:#define PERL_XS_APIVERSION "$xs_apiversion"
+?H:#define PERL_PM_APIVERSION "$pm_apiversion"
 ?H:.
 : Find earliest binary compatible site_perl subdirectory perl can use.
 case "$bincompat5005" in
 "$define") xs_apiversion='5.005' ;;
-*) xs_apiversion=$apiversion ;;   # The current site_perl version.
+*) xs_apiversion=$version ;;   # The current site_perl version.
 esac
 : Find earliest pure perl site_perl subdirectory perl can use.
 : The versioned directories started at 5.005.

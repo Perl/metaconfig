@@ -22,6 +22,6 @@
 set ftello d_ftello
 eval $inlibc
 case "$longsize" in
-8) echo "(Your long is 64 bits, so in a pinch you could use ftell.)" ;;
+8) echo "(Your long is 64 bits, so you could use ftell.)" ;;
 esac
 

@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:uselongdouble: Myread Oldconfig Setvar cat test usemorebits
+?MAKE:uselongdouble: Myread Oldconfig Setvar cat test usemorebits d_sqrtl
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselongdouble:
@@ -68,6 +68,18 @@ $define)
 (Your platform doesn't have any specific hints for long doubles.)
 EOM
 	fi
+	;;
+esac
+
+case "$uselongdouble:$d_sqrtl" in
+$define:$undef)
+		$cat <<EOM >&4
+
+You requested the use of long doubles but you do not seem to have
+the mathematic functions for long doubles.  I'm disabling the use
+of long doubles.
+EOM
+	uselongdouble=$undef
 	;;
 esac
 

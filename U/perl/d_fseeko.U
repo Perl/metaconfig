@@ -22,6 +22,6 @@
 set fseeko d_fseeko
 eval $inlibc
 case "$longsize" in
-8) echo "(Your long is 64 bits, so in a pinch you could use fseek.)" ;;
+8) echo "(Your long is 64 bits, so you could use fseek.)" ;;
 esac
 
