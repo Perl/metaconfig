@@ -31,7 +31,7 @@ echo " "
 $touch blurfl
 if $ln -s blurfl sym > /dev/null 2>&1 ; then
 	echo "Symbolic links are supported." >&4
-	lns="$ln$_exe -s"
+	lns="$ln -s"
 else
 	echo "Symbolic links are NOT supported." >&4
 	lns="$ln"
