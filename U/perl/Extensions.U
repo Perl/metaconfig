@@ -161,6 +161,12 @@ for xxx in $known_extensions ; do
 		true|$define|y) avail_ext="$avail_ext $xxx" ;;
 		esac
 		;;
+	Sys/Syslog|sys/syslog)
+		: XXX syslog requires socket
+		case "$d_socket" in 
+		true|$define|y) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
 	Thread|thread)
 		case "$usethreads" in 
 		true|$define|y) avail_ext="$avail_ext $xxx" ;;
