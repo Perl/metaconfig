@@ -31,11 +31,9 @@
 : List of libraries we want.
 ?X: Put crypt here, even though I should really fix d_crypt.U to look
 ?X: for it correctly, including possible shared library versions.
-: If anyone needs -lnet, put it in a hint file.
-libswanted='sfio socket bind inet nsl nm ndbm gdbm dbm db malloc dl'
-libswanted="$libswanted dld ld sun m c cposix posix"
-libswanted="$libswanted ndir dir crypt sec"
-libswanted="$libswanted ucb bsd BSD PW x util rt posix4"
+: If anyone needs extra -lxxx, put those in a hint file.
+libswanted="sfio socket bind inet nsl nm ndbm gdbm dbm db malloc dl dld ld sun"
+libswanted="$libswanted m crypt sec util c cposix posix ucb bsd BSD"
 : We probably want to search /usr/shlib before most other libraries.
 : This is only used by the lib/ExtUtils/MakeMaker.pm routine extliblist.
 glibpth=`echo " $glibpth " | sed -e 's! /usr/shlib ! !'`
