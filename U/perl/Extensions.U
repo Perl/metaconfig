@@ -83,10 +83,10 @@ find_extensions='
                    eval $find_extensions;
                    cd ..;
                    shift;
-               fi
+               fi;
            fi
            ;;
-       esac
+       esac;
     done'
 tdir=`pwd`
 cd $rsrc/ext
