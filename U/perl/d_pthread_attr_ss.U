@@ -1,0 +1,29 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_pthread_attr_setscope: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_pthread_attr_setscope:
+?S:	This variable conditionally defines HAS_PTHREAD_ATTR_SETSCOPE if
+?S:	pthread_attr_setscope() is available to set the contention scope
+?S:	attribute of a thread attribute object.
+?S:.
+?C:HAS_PTHREAD_ATTR_SETSCOPE:
+?C:	This symbol, if defined, indicates that the pthread_attr_setscope
+?C:	system call is available to set the contention scope attribute of
+?C:	a thread attribute object.
+?C:.
+?H:#$d_pthread_attr_setscope HAS_PTHREAD_ATTR_SETSCOPE		/**/
+?H:.
+?LINT:set d_pthread_attr_setscope
+: see if pthread_attr_setscope exists
+set pthread_attr_setscope d_pthread_attr_setscope
+eval $inlibc
+
