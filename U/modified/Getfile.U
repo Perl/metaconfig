@@ -111,7 +111,9 @@ esac
 ?X: Begin by stripping out any (...) grouping.
 case "$fn" in
 *\(*)
-	expr $fn : '.*(\(.*\)).*' | $tr ',' $trnl >getfile.ok
+	: getfile will accept an answer from the comma-separated list
+	: enclosed in parentheses even if it does not meet other criteria.
+	expr "$fn" : '.*(\(.*\)).*' | $tr ',' $trnl >getfile.ok
 	fn=`echo $fn | sed 's/(.*)//'`
 	;;
 esac

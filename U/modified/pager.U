@@ -25,6 +25,7 @@
 ?S:	Usual values are (the full pathnames of) more, less, pg, or cat.
 ?S:.
 : locate the preferred pager for this system
+fn=f/
 case "$pager" in
 '')
 	dflt=''
@@ -44,10 +45,14 @@ case "$pager" in
 	'') dflt=/usr/ucb/more;;
 	esac
 	;;
-*) dflt="$pager";;
+*)	dflt="$pager"
+	: Instruct ./getfile to trust the hinted or previous pager value,
+	: even if it does not begin with a slash.  For example, on os2,
+	: pager might be cmd /c more.  See comments in UU/getfile.
+	fn="f/($pager)"
+	;;
 esac
 echo " "
-fn=f/
 rp='What pager is used on your system?'
 . ./getfile
 pager="$ans"
