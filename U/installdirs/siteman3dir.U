@@ -14,9 +14,14 @@
 ?Y:TOP
 ?S:siteman3dir:
 ?S:	This variable contains the name of the directory in which site-specific
-?S:	library html source pages are to be put.  It is the responsibility of the
+?S:	library man source pages are to be put.  It is the responsibility of the
 ?S:	Makefile.SH to get the value of this into the proper command.
 ?S:	You must be prepared to do the ~name expansion yourself.
+?S:	The standard distribution will put nothing in this directory.
+?S:	After perl has been installed, users may install their own local
+?S:	man3 pages in this directory with
+?S:		MakeMaker Makefile.PL
+?S:	or equivalent.  See INSTALL for details.
 ?S:.
 ?S:siteman3direxp:
 ?S:	This variable is the same as the siteman3dir variable, but is filename
@@ -28,7 +33,7 @@
 ?S:	man3direxp only points to the read-only access location. For extra
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
-: determine where add-on library html pages go
+: determine where add-on library man pages go
 case "$siteman3dir" in
 '')	dflt=`echo $man3dir | $sed "s#^$prefix#$siteprefix$#"`
 *)  	dflt=$siteman3dir ;;

@@ -17,6 +17,11 @@
 ?S:	manual source pages are to be put.  It is the responsibility of the
 ?S:	Makefile.SH to get the value of this into the proper command.
 ?S:	You must be prepared to do the ~name expansion yourself.
+?S:	The standard distribution will put nothing in this directory.
+?S:	After perl has been installed, users may install their own local
+?S:	man1 pages in this directory with
+?S:		MakeMaker Makefile.PL
+?S:	or equivalent.  See INSTALL for details.
 ?S:.
 ?S:siteman1direxp:
 ?S:	This variable is the same as the siteman1dir variable, but is filename

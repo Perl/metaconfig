@@ -17,6 +17,7 @@
 ?S:siteprefix:
 ?S:	This variable holds the full absolute path of the directory below
 ?S:	which the user will install add-on packages.
+?S:	See INSTALL for usage and examples.
 ?S:.
 ?S:siteprefixexp:
 ?S:	This variable holds the full absolute path of the directory below

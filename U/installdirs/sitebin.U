@@ -19,6 +19,11 @@
 ?S:	to put add-on publicly executable files for the package in question.  It
 ?S:	is most often a local directory such as /usr/local/bin. Programs using
 ?S:	this variable must be prepared to deal with ~name substitution.
+?S:	The standard distribution will put nothing in this directory.
+?S:	After perl has been installed, users may install their own local
+?S:	executables in this directory with
+?S:		MakeMaker Makefile.PL
+?S:	or equivalent.  See INSTALL for details.
 ?S:.
 ?S:sitebinexp:
 ?S:	This is the same as the sitebin variable, but is filename expanded at

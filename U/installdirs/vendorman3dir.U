@@ -19,12 +19,13 @@
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorman3:
-?S:	This variable contains the eventual value of the VENDORMAN3 symbol,
-?S:	which is the name of the directory holding library manual pages for this package.
-?S:	It may have a ~ on the front. It is up to the makefile to eventually create
-?S:	this directory while performing installation (with ~ substitution).
-?S:	Vendors who distribute perl may place their own
-?S:	library manual pages in this directory.
+?S:	This variable contains the name of the directory for man3 
+?S:	pages.  It may have a ~ on the front.
+?S:	The standard distribution will put nothing in this directory.
+?S:	Vendors who distribute perl may wish to place their own
+?S:	man3 pages in this directory with
+?S:		MakeMaker Makefile.PL INSTALLDIRS=vendor 
+?S:	or equivalent.  See INSTALL for details.
 ?S:.
 ?S:vendorman3exp:
 ?S:	This variable is the ~name expanded version of vendorman3, so that you

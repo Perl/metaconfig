@@ -18,12 +18,13 @@
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorbin:
-?S:	This variable contains the eventual value of the VENDORBIN symbol,
-?S:	which is the name of the private directory for exuctables for this package.
-?S:	It may have a ~ on the front. It is up to the makefile to eventually create
-?S:	this directory while performing installation (with ~ substitution).
-?S:	Vendors who distribute perl binaries may place their own
-?S:	extensions and modules in this directory.
+?S:	This variable contains the eventual value of the VENDORBIN symbol.
+?S:	It may have a ~ on the front.
+?S:	The standard distribution will put nothing in this directory.
+?S:	Vendors who distribute perl may wish to place additional
+?S:	binaries in this directory with
+?S:		MakeMaker Makefile.PL INSTALLDIRS=vendor 
+?S:	or equivalent.  See INSTALL for details.
 ?S:.
 ?S:vendorbinexp:
 ?S:	This variable is the ~name expanded version of vendorbin, so that you
@@ -38,14 +39,14 @@
 ?S:	This variable conditionally defines PERL_VENDORBIN.
 ?S:.
 ?C:PERL_VENDORBIN:
-?C:	If defined, this symbol contains the name of a private directory
-?C:	holding executables.
-?C:	The directory is private in the sense that it needn't be in anyone's
-?C:	execution path, but it should be accessible by the world.  The program
-?C:	should be prepared to do ~ expansion.
+?C:	If defined, this symbol contains the name of a directory
+?C:	for holding vendor-supplied executables.
+?C:	It may have a ~ on the front.
 ?C:	The standard distribution will put nothing in this directory.
-?C:	Vendors who distribute perl binaries may place their own
-?C:	extensions and modules in this directory.
+?C:	Vendors who distribute perl may wish to place additional
+?C:	binaries in this directory with
+?C:		MakeMaker Makefile.PL INSTALLDIRS=vendor 
+?C:	or equivalent.  See INSTALL for details.
 ?C:.
 ?C:PERL_VENDORBIN_EXP:
 ?C:	This symbol contains the ~name expanded version of VENDORBIN, to be used
