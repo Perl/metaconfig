@@ -207,6 +207,10 @@ int main()
 	else
 	    checkit("1e+30", buf);
 
+	/* For Perl, if you add additional tests here, also add them to
+	 * t/base/num.t for benefit of platforms not using Configure or
+	 * overriding d_Gconvert */
+
 	exit(0);
 }
 EOP
