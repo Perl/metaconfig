@@ -29,7 +29,7 @@
 : determine whether symbolic links are supported
 echo " "
 case "$lns" in
-*"ln$_exe -s")
+*"ln"*" -s")
 	echo "Checking how to test for symbolic links..." >&4
 	$lns blurfl sym
 	if $test "X$issymlink" = X; then
