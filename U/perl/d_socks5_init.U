@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_socks5_init: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_socks5_init:
+?S:	This variable conditionally defines the HAS_SOCKS5_INIT symbol, which
+?S:	indicates to the C program that the socks5_init() routine is available.
+?S:.
+?C:HAS_SOCKS5_INIT:
+?C:	This symbol, if defined, indicates that the socks5_init routine is
+?C:	available to initialize SOCKS 5.
+?C:.
+?H:#$d_socks5_init HAS_SOCKS5_INIT		/**/
+?H:.
+?LINT:set d_socks5_init
+: see if socks5_init exists
+set socks5_init d_socks5_init
+eval $inlibc
+
