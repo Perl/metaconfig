@@ -22,25 +22,26 @@
 ?H:.
 ?LINT:set uselonglong
 ?LINT:extern ccflags
-?LINT:change ccflags
-?LINT:use usemorebits
-?LINT:use uselargefiles
 ?F:!uselonglong.cbu
+case "$uselonglong" in
+''|true|[yY]*) uselonglong="$define" ;;
+*) case "$ccflags" in
+   *-DUSE_LONG_LONG*) uselonglong="$define" ;;
+   *) uselonglong="$undef" ;;
+   esac
+   ;;
+esac
+case "$uselonglong" in
+$define)	dflt='y';;
+*)		dflt='n';;
+esac
 cat <<EOM
 
 Perl can be built to take advantage of long longs which
 (if available) may give more range for integer numbers.
 
-If this doesn't make any sense to you, just accept the default 'n'.
+If this doesn't make any sense to you, just accept the default '$dflt'.
 EOM
-
-case "$ccflags" in
-*-DUSE_LONG_LONG*) uselonglong="$define" ;;
-esac
-
-case "$uselonglong" in
-'')	dflt='y';;
-esac
 rp='Try to use long longs if available?'
 . ./myread
 case "$ans" in
@@ -49,11 +50,6 @@ y|Y) 	val="$define"	;;
 esac
 set uselonglong
 eval $setvar
-
-case "$uselonglong" in
-true|[yY]*) uselonglong="$define" ;;
-esac
-
 case "$uselonglong" in
 $define)
 : Look for a hint-file generated 'call-back-unit'.  If the
