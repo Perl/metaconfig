@@ -5,6 +5,8 @@ use File::Basename;
 # where you have installed dist-3.0PL70.
 @std_units = glob('/u/vieraat/vieraat/jhi/Perl/lib/dist/U/*.U');
 $PWD       =      '/u/vieraat/vieraat/jhi/pp4/cfgperl';
+# @std_units = glob('/opt/dist/lib/U/*.U');
+# $PWD       = '/export/home/doughera/src/perl/p4perl';
 
 chdir U if -d './U';
 @perl_units = glob("$PWD/U/*/*.U");
@@ -94,6 +96,58 @@ EOE
         }
 	$gotit = 1;
     }
+    # Handle special variables from Oldsyms.U.  Since these start
+    # with capital letters, metalint considers them to be "special
+    # unit" symbols.  It's easier to define them here than to try
+    # to fool metalint any further.   --AD  22 Oct 1999
+    elsif ($var eq 'PERL_REVISION') {
+	$gotit = 1;
+	print <<'EOE';
+PERL_REVISION (Oldsyms.U):
+	In a Perl version number such as 5.6.2, this is the 5.
+	This value is manually set in patchlevel.h
+
+EOE
+    }
+    elsif ($var eq 'PERL_VERSION') {
+	$gotit = 1;
+	print <<'EOE';
+PERL_VERSION (Oldsyms.U):
+	In a Perl version number such as 5.6.2, this is the 6.
+	This value is manually set in patchlevel.h
+
+EOE
+    }
+    elsif ($var eq 'PERL_SUBVERSION') {
+	$gotit = 1;
+	print <<'EOE';
+PERL_SUBVERSION (Oldsyms.U):
+	In a Perl version number such as 5.6.2, this is the 2.
+	Values greater than 50 represent potentially unstable
+	development subversions.
+	This value is manually set in patchlevel.h
+
+EOE
+    }
+    elsif ($var eq 'PERL_APIVERSION') {
+	$gotit = 1;
+	print <<'EOE';
+PERL_APIVERSION (Oldsyms.U):
+	This value is manually set in patchlevel.h and is used
+	to set the Configure apiversion variable.
+
+EOE
+    }
+    elsif ($var eq 'CONFIGDOTSH') {
+	$gotit = 1;
+	print <<'EOE';
+CONFIGDOTSH (Oldsyms.U):
+	This is set to 'true' in config.sh so that a shell script
+	sourcing config.sh can tell if it has been sourced already.
+
+EOE
+    }
+
     warn "$0: couldn't find $var\n"
-        if not $gotit and $var !~ /^(Author|Date|Header|Id|Locker|Log|Mcc|RCSfile|Revision|Source|State)$|_cflags$|^config_arg|^PERL_(REVISION|VERSION|SUBVERSION)$/;
+        if not $gotit and $var !~ /^(Author|Date|Header|Id|Locker|Log|Mcc|RCSfile|Revision|Source|State)$|_cflags$|^config_arg/;
 }
