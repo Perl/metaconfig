@@ -142,7 +142,7 @@ default|recommended)
 	case "$gccversion" in
 	1*) ;;
 	2.[0-8]*) ;;
-	*) 	echo " "
+	?*) 	echo " "
 		echo "Checking if your compiler accepts -fno-strict-aliasing" 2>&1
 		echo 'int main(void) { return 0; }' > gcctest.c
 		if $cc -O2 -fno-strict-aliasing -o gcctest gcctest.c; then
