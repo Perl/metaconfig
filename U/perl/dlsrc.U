@@ -203,9 +203,9 @@ EOM
     case "$lddlflags" in
     '') case "$osname" in
   			beos) dflt='-nostart' ;;
-			hpux) case "$gccversion" in
-			      '') dflt='-b +vnocompatwarnings' ;;
-			      *)  dflt='none' ;;
+			hpux) dflt='-b';
+			      case "$gccversion" in
+			      '') dflt="$dflt +vnocompatwarnings" ;;
 			      esac
 			      ;;	
 			linux|irix*)	dflt='-shared' ;;
