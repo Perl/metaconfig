@@ -13,10 +13,10 @@
 ?S:	indicates to the C program that the modfl() routine is available.
 ?S:.
 ?S:d_modflproto:
-?S:     This variable conditionally defines the HAS_MODFL_PROTO symbol,
-?S:     which indicates to the C program that the system provides
-?S:     a prototype for the modfl() function.  Otherwise, it is
-?S:     up to the program to supply one.
+?S:	This symbol, if defined, indicates that the system provides
+?S:	a prototype for the modfl() function.  Otherwise, it is up
+?S:	to the program to supply one.  C99 says it should be
+?S:		long double modfl(long double, long double *);
 ?S:.
 ?S:d_modfl_pow32_bug:
 ?S:	This variable conditionally defines the HAS_MODFL_POW32_BUG symbol,
@@ -31,9 +31,9 @@
 ?C:	an integer part i such that |f| < 1.0 and (f + i) = x.
 ?C:.
 ?C:HAS_MODFL_PROTO:
-?C:     This symbol, if defined, indicates that the system provides
-?C:     a prototype for the modfl() function.  Otherwise, it is up
-?C:     to the program to supply one.
+?C:	This symbol, if defined, indicates that the system provides
+?C:	a prototype for the modfl() function.  Otherwise, it is up
+?C:	to the program to supply one.
 ?C:.
 ?C:HAS_MODFL_POW32_BUG:
 ?C:	This symbol, if defined, indicates that the modfl routine is
@@ -43,7 +43,7 @@
 ?C:	release 2.2.2 is known to be okay.
 ?C:.
 ?H:#$d_modfl HAS_MODFL		/**/
-?H:#$d_modfl HAS_MODFL_PROTO		/**/
+?H:#$d_modflproto HAS_MODFL_PROTO		/**/
 ?H:#$d_modfl_pow32_bug HAS_MODFL_POW32_BUG		/**/
 ?H:.
 ?T:foo saveccflags
