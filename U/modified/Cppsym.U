@@ -52,7 +52,7 @@
 ?X: Jarkko Hietaniemi <jhi@snakemail.hut.fi> -- RAM, 06/06/94
 ?X:
 ?INIT:: list of known cpp symbols, sorted alphabetically
-?INIT:al="386BSD 3b1 a29k ABI64 aegis AES_SOURCE AIX AIX32 AIX370"
+?INIT:al="a29k ABI64 aegis AES_SOURCE AIX AIX32 AIX370"
 ?INIT:al="$al AIX41 AIX42 AIX43 AIX_SOURCE aixpc ALL_SOURCE"
 ?INIT:al="$al alliant alpha am29000 AM29000 amiga AMIGAOS AMIX"
 ?INIT:al="$al ansi ANSI_C_SOURCE apollo ardent atarist att386 att3b BeOS"
@@ -133,6 +133,9 @@
 ?F:!ccsym.com
 ?F:!ccsym.cpp
 ?F:!ccsym.own
+?T:startsym
+?T:stopsym
+?T:symbols
 : get C preprocessor symbols handy
 echo " "
 $echo "Guessing which symbols your C compiler and preprocessor define..." >&4 
@@ -148,7 +151,6 @@ $sed 's/\(.*\)/__\1__/' < Cppsym.know > Cppsym.c
 $cat Cppsym.know Cppsym.a Cppsym.b Cppsym.c | sort | uniq > Cppsym.d
 mv Cppsym.d Cppsym.know
 rm Cppsym.?
-al=`cat Cppsym.know`
 $cat <<EOSS >Cppsym
 $startsh
 case "\$1" in
@@ -194,7 +196,18 @@ exit \$status
 EOSS
 chmod +x Cppsym
 $eunicefix Cppsym
-./Cppsym -l $al | $sort | $grep -v '^$' >Cppsym.true
+$rm -f Cppsym.true
+startsym=1
+stopsym=500
+symbols=`wc -l < Cppsym.know`
+while test $startsym -le $symbols
+do
+    $sed -n "$startsym,$stopsym p" Cppsym.know > Cppsym.batch
+    ./Cppsym -l `cat Cppsym.batch` | $sort | $grep -v '^$' >>Cppsym.true
+    startsym=`expr $startsym + 500`
+    stopsym=`expr $stopsym + 500`
+done
+$rm -f Cppsym.batch
 
 : now check the C compiler for additional symbols
 ?X: suggested by Jarkko Hietaniemi <jhi@snakemail.hut.fi>, thanks!
