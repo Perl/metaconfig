@@ -22,7 +22,7 @@
 ?LINT:extern ccflags
 ?LINT:change ccflags
 ?LINT:use usemorebits
-?LINT:use uselfs
+?LINT:use uselargefiles
 ?F:!uselongdouble.cbu
 cat <<EOM
 

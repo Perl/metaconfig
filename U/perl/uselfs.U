@@ -5,10 +5,10 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:uselfs: Myread Oldconfig Setvar
+?MAKE:uselargefiles: Myread Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
-?S:uselfs:
+?S:uselargefiles:
 ?S:	This variable conditionally defines the USE_LARGE_FILES symbol,
 ?S:	and indicates that large file interfaces should be used when
 ?S:	available.  The use64bits symbol will also be turned on if necessary.
@@ -18,20 +18,20 @@
 ?C:	should be used when available.  The USE_64_BITS symbol will
 ?C:	also be turned on if necessary.
 ?C:.
-?H:#$uselfs	USE_LARGE_FILES		/**/
+?H:#$uselargefiles	USE_LARGE_FILES		/**/
 ?H:.
-?LINT:set uselfs
+?LINT:set uselargefiles
 ?LINT:extern use64bits
 ?LINT:change use64bits
 
 cat <<EOM
 
 Perl can be built to understand large files (files larger than 2 gigabytes)
-on some systems.  To do so, Configure must be run with -Duselfs.
+on some systems.  To do so, Configure must be run with -Duselargefiles.
 
 If this doesn't make any sense to you, just accept the default.
 EOM
-case "$uselfs" in
+case "$uselargefiles" in
 "$define"|true|[yY]*) dflt='y' ;;
 *)	dflt='n' ;;
 esac
@@ -41,9 +41,9 @@ case "$ans" in
 y|Y) 	val="$define" ;;
 *)   	val="$undef"  ;;
 esac
-set uselfs
+set uselargefiles
 eval $setvar
-case "$uselfs" in
+case "$uselargefiles" in
 "$define") use64bits="$define" ;;
 esac
 
