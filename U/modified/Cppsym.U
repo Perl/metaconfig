@@ -193,13 +193,11 @@ cat <<'EOSH' >> Cppsym.try
 echo '}' >> try.c
 EOSH
 cat <<EOSH >> Cppsym.try
-cc="$cc"
-optimize="$optimize"
 ccflags="$ccflags"
-ldflags="$ldflags"
-libs="$libs"
-exe_ext="$exe_ext"
-$cc $optimize $ccflags $ldflags -o try try.c $libs && ./try$exe_ext
+case "$osname-$gccversion" in
+irix-) ccflags="\$ccflags -woff 1178" ;;
+esac
+$cc $optimize \$ccflags $ldflags -o try try.c $libs && ./try$exe_ext
 EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try
