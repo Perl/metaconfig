@@ -91,7 +91,13 @@
 ?C:	by Configure.  You shouldn't rely on it too much; the specific
 ?C:	feature tests from Configure are generally more reliable.
 ?C:.
+?C:OSVERS:
+?C:	This symbol contains the version of the operating system, as determined
+?C:	by Configure.  You shouldn't rely on it too much; the specific
+?C:	feature tests from Configure are generally more reliable.
+?C:.
 ?H:#define OSNAME "$osname"		/**/
+?H:#define OSVERS "$osvers"		/**/
 ?H:.
 ?F:!config.sh
 ?T:tmp tmp_n tmp_c tmp_sh file
