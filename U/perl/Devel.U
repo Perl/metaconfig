@@ -12,9 +12,9 @@
 ?MAKE:	-pick wipe $@ %<
 ?T:xpatchlevel
 ?X: waiver of rights
-?LINT:extern useunstabledeveloperreleases
+?LINT:extern usedevel
 xpatchlevel=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
-case "$useunstabledeveloperreleases" in
+case "$usedevel" in
 $define|true|[yY]*) ;;
 *) case "$xpatchlevel" in
    *[13579])

@@ -5,13 +5,14 @@
 #  Jarkko Hietaniemi	Sept 15, 1998	Added -Duse64bits
 
 rm -f config.sh Policy.sh
-sh Configure -Dprefix=/opt/perl -Doptimize=-O -Dusethreads -Duse64bitint -Duselargefiles \
+sh ./Configure -Dprefix=/opt/perl -Doptimize=-O -Dusethreads -Duse5005threads -Duse64bitint -Duselargefiles \
 	-Dcf_by='yourname' \
 	-Dcf_email='yourname@yourhost.yourplace.com' \
 	-Dperladmin='yourname@yourhost.yourplace.com' \
 	-Dmydomain='.yourplace.com' \
 	-Dmyhostname='yourhost' \
-	-dE
+	-dE -Dusedevel
+test $? = 0 || exit 1
 chmod u+w Porting Porting/Glossary Porting/config*
 cp config.sh Porting/config.sh
 sh config_h.SH

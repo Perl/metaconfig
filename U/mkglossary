@@ -4,7 +4,7 @@ use File::Basename;
 # WARNING:  This is site-specific.  Change to the location
 # where you have installed dist-3.0PL70.
 @std_units = glob('/u/vieraat/vieraat/jhi/Perl/lib/dist/U/*.U');
-$PWD       =      '/u/vieraat/vieraat/jhi/pp4/cfgperl';
+$PWD       =      '/u/vieraat/vieraat/jhi/pp4/perl';
 # @std_units = glob('/opt/dist/lib/U/*.U');
 # $PWD       = '/export/home/doughera/src/perl/p4perl';
 
