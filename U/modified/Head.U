@@ -115,6 +115,18 @@ true || exec sh $0 $argv:q
 (exit $?0) || exec sh $0 $argv:q
 rm -f c1$$ c2$$
 
+if test -e /dev/cputype -a -e /dev/drivers -a -e /dev/osversion -a -e /dev/bintime; then
+	cat >&4 <<EOF
+***
+*** I'm sorry but this system looks like Plan 9 and Plan 9 doesn't do
+*** Configure that well.  (Plan 9 is close to UNIX but not close enough.)
+*** Please read the README.plan9 for further instructions.
+*** Cannot continue, aborting.
+***
+EOF
+	exit 1
+fi
+
 : compute my invocation name
 me=$0
 case "$0" in
@@ -278,5 +290,4 @@ esac
 test -d UU || mkdir UU
 ?X: Use ./* to avoid any confirmation prompts from enhanced shells -- WED
 cd UU && rm -f ./*
-
 
