@@ -48,7 +48,7 @@
 ?X: NeXT gives us some fun here, as always, by having both NIS (former YP)
 ?X: and NetInfo. But since it has both, it's ok to put the test inside the if.
 ?X: Contributed by Thomas Neumann <tom@smart.bo.open.de>.
-if $test -d /usr/etc/yp || $test -d /etc/yp; then
+if $test -d /usr/etc/yp || $test -d /etc/yp || $test -d /usr/lib/yp; then
 	if $test -f /usr/etc/nibindd; then
 		echo " "
 		echo "I'm fairly confident you're on a NeXT."
