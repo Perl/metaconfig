@@ -55,6 +55,7 @@ EOM
 	case "$alignbytes" in
 	'') echo "Checking alignment constraints..." >&4
 		$cat >try.c <<'EOCP'
+#include <stdio.h>
 struct foobar {
 	char foo;
 	double bar;

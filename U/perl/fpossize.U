@@ -31,7 +31,7 @@ cat > try.c <<EOCP
 #include <stdio.h>
 int main() {
     printf("%d\n", (int)sizeof($fpostype));
-    return(0);
+    exit(0);
 }
 EOCP
 set try

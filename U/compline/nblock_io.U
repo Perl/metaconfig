@@ -140,7 +140,8 @@ case "$eagain" in
 #ifndef errno  /* XXX need better Configure test */
 extern int errno;
 #endif
-#ifdef $i_unistd
+#$i_unistd I_UNISTD
+#ifdef I_UNISTD
 #include <unistd.h>
 #endif
 #ifdef $i_string

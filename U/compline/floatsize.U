@@ -37,8 +37,8 @@ case "$floatsize" in
 #include <stdio.h>
 int main()
 {
-	printf("%d\n", sizeof(float));
-	exit(0);
+    printf("%d\n", (int)sizeof(float));
+    exit(0);
 }
 EOCP
 	set try

@@ -45,6 +45,8 @@ int main()
     struct sigaction act, oact;
     act.sa_flags = 0;
     oact.sa_handler = 0;
+    /* so that act and oact are used */
+    exit(act.sa_flags == 0 &&  oact.sa_handler == 0);
 }
 EOP
 	set try

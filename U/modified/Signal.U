@@ -147,7 +147,7 @@ echo $xxx | $tr ' ' $trnl | $sort | $uniq | $awk '
 }
 END {
 	printf "#endif /* JUST_NSIG */\n";
-	printf "}\n";
+	printf "exit(0);\n}\n";
 }
 ' >>signal.c
 $cat >signal.awk <<'EOP'
