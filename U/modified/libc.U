@@ -272,7 +272,7 @@ xrun='eval "<libc.tmp $com >libc.list"; echo "done." >&4'
 ?X: HPUX10 reportedly has trailing spaces, though I'm suprised it has
 ?X: BSD-like output.  (AD).
 xxx='[ADTSIW]'
-if com="$sed -n -e 's/__IO//' -e 's/^.* $xxx  *_[_.]*//p' -e 's/^.* $xxx  *//p'";\
+if com="$sed -n -e 's/__IO//' -e 's/^.* $xxx  *//p'";\
 	eval $xscan;\
 	$contains '^fprintf$' libc.list >/dev/null 2>&1; then
 		eval $xrun
