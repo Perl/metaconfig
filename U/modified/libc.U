@@ -384,12 +384,19 @@ else
 	fi
 fi
 nm_extract="$com"
-if $test -f /lib/syscalls.exp; then
+case "$PASE" in
+define)
+    echo " "
+    echo "Since you are compiling for PASE, extracting more symbols from libc.a ...">&4
+    dump -Tv /lib/libc.a | awk '$7 == "/unix" {print $5 " " $8}' | grep "^SV" | awk '{print $2}' >> libc.list
+    ;;
+*)  if $test -f /lib/syscalls.exp; then
 	echo " "
 	echo "Also extracting names from /lib/syscalls.exp for good ole AIX..." >&4
-	$sed -n 's/^\([^ 	]*\)[ 	]*syscall[0-9]*[ 	]*$/\1/p' /lib/syscalls.exp >>libc.list
-fi
-?X: remember, indentation is wrong on purpose--RAM
+	$sed -n 's/^\([^        ]*\)[   ]*syscall[0-9]*[        ]*$/\1/p' /lib/syscalls.exp >>libc.list
+    fi
+    ;;
+esac
 ;;
 esac
 $rm -f libnames libpath

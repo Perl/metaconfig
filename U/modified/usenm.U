@@ -56,7 +56,7 @@ case "$usenm" in
 	esac
 	case "$dflt" in
 	'') 
-		if $test "$osname" = aix -a ! -f /lib/syscalls.exp; then
+		if $test "$osname" = aix -a "X$PASE" != "$Xdefine" -a ! -f /lib/syscalls.exp; then
 			echo " "
 			echo "Whoops!  This is an AIX system without /lib/syscalls.exp!" >&4
 			echo "'nm' won't be sufficient on this sytem." >&4
