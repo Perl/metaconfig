@@ -1,0 +1,25 @@
+?RCS: $Id: i_sysmode.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_sysmode: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_sysmode:
+?S:	This variable conditionally defines the I_SYSMODE symbol,
+?S:	and indicates whether a C program should include <sys/mode.h>.
+?S:.
+?C:I_SYSMODE:
+?C:	This symbol, if defined, indicates that <sys/mode.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_sysmode	I_SYSMODE		/**/
+?H:.
+?LINT:set i_sysmode
+
+: see if this is a sys/mode.h system
+set sys/mode.h i_sysmode
+eval $inhdr
+
