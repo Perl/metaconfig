@@ -24,7 +24,7 @@
 ?C:.
 ?H:#$d_flexfnam	FLEXFILENAMES		/**/
 ?H:.
-?T:first second
+?T:first
 ?LINT:set d_flexfnam
 : see if we can have long filenames
 echo " "

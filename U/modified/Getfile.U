@@ -87,7 +87,7 @@
 ?V:ansexp:fn gfpth gfpthkeep
 ?F:./getfile
 ?T:tilde type what orig_rp orig_dflt fullpath already redo skip none_ok \
-	value exp_file nopath_ok loc_file fp pf direxp
+	value exp_file nopath_ok loc_file fp pf dir direxp
 ?LINT:change ans
 ?LINT:change gfpth
 : now set up to get a file name
