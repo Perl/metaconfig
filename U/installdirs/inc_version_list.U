@@ -60,6 +60,12 @@ else {
     ;@candidates = ();
 }
 
+# XXX ToDo:  These comparisons must be reworked when two-digit
+# subversions come along, so that 5.7.10 compares as greater than
+# 5.7.3!  By that time, hope that 5.6.x is sufficiently
+# widespread that we can use the built-in version vectors rather
+# than reinventing them here.  For 5.6.0, however, we must
+# assume this script will likely be run by 5.005_0x.  --AD 1/2000.
 foreach $d (@candidates) {
     if ($d lt $version) {
 	if ($d ge $api_versionstring) {
