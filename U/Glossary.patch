@@ -1,41 +1,74 @@
---- Glossary.orig	Fri Jun  8 18:12:54 2001
-+++ Glossary	Fri Jun  8 18:12:55 2001
-@@ -2763,7 +2763,7 @@
- 	make_set_make='#'		# If your make program handles this for you,
- 	make_set_make="MAKE=$make"	# if it doesn't.
- 	I used a comment character so that we can distinguish a
--	'set' value (from a previous config.sh or Configure -D option)
-+	'set' value (from a previous config.sh or Configure '-D' option)
- 	from an uncomputed value.
- 
- mallocobj (mallocsrc.U):
-@@ -2872,7 +2872,7 @@
- 	whole thing is then lower-cased.
- 
- n (n.U):
--	This variable contains the -n flag if that is what causes the echo
-+	This variable contains the '-n' flag if that is what causes the echo
- 	command to suppress newline.  Otherwise it is null.  Correct usage is
- 	$echo $n "prompt for a question: $c".
- 
-@@ -3249,9 +3249,9 @@
- 	/bin/sh, though it's possible that some systems will have /bin/ksh,
- 	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
- 	D:/bin/sh.exe.
--	This unit comes before Options.U, so you can't set sh with a -D
-+	This unit comes before Options.U, so you can't set sh with a '-D'
- 	option, though you can override this (and startsh)
--	with -O -Dsh=/bin/whatever -Dstartsh=whatever
-+	with '-O -Dsh=/bin/whatever -Dstartsh=whatever'
- 
- shar (Loc.U):
- 	This variable is defined but not used by Configure.
-@@ -3427,7 +3427,7 @@
- 
- spitshell (spitshell.U):
- 	This variable contains the command necessary to spit out a runnable
--	shell on this system.  It is either cat or a grep -v for # comments.
-+	shell on this system.  It is either cat or a grep '-v' for # comments.
- 
- sPRId64 (quadfio.U):
- 	This variable, if defined, contains the string used by stdio to
+*** Glossary.orig	ma  8 huhti  20.23.31 2002
+--- Glossary	ma  8 huhti  20.24.57 2002
+***************
+*** 3201,3207 ****
+  	make_set_make='#'		# If your make program handles this for you,
+  	make_set_make="MAKE=$make"	# if it doesn't.
+  	I used a comment character so that we can distinguish a
+! 	'set' value (from a previous config.sh or Configure -D option)
+  	from an uncomputed value.
+  
+  mallocobj (mallocsrc.U):
+--- 3201,3207 ----
+  	make_set_make='#'		# If your make program handles this for you,
+  	make_set_make="MAKE=$make"	# if it doesn't.
+  	I used a comment character so that we can distinguish a
+! 	'set' value (from a previous config.sh or Configure '-D' option)
+  	from an uncomputed value.
+  
+  mallocobj (mallocsrc.U):
+***************
+*** 3310,3316 ****
+  	whole thing is then lower-cased.
+  
+  n (n.U):
+! 	This variable contains the -n flag if that is what causes the echo
+  	command to suppress newline.  Otherwise it is null.  Correct usage is
+  	$echo $n "prompt for a question: $c".
+  
+--- 3310,3316 ----
+  	whole thing is then lower-cased.
+  
+  n (n.U):
+! 	This variable contains the '-n' flag if that is what causes the echo
+  	command to suppress newline.  Otherwise it is null.  Correct usage is
+  	$echo $n "prompt for a question: $c".
+  
+***************
+*** 3737,3745 ****
+  	/bin/sh, though it's possible that some systems will have /bin/ksh,
+  	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
+  	D:/bin/sh.exe.
+! 	This unit comes before Options.U, so you can't set sh with a -D
+  	option, though you can override this (and startsh)
+! 	with -O -Dsh=/bin/whatever -Dstartsh=whatever
+  
+  shar (Loc.U):
+  	This variable is defined but not used by Configure.
+--- 3737,3745 ----
+  	/bin/sh, though it's possible that some systems will have /bin/ksh,
+  	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
+  	D:/bin/sh.exe.
+! 	This unit comes before Options.U, so you can't set sh with a '-D'
+  	option, though you can override this (and startsh)
+! 	with '-O -Dsh=/bin/whatever -Dstartsh=whatever'
+  
+  shar (Loc.U):
+  	This variable is defined but not used by Configure.
+***************
+*** 3915,3921 ****
+  
+  spitshell (spitshell.U):
+  	This variable contains the command necessary to spit out a runnable
+! 	shell on this system.  It is either cat or a grep -v for # comments.
+  
+  sPRId64 (quadfio.U):
+  	This variable, if defined, contains the string used by stdio to
+--- 3915,3921 ----
+  
+  spitshell (spitshell.U):
+  	This variable contains the command necessary to spit out a runnable
+! 	shell on this system.  It is either cat or a grep '-v' for # comments.
+  
+  sPRId64 (quadfio.U):
+  	This variable, if defined, contains the string used by stdio to

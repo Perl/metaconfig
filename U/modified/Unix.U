@@ -23,10 +23,12 @@
 ?MAKE:	-pick add $@ %<
 ?S:_exe:
 ?S:	This variable defines the extension used for executable files.
-?S:	For unix it is empty.  Other possible values include '.exe'.
+?S:	DJGPP, Cygwin and OS/2 use '.exe'.  Stratus VOS uses '.pm'.
+?S:	No other operating systems require an extension for executable
+?S:	files, so it is empty for all others.
 ?S:.
 ?S:_a:
-?S:	This variable defines the extension used for ordinary libraries.
+?S:	This variable defines the extension used for ordinary library files.
 ?S:	For unix, it is '.a'.  The '.' is included.  Other possible
 ?S:	values include '.lib'.
 ?S:.

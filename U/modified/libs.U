@@ -38,7 +38,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
-?S:	It is up to the Makefile to deal with it.
+?S:	It is up to the Makefile to deal with it.  The list can be empty.
 ?S:.
 ?S:libsfound:
 ?S:	This variable holds the full pathnames of the libraries
