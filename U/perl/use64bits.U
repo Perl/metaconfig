@@ -87,7 +87,7 @@ EOM
 	use64bitint="$define"
 	;;
 esac                          
-# Thinko compatibility
+# Thinko compatibilities.
 case "$use64bitints" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -95,6 +95,15 @@ case "$use64bitints" in
 *** There is no Configure -Duse64bitints, using -Duse64bitint instead.
 EOM
 	use64bitint="$define"
+	;;
+esac                          
+case "$use64bitsall" in
+"$define"|true|[yY]*)
+	cat <<EOM >&4
+
+*** There is no Configure -Duse64bitsall, using -Duse64bitall instead.
+EOM
+	use64bitall="$define"
 	;;
 esac                          
 
