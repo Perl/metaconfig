@@ -94,8 +94,7 @@
 ?T:yyy quad
 echo " "
 
-case "$d_longlong" in
-$define)
+if $test X"$intsize" = X8 -o X"$longsize" = X8 -o X"$d_int64t" = X"$define" -o X"$d_longlong" = X"$define"; then
 
 echo "Checking how to print 64-bit integers..." >&4
 
@@ -240,8 +239,9 @@ if $test X"$sPRId64" = X; then
 	echo "Cannot figure out how to print 64-bit integers." >&4
 fi
 
-;;
-esac # case "$d_longlong"
+$rm -f try try.*
+
+fi # intsize -o longsize -o d_int64t -o d_longlong
 
 case "$sPRId64" in
 '')	d_PRId64="$undef"; d_PRIi64="$undef"; d_PRIu64="$undef"; 
@@ -251,6 +251,4 @@ case "$sPRId64" in
 	d_PRIo64="$define"; d_PRIx64="$define"; d_PRIX64="$define"; 
 	;;
 esac
-
-$rm -f try try.*
 

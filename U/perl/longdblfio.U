@@ -92,8 +92,7 @@
 ?T:yyy
 echo " "
 
-case "$d_longdbl" in
-$define)
+if $test X"$d_longdbl" = X"$define"; then
 
 echo "Checking how to print long doubles..." >&4
 
@@ -117,6 +116,32 @@ EOCP
 			;;
 		esac
 	fi
+fi
+
+if $test X"$sPRIfldbl" = X; then
+	$cat >try.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+  long double d = 123.456;
+  printf("%.3llf\n", d);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try$exe_ext`
+		case "$yyy" in
+		123.456)
+			sPRIfldbl='"llf"'; sPRIgldbl='"llg"'; sPRIeldbl='"lle"';
+                	sPRIFldbl='"llF"'; sPRIGldbl='"llG"'; sPRIEldbl='"llE"';
+			echo "We will use %llf."
+			;;
+		esac
+	fi
+fi
+
+if $test X"$sPRIfldbl" = X; then
+	echo "Cannot figure out how to print long doubles." >&4
 fi
 
 if $test X"$sPRIfldbl" = X; then
@@ -163,34 +188,9 @@ EOCP
 	fi
 fi
 
-if $test X"$sPRIfldbl" = X -a; then
-	$cat >try.c <<'EOCP'
-#include <sys/types.h>
-#include <stdio.h>
-int main() {
-  long double d = 123.456;
-  printf("%.3llf\n", d);
-}
-EOCP
-	set try
-	if eval $compile; then
-		yyy=`./try$exe_ext`
-		case "$yyy" in
-		123.456)
-			sPRIfldbl='"llf"'; sPRIgldbl='"llg"'; sPRIeldbl='"lle"';
-                	sPRIFldbl='"llF"'; sPRIGldbl='"llG"'; sPRIEldbl='"llE"';
-			echo "We will use %llf."
-			;;
-		esac
-	fi
-fi
+$rm -f try try.*
 
-if $test X"$sPRIfldbl" = X; then
-	echo "Cannot figure out how to print long doubles." >&4
-fi
-
-;;
-esac # case "$d_longdbl"
+fi # d_longdbl
 
 case "$sPRIfldbl" in
 '')	d_PRIfldbl="$undef"; d_PRIgldbl="$undef"; d_PRIeldbl="$undef"; 
@@ -200,6 +200,4 @@ case "$sPRIfldbl" in
 	d_PRIFldbl="$define"; d_PRIGldbl="$define"; d_PRIEldbl="$define"; 
 	;;
 esac
-
-$rm -f try try.*
 
