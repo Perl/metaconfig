@@ -81,6 +81,7 @@ char *myname = "sprintf";
 
 #include <stdio.h>
 
+#define I_STDLIB $i_stdlib
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
