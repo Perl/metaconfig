@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:37  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:ptrsize: cat rm Myread Compile voidflags run use64bitall i_stdlib
+?MAKE:ptrsize: cat rm Myread Compile voidflags run use64bitall i_stdlib d_quad
 ?MAKE:	-pick add $@ %<
 ?S:ptrsize:
 ?S:	This variable contains the value of the PTRSIZE symbol, which
@@ -75,9 +75,20 @@ case "$use64bitall" in
 
 *** You have chosen a maximally 64-bit build,
 *** but your pointers are only 4 bytes wide.
+*** Please rerun Configure without -Duse64bitall.
+EOM
+		case "$d_quad" in
+		define)
+			cat <<EOM >&4
+*** Since you have quads, you could possibly try with -Duse64bitint.
+EOM
+			;;
+		esac
+		cat <<EOM >&4
 *** Cannot continue, aborting.
 
 EOM
+
 		exit 1
 		;;
 	esac

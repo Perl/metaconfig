@@ -256,6 +256,7 @@ $undef:$define)
 
 *** You have chosen to use 64-bit integers,
 *** but none cannot be found.
+*** Please rerun Configure without -Duse64bitint and/or -Dusemorebits.
 *** Cannot continue, aborting.
 
 EOF
