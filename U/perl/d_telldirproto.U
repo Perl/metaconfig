@@ -20,7 +20,7 @@
 ?C:	This symbol, if defined, indicates that the system provides
 ?C:	a prototype for the telldir() function.  Otherwise, it is up
 ?C:	to the program to supply one.  A good guess is
-?C:		extern long telldir _((DIR*));
+?C:		extern long telldir(DIR*);
 ?C:.
 ?H:#$d_telldirproto	HAS_TELLDIR_PROTO	/**/
 ?H:.

@@ -20,7 +20,7 @@
 ?C:	This symbol, if defined, indicates that the system provides
 ?C:	a prototype for the drand48() function.  Otherwise, it is up
 ?C:	to the program to supply one.  A good guess is
-?C:		extern double drand48 _((void));
+?C:		extern double drand48(void);
 ?C:.
 ?H:#$d_drand48proto	HAS_DRAND48_PROTO	/**/
 ?H:.

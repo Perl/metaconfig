@@ -20,8 +20,8 @@
 ?C:	This symbol, if defined, indicates that the system provides
 ?C:	a prototype for the sbrk() function.  Otherwise, it is up
 ?C:	to the program to supply one.  Good guesses are
-?C:		extern void* sbrk _((int));
-?C:		extern void* sbrk _((size_t));
+?C:		extern void* sbrk(int);
+?C:		extern void* sbrk(size_t);
 ?C:.
 ?H:#$d_sbrkproto	HAS_SBRK_PROTO	/**/
 ?H:.
