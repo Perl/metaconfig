@@ -61,7 +61,7 @@
 ?S:.
 ?S:sig_size:
 ?S: 	This variable contains the number of elements of the sig_name
-?S: 	and sig_num arrays, excluding the final NULL entry.
+?S: 	and sig_num arrays.
 ?S:.
 ?C:SIG_NAME:
 ?C:	This symbol contains a list of signal names in order of
@@ -100,8 +100,8 @@
 ?C:	signal number.  This is usually the same as the NSIG macro.
 ?C:.
 ?C:SIG_SIZE:
-?C:	This variable contains the number of elements of the sig_name
-?C:	and sig_num arrays, excluding the final NULL entry.
+?C:	This variable contains the number of elements of the SIG_NAME
+?C:	and SIG_NUM arrays, excluding the final NULL entry.
 ?C:.
 ?H:#define SIG_NAME $sig_name_init		/**/
 ?H:#define SIG_NUM  $sig_num_init		/**/
