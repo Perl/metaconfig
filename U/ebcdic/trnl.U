@@ -36,6 +36,11 @@ if test X"$trnl" = X; then
 	esac
 fi
 if test X"$trnl" = X; then
+       case "`echo foo|tr '\r\n' xy 2>/dev/null`" in
+       fooxy) trnl='\n\r' ;;
+       esac
+fi
+if test X"$trnl" = X; then
 	cat <<EOM >&2
 
 $me: Fatal Error: cannot figure out how to translate newlines with 'tr'.
