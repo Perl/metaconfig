@@ -35,8 +35,12 @@
 ?C:LSEEKSIZE:
 ?C:	This symbol holds the number of bytes used by the Off_t.
 ?C:.
+?C:Off_t_size:
+?C:	This symbol holds the number of bytes used by the Off_t.
+?C:.
 ?H:#define Off_t $lseektype		/* <offset> type */
 ?H:#define LSEEKSIZE $lseeksize		/* <offset> size */
+?H:#define Off_t_size $lseeksize	/* <offset> size */
 ?H:.
 ?F:!try
 ?LINT:set lseektype

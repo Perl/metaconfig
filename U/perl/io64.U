@@ -42,7 +42,7 @@ else
 	val="$undef"
 	echo "No, it doesn't."
 	case "$lseeksize" in
-	8) echo "(This is okay because your off_t is 64 bits wide.)" ;;
+	8) echo "(This is okay because your off_t is 64 bits wide.)" >&4 ;;
 	esac
 fi
 $rm -f try.* try
