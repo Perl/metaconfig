@@ -63,7 +63,7 @@
 ?X:
 ?MAKE:Loc Mcc awk ar bash bison byacc cat chgrp chmod chown \
 	comm compress cp cpio cpp csh date echo egrep emacs expr find flex \
-	gzip grep inews ksh less line lint ln lp lpr ls mail mailx \
+	gmake gzip grep inews ksh less line lint ln lp lpr ls mail mailx \
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip:  eunicefix n c Instruct Myread \
@@ -71,7 +71,7 @@
 ?MAKE:	-pick weed $@ %<
 ?LINT:describe Loc Mcc awk ar bash bison byacc cat chgrp chmod chown \
 	comm compress cp cpio cpp csh date echo egrep emacs expr find flex \
-	gzip grep inews ksh less line lint ln lp lpr ls mail mailx \
+	gmake gzip grep inews ksh less line lint ln lp lpr ls mail mailx \
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip
@@ -144,7 +144,6 @@ loclist="
 ?find:find
 ?grep:grep
 ?ls:ls
-?make:make
 ?mkdir:mkdir
 ?mv:mv
 ?rm:rm
@@ -170,6 +169,7 @@ trylist="
 ?egrep:egrep
 ?emacs:emacs
 ?flex:flex
+?gmake:gmake
 ?gzip:gzip
 ?inews:inews
 ?ksh:ksh
@@ -180,6 +180,7 @@ trylist="
 ?lp:lp
 ?lpr:lpr
 ?mail:mail
+?make:make
 ?mailx:mailx
 ?more:more
 ?nm:nm
@@ -206,7 +207,7 @@ trylist="
 "
 ?LINT:set Loc Mcc awk ar bash bison byacc cat chgrp chmod chown \
 	comm compress cp cpio cpp csh date echo egrep emacs expr find flex \
-	gzip grep inews ksh less line lint ln lp lpr ls mail mailx \
+	gmake gzip grep inews ksh less line lint ln lp lpr ls mail mailx \
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip
