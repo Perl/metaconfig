@@ -1,0 +1,24 @@
+?RCS: $Id: i_libutil.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_libutil: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_libutil:
+?S:	This variable conditionally defines the I_LIBUTIL symbol, and indicates
+?S:	whether a C program should include <libutil.h>.
+?S:.
+?C:I_LIBUTIL:
+?C:	This symbol, if defined, indicates that <libutil.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_libutil	I_LIBUTIL		/**/
+?H:.
+?LINT:set i_libutil
+: see if this is a libutil.h system
+set libutil.h i_libutil
+eval $inhdr
+
