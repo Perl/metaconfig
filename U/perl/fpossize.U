@@ -1,0 +1,52 @@
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:fpossize: Myread Typedef fpostype Compile
+?MAKE:	-pick add $@ %<
+?S:fpossize:
+?S:	This variable contains the size of a fpostype in bytes.
+?S:.
+?C:Fpos_t_SIZE:
+?C:	This symbol holds the size of a Fpos_t in bytes.
+?C:.
+?H:#define Fpos_t_SIZE $fpossize		/* FPOS size */
+?H:.
+?F:!try
+?T:yyy zzz
+?LINT: set fpossize
+echo " "
+case "$fpostype" in
+*_t) zzz="$fpostype"	;;
+*)   zzz="fpos_t"	;;
+esac
+echo "Checking the size of $zzz..." >&4 
+cat > try.c <<EOCP
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+    printf("%d\n", sizeof($fpostype));
+}
+EOCP
+set try
+if eval $compile_ok; then
+	yyy=`./try`
+	case "$yyy" in
+	'')	fpossize=4
+		echo "(I can't execute the test program--guessing $fpossize.)" >&4
+		;;
+	*)	fpossize=$yyy
+		echo "Your $zzz size is $fpossize bytes."
+		;;
+	esac
+else
+	fpossize=4
+	echo "(I can't compile the test program--guessing $fpossize.)" >&4
+fi
+
+

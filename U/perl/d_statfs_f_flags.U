@@ -42,7 +42,7 @@ define)
 	;;
 esac
 case "$d_statfs_f_flags" in
-"$define")      echo "Yup, it does."     ;;
-*)              echo "Nope, it doesn't." ;;
+"$define")      echo "Yes, it does."   ;;
+*)              echo "No, it doesn't." ;;
 esac
 

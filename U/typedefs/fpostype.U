@@ -18,7 +18,7 @@
 ?MAKE:fpostype: Myread Typedef
 ?MAKE:	-pick add $@ %<
 ?S:fpostype:
-?S:	This variable defines Fpos_t to be something like fpost_t, long, 
+?S:	This variable defines Fpos_t to be something like fpos_t, long, 
 ?S:	uint, or whatever type is used to declare file positions in libc.
 ?S:.
 ?C:Fpos_t:
