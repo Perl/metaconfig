@@ -16,7 +16,6 @@
 ?S:	is employed, just enough to get 64-bit integers into Perl.
 ?S:	This may mean using for example "long longs", while your memory
 ?S:	may still be limited to 2 gigabytes.
-?S:	To go all the way, use Configure -Dusefull64bits.
 ?S:.
 ?S:usefull64bits:
 ?S:	This variable conditionally defines the USE_FULL_64_BITS symbol,
@@ -27,7 +26,6 @@
 ?S:	even more binary incompatible than USE_64_BITS. You may not
 ?S:	be able to run the resulting executable in a 32-bit CPU at all or
 ?S:	you may need at least to reboot your OS to 64-bit mode.
-?S:	Full a more minimal approach, use Configure -Duse64bits.
 ?S:.
 ?S:archname64:
 ?S:	This variable is used for the 64-bitness part of $archname.
@@ -39,7 +37,6 @@
 ?C:	64-bitness is used, just enough to get 64-bit integers into Perl.
 ?C:	This may mean using for example "long longs", while your memory
 ?C:	may still be limited to 2 gigabytes.
-?C:	To go all the way, use Configure -Dusefull64bits.
 ?C:.
 ?C:USE_FULL_64_BITS:
 ?C:	This symbol, if defined, indicates that 64-bit integers should
@@ -50,7 +47,6 @@
 ?C:	even more binary incompatible than USE_64_BITS. You may not
 ?C:	be able to run the resulting executable in a 32-bit CPU at all or
 ?C:	you may need at least to reboot your OS to 64-bit mode.
-?C:	Full a more minimal approach, use Configure -Duse64bits.
 ?C:.
 ?H:?%<:#ifndef USE_64_BITS
 ?H:?%<:#$use64bits	USE_64_BITS		/**/
@@ -67,8 +63,7 @@
 ?LINT:use usemorebits
 ?LINT:extern uselonglong
 ?LINT:use uselonglong
-?LINT:extern usefull64bits
-?LINT:change usefull64bits
+?LINT:set usefull64bits
 ?F:!use64bits.cbu
 ?F:!usefull64bits.cbu
 

@@ -12,12 +12,11 @@
 ?S:uselargefiles:
 ?S:	This variable conditionally defines the USE_LARGE_FILES symbol,
 ?S:	and indicates that large file interfaces should be used when
-?S:	available.  The use64bits symbol will also be turned on if necessary.
+?S:	available.
 ?S:.
 ?C:USE_LARGE_FILES:
 ?C:	This symbol, if defined, indicates that large file support
-?C:	should be used when available.  The USE_64_BITS symbol will
-?C:	also be turned on if necessary.
+?C:	should be used when available.
 ?C:.
 ?H:?%<:#ifndef USE_LARGE_FILES
 ?H:?%<:#$uselargefiles	USE_LARGE_FILES		/**/

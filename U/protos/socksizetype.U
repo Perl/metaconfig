@@ -1,0 +1,61 @@
+?RCS: $Id: socksizetype.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:socksizetype: \
+	Protochk Oldconfig Myread cat d_socket d_socklen_t sizetype
+?MAKE:	-pick add $@ %<
+?S:socksizetype:
+?S:	This variable holds the type used for the size argument
+?S:	for various socket calls like accept.  Usual values include
+?S:	socklen_t, size_t, and int.
+?S:.
+?C:Sock_size_t:
+?C:	This symbol holds the type used for the size argument
+?C:	of various socket calls.
+?C:.
+?H:#define Sock_size_t		$socksizetype /**/
+?H:.
+?T:xxx yyy try hdrs
+@if Sock_size_t
+: check for type of the size argument to socket calls
+case "$d_socket" in
+"$define")
+	$cat <<EOM
+
+Checking to see what type is the last argument of accept().
+EOM
+	hdrs="$define sys/types.h $d_socket sys/socket.h" 
+	yyy=''
+	case "$d_socklen_t" in
+	"$define") yyy="$yyy socklen_t"
+	esac
+	yyy="$yyy $sizetype int long"
+	for xxx in $yyy; do
+		case "$socksizetype" in
+		'')	try="extern int accept(int, struct sockaddr *, $xxx *);"
+			if ./protochk "$try" $hdrs; then
+				echo "Your system accepts '$xxx *' for the last argument of accept()."
+				socksizetype="$xxx *"
+			fi
+			;;
+		esac
+	done
+: In case none of those worked, prompt the user.
+	case "$socksizetype" in
+	'')	rp='What is the type for the last argument to accept()?'
+		dflt='int *'
+		. ./myread
+		socksizetype=$ans
+		;;
+	esac
+	;;
+*)	: no gethostbyaddr, so pick relatively harmless defaults
+	socksizetype='char *'
+	;;
+esac
+@end
+

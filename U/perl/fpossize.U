@@ -42,7 +42,7 @@ if eval $compile_ok; then
 		echo "(I can't execute the test program--guessing $fpossize.)" >&4
 		;;
 	*)	fpossize=$yyy
-		echo "Your $zzz is bytes long." >&4
+		echo "Your $zzz is $fpossize bytes long."
 		;;
 	esac
 else

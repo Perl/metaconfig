@@ -16,6 +16,7 @@
 ?C:	available to stat filesystems by file descriptors.
 ?C:.
 ?H:#$d_fstatfs HAS_FSTATFS		/**/
+?H:.
 ?LINT:set d_fstatfs
 
 : see if fstatfs exists
