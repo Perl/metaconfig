@@ -1,0 +1,26 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_nl_langinfo: Inlibc i_langinfo
+?MAKE:	-pick add $@ %<
+?S:d_nl_langinfo:
+?S:	This variable conditionally defines the HAS_NL_LANGINFO symbol, which
+?S:	indicates to the C program that the nl_langinfo() routine is available.
+?S:.
+?C:HAS_NL_LANGINFO:
+?C:	This symbol, if defined, indicates that the nl_langinfo routine is
+?C:	available to return local data.  You will also need <langinfo.h>
+?C:	and therefore I_LANGINFO.
+?C:.
+?H:#$d_nl_langinfo HAS_NL_LANGINFO		/**/
+?H:.
+?LINT:set d_nl_langinfo
+?LINT:use i_langinfo
+: see if nl_langinfo exists
+set nl_langinfo d_nl_langinfo
+eval $inlibc
+

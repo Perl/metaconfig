@@ -1,0 +1,24 @@
+?RCS: $Id: i_poll.U,v $
+?RCS:
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_langinfo: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_langinfo:
+?S:	This variable conditionally defines the I_LANGINFO symbol,
+?S:	and indicates whether a C program should include <langinfo.h>.
+?S:.
+?C:I_LANGINFO:
+?C:	This symbol, if defined, indicates that <langinfo.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_langinfo	I_LANGINFO		/**/
+?H:.
+?LINT:set i_langinfo
+: see if this is a langinfo.h system
+set langinfo.h i_langinfo
+eval $inhdr
+
