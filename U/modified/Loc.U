@@ -295,6 +295,7 @@ case "$egrep" in
 egrep)
 	echo "Substituting grep for egrep."
 	egrep=$grep
+	_egrep=$grep
 	;;
 esac
 @if ln
@@ -302,6 +303,7 @@ case "$ln" in
 ln)
 	echo "Substituting cp for ln."
 	ln=$cp
+	_ln=$cp
 	;;
 esac
 @end
@@ -324,6 +326,7 @@ gmake)	;;
 		# and prefer it over the system make.
 		echo "Substituting gmake for make."
 		make=$gmake
+		_make=$gmake
 	fi
 	;;
 esac

@@ -279,10 +279,4 @@ test -d UU || mkdir UU
 ?X: Use ./* to avoid any confirmation prompts from enhanced shells -- WED
 cd UU && rm -f ./*
 
-?X: are we running on the Stratus VOS operating system?
-if test -f "/system/gnu_library/bin/ar.pm"; then
-     _exe=".pm"
-else
-     _exe=""
-fi
 
