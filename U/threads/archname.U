@@ -109,7 +109,7 @@ case "$use64bitint$use64bitall" in
 *"$define"*)
 	case "$archname64" in
 	'')
-		"This architecture is naturally 64-bit, not changing architecture name." >&4
+		echo "This architecture is naturally 64-bit, not changing architecture name." >&4
 		;;
 	*)
 		case "$use64bitint" in

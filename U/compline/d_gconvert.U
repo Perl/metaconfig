@@ -161,6 +161,9 @@ int main()
 	Gconvert((DOUBLETYPE)-100000.0, 8, 0, buf); 
 	checkit("-100000", buf);
 
+	Gconvert((DOUBLETYPE)123.456, 8, 0, buf); 
+	checkit("123.456", buf);
+
 	exit(0);
 }
 EOP
@@ -174,11 +177,12 @@ EOP
 case "$d_Gconvert" in
 gconvert*) xxx_list='gconvert gcvt sprintf' ;;
 gcvt*) xxx_list='gcvt gconvert sprintf' ;;
-*) xxx_list='sprintf gconvert gcvt' ;;
+*) xxx_list='gconvert gcvt sprintf' ;;
 esac
 
 case "$d_longdbl$uselongdouble$d_PRIgldbl" in
 "$define$define$define")
+    # for long doubles prefer sprintf
     xxx_list="`echo $xxx_list|sed s/sprintf//`" 
     xxx_list="sprintf $xxx_list"
     case "$d_qgcvt" in
