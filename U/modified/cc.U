@@ -108,7 +108,7 @@ EOM
 if $cc -o try try.c; then
    :
 else
-   echo "Uh-oh, the C compiler "$cc" doesn't seem to be working..." >&4
+   echo "Uh-oh, the C compiler '$cc' doesn't seem to be working..." >&4
    despair=yes
    trygcc=yes
    case "$cc" in
@@ -120,7 +120,7 @@ else
    if $test X"$trygcc" = Xyes; then
       if gcc -o try try.c; then
         echo " "
-        echo "You seem to have a working gcc, though."
+        echo "You seem to have a working gcc, though." >&4
         rp="Do you want to use it?"
         dflt=y
         . ./myread
