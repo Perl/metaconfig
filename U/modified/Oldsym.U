@@ -21,7 +21,7 @@
 ?X: which is set to true. Then, we try to keep all the new symbols that
 ?X: may come from a hint file or a previous config.sh file.
 ?X: 
-?MAKE:Oldsym: Config_sh cat test hint src
+?MAKE:Oldsym: Config_sh cat test hint src sort uniq
 ?MAKE:	-pick add $@ %<
 ?T:CONFIGDOTSH sym tmp s
 ?X: Command line options can be saved by the Options.U unit in the
@@ -37,7 +37,7 @@ echo "CONFIGDOTSH=true" >>config.sh
 : propagate old symbols
 if $test -f UU/config.sh; then
 ?X: Make sure each symbol is unique in oldconfig.sh
-	<UU/config.sh sort | uniq >UU/oldconfig.sh
+	<UU/config.sh $sort | $uniq >UU/oldconfig.sh
 ?X:
 ?X: All the symbols that appear twice come only from config.sh (hence the
 ?X: two config.sh in the command line). These symbols will be removed by
@@ -45,7 +45,7 @@ if $test -f UU/config.sh; then
 ?X: that did not appear in the produced config.sh (Larry Wall).
 ?X:
 	sed -n 's/^\([a-zA-Z_0-9]*\)=.*/\1/p' config.sh config.sh UU/oldconfig.sh |\
-	sort | uniq -u >UU/oldsyms
+	$sort | $uniq >UU/oldsyms
 	set X `cat UU/oldsyms`
 	shift
 	case $# in

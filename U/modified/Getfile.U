@@ -82,7 +82,7 @@
 ?X: If the answer to the question is 'none', then the existence checks are
 ?X:	skipped and the empty string is returned.
 ?X:
-?MAKE:Getfile: d_portable contains startsh Myread Filexp trnl
+?MAKE:Getfile: d_portable contains startsh Myread Filexp tr trnl
 ?MAKE:	-pick add $@ %<
 ?V:ansexp:fn gfpth gfpthkeep
 ?F:./getfile
@@ -111,7 +111,7 @@ esac
 ?X: Begin by stripping out any (...) grouping.
 case "$fn" in
 *\(*)
-	expr $fn : '.*(\(.*\)).*' | tr ',' $trnl >getfile.ok
+	expr $fn : '.*(\(.*\)).*' | $tr ',' $trnl >getfile.ok
 	fn=`echo $fn | sed 's/(.*)//'`
 	;;
 esac

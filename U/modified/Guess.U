@@ -34,7 +34,8 @@
 ?X: is.  The information it collects here is used primarily to establish default
 ?X: answers to other questions.
 ?X: 
-?MAKE:Guess d_eunice d_xenix d_bsd: cat test echo n c contains rm Loc eunicefix
+?MAKE:Guess d_eunice d_xenix d_bsd: cat test echo n c contains \
+	rm Loc eunicefix tr
 ?MAKE:	-pick add $@ %<
 ?S:d_eunice:
 ?S:	This variable conditionally defines the symbols EUNICE and VAX, which
@@ -100,7 +101,7 @@ if test -f /osf_boot || $contains 'OSF/1' /usr/include/ctype.h >/dev/null 2>&1
 then
 	echo "Looks kind of like an OSF/1 system, but we'll see..."
 	echo exit 0 >osf1
-elif test `echo abc | tr a-z A-Z` = Abc ; then
+elif test `echo abc | $tr a-z A-Z` = Abc ; then
 	xxx=`./loc addbib blurfl $pth`
 	if $test -f $xxx; then
 	echo "Looks kind of like a USG system with BSD features, but we'll see..."
