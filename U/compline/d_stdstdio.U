@@ -369,7 +369,7 @@ EOP
 	if eval $compile; then
  		case `./try$exe_ext` in
 		Pass_changed)
-			echo "Increasing ptr in your stdio decreases cnt by the same amount. Good." >&4
+			echo "Increasing ptr in your stdio decreases cnt by the same amount.  Good." >&4
 			d_stdio_ptr_lval_sets_cnt="$define" ;;
 		Pass_unchanged)
 			echo "Increasing ptr in your stdio leaves cnt unchanged.  Good." >&4
