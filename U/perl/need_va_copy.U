@@ -69,7 +69,7 @@ main(int ac, char **av)
 }
 EOCP
 	set try
-	if eval $compile_ok && ./try >/dev/null; then
+	if eval $compile && ./try 2>&1 >/dev/null; then
 		case "`./try`" in
 		"that's all right, then")
 			okay=yes
