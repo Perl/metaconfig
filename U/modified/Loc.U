@@ -75,6 +75,7 @@
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip
+?LINT:extern _exe
 ?V::pth loclist trylist
 ?F:./loc test_h
 ?T:thisthing thing xxx dir file say _test DJGPP
@@ -108,12 +109,17 @@ for dir in \$*; do
 ?X:	permission.  A -r test would handle that, but since ./loc is
 ?X:	also used to find executables (which are installed w/o read
 ?X:	permission on SCO ODT 3.0, we can't include the -r test.
+?X: If you need to use _exe (different from .exe)
+?X: you need to set it on comand line: -D_exe=...
 	for thisthing in \$dir/\$thing; do
 		: just loop through to pick last item
 	done
 	if test -f \$thisthing; then
 		echo \$thisthing
 		exit 0
+	elif test "X$_exe" != X -a -f \$thisthing$_exe; then
+		echo \$thisthing
+        	exit 0
 	elif test -f \$dir/\$thing.exe; then
 		if test -n "$DJGPP"; then
 			echo \$dir/\$thing.exe
@@ -234,7 +240,7 @@ for file in $loclist; do
 	'') xxx=`./loc $file $file $pth`;;
 	*) xxx=`./loc $xxx $xxx $pth`;;
 	esac
-	eval $file=$xxx
+	eval $file=$xxx$_exe
 	eval _$file=$xxx
 	case "$xxx" in
 	/*)
@@ -286,16 +292,25 @@ for file in $trylist; do
 	esac
 done
 case "$egrep" in
-egrep)
+*egrep*)
 	echo "Substituting grep for egrep."
 	egrep=$grep
 	;;
 esac
 @if ln
 case "$ln" in
-ln)
+*ln*)
 	echo "Substituting cp for ln."
 	ln=$cp
+	;;
+esac
+case "$make" in
+*make*)
+	;;
+*)
+	echo "I can't find make or gmake, and my life depends on it." >&4
+	echo "Go find a public domain implementation or fix your PATH setting!" >&4
+	exit 1
 	;;
 esac
 @end
