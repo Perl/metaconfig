@@ -1,7 +1,7 @@
-*** Glossary.orig	ma  8 huhti  20.23.31 2002
---- Glossary	ma  8 huhti  20.24.57 2002
+*** Glossary.orig	Sat Jun  8 19:33:14 2002
+--- Glossary	Sat Jun  8 19:33:28 2002
 ***************
-*** 3201,3207 ****
+*** 3294,3300 ****
   	make_set_make='#'		# If your make program handles this for you,
   	make_set_make="MAKE=$make"	# if it doesn't.
   	I used a comment character so that we can distinguish a
@@ -9,7 +9,7 @@
   	from an uncomputed value.
   
   mallocobj (mallocsrc.U):
---- 3201,3207 ----
+--- 3294,3300 ----
   	make_set_make='#'		# If your make program handles this for you,
   	make_set_make="MAKE=$make"	# if it doesn't.
   	I used a comment character so that we can distinguish a
@@ -18,7 +18,7 @@
   
   mallocobj (mallocsrc.U):
 ***************
-*** 3310,3316 ****
+*** 3403,3409 ****
   	whole thing is then lower-cased.
   
   n (n.U):
@@ -26,7 +26,7 @@
   	command to suppress newline.  Otherwise it is null.  Correct usage is
   	$echo $n "prompt for a question: $c".
   
---- 3310,3316 ----
+--- 3403,3409 ----
   	whole thing is then lower-cased.
   
   n (n.U):
@@ -35,7 +35,7 @@
   	$echo $n "prompt for a question: $c".
   
 ***************
-*** 3737,3745 ****
+*** 3866,3874 ****
   	/bin/sh, though it's possible that some systems will have /bin/ksh,
   	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
   	D:/bin/sh.exe.
@@ -45,7 +45,7 @@
   
   shar (Loc.U):
   	This variable is defined but not used by Configure.
---- 3737,3745 ----
+--- 3866,3874 ----
   	/bin/sh, though it's possible that some systems will have /bin/ksh,
   	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
   	D:/bin/sh.exe.
@@ -56,7 +56,7 @@
   shar (Loc.U):
   	This variable is defined but not used by Configure.
 ***************
-*** 3915,3921 ****
+*** 4044,4050 ****
   
   spitshell (spitshell.U):
   	This variable contains the command necessary to spit out a runnable
@@ -64,7 +64,7 @@
   
   sPRId64 (quadfio.U):
   	This variable, if defined, contains the string used by stdio to
---- 3915,3921 ----
+--- 4044,4050 ----
   
   spitshell (spitshell.U):
   	This variable contains the command necessary to spit out a runnable

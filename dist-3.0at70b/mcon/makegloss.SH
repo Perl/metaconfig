@@ -113,14 +113,14 @@ while (<>) {
 		$_ = "Unit: $unit";
 		$_ .= " (Also defines $also)" if $also;
 		$_ .= " (With private $internal)" if $internal;
-		$head .= do format($_);
+		$head .= &format($_);
 		if ($wants) {
 			$_ = "Wants: $wants";
-			$head .= do format($_);
+			$head .= &format($_);
 		}
 		if ($option) {
 			$_ = "Optional: $option";
-			$head .= do format($_);
+			$head .= &format($_);
 		}
 		$head .= "\n";
 	}

@@ -148,7 +148,7 @@ foreach $rule (sort(keys %Seen)) {
 	$line = $Wants{$rule};
 	if (length($line)) {
 		$line = "->$line.";
-		$line = do format($line);
+		$line = &format($line);
 		print INDEX "$line\n";
 	}
 	$line = $Init{$rule};

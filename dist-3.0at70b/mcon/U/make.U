@@ -20,9 +20,12 @@
 ?S:	This variable contains the string to be included in Makefile.SH
 ?S:	so that MAKE is set if needed, and not if not needed.
 ?S:	Possible values are:
+?S:
 ?S:	make_set_make='#'		# If your make program handles this for you,
+?S:
 ?S:	make_set_make="MAKE=$make"	# if it doesn't.
-?S:	I used a comment character so that we can distinguish a
+?S:
+?S:	This uses a comment character to distinguish a
 ?S:	'set' value (from a previous config.sh or Configure -D option)
 ?S:	from an uncomputed value.
 ?S:.
