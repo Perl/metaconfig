@@ -1,0 +1,116 @@
+?RCS: $Id: d_pthread_y.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_pthread_yield sched_yield d_sched_yield: \
+	Compile Setvar cat rm usethreads
+?MAKE:	-pick add $@ %<
+?S:d_pthread_yield:
+?S:	This variable conditionally defines the HAS_PTHREAD_YIELD
+?S:	symbol if the pthread_yield routine is available to yield
+?S:	the execution of the current thread.
+?S:.
+?S:sched_yield:
+?S:	This variable defines the way to yield the execution
+?S:	of the current thread.
+?S:.
+?S:d_sched_yield:
+?S:	This variable conditionally defines the HAS_SCHED_YIELD
+?S:	symbol if the sched_yield routine is available to yield
+?S:	the execution of the current thread.
+?S:.
+?C:HAS_PTHREAD_YIELD:
+?C:	This symbol, if defined, indicates that the pthread_yield 
+?C:	routine is available to yield the execution of the current
+?C:	thread.	 sched_yield is preferable to pthread_yield.
+?C:.
+?C:SCHED_YIELD:
+?C:	This symbol defines the way to yield the execution of
+?C:	the current thread.  Known ways are sched_yield,
+?C:	pthread_yield, and pthread_yield with NULL.
+?C:.
+?C:HAS_SCHED_YIELD:
+?C:	This symbol, if defined, indicates that the sched_yield
+?C:	routine is available to yield the execution of the current
+?C:	thread.	 sched_yield is preferable to pthread_yield.
+?C:.
+?H:#$d_pthread_yield HAS_PTHREAD_YIELD	/**/
+?H:#define SCHED_YIELD	$sched_yield	/**/
+?H:#$d_sched_yield HAS_SCHED_YIELD	/**/
+?H:.
+?LINT: set d_pthread_yield d_sched_yield
+
+: see whether the various POSIXish _yields exist
+$cat >try.c <<EOP
+#include <pthread.h>
+#include <stdio.h>
+int main() {
+#ifdef SCHED_YIELD
+	sched_yield();
+#else
+#ifdef PTHREAD_YIELD
+	pthread_yield();
+#else
+#ifdef PTHREAD_YIELD_NULL
+	pthread_yield(NULL);
+#endif
+#endif
+#endif
+}
+EOP
+: see if sched_yield exists
+set try -DSCHED_YIELD
+if eval $compile; then
+    val="$define"
+    sched_yield='sched_yield()'
+else
+    val="$undef"
+fi
+case "$usethreads" in
+$define)
+	case "$val" in
+	$define) echo 'sched_yield() found.' >&4	;;
+	*)	 echo 'sched_yield() NOT found.' >&4	;;
+	esac
+esac
+set d_sched_yield
+eval $setvar
+
+: see if pthread_yield exists
+set try -DPTHREAD_YIELD
+if eval $compile; then
+    val="$define"
+    case "$sched_yield" in
+    '') sched_yield='pthread_yield()' ;;
+    esac
+else
+    set try -DPTHREAD_YIELD_NULL
+    if eval $compile; then
+	val="$define"
+	case "$sched_yield" in
+	'') sched_yield='pthread_yield(NULL)' ;;
+	esac
+    else
+	val="$undef"
+    fi
+fi
+case "$usethreads" in
+$define)
+	case "$val" in
+	$define) echo 'pthread_yield() found.' >&4	;;
+	*)	 echo 'pthread_yield() NOT found.' >&4	;;
+	esac
+	;;
+esac
+set d_pthread_yield
+eval $setvar
+
+case "$sched_yield" in
+'') sched_yield=undef ;;
+esac
+
+$rm -f try try.*
+

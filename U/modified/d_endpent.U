@@ -1,0 +1,31 @@
+?RCS: $Id: d_endpent.U,v 3.0 1993/08/18 12:06:09 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: d_endpent.U,v $
+?RCS: Revision 3.0  1993/08/18  12:06:09  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:d_endpent: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_endpent:
+?S:	This variable conditionally defines HAS_ENDPROTOENT if endprotoent() is
+?S:	available to close whatever was being used for protocol queries.
+?S:.
+?C:HAS_ENDPROTOENT:
+?C:	This symbol, if defined, indicates that the endprotoent() routine is
+?C:	available to close whatever was being used for protocol queries.
+?C:.
+?H:#$d_endpent HAS_ENDPROTOENT		/**/
+?H:.
+?LINT:set d_endpent
+: see if endprotoent exists
+set endprotoent d_endpent
+eval $inlibc
+

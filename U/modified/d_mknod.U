@@ -1,0 +1,29 @@
+?RCS: $Id: d_mknod.U,v 3.0.1.1 1994/10/29 16:14:17 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafayette.edu>
+?RCS:
+?RCS: $Log: d_mknod.U,v $
+?RCS:
+?MAKE:d_mknod: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mknod:
+?S:	This variable conditionally defines the HAS_MKNOD symbol, which
+?S:	indicates to the C program that the mknod() routine is available.
+?S:.
+?C:HAS_MKNOD :
+?C:	This symbol, if defined, indicates that the mknod routine is
+?C:	available.  If you just want to create FIFOs, you should try
+?C:	to use mkfifo instead.  mknod might require super-user privileges.
+?C:.
+?H:#$d_mknod HAS_MKNOD		/**/
+?H:.
+?LINT:set d_mknod
+: see if mknod exists
+set mknod d_mknod
+eval $inlibc
+

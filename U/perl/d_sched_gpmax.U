@@ -1,0 +1,28 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sched_get_priority_max: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sched_get_priority_max:
+?S:	This variable conditionally defines HAS_SCHED_GET_PRIORITY_MAX if
+?S:	sched_get_priority_max() is available to get the maximum scheduling
+?S:	priority.
+?S:.
+?C:HAS_SCHED_GET_PRIORITY_MAX:
+?C:	This symbol, if defined, indicates that the sched_get_priority_max
+?C:	system call is available to get the maximum scheduling priority.
+?C:.
+?H:#$d_sched_get_priority_max HAS_SCHED_GET_PRIORITY_MAX		/**/
+?H:.
+?LINT:set d_sched_get_priority_max
+: see if sched_get_priority_max exists
+set sched_get_priority_max d_sched_get_priority_max
+eval $inlibc
+

@@ -1,0 +1,45 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usesocks: Myread Oldconfig Setvar
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usesocks:
+?S:	This variable conditionally defines the USE_SOCKS symbol,
+?S:	and indicates that Perl should be built to use SOCKS.
+?S:.
+?C:USE_SOCKS:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	be built to use socks.
+?C:.
+?H:#$usesocks	USE_SOCKS		/**/
+?H:.
+?LINT:set usesocks
+?INIT:: set usesocks on the Configure command line to enable socks.
+?X: We should really have some explanatory text here, and some
+?X: automatic setting of sensible defaults.
+cat <<EOM
+
+Perl can be built to use the SOCKS proxy protocol library.  To do so,
+Configure must be run with -Dusesocks.
+
+Normally you do not need this and you should answer no.
+
+EOM
+case "$usesocks" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+rp='Build Perl for SOCKS?'
+. ./myread
+case "$ans" in
+y|Y)	val="$define" ;;     
+*)      val="$undef" ;;
+esac
+set usesocks
+eval $setvar
+

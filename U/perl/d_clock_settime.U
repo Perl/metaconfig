@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_clock_settime: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_clock_settime:
+?S:	This variable conditionally defines HAS_CLOCK_SETTIME
+?S:	if clock_settime() is available to set the time of a POSIX clock.
+?S:.
+?C:HAS_CLOCK_SETTIME:
+?C:	This symbol, if defined, indicates that the clock_settime
+?C:	system call is available to set the time of a POSIX clock.
+?C:.
+?H:#$d_clock_settime HAS_CLOCK_SETTIME		/**/
+?H:.
+?LINT:set d_clock_settime
+: see if clock_settime exists
+set clock_settime d_clock_settime
+eval $inlibc
+

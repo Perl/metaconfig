@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_mq_send: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mq_send:
+?S:	This variable conditionally defines HAS_MQ_SEND if mq_send() is
+?S:	available to send a message to a POSIX message queue.
+?S:.
+?C:HAS_MQ_SEND:
+?C:	This symbol, if defined, indicates that the mq_send system call is
+?C:	available to send a message to a POSIX message queue.
+?C:.
+?H:#$d_mq_send HAS_MQ_SEND		/**/
+?H:.
+?LINT:set d_mq_send
+: see if mq_send exists
+set mq_send d_mq_send
+eval $inlibc
+

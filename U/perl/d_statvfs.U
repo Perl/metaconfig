@@ -1,0 +1,40 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_statvfs d_fstatvfs: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_statvfs:
+?S:	This variable conditionally defines the HAS_STATVFS symbol, which
+?S:	indicates to the C program that the statvfs() routine is available.
+?S:.
+?S:d_fstatvfs:
+?S:	This variable conditionally defines the HAS_FSTATVFS symbol, which
+?S:	indicates to the C program that the fstatvfs() routine is available.
+?S:.
+?C:HAS_STATVFS:
+?C:	This symbol, if defined, indicates that the statvfs routine is
+?C:	available to stat filesystems of files.
+?C:.
+?C:HAS_FSTATVFS:
+?C:	This symbol, if defined, indicates that the fstatvfs routine is
+?C:	available to stat filesystems of file descriptors.
+?C:.
+?H:#$d_statvfs HAS_STATVFS		/**/
+?H:#$d_fstatvfs HAS_FSTATVFS		/**/
+?H:.
+?LINT:set d_statvfs
+?LINT:set d_fstatvfs
+
+: see if statvfs exists
+set statvfs d_statvfs
+eval $inlibc
+
+: see if fstatvfs exists
+set fstatvfs d_fstatvfs
+eval $inlibc
+
+

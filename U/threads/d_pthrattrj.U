@@ -1,0 +1,88 @@
+?RCS: $Id: d_pthrattrj.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_old_pthread_create_joinable old_pthread_create_joinable: \
+	cat Compile rm Setvar usethreads i_pthread
+?MAKE:	-pick add $@ %<
+?S:d_old_pthread_create_joinable:
+?S:	This variable conditionally defines pthread_create_joinable.
+?S:	undef if pthread.h defines PTHREAD_CREATE_JOINABLE.
+?S:.
+?S:old_pthread_create_joinable:
+?S:	This variable defines the constant to use for creating joinable
+?S:	(aka undetached) pthreads.  Unused if pthread.h defines
+?S:	PTHREAD_CREATE_JOINABLE.  If used, possible values are
+?S:	PTHREAD_CREATE_UNDETACHED and __UNDETACHED.
+?S:.
+?C:OLD_PTHREAD_CREATE_JOINABLE:
+?C:	This symbol, if defined, indicates how to create pthread
+?C:	in joinable (aka undetached) state.  NOTE: not defined
+?C:	if pthread.h already has defined PTHREAD_CREATE_JOINABLE
+?C:	(the new version of the constant).
+?C:	If defined, known values are PTHREAD_CREATE_UNDETACHED
+?C:	and __UNDETACHED.
+?C:.
+?H:#$d_old_pthread_create_joinable OLD_PTHREAD_CREATE_JOINABLE $old_pthread_create_joinable /**/
+?H:.
+?LINT: set d_old_pthread_create_joinable
+?LINT: set old_pthread_create_joinable
+: how to create joinable pthreads
+if test "X$usethreads" = "X$define" -a "X$i_pthread" = "X$define"; then
+	echo " "
+	echo "Checking what constant to use for creating joinable pthreads..." >&4 
+	$cat >try.c <<'EOCP'
+#include <pthread.h>
+int main() {
+    int detachstate = JOINABLE;
+}
+EOCP
+	set try -DJOINABLE=PTHREAD_CREATE_JOINABLE
+	if eval $compile; then
+		echo "You seem to use PTHREAD_CREATE_JOINABLE." >&4
+		val="$undef" # Yes, undef.
+		set d_old_pthread_create_joinable
+		eval $setvar
+		val=""
+		set old_pthread_create_joinable
+		eval $setvar
+	else
+		set try -DJOINABLE=PTHREAD_CREATE_UNDETACHED
+		if eval $compile; then
+			echo "You seem to use PTHREAD_CREATE_UNDETACHED." >&4
+			val="$define"
+			set d_old_pthread_create_joinable
+			eval $setvar
+			val=PTHREAD_CREATE_UNDETACHED
+			set old_pthread_create_joinable
+			eval $setvar
+		else		
+			set try -DJOINABLE=__UNDETACHED
+			if eval $compile; then
+				echo "You seem to use __UNDETACHED." >&4
+				val="$define"
+				set d_old_pthread_create_joinable
+				eval $setvar
+				val=__UNDETACHED
+				set old_pthread_create_joinable
+				eval $setvar
+			else
+				echo "Egads, nothing obvious found.  Guessing that you use 0." >&4
+				val="$define"
+				set d_old_pthread_create_joinable
+				eval $setvar
+				val=0
+				set old_pthread_create_joinable
+				eval $setvar
+			fi
+		fi
+	fi
+	$rm -f try try.*
+else
+    d_old_pthread_create_joinable="$undef"
+    old_pthread_create_joinable=""
+fi
+

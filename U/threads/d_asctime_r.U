@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_asctime_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_asctime_r:
+?S:	This variable conditionally defines the HAS_ASCTIME_R symbol,
+?S:	which indicates to the C program that the asctime_r()
+?S:	routine is available.
+?S:.
+?C:HAS_ASCTIME_R:
+?C:	This symbol, if defined, indicates that the asctime_r routine
+?C:	is available to asctime re-entrantly.
+?C:.
+?H:#$d_asctime_r HAS_ASCTIME_R		/**/
+?H:.
+?LINT:set d_asctime_r
+: see if asctime_r exists
+set asctime_r d_asctime_r
+eval $inlibc
+

@@ -1,0 +1,88 @@
+?RCS: $Id: d_longdbl.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_longdbl.U,v $
+?RCS:
+?MAKE:d_longdbl longdblsize: Compile Setvar Myread +cc +ccflags +optimize \
+	echo n c cat rm test doublesize
+?MAKE:	-pick add $@ %<
+?S:d_longdbl:
+?S:	This variable conditionally defines HAS_LONG_DOUBLE if 
+?S:	the long double type is supported.
+?S:.
+?S:longdblsize:
+?S:	This variable contains the value of the LONG_DOUBLESIZE symbol, which
+?S:	indicates to the C program how many bytes there are in a long double,
+?S:	if this system supports long doubles.
+?S:.
+?C:HAS_LONG_DOUBLE:
+?C:	This symbol will be defined if the C compiler supports long
+?C:	doubles.
+?C:.
+?C:LONG_DOUBLESIZE:
+?C:	This symbol contains the size of a long double, so that the 
+?C:	C preprocessor can make decisions based on it.  It is only
+?C:	defined if the system supports long doubles.
+?C:.
+?H:#$d_longdbl HAS_LONG_DOUBLE		/**/
+?H:?LONG_DOUBLESIZE:#ifdef HAS_LONG_DOUBLE
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLESIZE $longdblsize		/**/
+?H:?LONG_DOUBLESIZE:#endif
+?H:.
+?LINT:set d_longdbl
+?F:!try
+: check for long doubles
+echo " "
+echo $n "Checking to see if your system supports long doubles...$c" >&4
+echo 'long double foo() { long double x; x = 7.0; return x; }' > try.c
+if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
+	val="$define"
+	echo " Yup, it does." >&4
+else
+	val="$undef"
+	echo " Nope, it doesn't." >&4
+fi
+$rm try.*
+set d_longdbl
+eval $setvar
+
+@if LONG_DOUBLESIZE || longdblsize
+: check for length of long double
+?X:  Check only if d_longdbl and if longdblsize is not already set.
+case "${d_longdbl}${longdblsize}" in
+$define)
+	echo " "
+	$echo $n "Checking to see how big your long doubles are...$c" >&4
+	$cat >try.c <<'EOCP'
+#include <stdio.h>
+int main()
+{
+	printf("%d\n", sizeof(long double));
+}
+EOCP
+	set try
+?X:	Don't use compile_ok because some compilers warn you that they have
+?X:	'long double' as just 'double'.
+	if eval $compile; then
+		longdblsize=`./try`
+		$echo " $longdblsize bytes." >&4
+	else
+		dflt='8'
+		echo " "
+		echo "(I can't seem to compile the test program.  Guessing...)" >&4
+		rp="What is the size of a long double (in bytes)?"
+		. ./myread
+		longdblsize="$ans"
+	fi
+	if $test "X$doublesize" = "X$longdblsize"; then
+		echo "(That isn't any different from an ordinary double.)"
+	fi	
+	;;
+esac
+$rm -f try.c try
+@end
+

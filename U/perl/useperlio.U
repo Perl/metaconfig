@@ -1,0 +1,55 @@
+?RCS: $Id: d_perlio.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_perlio.U,v $
+?RCS:
+?MAKE:useperlio: Myread Oldconfig Setvar package
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:useperlio:
+?S:	This variable conditionally defines the USE_PERLIO symbol,
+?S:	and indicates that the PerlIO abstraction should be
+?S:	used throughout.
+?S:.
+?C:USE_PERLIO:
+?C:	This symbol, if defined, indicates that the PerlIO abstraction should
+?C:	be used throughout.  If not defined, stdio should be
+?C:	used in a fully backward compatible manner.
+?C:.
+?H:#$useperlio	USE_PERLIO		/**/
+?H:.
+?LINT:set useperlio
+cat <<EOM
+
+Previous version of $package used the standard IO mechanisms as defined
+in <stdio.h>.  Versions 5.003_02 and later of perl allow alternate IO
+mechanisms via a "PerlIO" abstraction, but the stdio mechanism is still
+the default.  This abstraction layer can use AT&T's sfio (if you already
+have sfio installed) or regular stdio.  Using PerlIO with sfio may cause
+problems with some extension modules.  Using PerlIO with stdio is safe,
+but it is slower than plain stdio and therefore is not the default.
+
+If this doesn't make any sense to you, just accept the default 'n'.
+EOM
+case "$useperlio" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+rp='Use the experimental PerlIO abstraction layer?'
+. ./myread
+case "$ans" in
+y|Y) 
+	val="$define"
+	;;     
+*)      
+	echo "Ok, doing things the stdio way"
+	val="$undef"
+	;;
+esac
+set useperlio
+eval $setvar 
+

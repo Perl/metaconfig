@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getsent_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getsent_r:
+?S:	This variable conditionally defines the HAS_GETSERVENT_R symbol,
+?S:	which indicates to the C program that the getservent_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETSERVENT_R:
+?C:	This symbol, if defined, indicates that the getservent_r routine
+?C:	is available to getservent re-entrantly.
+?C:.
+?H:#$d_getsent_r HAS_GETSERVENT_R		/**/
+?H:.
+?LINT:set d_getsent_r
+: see if getservent_r exists
+set getservent_r d_getsent_r
+eval $inlibc
+

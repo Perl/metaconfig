@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getgrnam_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getgrnam_r:
+?S:	This variable conditionally defines the HAS_GETGRNAM_R symbol,
+?S:	which indicates to the C program that the getgrnam_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETGRNAM_R:
+?C:	This symbol, if defined, indicates that the getgrnam_r routine
+?C:	is available to getgrnam re-entrantly.
+?C:.
+?H:#$d_getgrnam_r HAS_GETGRNAM_R		/**/
+?H:.
+?LINT:set d_getgrnam_r
+: see if getgrnam_r exists
+set getgrnam_r d_getgrnam_r
+eval $inlibc
+

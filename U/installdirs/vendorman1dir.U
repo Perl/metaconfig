@@ -1,0 +1,63 @@
+?RCS: $Id: vendorman1.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS: 
+?RCS: $Log: vendorman1.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:vendorman1 vendorman1exp installvendorman1: Getfile \
+	Oldconfig Prefixit test package vendorprefix prefix sed \
+	installstyle installprefix
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:vendorman1:
+?S:	This variable contains the eventual value of the VENDORMAN1 symbol,
+?S:	which is the name of the directory holding manual pages for this package.
+?S:	It may have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:	Vendors who distribute perl may place their own
+?S:	manual pages in this directory.
+?S:.
+?S:vendorman1exp:
+?S:	This variable is the ~name expanded version of vendorman1, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installvendorman1:
+?S:	This variable is really the same as vendorman1exp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?T:prog
+case "$vendorprefix" in
+'')	vendorman1=''
+	vendorman1exp=''
+	;;
+*)	: determine where vendor-supplied manual pages go.
+?X: remove any trailing -3.0 or other version identification
+	prog=`echo $package | $sed 's/-*[0-9.]*$//'`
+	case "$installstyle" in
+	*lib/perl5*) dflt=$vendorprefix/lib/$package/vendor_$prog/man/man1 ;;
+	*)	     dflt=$vendorprefix/lib/vendor_$prog/man/man1 ;;
+	esac
+	fn=d~+
+	rp='Pathname for the vendor-supplied manual pages?'
+	. ./getfile
+	vendorman1="$ans"
+	vendorman1exp="$ansexp"
+	: Change installation prefix, if necessary.
+	if $test X"$prefix" != X"$installprefix"; then
+		installvendorman1=`echo $vendorman1exp | $sed 's#^$prefix#$installprefix#'`
+	else
+		installvendorman1="$vendorman1exp"
+	fi
+	;;
+esac
+

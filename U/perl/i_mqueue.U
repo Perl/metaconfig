@@ -1,0 +1,24 @@
+?RCS: $Id: i_mqueue.U,v $
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_mqueue: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_mqueue:
+?S:	This variable conditionally defines the I_MQUEUE symbol, and indicates
+?S:	whether a C program should include <mqueue.h>.
+?S:.
+?C:I_MQUEUE:
+?C:	This symbol, if defined, indicates that <mqueue.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_mqueue	I_MQUEUE		/**/
+?H:.
+?LINT:set i_mqueue
+: see if this is a mqueue.h system
+set mqueue.h i_mqueue
+eval $inhdr
+

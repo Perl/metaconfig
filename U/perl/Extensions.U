@@ -1,0 +1,293 @@
+?RCS: $Id: Extensions.U,v$
+?RCS:
+?RCS: Copyright (c) 1996-1998, Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: Extensions.U,v $
+?RCS:
+?MAKE:known_extensions extensions dynamic_ext static_ext nonxs_ext \
+	useposix useopcode : \
+	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \ 
+	i_ndbm usethreads package test cat rsrc d_msg d_shm
+?MAKE:	-pick add $@ %<
+?Y:BOTTOM
+?S:known_extensions:
+?S:	This variable holds a list of all XS extensions included in 
+?S:	the package.
+?S:.
+?S:dynamic_ext:
+?S:	This variable holds a list of XS extension files we want to
+?S:	link dynamically into the package.  It is used by Makefile.
+?S:.
+?S:static_ext:
+?S:	This variable holds a list of XS extension files we want to
+?S:	link statically into the package.  It is used by Makefile.
+?S:.
+?S:nonxs_ext:
+?S:	This variable holds a list of all non-xs extensions included
+?S:	in the package.  All of them will be built.
+?S:.
+?S:extensions:
+?S:	This variable holds a list of all extension files (both XS and
+?S:	non-xs linked into the package.  It is propagated to Config.pm
+?S:	and is typically used to test whether a particular extesion 
+?S:	is available.
+?S:.
+?S:useposix:
+?S:	This variable holds either 'true' or 'false' to indicate
+?S:	whether the POSIX extension should be used.  The sole
+?S:	use for this currently is to allow an easy mechanism
+?S:	for hints files to indicate that POSIX will not compile
+?S:	on a particular system.
+?S:.
+?S:useopcode:
+?S:	This variable holds either 'true' or 'false' to indicate
+?S:	whether the Opcode extension should be used.  The sole
+?S:	use for this currently is to allow an easy mechanism
+?S:	for users to skip the Opcode extension from the Configure
+?S:	command line.
+?S:.
+?T:xxx avail_ext tdir nonxs_extensions find_extensions
+?INIT:: set useposix=false in your hint file to disable the POSIX extension.
+?INIT:useposix=true
+?INIT:: set useopcode=false in your hint file to disable the Opcode extension.
+?INIT:useopcode=true
+echo " "
+echo "Looking for extensions..." >&4
+: If we are using the old config.sh, known_extensions may contain
+: old or inaccurate or duplicate values.
+known_extensions=''
+nonxs_extensions=''
+: We do not use find because it might not be available.
+: We do not just use MANIFEST because the user may have dropped
+: some additional extensions into the source tree and expect them
+: to be built.
+
+: Function to recursively find available extensions, ignoring DynaLoader
+: NOTE: recursion limit of 10 to prevent runaway in case of symlink madness
+find_extensions='
+    for xxx in *; do
+       case "$xxx" in
+           DynaLoader|dynaload) ;;
+           *)
+           if $test -f $xxx/$xxx.xs; then
+               known_extensions="$known_extensions $1$xxx";
+           elif $test -f $xxx/Makefile.PL; then
+               nonxs_extensions="$nonxs_extensions $1$xxx";
+           else
+               if $test -d $xxx -a $# -lt 10; then
+                   set $1$xxx/ $*;
+                   cd $xxx;
+                   eval $find_extensions;
+                   cd ..;
+                   shift;
+               fi
+           fi
+           ;;
+       esac
+    done'
+tdir=`pwd`
+cd $rsrc/ext
+set
+shift
+eval $find_extensions
+set X $nonxs_extensions
+shift
+nonxs_extensions="$*"
+set X $known_extensions
+shift
+known_extensions="$*"
+cd $tdir
+
+: Now see which are supported on this system.
+?X: avail_ext lists available XS extensions.
+avail_ext=''
+for xxx in $known_extensions ; do
+	case "$xxx" in
+?X: Handle possible DOS 8.3 filename and case alterations
+	DB_File|db_file)
+		case "$i_db" in
+		$define) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	GDBM_File|gdbm_fil)
+		case "$i_gdbm" in 
+		$define) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	NDBM_File|ndbm_fil)
+		case "$i_ndbm" in
+		$define) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	ODBM_File|odbm_fil) 
+		case "${i_dbm}${i_rpcsvcdbm}" in
+		*"${define}"*) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	POSIX|posix)
+		case "$useposix" in
+		true|define|y) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	Opcode|opcode)
+		case "$useopcode" in
+		true|define|y) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	Socket|socket)
+		case "$d_socket" in 
+		true|$define|y) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	Thread|thread)
+		case "$usethreads" in 
+		true|$define|y) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	IPC/SysV|ipc/sysv)
+		: XXX Do we need a useipcsysv variable here
+		case "${d_msg}${d_sem}${d_shm}" in 
+		*"${define}"*) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	*)	avail_ext="$avail_ext $xxx"
+		;;
+	esac
+done
+
+set X $avail_ext
+shift
+avail_ext="$*"
+
+: Now see which nonxs extensions are supported on this system.
+: For now assume all are.
+nonxs_ext=''
+for xxx in $nonxs_extensions ; do
+	case "$xxx" in
+	*)	nonxs_ext="$nonxs_ext $xxx"
+		;;
+	esac
+done
+
+set X $nonxs_ext
+shift
+nonxs_ext="$*"
+
+case $usedl in
+$define)
+	$cat <<EOM
+A number of extensions are supplied with $package.  You may choose to
+compile these extensions for dynamic loading (the default), compile
+them into the $package executable (static loading), or not include
+them at all.  Answer "none" to include no extensions.
+Note that DynaLoader is always built and need not be mentioned here.
+
+EOM
+	case "$dynamic_ext" in
+	'') dflt="$avail_ext" ;;
+	*)	dflt="$dynamic_ext"
+		# Perhaps we are reusing an old out-of-date config.sh.
+		case "$hint" in
+		previous)
+			if test X"$dynamic_ext" != X"$avail_ext"; then
+				$cat <<EOM
+NOTICE:  Your previous config.sh list may be incorrect. 
+The extensions now available to you are 
+	${avail_ext}
+but the default list from your previous config.sh is
+	${dynamic_ext} 
+
+EOM
+			fi
+			;;
+		esac
+		;;
+	esac
+	case "$dflt" in
+	'')	dflt=none;;
+	esac
+	rp="What extensions do you wish to load dynamically?"
+	. ./myread
+	case "$ans" in
+?X: Use ' ' so a subsequent Configure will preserve that value.
+	none) dynamic_ext=' ' ;;
+	*) dynamic_ext="$ans" ;;
+	esac
+
+	case "$static_ext" in
+	'')
+		: Exclude those already listed in dynamic linking
+		dflt=''
+		for xxx in $avail_ext; do
+			case " $dynamic_ext " in
+			*" $xxx "*) ;;
+			*) dflt="$dflt $xxx" ;;
+			esac
+		done
+		set X $dflt
+		shift
+		dflt="$*"
+		;;
+	*)  dflt="$static_ext" 
+		;;
+	esac
+
+	case "$dflt" in
+	'')	dflt=none;;
+	esac
+	rp="What extensions do you wish to load statically?"
+	. ./myread
+	case "$ans" in
+?X: Use ' ' so a subsequent Configure will preserve that value.
+	none) static_ext=' ' ;;
+	*) static_ext="$ans" ;;
+	esac
+	;;
+*)
+	$cat <<EOM
+A number of extensions are supplied with $package.  Answer "none" 
+to include no extensions. 
+Note that DynaLoader is always built and need not be mentioned here.
+
+EOM
+	case "$static_ext" in
+	'') dflt="$avail_ext" ;;
+	*)	dflt="$static_ext"
+		# Perhaps we are reusing an old out-of-date config.sh.
+		case "$hint" in
+		previous)
+			if test X"$static_ext" != X"$avail_ext"; then
+				$cat <<EOM
+NOTICE:  Your previous config.sh list may be incorrect. 
+The extensions now available to you are 
+	${avail_ext}
+but the default list from your previous config.sh is
+	${static_ext} 
+
+EOM
+			fi
+			;;
+		esac
+		;;
+	esac
+	: Exclude those that are not xs extensions
+	case "$dflt" in
+	'')	dflt=none;;
+	esac
+	rp="What extensions do you wish to include?"
+	. ./myread
+	case "$ans" in
+?X: Use ' ' so a subsequent Configure will preserve that value.
+	none) static_ext=' ' ;;
+	*) static_ext="$ans" ;;
+	esac
+	;;
+esac
+
+set X $dynamic_ext $static_ext $nonxs_ext
+shift
+extensions="$*"
+

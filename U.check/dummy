@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cat <<EOM
+Your results are:
+
+freetype=
+malloctype=
+
+EOM
+

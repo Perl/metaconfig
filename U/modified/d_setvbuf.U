@@ -1,0 +1,30 @@
+?RCS: $Id: d_setvbuf.U,v 3.0.1.1 1994/08/29 16:11:57 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: d_setvbuf.U,v $
+?RCS:
+?MAKE:d_setvbuf: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_setvbuf:
+?S:	This variable conditionally defines the HAS_SETVBUF symbol, which
+?S:	indicates to the C program that the setvbuf() routine is available
+?S:	to change buffering on an open stdio stream.
+?S:.
+?C:HAS_SETVBUF :
+?C:	This symbol, if defined, indicates that the setvbuf routine is
+?C:	available to change buffering on an open stdio stream.
+?C:	to a line-buffered mode.
+?C:.
+?H:#$d_setvbuf HAS_SETVBUF		/**/
+?H:.
+?LINT:set d_setvbuf
+: see if setvbuf exists
+set setvbuf d_setvbuf
+eval $inlibc
+

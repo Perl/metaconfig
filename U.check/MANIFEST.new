@@ -1,0 +1,6 @@
+MANIFEST		This file.
+Makefile.SH
+dummy.SH
+Configure
+main.c
+config_h.SH                  Produces config.h

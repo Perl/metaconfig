@@ -1,0 +1,84 @@
+?RCS: $Id: vendorscript.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS: 
+?RCS: $Log: vendorscript.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:d_vendorscript vendorscript vendorscriptexp installvendorscript: cat Getfile \
+	Oldconfig Prefixit test vendorprefix prefix sed installprefix
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:vendorscript:
+?S:	This variable contains the eventual value of the VENDORSCRIPT symbol,
+?S:	which is the name of the private directory for exuctables for this package.
+?S:	It may have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:	Vendors who distribute perl binaries may place their own
+?S:	extensions and modules in this directory.
+?S:.
+?S:vendorscriptexp:
+?S:	This variable is the ~name expanded version of vendorscript, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installvendorscript:
+?S:	This variable is really the same as vendorscriptexp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?S:d_vendorscript:
+?S:	This variable conditionally defines PERL_VENDORSCRIPT.
+?S:.
+?C:PERL_VENDORSCRIPT:
+?C:	If defined, this symbol contains the name of a private directory
+?C:	holding scripts.
+?C:	The directory is private in the sense that it needn't be in anyone's
+?C:	execution path, but it should be accessible by the world.  The program
+?C:	should be prepared to do ~ expansion.
+?C:	The standard distribution will put nothing in this directory.
+?C:	Vendors who distribute perl binaries may place their own
+?C:	extensions and modules in this directory.
+?C:.
+?C:PERL_VENDORSCRIPT_EXP:
+?C:	This symbol contains the ~name expanded version of VENDORSCRIPT, to be used
+?C:	in programs that are not prepared to deal with ~ expansion at run-time.
+?C:.
+?H:#$d_vendorscript PERL_VENDORSCRIPT "$vendorscript"		/**/
+?H:#$d_vendorscript PERL_VENDORSCRIPT_EXP "$vendorscriptexp"		/**/
+?H:.
+case "$vendorprefix" in
+'')	d_vendorscript="$undef"
+	vendorscript=''
+	vendorscriptexp=''
+	;;
+*)	d_vendorscript="$define"
+	: determine where vendor-supplied scripts go.
+	dflt=$vendorprefix/script
+	$cat <<EOM
+
+The installation process will create a directory for 
+vendor-supplied scripts.
+
+EOM
+	fn=d~+
+	rp='Pathname for the vendor-supplied scripts directory?'
+	. ./getfile
+	vendorscript="$ans"
+	vendorscriptexp="$ansexp"
+	: Change installation prefix, if necessary.
+	if $test X"$prefix" != X"$installprefix"; then
+		installvendorscript=`echo $vendorscriptexp | $sed 's#^$prefix#$installprefix#'`
+	else
+		installvendorscript="$vendorscriptexp"
+	fi
+	;;
+esac
+

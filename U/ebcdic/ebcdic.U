@@ -1,0 +1,53 @@
+?RCS: $Id: ebcdic.U,v 3.0.1.3 1994/05/06 15:11:49 doughera Exp $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS:	Original author Jarkko Hietaniemi <jhi@iki.fi>
+?RCS:	Merged into dist by Andy Dougherty  July 13, 1998
+?RCS:
+?MAKE:ebcdic: Compile Setvar cat rm
+?MAKE:	-pick add $@ %<
+?S:ebcdic:
+?S:	This variable conditionally defines EBCDIC if this
+?S:	system uses EBCDIC encoding.  Among other things, this
+?S:	means that the character ranges are not contiguous.
+?S:	See trnl.U
+?S:.
+?C:EBCDIC:
+?C:     This symbol, if defined, indicates that this system uses
+?C:	EBCDIC encoding.
+?C:.
+?H:#$ebcdic	EBCDIC 		/**/
+?H:.
+?LINT:set ebcdic
+?F:!tebcdic tebcdic.c
+echo " "
+echo "Determining whether or not we are on an EBCDIC system..." >&4
+$cat >tebcdic.c <<'EOM'
+int main()
+{
+  if ('M'==0xd4) return 0;
+  return 1;
+}
+EOM
+
+val=$undef
+set tebcdic
+if eval $compile_ok; then
+	if ./tebcdic; then
+		echo "You have EBCDIC." >&4
+		val="$define"
+	else
+		echo "Nope, no EBCDIC.  Assuming ASCII or some ISO Latin, or UTF." >&4
+	fi
+else
+	echo "I'm unable to compile the test program." >&4
+	echo "I'll assume ASCII or some ISO Latin." >&4
+fi
+$rm -f tebcdic.c tebcdic
+set ebcdic
+eval $setvar
+

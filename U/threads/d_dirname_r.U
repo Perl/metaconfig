@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_dirname_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_dirname_r:
+?S:	This variable conditionally defines the HAS_DIRNAME_R symbol,
+?S:	which indicates to the C program that the dirname_r()
+?S:	routine is available.
+?S:.
+?C:HAS_DIRNAME_R:
+?C:	This symbol, if defined, indicates that the dirname_r routine
+?C:	is available to dirname re-entrantly.
+?C:.
+?H:#$d_dirname_r HAS_DIRNAME_R		/**/
+?H:.
+?LINT:set d_dirname_r
+: see if dirname_r exists
+set dirname_r d_dirname_r
+eval $inlibc
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_localtime_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_localtime_r:
+?S:	This variable conditionally defines the HAS_LOCALTIME_R symbol,
+?S:	which indicates to the C program that the localtime_r()
+?S:	routine is available.
+?S:.
+?C:HAS_LOCALTIME_R:
+?C:	This symbol, if defined, indicates that the localtime_r routine
+?C:	is available to localtime re-entrantly.
+?C:.
+?H:#$d_localtime_r HAS_LOCALTIME_R		/**/
+?H:.
+?LINT:set d_localtime_r
+: see if localtime_r exists
+set localtime_r d_localtime_r
+eval $inlibc
+

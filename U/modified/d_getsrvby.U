@@ -1,0 +1,46 @@
+?RCS: $Id: d_getsrvby.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getsbyname d_getsbyport: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getsbyname:
+?S:	This variable conditionally defines the HAS_GETSERVBYNAME 
+?S:	symbol, which indicates to the C program that the 
+?S:	getservbyname() routine is available to look up services
+?S:	by their name.
+?S:.
+?S:d_getsbyport:
+?S:	This variable conditionally defines the HAS_GETSERVBYPORT 
+?S:	symbol, which indicates to the C program that the 
+?S:	getservbyport() routine is available to look up services
+?S:	by their port.
+?S:.
+?C:HAS_GETSERVBYNAME:
+?C:	This symbol, if defined, indicates that the getservbyname()
+?C:	routine is available to look up services by their name.
+?C:.
+?C:HAS_GETSERVBYPORT:
+?C:	This symbol, if defined, indicates that the getservbyport()
+?C:	routine is available to look up services by their port.
+?C:.
+?H:#$d_getsbyname HAS_GETSERVBYNAME		/**/
+?H:#$d_getsbyport HAS_GETSERVBYPORT		/**/
+?H:.
+?LINT:set d_getsbyname d_getsbyport
+
+@if d_getsbyname || HAS_GETSERVBYNAME
+: see if getservbyname exists
+set getservbyname d_getsbyname
+eval $inlibc
+@end
+
+@if d_getsbyport || HAS_GETSERVBYPORT
+: see if getservbyport exists
+set getservbyport d_getsbyport
+eval $inlibc
+@end
+

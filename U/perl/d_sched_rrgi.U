@@ -1,0 +1,29 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sched_rr_get_interval: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sched_rr_get_interval:
+?S:	This variable conditionally defines HAS_SCHED_RR_GET_INTERVAL if
+?S:	sched_rr_get_interval() is available to get the time quantum
+?S:	of the round robin scheduling.
+?S:.
+?C:HAS_SCHED_RR_GET_INTERVAL:
+?C:	This symbol, if defined, indicates that the sched_rr_get_interval
+?C:	system call is available to get the time quantum
+?C:	of the round robin scheduling.
+?C:.
+?H:#$d_sched_rr_get_interval HAS_SCHED_RR_GET_INTERVAL		/**/
+?H:.
+?LINT:set d_sched_rr_get_interval
+: see if sched_rr_get_interval exists
+set sched_rr_get_interval d_sched_rr_get_interval
+eval $inlibc
+

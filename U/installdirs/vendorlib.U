@@ -1,0 +1,85 @@
+?RCS: $Id: vendorlib.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS: 
+?RCS: $Log: vendorlib.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:d_vendorlib vendorlib vendorlibexp installvendorlib: Getfile \
+	Oldconfig Prefixit test package vendorprefix prefix sed \
+	installstyle installprefix
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:vendorlib:
+?S:	This variable contains the eventual value of the VENDORLIB symbol,
+?S:	which is the name of the private library for this package.  It may
+?S:	have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:	Vendors who distribute perl binaries may place their own
+?S:	extensions and modules in this directory.
+?S:.
+?S:vendorlibexp:
+?S:	This variable is the ~name expanded version of vendorlib, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installvendorlib:
+?S:	This variable is really the same as vendorlibexp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?S:d_vendorlib:
+?S:	This variable conditionally defines PERL_VENDORLIB.
+?S:.
+?C:PERL_VENDORLIB:
+?C:	If defined, this symbol contains the name of a private library.
+?C:	The library is private in the sense that it needn't be in anyone's
+?C:	execution path, but it should be accessible by the world.  The program
+?C:	should be prepared to do ~ expansion.
+?C:	The standard distribution will put nothing in this directory.
+?C:	Vendors who distribute perl binaries may place their own
+?C:	extensions and modules in this directory.
+?C:.
+?C:PERL_VENDORLIB_EXP:
+?C:	This symbol contains the ~name expanded version of VENDORLIB, to be used
+?C:	in programs that are not prepared to deal with ~ expansion at run-time.
+?C:.
+?H:#$d_vendorlib PERL_VENDORLIB "$vendorlib"		/**/
+?H:#$d_vendorlib PERL_VENDORLIB_EXP "$vendorlibexp"		/**/
+?H:.
+?T:prog
+case "$vendorprefix" in
+'')	d_vendorlib="$undef"
+	vendorlib=''
+	vendorlibexp=''
+	;;
+*)	d_vendorlib="$define"
+	: determine where vendor-supplied modules go.
+	: Usual default is /usr/local/lib/perl5/vendor_perl
+?X: remove any trailing -3.0 or other version identification
+	prog=`echo $package | $sed 's/-*[0-9.]*$//'`
+	case "$installstyle" in
+	*lib/perl5*) dflt=$vendorprefix/lib/$package/vendor_$prog ;;
+	*)	     dflt=$vendorprefix/lib/vendor_$prog ;;
+	esac
+	fn=d~+
+	rp='Pathname for the vendor-supplied library files?'
+	. ./getfile
+	vendorlib="$ans"
+	vendorlibexp="$ansexp"
+	: Change installation prefix, if necessary.
+	if $test X"$prefix" != X"$installprefix"; then
+		installvendorlib=`echo $vendorlibexp | $sed 's#^$prefix#$installprefix#'`
+	else
+		installvendorlib="$vendorlibexp"
+	fi
+	;;
+esac
+

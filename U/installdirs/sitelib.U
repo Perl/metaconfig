@@ -1,0 +1,85 @@
+?RCS: $Id: sitelib.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1996-1998, Andy Dougherty
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: sitelib.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS: Revision 3.0.1.1  1997/02/28  16:21:35  ram
+?RCS: patch61: created
+?RCS:
+?MAKE:sitelib sitelibexp installsitelib: cat Getfile \
+	Oldconfig Prefixit package installprefix prefix \
+	test sed installstyle siteprefix
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:sitelib:
+?S:	This variable contains the eventual value of the SITELIB symbol,
+?S:	which is the name of the private library for this package.  It may
+?S:	have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:.
+?S:sitelibexp:
+?S:	This variable is the ~name expanded version of sitelib, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installsitelib:
+?S:	This variable is really the same as sitelibexp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?C:SITELIB:
+?C:	This symbol contains the name of the private library for this package.
+?C:	The library is private in the sense that it needn't be in anyone's
+?C:	execution path, but it should be accessible by the world.  The program
+?C:	should be prepared to do ~ expansion.
+?C:	The standard distribution will put nothing in this directory.
+?C:	Individual sites may place their own extensions and modules in
+?C:	this directory.
+?C:.
+?C:SITELIB_EXP:
+?C:	This symbol contains the ~name expanded version of SITELIB, to be used
+?C:	in programs that are not prepared to deal with ~ expansion at run-time.
+?C:.
+?H:#define SITELIB "$sitelib"		/**/
+?H:#define SITELIB_EXP "$sitelibexp"		/**/
+?H:.
+?T:prog
+: determine where site specific libraries go.
+: Usual default is /usr/local/lib/perl5/site_perl
+: The default "style" setting is made in installstyle.U
+: XXX No longer works with Prefixit stuff.
+?X: remove any trailing -3.0 or other version identification
+prog=`echo $package | $sed 's/-*[0-9.]*$//'`
+case "$installstyle" in
+*lib/perl5*) dflt=$siteprefix/lib/site_$prog/ ;;
+*)	 dflt=$siteprefix/lib/site_$prog ;;
+esac
+$cat <<EOM
+
+The installation process will create a directory for
+site-specific extensions and modules.  Most users find it convenient
+to place all site-specific files in this directory rather than in the
+main distribution directory.
+
+EOM
+fn=d~+
+rp='Pathname for the site-specific library files?'
+. ./getfile
+sitelib="$ans"
+sitelibexp="$ansexp"
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installsitelib=`echo $sitelibexp | sed 's#^$prefix#$installprefix#'`
+else
+	installsitelib="$sitelibexp"
+fi
+

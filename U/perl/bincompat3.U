@@ -1,0 +1,60 @@
+?RCS: Copyright (c) 1996, Chip Salzenberg
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:bincompat3 d_bincompat3: Oldconfig Myread Setvar cat \
+	patchlevel subversion
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:bincompat3:
+?S:	This variable contains y if Perl 5.004 should be binary-compatible
+?S:	with Perl 5.003.
+?S:.
+?S:d_bincompat3:
+?S:	This variable conditionally defines BINCOMPAT3 so that embed.h
+?S:	can take special action if Perl 5.004 should be binary-compatible
+?S:	with Perl 5.003.  This is impossible for 5.004_50 and later, so
+?S:	it is always $undef for those versions.
+?S:.
+?C:BINCOMPAT3:
+?C:	This symbol, if defined, indicates that Perl 5.004 should be
+?C:	binary-compatible with Perl 5.003.  This is impossible for 
+?C:	5.004_50 and later, so it is always undefined for those versions.
+?C:.
+?H:#$d_bincompat3 BINCOMPAT3			/**/
+?H:.
+?LINT: set d_bincompat3
+
+: Binary compatibility with 5.003 is not possible with 5.004_50 and later.
+if test $patchlevel -gt 4 -o $subversion -ge 50; then
+    d_bincompat3=$undef
+else
+	$cat <<EOM
+
+Perl 5.004 can be compiled for binary compatibility with 5.003.
+If you decide to do so, you will be able to continue using any
+extensions that were compiled for Perl 5.003.  However, binary
+compatibility forces Perl to expose some of its internal symbols
+in the same way that 5.003 did.  So you may have symbol conflicts
+if you embed a binary-compatible Perl in other programs.
+
+EOM
+	case "$d_bincompat3" in
+	"$undef") dflt=n ;;
+	*) dflt=y ;;
+	esac
+	rp='Binary compatibility with Perl 5.003?'
+	. ./myread
+	case "$ans" in
+	y*) val="$define" ;;
+	*)  val="$undef" ;;
+	esac
+	set d_bincompat3
+	eval $setvar
+	case "$d_bincompat3" in
+	"$define") bincompat3=y ;;
+	*) bincompat3=n ;;
+	esac
+fi
+

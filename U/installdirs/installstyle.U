@@ -1,0 +1,57 @@
+?RCS: $Id: installstyle.U,v 1.2 1999/07/13 14:56:06 doughera Exp $
+?RCS:
+?RCS: Copyright (c) 1999 Andy Dougherty
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: installstyle.U,v $
+?RCS: Revision 1.2  1999/07/13 14:56:06  doughera
+?RCS: Fix dependencies.  Add more comments.
+?RCS:
+?RCS: Revision 1.1  1999/07/12 17:30:41  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:installstyle: prefix Myread
+?MAKE:	-pick add $@ %<
+?X:	Myread dependence is for dflt.
+?S:installstyle:
+?S:	This variable describes the "style" of the perl installation.
+?S:	This is intended to be useful for tools that need to
+?S:	manipulate entire perl distributions.  Perl itself doesn't use
+?S:	this to find its libraries -- the library directories are
+?S:	stored directly in Config.pm.  Currently, there are only two
+?S:	styles:  "lib" and "lib/perl5".  The default library locations
+?S:	(e.g. privlib, sitelib) are either $prefix/lib or
+?S:	$prefix/lib/perl5.  The former is useful if $prefix is a
+?S:	directory dedicated to perl (e.g. /opt/perl), while the latter
+?S:	is useful if $prefix is shared by many packages, e.g. if
+?S:	$prefix=/usr/local.
+?S:
+?S:	This may later be extended to include other information, so
+?S:	be careful with pattern-matching on the results.
+?S:
+?S:	For compatibility with perl5.005 and earlier, the default
+?S:	setting is based on whether or not $prefix contains the string
+?S:	"perl".
+?S:.
+: determine installation style
+: For now, try to deduce it from prefix unless it is already set.
+: Reproduce behavior of 5.005 and earlier, maybe drop that in 5.7.
+case "$installstyle" in
+'')	case "$prefix" in
+		*perl*) dflt='lib';;
+		*) dflt='lib/perl5' ;;
+	esac
+	;;
+*)	dflt='lib/perl5' ;;
+esac
+: Probably not worth prompting for this since we prompt for all
+: the directories individually, and the prompt would be too long and
+: confusing anyway.
+installstyle=$dflt
+

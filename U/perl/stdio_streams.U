@@ -1,0 +1,72 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_stdio_stream_array stdio_stream_array: \
+	Compile cat rm Oldconfig Myread Setvar exe_ext
+?MAKE:	-pick add $@ %<
+?S:d_stdio_stream_array:
+?S:	This variable tells whether there is an array holding
+?S:	the stdio streams.
+?S:.
+?S:stdio_stream_array:
+?S:	This variable tells the name of the array holding the stdio streams.
+?S:	Usual values include _iob, __iob, and __sF.
+?S:.
+?C:HAS_STDIO_STREAM_ARRAY:
+?C:	This symbol, if defined, tells that there is an array
+?C:	holding the stdio streams.
+?C:.
+?C:STDIO_STREAM_ARRAY:
+?C:	This symbol tells the name of the array holding the stdio streams.
+?C:	Usual values include _iob, __iob, and __sF.
+?C:.
+?H:#$d_stdio_stream_array	HAS_STDIO_STREAM_ARRAY	/**/
+?H:#ifdef HAS_STDIO_STREAM_ARRAY
+?H:#define STDIO_STREAM_ARRAY	$stdio_stream_array
+?H:#endif
+?H:.
+?T:s
+?F:!try
+?LINT:set d_stdio_stream_array
+$cat >&4 <<EOM
+Checking how to access stdio streams by file descriptor number...
+EOM
+case "$stdio_stream_array" in
+'') 	$cat >try.c <<EOCP
+#include <stdio.h>
+int main() {
+  if (&STDIO_STREAM_ARRAY[fileno(stdin)] == stdin)
+    printf("yes\n");
+}
+EOCP
+	for s in _iob __iob __sF
+	do
+	        set try -DSTDIO_STREAM_ARRAY=$s
+		if eval $compile; then
+		    	case "`./try$exe_ext`" in
+			yes)	stdio_stream_array=$s; break ;;
+			esac
+		fi
+	done
+	$rm -f try.* try$exe_ext
+esac
+case "$stdio_stream_array" in
+'')	$cat >&4 <<EOM
+I can't figure out how to access stdio streams by file descriptor number.
+EOM
+	d_stdio_stream_array="$undef"
+	;;
+*)	$cat >&4 <<EOM
+You can access stdio streams by file descriptor number by the $stdio_stream_array array.
+EOM
+	d_stdio_stream_array="$define"
+	;;
+esac
+

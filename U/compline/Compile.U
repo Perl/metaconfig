@@ -1,0 +1,55 @@
+?RCS: $Id: Compile.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS:
+?X:
+?X:	This unit is just a quick shorthand for the compile command
+?X:	to be used in all the other metaconfig units.
+?X:
+?MAKE:Compile: +cc +optimize +ccflags +ldflags +libs
+?MAKE:	-pick add $@ %<
+?LINT:define compile compile_ok
+?V:compile compile_ok mc_file
+?S:compile:
+?S:	This shell variable is used internally by Configure to provide
+?S:	a convenient shorthand for the typical compile command, namely
+?S:	$cc $optimize $ccflags $ldflags -o $1 $1.c $libs > /dev/null 2>&1
+?S:	Note that the output filename does _not_ include the _exe
+?S:	extension.  Instead we assume that the linker will be
+?S:	"helpful" and automatically appending the correct suffix.
+?S:	OS/2 users will apparently need to supply the -Zexe flag to
+?S:	get this behavior.
+?S:
+?S:	To use this variable, say something like:
+?S:		echo 'int main() { exit(0); }' > try.c
+?S:		set try
+?S:		if eval $compile; then
+?S:			echo "success"   # and do whatever . . . 
+?S:		else
+?S:			echo "failure"   # and do whatever . . . 
+?S:		fi
+?S:	To add extra flags cc flags (e.g. -DWHATEVER) just put them
+?S:	in $*, e.g.
+?S:		set try -DTRY_THIS_FLAG
+?S:.
+?S:compile_ok:
+?S:	This shell variable is used internally by Configure to provide
+?S:	a convenient shorthand for the typical compile command that you
+?S:	expect to work ok.  It is the same as $compile, except we
+?S:	deliberately let the user see any error messages. 
+?S:.
+: define a shorthand compile call
+compile='
+mc_file=$1;
+shift;
+$cc $optimize $ccflags $ldflags -o ${mc_file} $* ${mc_file}.c $libs > /dev/null 2>&1;'
+: define a shorthand compile call for compilations that should be ok.
+compile_ok='
+mc_file=$1;
+shift;
+$cc $optimize $ccflags $ldflags -o ${mc_file} $* ${mc_file}.c $libs;'
+

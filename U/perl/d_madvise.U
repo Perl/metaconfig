@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_madvise: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_madvise:
+?S:	This variable conditionally defines HAS_MADVISE if madvise() is
+?S:	available to map a file into memory.
+?S:.
+?C:HAS_MADVISE:
+?C:	This symbol, if defined, indicates that the madvise system call is
+?C:	available to map a file into memory.
+?C:.
+?H:#$d_madvise HAS_MADVISE		/**/
+?H:.
+?LINT:set d_madvise
+: see if madvise exists
+set madvise d_madvise
+eval $inlibc
+

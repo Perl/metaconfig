@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_mq_unlink: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mq_unlink:
+?S:	This variable conditionally defines HAS_MQ_UNLINK if mq_unlink() is
+?S:	available to unlink a POSIX message queue.
+?S:.
+?C:HAS_MQ_UNLINK:
+?C:	This symbol, if defined, indicates that the mq_unlink system call is
+?C:	available to unlink a POSIX message queue.
+?C:.
+?H:#$d_mq_unlink HAS_MQ_UNLINK		/**/
+?H:.
+?LINT:set d_mq_unlink
+: see if mq_unlink exists
+set mq_unlink d_mq_unlink
+eval $inlibc
+

@@ -1,0 +1,28 @@
+?RCS: $Id: d_getpwent.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_getpwent.U,v $
+?RCS:
+?MAKE:d_getpwent: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getpwent:
+?S:	This variable conditionally defines the HAS_GETPWENT symbol, which
+?S:	indicates to the C program that the getpwent() routine is available
+?S:	for sequential access of the passwd database.
+?S:.
+?C:HAS_GETPWENT:
+?C:	This symbol, if defined, indicates that the getpwent routine is
+?C:	available for sequential access of the passwd database.
+?C:	If this is not available, the older getpw() function may be available.
+?C:.
+?H:#$d_getpwent HAS_GETPWENT		/**/
+?H:.
+?LINT:set d_getpwent
+: see if getpwent exists
+set getpwent d_getpwent
+eval $inlibc
+

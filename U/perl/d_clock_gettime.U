@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_clock_gettime: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_clock_gettime:
+?S:	This variable conditionally defines HAS_CLOCK_GETTIME
+?S:	if clock_gettime() is available to get the time of a POSIX clock.
+?S:.
+?C:HAS_CLOCK_GETTIME:
+?C:	This symbol, if defined, indicates that the clock_gettime
+?C:	system call is available to get the time of a POSIX clock.
+?C:.
+?H:#$d_clock_gettime HAS_CLOCK_GETTIME		/**/
+?H:.
+?LINT:set d_clock_gettime
+: see if clock_gettime exists
+set clock_gettime d_clock_gettime
+eval $inlibc
+

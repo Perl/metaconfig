@@ -1,0 +1,58 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_mmap mmaptype: Inlibc i_sysmman cat cc ccflags
+?MAKE:	-pick add $@ %<
+?S:d_mmap:
+?S:	This variable conditionally defines HAS_MMAP if mmap() is
+?S:	available to map a file into memory.
+?S:.
+?S:mmaptype:
+?S:	This symbol contains the type of pointer returned by mmap()
+?S:	(and simultaneously the type of the first argument).
+?S:	It can be 'void *' or 'caddr_t'.
+?S:.
+?C:HAS_MMAP:
+?C:	This symbol, if defined, indicates that the mmap system call is
+?C:	available to map a file into memory.
+?C:.
+?C:Mmap_t:
+?C:	This symbol holds the return type of the mmap() system call
+?C:	(and simultaneously the type of the first argument).
+?C:	Usually set to 'void *' or 'cadd_t'.
+?C:.
+?H:#$d_mmap HAS_MMAP		/**/
+?H:#define Mmap_t $mmaptype	/**/
+?H:.
+?LINT:set d_mmap
+?LINT:set mmaptype
+: see if mmap exists
+set mmap d_mmap
+eval $inlibc
+: see what shmat returns
+: default to something harmless
+mmaptype='void *'
+case "$i_sysmman$d_mmap" in
+"$define$define")
+	$cat >mmap.c <<'END'
+#include <sys/mman.h>
+void *mmap();
+END
+	if $cc $ccflags -c mmap.c >/dev/null 2>&1; then
+		mmaptype='void *'
+	else
+		mmaptype='caddr_t'
+	fi
+	echo "and it returns ($mmaptype)." >&4
+	;;
+esac
+
+
+

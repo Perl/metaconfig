@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_crypt_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_crypt_r:
+?S:	This variable conditionally defines the HAS_CRYPT_R symbol,
+?S:	which indicates to the C prospam that the crypt_r()
+?S:	routine is available.
+?S:.
+?C:HAS_CRYPT_R:
+?C:	This symbol, if defined, indicates that the crypt_r routine
+?C:	is available to crypt re-entrantly.
+?C:.
+?H:#$d_crypt_r HAS_CRYPT_R		/**/
+?H:.
+?LINT:set d_crypt_r
+: see if crypt_r exists
+set crypt_r d_crypt_r
+eval $inlibc
+

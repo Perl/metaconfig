@@ -1,0 +1,25 @@
+?RCS: $Id: d_getnbyad.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getnbyname: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getnbyname:
+?S:	This variable conditionally defines the HAS_GETNETBYNAME symbol, which
+?S:	indicates to the C program that the getnetbyname() routine is available
+?S:	to look up networks by their names.
+?S:.
+?C:HAS_GETNETBYNAME:
+?C:	This symbol, if defined, indicates that the getnetbyname() routine is
+?C:	available to look up networks by their names.
+?C:.
+?H:#$d_getnbyname HAS_GETNETBYNAME		/**/
+?H:.
+?LINT:set d_getnbyname
+: see if getnetbyname exists
+set getnetbyname d_getnbyname
+eval $inlibc
+

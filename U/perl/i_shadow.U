@@ -1,0 +1,24 @@
+?RCS: $Id: i_shadow.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_shadow: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_shadow:
+?S:	This variable conditionally defines the I_SHADOW symbol, and indicates
+?S:	whether a C program should include <shadow.h>.
+?S:.
+?C:I_SHADOW:
+?C:	This symbol, if defined, indicates that <shadow.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_shadow	I_SHADOW		/**/
+?H:.
+?LINT:set i_shadow
+: see if this is a shadow.h system
+set shadow.h i_shadow
+eval $inhdr
+

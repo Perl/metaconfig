@@ -1,0 +1,28 @@
+?RCS: Copyright (c) 1996, Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:perladmin: cf_email Oldconfig Myread cat
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:perladmin:
+?S:	Electronic mail address of the perl5 administrator.
+?S:.
+$cat <<EOM
+
+If you or somebody else will be maintaining perl at your site, please
+fill in the correct e-mail address here so that they may be contacted
+if necessary. Currently, the "perlbug" program included with perl
+will send mail to this address in addition to perlbug@perl.com. You may
+enter "none" for no administrator.
+
+EOM
+case "$perladmin" in
+'') dflt="$cf_email";;
+*) dflt="$perladmin";;
+esac
+rp='Perl administrator e-mail address'
+. ./myread
+perladmin="$ans"
+

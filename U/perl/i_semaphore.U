@@ -1,0 +1,24 @@
+?RCS: $Id: i_semaphore.U,v $
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_semaphore: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_semaphore:
+?S:	This variable conditionally defines the I_SEMAPHORE symbol, and indicates
+?S:	whether a C program should include <semaphore.h>.
+?S:.
+?C:I_SEMAPHORE:
+?C:	This symbol, if defined, indicates that <semaphore.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_semaphore	I_SEMAPHORE		/**/
+?H:.
+?LINT:set i_semaphore
+: see if this is a semaphore.h system
+set semaphore.h i_semaphore
+eval $inhdr
+

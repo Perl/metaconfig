@@ -1,0 +1,32 @@
+?RCS: $Id: d_getservprotos.U,v $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_getservprotos : Hasproto i_netdb
+?MAKE:	-pick add $@ %<
+?S:d_getservprotos:
+?S:	This variable conditionally defines the HAS_GETSERV_PROTOS symbol,
+?S:	which indicates to the C program that <netdb.h> supplies
+?S:	prototypes for the various getserv*() functions.  
+?S:	See also netdbtype.U for probing for various netdb types.
+?S:.
+?C:HAS_GETSERV_PROTOS:
+?C:	This symbol, if defined, indicates that <netdb.h> includes
+?C:	prototypes for getservent(), getservbyname(), and
+?C:	getservbyaddr().  Otherwise, it is up to the program to guess
+?C:	them.  See netdbtype.U for probing for various Netdb_xxx_t types.
+?C:.
+?H:#$d_getservprotos	HAS_GETSERV_PROTOS	/**/
+?H:.
+?LINT:set d_getservprotos 
+: see if prototypes for various getservxxx netdb.h functions are available
+echo " "
+set d_getservprotos getservent $i_netdb netdb.h
+eval $hasproto
+

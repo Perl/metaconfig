@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getmntent: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getmntent:
+?S:	This variable conditionally defines the HAS_GETMNTENT symbol, which
+?S:	indicates to the C program that the getmntent() routine is available
+?S:	to iterate through mounted files.
+?S:.
+?C:HAS_GETMNTENT:
+?C:	This symbol, if defined, indicates that the getmntent routine is
+?C:	available to iterate through mounted file systems.
+?C:.
+?H:#$d_getmntent HAS_GETMNTENT		/**/
+?H:.
+?LINT:set d_getmntent
+: see if getmntent exists
+set getmntent d_getmntent
+eval $inlibc
+

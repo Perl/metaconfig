@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_timer_delete: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_timer_delete:
+?S:	This variable conditionally defines HAS_TIMER_DELETE if timer_delete()
+?S:	is available to delete a POSIX timer.
+?S:.
+?C:HAS_TIMER_DELETE:
+?C:	This symbol, if defined, indicates that the timer_delete system call is
+?C:	available to delete a POSIX timer.
+?C:.
+?H:#$d_timer_delete HAS_TIMER_DELETE		/**/
+?H:.
+?LINT:set d_timer_delete
+: see if timer_delete exists
+set timer_delete d_timer_delete
+eval $inlibc
+

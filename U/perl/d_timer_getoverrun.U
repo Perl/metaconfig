@@ -1,0 +1,29 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_timer_getoverrun: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_timer_getoverrun:
+?S:	This variable conditionally defines HAS_TIMER_GETOVERRUN
+?S:	if timer_getoverrun() is available to get the number of
+?S:	overruns of a POSIX timer.
+?S:.
+?C:HAS_TIMER_GETOVERRUN:
+?C:	This symbol, if defined, indicates that the timer_getoverrun
+?C:	system call is available to get the number of overruns of
+?C:	a POSIX timer.
+?C:.
+?H:#$d_timer_getoverrun HAS_TIMER_GETOVERRUN		/**/
+?H:.
+?LINT:set d_timer_getoverrun
+: see if timer_getoverrun exists
+set timer_getoverrun d_timer_getoverrun
+eval $inlibc
+

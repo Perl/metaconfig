@@ -1,0 +1,65 @@
+?RCS: $Id: installprefix.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999 Andy Dougherty
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: installprefix.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:installprefix installprefixexp: Getfile Loc \
+	Oldconfig afs cat package prefix
+?MAKE:	-pick add $@ %<
+?S:installprefix:
+?S:	This variable holds the name of the directory below which 
+?S:	"make install" will install the package.  For most users, this
+?S:	is the same as prefix.  However, it is useful for
+?S:	installing the software into a different (usually temporary)
+?S:	location after which it can be bundled up and moved somehow
+?S:	to the final location specified by prefix.
+?S:.
+?S:installprefixexp:
+?S:	This variable holds the full absolute path of installprefix
+?S:	with all ~-expansion done.
+?S:.
+: determine installation prefix for where package is to be installed.
+if $afs; then 
+$cat <<EOM
+
+Since you are running AFS, I need to distinguish the directory in which
+files will reside from the directory in which they are installed (and from
+which they are presumably copied to the former directory by occult means).
+
+EOM
+	case "$installprefix" in
+	'') dflt=`echo $prefix | sed 's#^/afs/#/afs/.#'`;;
+	*) dflt="$installprefix";;
+	esac
+else
+$cat <<EOM
+
+In some special cases, particularly when building $package for distribution,
+it is convenient to distinguish between the directory in which files should 
+be installed from the directory ($prefix) in which they 
+will eventually reside.  For most users, these two directories are the same.
+
+EOM
+	case "$installprefix" in
+	'') dflt=$prefix ;;
+	*) dflt=$installprefix;;
+	esac
+fi
+fn=d~
+rp='What installation prefix should I use for installing files?'
+. ./getfile
+installprefix="$ans"
+installprefixexp="$ansexp"
+

@@ -1,0 +1,38 @@
+?RCS: $Id: ansi2knr.U,v 3.0.1.3 1994/05/06 15:11:49 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:ansi2knr: prototype +cc +ccflags package
+?MAKE:	-pick add $@ %<
+?S:ansi2knr:
+?S:	This variable is set if the user needs to run ansi2knr.  
+?S:	Currently, this is not supported, so we just abort.
+?S:.
+?Y:TOP
+?LINT:set ansi2knr
+case "$prototype" in
+"$define") ;;
+*)	ansi2knr='ansi2knr'
+	echo " "
+	cat <<EOM >&4
+
+$me:  FATAL ERROR:
+This version of $package can only be compiled by a compiler that 
+understands function prototypes.  Unfortunately, your C compiler 
+	$cc $ccflags
+doesn't seem to understand them.  Sorry about that.
+
+If GNU cc is available for your system, perhaps you could try that instead.  
+
+Eventually, we hope to support building Perl with pre-ANSI compilers.
+If you would like to help in that effort, please contact <perlbug@perl.org>.
+
+Aborting Configure now.
+EOM
+	exit 2
+	;;
+esac
+

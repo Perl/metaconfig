@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:i_sysaccess: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_sysaccess:
+?S:     This variable conditionally defines the I_SYS_ACCESS symbol,
+?S:     and indicates whether a C program should include <sys/access.h>.
+?S:.
+?C:I_SYS_ACCESS:
+?C:     This symbol, if defined, indicates to the C program that it should
+?C:     include <sys/access.h>.
+?C:.
+?H:#$i_sysaccess   I_SYS_ACCESS                /**/
+?H:.
+?LINT:set i_sysaccess
+: see if sys/access.h is available
+set sys/access.h i_sysaccess
+eval $inhdr
+

@@ -1,0 +1,6 @@
+MANIFEST		This file.
+Makefile.SH
+dummy.SH
+Configure
+config_h.SH
+main.c

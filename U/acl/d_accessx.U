@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_accessx: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_accessx:
+?S:	This variable conditionally defines the HAS_ACCESSX symbol, which
+?S:	indicates to the C program that the accessx() routine is available.
+?S:.
+?C:HAS_ACCESSX :
+?C:	This symbol, if defined, indicates that the accessx routine is
+?C:	available to do extended access checks.
+?C:.
+?H:#$d_accessx HAS_ACCESSX		/**/
+?H:.
+?LINT:set d_accessx
+: see if accessx exists
+set accessx d_accessx
+eval $inlibc
+

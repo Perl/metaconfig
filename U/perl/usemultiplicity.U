@@ -1,0 +1,46 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usemultiplicity: Myread Oldconfig Setvar
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usemultiplicity:
+?S:	This variable conditionally defines the MULTIPLICITY symbol,
+?S:	and indicates that Perl should be built to use multiplicity.
+?S:.
+?C:MULTIPLICITY:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	be built to use multiplicity.
+?C:.
+?H:#$usemultiplicity	MULTIPLICITY		/**/
+?H:.
+?LINT:set usemultiplicity
+?INIT:: set usemultiplicity on the Configure command line to enable multiplicity.
+?X: We should really have some explanatory text here, and some
+?X: automatic setting of sensible defaults.
+cat <<EOM
+
+Perl can be built so that multiple Perl interpreters can coexist
+within the same Perl executable.  To do so, Configure must be run with
+-Dusemultiplicity.
+
+Normally you do not need this and you should answer no.
+
+EOM
+case "$usemultiplicity" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+rp='Build Perl for multiplicity?'
+. ./myread
+case "$ans" in
+y|Y)	val="$define" ;;     
+*)      val="$undef" ;;
+esac
+set usemultiplicity
+eval $setvar 
+

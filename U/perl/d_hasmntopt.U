@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_hasmntopt: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_hasmntopt:
+?S:	This variable conditionally defines the HAS_HASMNTOPT symbol, which
+?S:	indicates to the C program that the hasmntopt() routine is available
+?S:	to query the mount options of file systems.
+?S:.
+?C:HAS_HASMNTOPT:
+?C:	This symbol, if defined, indicates that the hasmntopt routine is
+?C:	available to query the mount options of file systems.
+?C:.
+?H:#$d_hasmntopt HAS_HASMNTOPT		/**/
+?H:.
+?LINT:set d_hasmntopt
+: see if hasmntopt exists
+set hasmntopt d_hasmntopt
+eval $inlibc
+

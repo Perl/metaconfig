@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_mq_receive: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mq_receive:
+?S:	This variable conditionally defines HAS_MQ_RECEIVE if mq_receive() is
+?S:	available to receive a message from a POSIX message queue.
+?S:.
+?C:HAS_MQ_RECEIVE:
+?C:	This symbol, if defined, indicates that the mq_receive system call is
+?C:	available to receive a message from a POSIX message queue.
+?C:.
+?H:#$d_mq_receive HAS_MQ_RECEIVE		/**/
+?H:.
+?LINT:set d_mq_receive
+: see if mq_receive exists
+set mq_receive d_mq_receive
+eval $inlibc
+

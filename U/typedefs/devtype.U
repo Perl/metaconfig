@@ -1,0 +1,40 @@
+?RCS: $Id: devtype.U,v 3.0.1.1 1994/08/29 16:31:27 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: devtype.U,v $
+?RCS: Revision 3.0.1.1  1994/08/29  16:31:27  ram
+?RCS: patch32: now uses new Typedef unit to compute type information
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:09:33  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:devtype: Myread Typedef
+?MAKE:	-pick add $@ %<
+?S:devtype:
+?S:	This variable defines Dev_t to be something like dev_t, long,
+?S:	int, or whatever type is used to declare device numbers.
+?S:	This is usually the same as the type of the third argument
+?S:	to mknod(2).
+?S:.
+?C:Dev_t:
+?C:	This symbol holds the type used to declare device numbers.
+?C:	It can be int, long, dev_t, etc... This is usually the same
+?C:	as the type of the third argument to mknod(2).
+?C:	It may be necessary to include <sys/types.h> to get any
+?C:	typedef'ed information.
+?C:.
+?H:#define Dev_t $devtype	/* <device> type */
+?H:.
+?LINT: set devtype
+: see what type is used for devices
+rp="What is the type used for device numbers on this system?"
+set dev_t devtype long stdio.h sys/types.h
+eval $typedef_ask
+

@@ -1,0 +1,25 @@
+?RCS: $Id: d_getnbyad.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getnbyaddr: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getnbyaddr:
+?S:	This variable conditionally defines the HAS_GETNETBYADDR symbol, which
+?S:	indicates to the C program that the getnetbyaddr() routine is available
+?S:	to look up networks by their IP addresses.
+?S:.
+?C:HAS_GETNETBYADDR:
+?C:	This symbol, if defined, indicates that the getnetbyaddr() routine is
+?C:	available to look up networks by their IP addresses.
+?C:.
+?H:#$d_getnbyaddr HAS_GETNETBYADDR		/**/
+?H:.
+?LINT:set d_getnbyaddr
+: see if getnetbyaddr exists
+set getnetbyaddr d_getnbyaddr
+eval $inlibc
+

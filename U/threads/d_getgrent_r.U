@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getgrent_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getgrent_r:
+?S:	This variable conditionally defines the HAS_GETGRENT_R symbol,
+?S:	which indicates to the C program that the getgrent_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETGRENT_R:
+?C:	This symbol, if defined, indicates that the getgrent_r routine
+?C:	is available to getgrent re-entrantly.
+?C:.
+?H:#$d_getgrent_r HAS_GETGRENT_R		/**/
+?H:.
+?LINT:set d_getgrent_r
+: see if getgrent_r exists
+set getgrent_r d_getgrent_r
+eval $inlibc
+

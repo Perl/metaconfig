@@ -1,0 +1,36 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_posix_shm: Setvar d_shm_open d_shm_unlink i_sysmman
+?MAKE:	-pick add $@ %<
+?S:d_posix_shm:
+?S:	This variable conditionally defines the HAS_POSIX_SHM symbol, which
+?S:	indicates that the entire POSIX shm_*(2) library is present.
+?S:.
+?C:HAS_POSIX_SHM:
+?C:	This symbol, if defined, indicates that the entire POSIX shm_*(2)
+?C:	library is supported.
+?C:.
+?H:#$d_posix_shm HAS_POSIX_SHM		/**/
+?H:.
+?LINT:set d_posix_shm
+: see how much of the 'POSIX shm_*(2)' library is present.
+echo " "
+case "$i_sysmman$d_shm_open$d_shm_unlink" in
+*"$undef"*) val="$undef" ;;
+*) val="$define" ;;
+esac
+case "$val" in
+"$define") echo "You have the full POSIX shm_*(2) library." >&4 ;;
+"$undef")  echo "You don't have the full POSIX shm_*(2) library." >&4 ;;
+esac
+set d_posix_shm
+eval $setvar
+

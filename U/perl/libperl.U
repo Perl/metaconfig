@@ -1,0 +1,265 @@
+?RCS: $Id: libperl.U,v $
+?RCS:
+?RCS: Copyright (c) 1996-1998, Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:libperl useshrplib shrpenv ldlibpthname: \
+	Myread Oldconfig archlibexp awk cat libc \
+	_a osname osvers so patchlevel subversion usedl ld \
+	ccdlflags installarchlib
+?MAKE:	-pick wipe $@ %<
+?S:libperl:
+?S:	The perl executable is obtained by linking perlmain.c with
+?S:	libperl, any static extensions (usually just DynaLoader),
+?S:	and any other libraries needed on this system.  libperl
+?S:	is usually libperl.a, but can also be libperl.so.xxx if
+?S:	the user wishes to build a perl executable with a shared
+?S:	library.
+?S:.
+?S:useshrplib:
+?S:	This variable is set to 'yes' if the user wishes
+?S:	to build a shared libperl, and 'no' otherwise.
+?S:.
+?S:shrpenv:
+?S:	If the user builds a shared libperl.so, then we need to tell the
+?S:	'perl' executable where it will be able to find the installed libperl.so. 
+?S:	One way to do this on some systems is to set the environment variable
+?S:	LD_RUN_PATH to the directory that will be the final location of the
+?S:	shared libperl.so.  The makefile can use this with something like
+?S:		$shrpenv $(CC) -o perl perlmain.o $libperl $libs
+?S:	Typical values are
+?S:		shrpenv="env LD_RUN_PATH=$archlibexp/CORE"
+?S:	or
+?S:		shrpenv=''
+?S:	See the main perl Makefile.SH for actual working usage.
+?S: Alternatively, we might be able to use a command line option such
+?S:	as -R $archlibexp/CORE (Solaris, NetBSD) or -Wl,-rpath
+?S:	$archlibexp/CORE (Linux).
+?S:.
+?S:ldlibpthname:
+?S:	This variable holds the name of the shared library
+?S:	search path, often LD_LIBRARY_PATH.  To get an empty
+?S:	string, the hints file must set this to 'none'.
+?S:.
+?T:shrpdir majonly majmin also xxx tmp_shrpenv
+?X: metalint gets confused and thinks we're actually setting LDOPTS
+?X: and LD_RUN_PATH.
+?LINT:extern LDOPTS
+?LINT:change LDOPTS
+?LINT:extern LD_RUN_PATH
+?LINT:change LD_RUN_PATH
+?LINT:change ccdlflags
+?LINT:extern maintloc maintname
+?Y:top
+also=''
+case "$usedl" in
+$undef)
+	# No dynamic loading being used, so don't bother even to prompt.
+	useshrplib='false'
+	;;
+*)	case "$useshrplib" in
+	'')	case "$osname" in
+		svr4*|dgux|dynixptx|esix|powerux|beos)
+			dflt=y
+			also='Building a shared libperl is required for dynamic loading to work on your system.'
+			;;
+		next*)
+			case "$osvers" in
+			4*)	dflt=y
+				also='Building a shared libperl is needed for MAB support.'
+				;;
+			*)	dflt=n
+				;;
+			esac
+			;;
+		*)	dflt=n
+			;;
+		esac
+		;;
+	$define|true|[Yy]*)
+		dflt=y
+		;;
+	*)	dflt=n
+		;;
+	esac
+	$cat << EOM
+
+The perl executable is normally obtained by linking perlmain.c with
+libperl${_a}, any static extensions (usually just DynaLoader), and
+any other libraries needed on this system (such as -lm, etc.).  Since
+your system supports dynamic loading, it is probably possible to build
+a shared libperl.$so.  If you will have more than one executable linked
+to libperl.$so, this will significantly reduce the size of each
+executable, but it may have a noticeable affect on performance.  The
+default is probably sensible for your system.
+$also
+
+EOM
+	rp="Build a shared libperl.$so (y/n)"
+	. ./myread
+	case "$ans" in
+	true|$define|[Yy]*)
+		useshrplib='true'  ;;
+	*)	useshrplib='false' ;;
+	esac
+	;;
+esac
+
+case "$useshrplib" in
+true)
+	case "$libperl" in
+	'')
+		# Figure out a good name for libperl.so.  Since it gets stored in
+		# a version-specific architecture-dependent library, the version
+		# number isn't really that important, except for making cc/ld happy.
+		#
+		# A name such as libperl.so.3.1
+		majmin="libperl.$so.$patchlevel.$subversion"
+		# A name such as libperl.so.301
+		majonly=`echo $patchlevel $subversion |
+			$awk '{printf "%d%02d", $1, $2}'`
+		majonly=libperl.$so.$majonly
+		# I'd prefer to keep the os-specific stuff here to a minimum, and
+		# rely on figuring it out from the naming of libc.
+		case "${osname}${osvers}" in
+		next4*)
+			dflt=libperl.5.$so
+			# XXX How handle the --version stuff for MAB?
+			;;
+		linux*)  # ld won't link with a bare -lperl otherwise.
+			dflt=libperl.$so
+			;;
+		*)	# Try to guess based on whether libc has major.minor.
+			case "$libc" in
+			*libc.$so.[0-9]*.[0-9]*) dflt=$majmin ;;
+			*libc.$so.[0-9]*) dflt=$majonly ;;
+			*)	dflt=libperl.$so ;;
+			esac
+			;;
+		esac
+		;;
+	*)	dflt=$libperl
+		;;
+	esac
+	cat << EOM
+
+I need to select a good name for the shared libperl.  If your system uses
+library names with major and minor numbers, then you might want something
+like $majmin.  Alternatively, if your system uses a single version
+number for shared libraries, then you might want to use $majonly.
+Or, your system might be quite happy with a simple libperl.$so.
+
+Since the shared libperl will get installed into a version-specific
+architecture-dependent directory, the version number of the shared perl
+library probably isn't important, so the default should be o.k.
+
+EOM
+	rp='What name do you want to give to the shared libperl?'
+	. ./myread
+	libperl=$ans
+	echo "Ok, I'll use $libperl"
+	;;
+*)
+	libperl="libperl${_a}"
+	;;
+esac
+
+# Detect old use of shrpdir via undocumented Configure -Dshrpdir
+case "$shrpdir" in
+'') ;;
+*)	$cat >&4 <<EOM
+WARNING:  Use of the shrpdir variable for the installation location of
+the shared $libperl is not supported.  It was never documented and
+will not work in this version.  Let me (<$maintloc>)
+know of any problems this may cause.
+
+EOM
+	case "$shrpdir" in
+	"$archlibexp/CORE")
+		$cat >&4 <<EOM
+But your current setting of $shrpdir is
+the default anyway, so it's harmless.
+EOM
+		;;
+	*)
+		$cat >&4 <<EOM
+Further, your current attempted setting of $shrpdir
+conflicts with the value of $archlibexp/CORE
+that installperl will use.
+EOM
+		;;
+	esac
+	;;
+esac
+
+# How will the perl executable find the installed shared $libperl?
+# Add $xxx to ccdlflags.
+# If we can't figure out a command-line option, use $shrpenv to
+# set env LD_RUN_PATH.  The main perl makefile uses this.
+shrpdir=$archlibexp/CORE
+xxx=''
+tmp_shrpenv=''
+if "$useshrplib"; then
+    case "$osname" in 
+	aix)
+		# We'll set it in Makefile.SH...
+		;;
+	solaris|netbsd)
+		xxx="-R $shrpdir"
+		;;
+	freebsd)
+		xxx="-Wl,-R$shrpdir"
+		;;
+	linux|irix*|dec_osf)
+		xxx="-Wl,-rpath,$shrpdir"
+		;;
+	next)
+		# next doesn't like the default...
+		;;
+	beos)
+		# beos doesn't like the default, either.
+		;;
+	hpux*)
+		# hpux doesn't like the default, either.
+		tmp_shrpenv="env LDOPTS=\"+s +b${shrpdir}\""
+		;;
+	*)
+		tmp_shrpenv="env LD_RUN_PATH=$shrpdir"
+		;;
+	esac
+	case "$xxx" in
+	'') ;;
+	*)	
+		# Only add $xxx if it isn't already in ccdlflags.
+		case " $ccdlflags " in
+		*" $xxx "*)	;;
+		*)	ccdlflags="$ccdlflags $xxx"
+			cat <<EOM >&4
+
+Adding $xxx to the flags
+passed to $ld so that the perl executable will find the 
+installed shared $libperl.
+
+EOM
+			;;
+		esac
+		;;
+	esac
+fi
+# Fix ccdlflags in AIX for building external extensions.
+# (For building Perl itself bare -bE:perl.exp is needed,
+#  Makefile.SH takes care of this.)
+case "$osname" in
+aix) ccdlflags="$ccdlflags -bE:$installarchlib/CORE/perl.exp" ;;
+esac
+# Respect a hint or command-line value.
+case "$shrpenv" in
+'') shrpenv="$tmp_shrpenv" ;;
+esac
+case "$ldlibpthname" in
+'')	ldlibpthname=LD_LIBRARY_PATH ;;
+none)	ldlibpthname='' ;;
+esac
+

@@ -1,0 +1,81 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:use64bits archname64: Myread Oldconfig Setvar test osname
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:use64bits:
+?S:	This variable conditionally defines the USE_64_BITS symbol,
+?S:	and indicates that explicit 64-bit interfaces should be used
+?S:	when available.
+?S:.
+?S:archname64:
+?S:	This variable is used for the 64-bitness part of $archname.
+?S:.
+?C:USE_64_BITS:
+?C:	This symbol, if defined, indicates that 64-bit interfaces should
+?C:	be used when available.  If not defined, the native default interfaces
+?C:	will be used (be they 32 or 64 bits).
+?C:.
+?H:#$use64bits	USE_64_BITS		/**/
+?H:.
+?LINT:set use64bits
+?LINT:set archname64
+?F:!use64bits.cbu
+cat <<EOM
+
+Perl can be built to take advantage of explicit 64-bit interfaces,
+on some systems.  To do so, Configure must be run with -Duse64bits.
+
+If this doesn't make any sense to you, just accept the default 'n'.
+EOM
+case "$use64bits" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+rp='Try to use explicit 64-bit interfaces, if available?'
+. ./myread
+case "$ans" in
+y|Y) 
+	val="$define"
+	;;     
+*)      
+	val="$undef"
+	;;
+esac
+set use64bits
+eval $setvar
+
+case "$archname64" in
+'') archname64='' ;;	# not a typo
+esac
+
+case "$use64bits" in
+"$define"|true|[yY]*)
+: Look for a hint-file generated 'call-back-unit'.  If the
+: user has specified that a 64 bit perl is to be built,
+: we may need to set or change some other defaults.
+	if $test -f use64bits.cbu; then
+		. ./use64bits.cbu
+	fi
+	case "$osname" in
+	aix|dec_osf|hpux|irix|solaris|unicos)
+		# Known 64-bit capable platforms.
+		;;
+	*)
+		cat >&4 <<EOM
+$osname is not known to support 64-bit interfaces.
+Please let perlbug@perl.com know how to do that.
+
+Cannot continue, aborting.
+EOM
+		exit 1
+		;;
+	esac
+	;;
+esac
+

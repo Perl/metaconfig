@@ -1,0 +1,32 @@
+?RCS: $Id: d_getprotoprotos.U,v $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_getprotoprotos : Hasproto i_netdb
+?MAKE:	-pick add $@ %<
+?S:d_getprotoprotos:
+?S:	This variable conditionally defines the HAS_GETPROTO_PROTOS symbol,
+?S:	which indicates to the C program that <netdb.h> supplies
+?S:	prototypes for the various getproto*() functions.  
+?S:	See also netdbtype.U for probing for various netdb types.
+?S:.
+?C:HAS_GETPROTO_PROTOS:
+?C:	This symbol, if defined, indicates that <netdb.h> includes
+?C:	prototypes for getprotoent(), getprotobyname(), and
+?C:	getprotobyaddr().  Otherwise, it is up to the program to guess
+?C:	them.  See netdbtype.U for probing for various Netdb_xxx_t types.
+?C:.
+?H:#$d_getprotoprotos	HAS_GETPROTO_PROTOS	/**/
+?H:.
+?LINT:set d_getprotoprotos 
+: see if prototypes for various getprotoxxx netdb.h functions are available
+echo " "
+set d_getprotoprotos getprotoent $i_netdb netdb.h
+eval $hasproto
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getpent_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getpent_r:
+?S:	This variable conditionally defines the HAS_GETPROTOENT_R symbol,
+?S:	which indicates to the C program that the getprotoent_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETPROTOENT_R:
+?C:	This symbol, if defined, indicates that the getprotoent_r routine
+?C:	is available to getprotoent re-entrantly.
+?C:.
+?H:#$d_getpent_r HAS_GETPROTOENT_R		/**/
+?H:.
+?LINT:set d_getpent_r
+: see if getprotoent_r exists
+set getprotoent_r d_getpent_r
+eval $inlibc
+

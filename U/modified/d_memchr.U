@@ -1,0 +1,27 @@
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_memchr: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_memchr:
+?S:	This variable conditionally defines the HAS_MEMCHR symbol, which
+?S:	indicates to the C program that the memchr() routine is available
+?S:	to locate characters within a C string.
+?S:.
+?C:HAS_MEMCHR:
+?C:	This symbol, if defined, indicates that the memchr routine is available
+?C:	to locate characters within a C string.
+?C:.
+?H:#$d_memchr HAS_MEMCHR	/**/
+?H:.
+?LINT:set d_memchr
+: see if memchr exists
+set memchr d_memchr
+eval $inlibc
+

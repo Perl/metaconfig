@@ -1,0 +1,24 @@
+?RCS: $Id: i_socks.U,v $
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_socks: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_socks:
+?S:	This variable conditionally defines the I_SOCKS symbol, and indicates
+?S:	whether a C program should include <socks.h>.
+?S:.
+?C:I_SOCKS:
+?C:	This symbol, if defined, indicates that <socks.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_socks	I_SOCKS		/**/
+?H:.
+?LINT:set i_socks
+: see if this is a socks.h system
+set socks.h i_socks
+eval $inhdr
+

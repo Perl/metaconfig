@@ -1,0 +1,99 @@
+#!/usr/local/bin/perl -w
+use File::Basename;
+
+# WARNING:  This is site-specific.  Change to the location
+# where you have installed dist-3.0PL70.
+@std_units = glob('/u/vieraat/vieraat/jhi/Perl/lib/dist/U/*.U');
+$PWD       =      '/u/vieraat/vieraat/jhi/pp4/cfgperl';
+
+chdir U if -d './U';
+@perl_units = glob("$PWD/U/*/*.U");
+push(@perl_units, @std_units);
+
+# Get the list of config.sh symbols.  Be sure this is up to date!
+# (I run the U/mksample script first to be sure.)
+open(WANTED, "sort $PWD/Porting/config.sh|") || die "$0: open $PWD/Wanted: $!\n";
+
+print <<'EOM';
+This file contains a description of all the shell variables whose value is
+determined by the Configure script.  Variables intended for use in C
+programs (e.g. I_UNISTD) are already described in config_h.SH.  [`configpm'
+generates pod documentation for Config.pm from this file--please try to keep
+the formatting regular.]
+
+EOM
+
+foreach $file (@perl_units) {
+    open(FH, "<$file") || die "$0: open $file: $!";
+    my $base = basename($file);
+    $Loc = $file, next if $base eq 'Loc.U' and not defined $Loc;
+    while (<FH>) {
+        if (/^\?S:\w+[ \t:]/ .. /^\?S:.$/) {
+	    if (/^\?S:.$/) {
+               ($var) = ((shift @var) =~ /^(\w+)/);
+	       unless (exists $expl{$var}) {
+                   $expl{$var} = [ @var, "\n" ];
+                   $file{$var} = $base;
+               }
+	       @var = ();	     
+	    } else {
+	        s/^\?S://;	# Remove leading ?S: markers.
+	        s/^\s+/\t/;	# Ensure all lines begin with tabs.
+	        push @var, $_;
+            }
+	}
+    }
+    close(FH) || die "$0: close $file: $!";
+}
+
+die "$0: Couldn't locate Loc.U: $!" unless defined $Loc;
+
+open(FH, "<$Loc") || die "$0: open $Loc: $!";
+while (<FH>) {
+    if (/^\?(\w+):\1$/) {
+        $var = $1;
+	$expl{$var} = 1;
+	$file{$var} = 'Loc.U';
+    }
+}
+close(FH) || die "$0: close $Loc: $!";
+
+symbol:  while (defined($var = <WANTED>)) {
+    chomp $var;
+    next symbol if $var =~ /^#/;   # Skip comments
+    next symbol if $var =~ /^$/;
+    ($var, $val) = split(/=/, $var, 2);
+    $gotit = 0;
+
+    if (exists $expl{$var}) {
+	if ($file{$var} eq 'Loc.U') {
+            print "$var (Loc.U):\n";
+            if ($val eq "''") {
+	        # If we didn't have d_portable, this info might be
+	        # useful, but it still won't help with non-standard
+	        # stuff if perl is built on one system but installed
+	        # on others (this is common with Linux distributions,
+	        # for example).
+                print <<EOE;
+	This variable is defined but not used by Configure.
+	The value is a plain '' and is not useful.
+
+EOE
+            } else {
+	        print <<EOE;
+	This variable is be used internally by Configure to determine the
+	full pathname (if any) of the $var program.  After Configure runs,
+	the value is reset to a plain "$var" and is not useful.
+
+EOE
+            }
+        } else {
+            print "$var ($file{$var}):\n";
+            print @{ $expl{$var} };
+	    next symbol;
+        }
+	$gotit = 1;
+    }
+    warn "$0: couldn't find $var\n"
+        if not $gotit and $var !~ /^(Author|Date|Header|Id|Locker|Log|Mcc|RCSfile|Revision|Source|State)$|_cflags$|^config_arg|^PERL_(REVISION|VERSION|SUBVERSION)$/;
+}

@@ -1,0 +1,24 @@
+?RCS: $Id: i_sysmman.U,v $
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_sysmman: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_sysmman:
+?S:	This variable conditionally defines the I_SYS_MMAN symbol, and
+?S:	indicates whether a C program should include <sys/mman.h>.
+?S:.
+?C:I_SYS_MMAN:
+?C:	This symbol, if defined, indicates that <sys/mman.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_sysmman	I_SYS_MMAN		/**/
+?H:.
+?LINT:set i_sysmman
+: see if this is a sys/mman.h system
+set sys/mman.h i_sysmman
+eval $inhdr
+

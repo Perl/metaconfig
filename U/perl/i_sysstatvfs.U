@@ -1,0 +1,24 @@
+?RCS: $Id: i_sysstatvfs.U,v $
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_sysstatvfs: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_sysstatvfs:
+?S:	This variable conditionally defines the I_SYSSTATVFS symbol,
+?S:	and indicates whether a C program should include <sys/statvfs.h>.
+?S:.
+?C:I_SYS_STATVFS:
+?C:	This symbol, if defined, indicates that <sys/statvfs.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_sysstatvfs	I_SYS_STATVFS		/**/
+?H:.
+?LINT:set i_sysstatvfs
+: see if this is a sys/statvfs.h system
+set sys/statvfs.h i_sysstatvfs
+eval $inhdr
+

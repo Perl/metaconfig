@@ -1,0 +1,84 @@
+?RCS: $Id: d_pthreadj.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_pthreads_created_joinable: cat Compile rm n c \
+	usethreads Setvar i_pthread
+?MAKE:	-pick add $@ %<
+?S:d_pthreads_created_joinable:
+?S:	This variable conditionally defines the PTHREADS_CREATED_JOINABLE
+?S:	symbol if pthreads are created in the joinable (aka undetached) 
+?S:	state.
+?S:.
+?C:PTHREADS_CREATED_JOINABLE:
+?C:	This symbol, if defined, indicates that pthreads are created
+?C:	in the joinable (aka undetached) state.
+?C:.
+?H:#$d_pthreads_created_joinable PTHREADS_CREATED_JOINABLE /**/
+?H:.
+?F:!try
+?T:yyy
+?LINT: set d_pthreads_created_joinable
+: test whether pthreads are created in joinable -- aka undetached -- state
+if test "X$usethreads" = "X$define" -a "X$i_pthread" = "X$define"; then
+	echo $n "Checking whether pthreads are created joinable. $c" >&4 
+	$cat >try.c <<'EOCP'
+#include <pthread.h>
+#ifdef PTHREAD_CREATE_UNDETACHED
+#  define ATTR_JOINABLE PTHREAD_CREATE_UNDETACHED
+#else
+#  ifdef __UNDETACHED
+#    define ATTR_JOINABLE __UNDETACHED
+#  endif
+#endif
+#include <stdio.h>
+int main() {
+    pthread_attr_t attr;
+    int detachstate;
+    printf("%s\n",
+	pthread_attr_init(&attr) == 0 &&
+#if PTHREAD_ATTR_GETDETACHSTATE_INT
+        pthread_attr_getdetachstate(&attr) == ATTR_JOINABLE &&
+#else
+        pthread_attr_getdetachstate(&attr, &detachstate) == 0 &&
+        detachstate == PTHREAD_ATTR_JOINABLE
+#endif
+        ? "detached" : "joinable");
+    exit(0);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try`
+		case "$yyy" in
+			detached) echo "Nope, they aren't." >&4 ;;
+			*) echo "Yup, they are." >&4 ;;
+		esac
+	else
+		set try -DPTHREAD_ATTR_GETDETACHSTATE_INT
+		if eval $compile; then
+			yyy=`./try`
+			case "$yyy" in
+				detached) echo "Nope, they aren't." >&4 ;;
+				*) echo "Yup, they are." >&4 ;;
+			esac
+		else		
+			echo " "
+			echo "(I can't execute the test program--assuming they are.)" >&4
+			yyy=joinable
+		fi
+	fi
+	$rm -f try try.*
+	case "$yyy" in
+		detached) val="$undef" ;;
+		*) val="$define" ;;
+	esac
+	set d_pthreads_created_joinable
+	eval $setvar
+else
+    d_pthreads_created_joinable="$undef"
+fi
+

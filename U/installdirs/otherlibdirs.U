@@ -1,0 +1,88 @@
+?RCS: $Id: otherlibdirs.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS: 
+?RCS: $Log: otherlibdirs.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS: Revision 1.1  1999/07/08 18:20:26  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:otherlibdirs: Myread cat test sitelib sitearch \
+	vendorarch vendorlib archname
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:otherlibdirs:
+?S:	This variable contains a colon-separated set of paths for the perl
+?S:	binary to search for additional library files or modules.
+?S:	These directories will be tacked to the end of @INC.
+?S:	This will initially be used to help find the 5.005_0x-era 
+?S:	architecture-independent sitelib files which were inadvertantly
+?S:	placed (at least by default) in an apiversion-specific directory.
+?S:.
+?C:PERL_OTHERLIBDIRS:
+?C:	This variable contains a colon-separated set of paths for the perl
+?C:	binary to search for additional library files or modules.
+?C:	These directories will be tacked to the end of @INC.
+?C:	This will initially be used to help find the 5.005_0x-era 
+?C:	architecture-independent sitelib files which were inadvertantly
+?C:	placed (at least by default) in an apiversion-specific directory.
+?C:.
+?H:#define PERL_OTHERLIBDIRS "$otherlibdirs"		/**/
+?H:.
+: Final catch-all directories to search
+$cat <<EOM
+
+Lastly, you can have perl look in other directories for extensions and
+modules in addition to those already specified.
+These directories will be searched after 
+	$sitearch 
+	$sitelib 
+	$vendorarch and 
+	$vendorlib
+
+EOM
+case "$otherlibdirs" in
+'')
+	: Try to guess if they have any 5.004-era .pm files installed.
+	if $test -d $sitelib/$archname/auto; then
+    	$cat <<EOM
+Include $sitelib in the following answer to have 
+this version of perl look for your architecture-independent files
+from your previous perl5.004_0x installation.  The default
+should be fine for most people.  If unsure, accept the default.
+
+EOM
+		dflt=$sitelib
+	else
+		dflt='none'
+	fi
+	;;
+*)	dflt="$otherlibdirs"
+	;;
+esac
+$cat <<EOM
+Enter a colon-separated set of paths to include in perl's @INC
+search path, or enter 'none' for none.
+
+EOM
+
+rp='Colon-separated list of additional directories for perl to search?'
+. ./myread
+case "$ans" in
+none) 
+	otherlibdirs=''
+	;;     
+*)      
+	otherlibdirs="$ans"
+	;;
+esac
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getgrgid_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getgrgid_r:
+?S:	This variable conditionally defines the HAS_GETGRGID_R symbol,
+?S:	which indicates to the C program that the getgrgid_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETGRGID_R:
+?C:	This symbol, if defined, indicates that the getgrgid_r routine
+?C:	is available to getgrgid re-entrantly.
+?C:.
+?H:#$d_getgrgid_r HAS_GETGRGID_R		/**/
+?H:.
+?LINT:set d_getgrgid_r
+: see if getgrgid_r exists
+set getgrgid_r d_getgrgid_r
+eval $inlibc
+

@@ -1,0 +1,64 @@
+?RCS: $Id: siteprefix.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999 Andy Dougherty
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: siteprefix.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?MAKE:siteprefix siteprefixexp +oldsiteprefix: Getfile Loc Oldconfig cat package prefix
+?MAKE:	-pick add $@ %<
+?S:siteprefix:
+?S:	This variable holds the full absolute path of the directory below
+?S:	which the user will install add-on packages.
+?S:.
+?S:siteprefixexp:
+?S:	This variable holds the full absolute path of the directory below
+?S:	which the user will install add-on packages.  Derived from siteprefix.
+?S:.
+?S:oldsiteprefix:
+?S:	This variable is set non-null if the siteprefix was previously defined
+?S:	and gets set to a new value. Used internally by Configure only.
+?S:.
+$cat <<EOM
+
+After $package is installed, you may wish to install various
+add-on modules and utilities.  Typically, these add-ons will
+be installed under $prefix with the rest
+of this package.  However, you may wish to install such add-ons
+elsewhere under a different prefix.
+
+If you do not wish to put everything under a single prefix, that's
+ok.  You will be prompted for the individual locations; this siteprefix
+is only used to suggest the defaults.
+
+The default should be fine for most people.
+
+EOM
+fn=d~+
+rp='Installation prefix to use for add-on modules and utilities?'
+: XXX Here might be another good place for an installstyle setting.
+case "$siteprefix" in
+'') dflt=$prefix ;;
+*)  dflt=$siteprefix ;;
+esac
+. ./getfile
+oldsiteprefix=''
+case "$siteprefix" in
+'') ;;
+*)
+	case "$ans" in
+	"$prefix") ;;
+	*) oldsiteprefix="$prefix";;
+	esac
+	;;
+esac
+siteprefix="$ans"
+siteprefixexp="$ansexp"
+

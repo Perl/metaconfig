@@ -1,0 +1,119 @@
+?RCS: $Id: locallib.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS: 
+?RCS:
+?MAKE:uselocallib locallib locallibexp installlocallib installlocallibexp: \
+	cat Getfile Oldconfig Prefixit test sed afs sitelib
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:uselocallib:
+?S:	This variable tells whether the USELOCALLIB is defined.
+?S:.
+?S:locallib:
+?S:	This variable contains the eventual value of the LOCALLIB symbol,
+?S:	which is the name of the private library for this package.  It may
+?S:	have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:	This differs from $sitelib in that $sitelib is often
+?S:	a shared network directory while $locallib is
+?S:	at a local disk, because of policy/administrative issues
+?S:	like for example caching (performance), licensing, or security.
+?S:.
+?S:locallibexp:
+?S:	This variable is the ~name expanded version of locallib, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installlocallib:
+?S:	This variable is really the same as locallibexp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?S:installlocallibexp:
+?S:	This variable is the ~name expanded version of installlocallib,
+?S:	so that you may use it directly in Makefiles or shell scripts.
+?S:.
+?C:USELOCALLIB:
+?C:	This symbol, if defined, tells that the directories
+?C:	LOCALLIB, LOCALLIB_EXP, LOCALARCH, and LOCALARCH_EXP,
+?C:	are used in this installation.
+?C:.
+?C:LOCALLIB:
+?C:	This symbol contains the name of the private library for this package.
+?C:	The library is private in the sense that it needn't be in anyone's
+?C:	execution path, but it should be accessible by the world.  The program
+?C:	should be prepared to do ~ expansion.
+?C:	The standard distribution will put nothing in this directory.
+?C:	Local administration may place extensions and modules in
+?C:	this directory.
+?C:	This differs from SITELIB in that SITELIB is often
+?C:	a shared network directory while LOCALLIB is
+?C:	at a local disk, because of policy/administrative issues
+?C:	like for example caching (performance), licensing, or security.
+?C:.
+?C:LOCALLIB_EXP:
+?C:	This symbol contains the ~name expanded version of LOCALLIB, to be used
+?C:	in programs that are not prepared to deal with ~ expansion at run-time.
+?C:.
+?H:#$uselocallib USELOCALLIB 		/**/
+?H:#define LOCALLIB "$locallib"		/**/
+?H:#define LOCALLIB_EXP "$locallibexp"		/**/
+?H:.
+: determine where local libraries go.
+case "$locallib" in
+'') dflt=none ;;
+*)  dflt=$locallib ;;
+esac
+$cat <<EOM
+
+For various local software administration reasons and
+especially if $sitelib
+happens to be a shared network resource, you may want to have
+a directory for extensions and modules that resides on a possibly local disk.
+If this scenario doesn't sound applicable, accept the default 'none'.
+
+EOM
+fn=nd~+
+rp='Pathname for such local library files?'
+. ./getfile
+if $test "X$ans" = X; then
+	uselocallib="$undef"
+	locallib=""
+	locallibexp=""
+	installlocallib=""
+	installlocallibexp=""
+else
+	uselocallib="$define"
+	if $test "X$locallibexp" != "X$ansexp"; then
+		installlocallib=''
+	fi
+	locallib="$ans"
+	locallibexp="$ansexp"
+	if $afs; then
+		$cat <<EOM
+
+Since you are running AFS, I need to distinguish the directory in
+which locally installed files reside from the directory in which they
+are installed (and from which they are presumably copied to the former
+directory by occult means).
+
+EOM
+		case "$installlocallib" in
+		'') dflt=`echo $locallibexp | sed 's#^/afs/#/afs/.#'`;;
+		*) dflt="$installlocallib";;
+		esac
+		fn=de~
+		rp='Where will the locally installed files be installed?'
+		. ./getfile
+		installlocallib="$ans"
+	else
+		installlocallibexp="$locallibexp"
+	fi
+fi
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getpwnam_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getpwnam_r:
+?S:	This variable conditionally defines the HAS_GETPWNAM_R symbol,
+?S:	which indicates to the C propwam that the getpwnam_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETPWNAM_R:
+?C:	This symbol, if defined, indicates that the getpwnam_r routine
+?C:	is available to getpwnam re-entrantly.
+?C:.
+?H:#$d_getpwnam_r HAS_GETPWNAM_R		/**/
+?H:.
+?LINT:set d_getpwnam_r
+: see if getpwnam_r exists
+set getpwnam_r d_getpwnam_r
+eval $inlibc
+

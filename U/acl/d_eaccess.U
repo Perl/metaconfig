@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_eaccess: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_eaccess:
+?S:	This variable conditionally defines the HAS_EACCESS symbol, which
+?S:	indicates to the C program that the eaccess() routine is available.
+?S:.
+?C:HAS_EACCESS :
+?C:	This symbol, if defined, indicates that the eaccess routine is
+?C:	available to do extended access checks.
+?C:.
+?H:#$d_eaccess HAS_EACCESS		/**/
+?H:.
+?LINT:set d_eaccess
+: see if eaccess exists
+set eaccess d_eaccess
+eval $inlibc
+

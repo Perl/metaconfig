@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getlogin_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getlogin_r:
+?S:	This variable conditionally defines the HAS_GETLOGIN_R symbol,
+?S:	which indicates to the C program that the getlogin_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETLOGIN_R:
+?C:	This symbol, if defined, indicates that the getlogin_r routine
+?C:	is available to getlogin re-entrantly.
+?C:.
+?H:#$d_getlogin_r HAS_GETLOGIN_R		/**/
+?H:.
+?LINT:set d_getlogin_r
+: see if getlogin_r exists
+set getlogin_r d_getlogin_r
+eval $inlibc
+

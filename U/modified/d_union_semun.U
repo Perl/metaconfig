@@ -1,0 +1,236 @@
+?RCS: $Id: d_union_semun.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_union_semun.U,v $
+?RCS:
+?MAKE:d_union_semun d_semctl_semun d_semctl_semid_ds: Compile Setvar Myread \
+	cat rm d_sem
+?MAKE:	-pick add $@ %<
+?S:d_union_semun:
+?S:	This variable conditionally defines HAS_UNION_SEMUN if the
+?S:	union semun is defined by including <sys/sem.h>.
+?S:.
+?S:d_semctl_semun:
+?S:	This variable conditionally defines USE_SEMCTL_SEMUN, which
+?S:	indicates that union semun is to be used for semctl IPC_STAT.
+?S:.
+?S:d_semctl_semid_ds:
+?S:	This variable conditionally defines USE_SEMCTL_SEMID_DS, which
+?S:	indicates that struct semid_ds * is to be used for semctl IPC_STAT.
+?S:.
+?C:HAS_UNION_SEMUN:
+?C:	This symbol, if defined, indicates that the union semun is
+?C:	defined by including <sys/sem.h>.  If not, the user code
+?C:	probably needs to define it as:
+?C:	union semun {
+?C:	    int val;
+?C:	    struct semid_ds *buf;
+?C:	    unsigned short *array;
+?C:	}
+?C:.
+?C:USE_SEMCTL_SEMUN:
+?C:	This symbol, if defined, indicates that union semun is
+?C:	used for semctl IPC_STAT.
+?C:.
+?C:USE_SEMCTL_SEMID_DS:
+?C:	This symbol, if defined, indicates that struct semid_ds * is
+?C:	used for semctl IPC_STAT.
+?C:.
+?H:#$d_union_semun HAS_UNION_SEMUN	/**/
+?H:#$d_semctl_semun USE_SEMCTL_SEMUN	/**/
+?H:#$d_semctl_semid_ds USE_SEMCTL_SEMID_DS	/**/
+?H:.
+?T:xxx also
+?F:!try
+?LINT: set d_union_semun d_semctl_semun d_semctl_semid_ds
+: see whether sys/sem.h defines union semun
+echo " "
+$cat > try.c <<'END'
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+int main () { union semun semun; semun.buf = 0; }
+END
+set try
+if eval $compile; then
+    echo "You have union semun in <sys/sem.h>." >&4
+    val="$define"
+else
+    echo "You do not have union semun in <sys/sem.h>." >&4
+    val="$undef"
+fi
+$rm -f try try.c try.h
+set d_union_semun
+eval $setvar
+
+: see how to do semctl IPC_STAT
+case "$d_sem" in
+$define)
+    : see whether semctl IPC_STAT can use union semun
+    echo " "
+    $cat > try.h <<END
+#ifndef S_IRUSR
+#   ifdef S_IREAD
+#	define S_IRUSR S_IREAD
+#	define S_IWUSR S_IWRITE
+#	define S_IXUSR S_IEXEC
+#   else
+#	define S_IRUSR 0400
+#	define S_IWUSR 0200
+#	define S_IXUSR 0100
+#   endif
+#   define S_IRGRP (S_IRUSR>>3)
+#   define S_IWGRP (S_IWUSR>>3)
+#   define S_IXGRP (S_IXUSR>>3)
+#   define S_IROTH (S_IRUSR>>6)
+#   define S_IWOTH (S_IWUSR>>6)
+#   define S_IXOTH (S_IXUSR>>6)
+#endif
+#ifndef S_IRWXU
+#   define S_IRWXU (S_IRUSR|S_IWUSR|S_IXUSR)
+#   define S_IRWXG (S_IRGRP|S_IWGRP|S_IXGRP)
+#   define S_IRWXO (S_IROTH|S_IWOTH|S_IXOTH)
+#endif
+END
+
+    $cat > try.c <<END
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <errno.h>
+#include "try.h"
+#ifndef errno
+extern int errno;
+#endif
+#$d_union_semun HAS_UNION_SEMUN
+int main() {
+    union semun
+#ifndef HAS_UNION_SEMUN
+    {
+	int val;
+	struct semid_ds *buf;
+	unsigned short *array;
+    }
+#endif
+    arg;
+    int sem, st;
+
+#if defined(IPC_PRIVATE) && defined(S_IRWXU) && defined(S_IRWXG) && defined(S_IRWXO) && defined(IPC_CREAT)
+    sem = semget(IPC_PRIVATE, 1, S_IRWXU|S_IRWXG|S_IRWXO|IPC_CREAT);
+    if (sem > -1) {
+	struct semid_ds argbuf;
+	arg.buf = &argbuf;
+#	ifdef IPC_STAT
+	st = semctl(sem, 0, IPC_STAT, arg);
+	if (st == 0)
+	    printf("semun\n");
+	else
+#	endif /* IPC_STAT */
+	    printf("semctl IPC_STAT failed: errno = %d\n", errno);
+#	ifdef IPC_RMID
+	if (semctl(sem, 0, IPC_RMID, arg) != 0)
+#   	endif /* IPC_RMID */
+	    printf("semctl IPC_RMID failed: errno = %d\n", errno);
+    } else
+#endif /* IPC_PRIVATE && ... */
+	printf("semget failed: errno = %d\n", errno);
+  return 0;
+}
+END
+    val="$undef"
+    set try
+    if eval $compile; then
+	xxx=`./try`
+        case "$xxx" in
+        semun) val="$define" ;;
+        esac
+    fi
+    $rm -f try try.c
+    set d_semctl_semun
+    eval $setvar
+    case "$d_semctl_semun" in
+    $define)
+        echo "You can use union semun for semctl IPC_STAT." >&4
+	also='also'
+        ;;
+    *)  echo "You cannot use union semun for semctl IPC_STAT." >&4
+	also=''
+        ;;
+    esac
+
+    : see whether semctl IPC_STAT can use struct semid_ds pointer
+    $cat > try.c <<'END'
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/stat.h>
+#include "try.h"
+#include <stdio.h>
+#include <errno.h>
+#ifndef errno
+extern int errno;
+#endif
+int main() {
+    struct semid_ds arg;
+    int sem, st;
+
+#if defined(IPC_PRIVATE) && defined(S_IRWXU) && defined(S_IRWXG) &&  defined(S_IRWXO) && defined(IPC_CREAT)
+    sem = semget(IPC_PRIVATE, 1, S_IRWXU|S_IRWXG|S_IRWXO|IPC_CREAT);
+    if (sem > -1) {
+#	ifdef IPC_STAT
+	st = semctl(sem, 0, IPC_STAT, &arg);
+	if (st == 0)
+	    printf("semid_ds\n");
+	else
+#	endif /* IPC_STAT */
+	    printf("semctl IPC_STAT failed: errno = %d\n", errno);
+#	ifdef IPC_RMID
+	if (semctl(sem, 0, IPC_RMID, &arg) != 0)
+#	endif /* IPC_RMID */
+	    printf("semctl IPC_RMID failed: errno = %d\n", errno);
+    } else
+#endif /* IPC_PRIVATE && ... */
+	printf("semget failed: errno = %d\n", errno);
+
+    return 0;
+}
+END
+    val="$undef"
+    set try
+    if eval $compile; then
+        xxx=`./try`
+        case "$xxx" in
+        semid_ds) val="$define" ;;
+        esac
+    fi
+    $rm -f try try.c
+    set d_semctl_semid_ds
+    eval $setvar
+    case "$d_semctl_semid_ds" in
+    $define)
+        echo "You can $also use struct semid_ds* for semctl IPC_STAT." >&4
+        ;;
+    *)  echo "You cannot use struct semid_ds* for semctl IPC_STAT." >&4
+        ;;
+    esac
+    $rm -f try.h
+    ;;
+*)  val="$undef"
+
+    # We do not have the full sem*(2) library, so assume we can not
+    # use either.
+
+    set d_semctl_semun
+    eval $setvar
+
+    set d_semctl_semid_ds
+    eval $setvar
+    ;;
+esac
+

@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sem_unlink: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sem_unlink:
+?S:	This variable conditionally defines HAS_SEM_UNLINK if sem_unlink() is
+?S:	available to unlink a POSIX semaphore.
+?S:.
+?C:HAS_SEM_UNLINK:
+?C:	This symbol, if defined, indicates that the sem_unlink system call is
+?C:	available to unlink a POSIX semaphore.
+?C:.
+?H:#$d_sem_unlink HAS_SEM_UNLINK		/**/
+?H:.
+?LINT:set d_sem_unlink
+: see if sem_unlink exists
+set sem_unlink d_sem_unlink
+eval $inlibc
+

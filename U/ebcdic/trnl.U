@@ -1,0 +1,46 @@
+?RCS: $Id: trnl.U,v 3.0.1.3 1994/05/06 15:11:49 doughera Exp $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS:	Original author Jarkko Hietaniemi <jhi@iki.fi>
+?RCS:	Merged into dist by Andy Dougherty  July 13, 1998
+?RCS:
+?MAKE:trnl:
+?MAKE:	-pick add $@ %<
+?S:trnl:
+?S:	This variable contains the value to be passed to the tr(1)
+?S:	command to transliterate a newline.  Typical values are
+?S:	'\012' and '\n'.  This is needed for EBCDIC systems where
+?S:	newline is not necessarily '\012'.
+?S:.
+?T: DJGPP
+echo " "
+: Find the appropriate value for a newline for tr
+?X: dos djgpp uses '\015\012', but reportedly is happy with '\012' in the
+?X: tr command.  I don't know why it passes the '\n' test but later
+?X: refuses to work correctly with it.  --AD  6/14/98
+if test -n "$DJGPP"; then
+       trnl='\012'
+fi
+if test X"$trnl" = X; then
+	case "`echo foo|tr '\n' x 2>/dev/null`" in
+	foox) trnl='\n' ;;
+	esac
+fi
+if test X"$trnl" = X; then
+	case "`echo foo|tr '\012' x 2>/dev/null`" in
+	foox) trnl='\012' ;;
+	esac
+fi
+if test X"$trnl" = X; then
+	cat <<EOM >&2
+
+$me: Fatal Error: cannot figure out how to translate newlines with 'tr'.
+
+EOM
+	exit 1
+fi
+

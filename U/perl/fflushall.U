@@ -1,0 +1,235 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:fflushNULL fflushall: Compile cat rm test osname \
+	Oldconfig Myread Setvar exe_ext echo \
+	d_sysconf i_unistd d_stdio_stream_array stdio_stream_array
+?MAKE:	-pick add $@ %<
+?S:fflushNULL:
+?S:	This symbol, if defined, tells that fflush(NULL) does flush
+?S:	all pending stdio output.
+?S:.
+?S:fflushall:
+?S:	This symbol, if defined, tells that to flush
+?S:	all pending stdio output one must loop through all
+?S:	the stdio file handles stored in an array and fflush them.
+?S:	Note that if fflushNULL is defined, fflushall will not
+?S:	even be probed for and will be left undefined.
+?S:.
+?C:FFLUSH_NULL:
+?C:	This symbol, if defined, tells that fflush(NULL) does flush
+?C:	all pending stdio output.
+?C:.
+?C:FFLUSH_ALL:
+?C:	This symbol, if defined, tells that to flush
+?C:	all pending stdio output one must loop through all
+?C:	the stdio file handles stored in an array and fflush them.
+?C:	Note that if fflushNULL is defined, fflushall will not
+?C:	even be probed for and will be left undefined.
+?C:.
+?H:#$fflushNULL	FFLUSH_NULL 		/**/
+?H:#$fflushall	FFLUSH_ALL 		/**/
+?H:.
+?T:output code
+?F:!try.out
+echo " "
+$cat >&4 <<EOM
+Checking how to flush all pending stdio output...
+EOM
+# I only know how to find the first 32 possibly open files on SunOS.
+# See also hints/sunos_4_1.sh and util.c  --AD
+case "$osname" in
+sunos) $echo '#define PERL_FFLUSH_ALL_FOPEN_MAX 32' > try.c ;;
+esac
+$cat >>try.c <<EOCP
+#include <stdio.h>
+#$i_unistd I_UNISTD
+#ifdef I_UNISTD
+# include <unistd.h>
+#endif
+#$d_sysconf HAS_SYSCONF
+#$d_stdio_stream_array HAS_STDIO_STREAM_ARRAY
+#ifdef HAS_STDIO_STREAM_ARRAY
+# define STDIO_STREAM_ARRAY $stdio_stream_array
+#endif
+int main() {
+  FILE* p = fopen("try.out", "w");
+#ifdef TRY_FPUTC
+  fputc('x', p);
+#else
+# ifdef TRY_FPRINTF
+  fprintf(p, "x");
+# endif
+#endif
+#ifdef TRY_FFLUSH_NULL
+  fflush(NULL);
+#endif
+#ifdef TRY_FFLUSH_ALL
+  {
+    long open_max = -1;
+# ifdef PERL_FFLUSH_ALL_FOPEN_MAX
+    open_max = PERL_FFLUSH_ALL_FOPEN_MAX;
+# else
+#  if defined(HAS_SYSCONF) && defined(_SC_OPEN_MAX)
+    open_max = sysconf(_SC_OPEN_MAX);
+#  else
+#   ifdef FOPEN_MAX
+    open_max = FOPEN_MAX;
+#   else
+#    ifdef OPEN_MAX
+    open_max = OPEN_MAX;
+#    else
+#     ifdef _NFILE
+    open_max = _NFILE;
+#     endif
+#    endif
+#   endif
+#  endif
+# endif 
+# ifdef HAS_STDIO_STREAM_ARRAY
+    if (open_max > 0) {
+      long i;
+      for (i = 0; i < open_max; i++)
+	    if (STDIO_STREAM_ARRAY[i]._file >= 0 &&
+		STDIO_STREAM_ARRAY[i]._file < open_max &&
+		STDIO_STREAM_ARRAY[i]._flag)
+		fflush(&STDIO_STREAM_ARRAY[i]);
+    }	
+  }
+# endif
+#endif
+  _exit(42);
+}
+EOCP
+: first we have to find out how _not_ to flush
+if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
+    output=''
+    set try -DTRY_FPUTC
+    if eval $compile; then
+	    $rm -f try.out
+ 	    ./try$exe_ext 2>/dev/null
+	    if $test ! -s try.out -a "X$?" = X42; then
+		output=-DTRY_FPUTC
+	    fi
+    fi
+    case "$output" in
+    '')
+	    set try -DTRY_FPRINTF
+	    $rm -f try.out
+	    if eval $compile; then
+		    $rm -f try.out
+ 		    ./try$exe_ext 2>/dev/null
+		    if $test ! -s try.out -a "X$?" = X42; then
+			output=-DTRY_FPRINTF
+		    fi
+	    fi
+	;;
+    esac
+fi
+: check for fflush NULL behaviour
+case "$fflushNULL" in
+'') 	set try -DTRY_FFLUSH_NULL $output
+	if eval $compile; then
+	        $rm -f try.out
+	    	./try$exe_ext 2>/dev/null
+		code="$?"
+		if $test -s try.out -a "X$code" = X42; then
+			fflushNULL="`$cat try.out`"
+		else
+			if $test "X$code" != X42; then
+				$cat >&4 <<EOM
+(If this test failed, don't worry, we'll try another method shortly.)
+EOM
+			fi
+		fi
+	fi
+	$rm -f core try.core core.try.*
+	case "$fflushNULL" in
+	x)	$cat >&4 <<EOM
+Your fflush(NULL) works okay.
+EOM
+		fflushNULL="$define"
+		;;
+	'')	$cat >&4 <<EOM
+Your fflush(NULL) isn't working (contrary to ANSI C).
+EOM
+		fflushNULL="$undef"
+		;;
+	*)	$cat >&4 <<EOM
+Cannot figure out whether your fflush(NULL) works or not.
+I'm assuming it doesn't (contrary to ANSI C).
+EOM
+		fflushNULL="$undef"
+		;;
+	esac
+	;;
+$define|true|[yY]*)
+	fflushNULL="$define"
+	;;
+*)
+	fflushNULL="$undef"
+	;;
+esac
+: check explicit looping only if NULL did not work
+case "$fflushNULL" in
+"$undef")
+	: check for fflush all behaviour
+	case "$fflushall" in
+	'') 	set try -DTRY_FFLUSH_ALL $output
+		if eval $compile; then
+		        $cat >&4 <<EOM
+(Now testing the other method--but note that also this may fail.)
+EOM
+			$rm -f try.out
+		    	./try$exe_ext 2>/dev/null
+			if $test -s try.out -a "X$?" = X42; then
+				fflushall="`$cat try.out`"
+			fi
+		fi
+		$rm -f core try.core core.try.*
+		case "$fflushall" in
+		x)	$cat >&4 <<EOM
+Whew. Flushing explicitly all the stdio streams works.
+EOM
+			fflushall="$define"
+			;;
+		'')	$cat >&4 <<EOM
+Sigh. Flushing explicitly all the stdio streams doesn't work.
+EOM
+			fflushall="$undef"
+			;;
+		*)	$cat >&4 <<EOM
+Cannot figure out whether flushing stdio streams explicitly works or not.
+I'm assuming it doesn't.
+EOM
+			fflushall="$undef"
+			;;
+		esac
+		;;
+	"$define"|true|[yY]*)
+		fflushall="$define"
+		;;
+	*)
+		fflushall="$undef"
+		;;
+	esac
+	;;
+*)	fflushall="$undef"	
+	;;
+esac
+case "$fflushNULL$fflushall" in
+undefundef)
+	$cat <<EOM
+I cannot figure out how to flush pending stdio output.
+EOM
+	;;
+esac
+$rm -f try.* try$exe_ext
+

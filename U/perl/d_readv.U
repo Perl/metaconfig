@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_readv: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_readv:
+?S:	This variable conditionally defines the HAS_READV symbol, which
+?S:	indicates to the C program that the readv() routine is available.
+?S:.
+?C:HAS_READV:
+?C:	This symbol, if defined, indicates that the readv routine is
+?C:	available to do gather reads.  You will also need <sys/uio.h>
+?C:	and there I_SYSUIO.
+?C:.
+?H:#$d_readv HAS_READV		/**/
+?H:.
+?LINT:set d_readv
+: see if readv exists
+set readv d_readv
+eval $inlibc
+

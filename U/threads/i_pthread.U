@@ -1,0 +1,33 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:i_pthread: Inhdr usethreads
+?MAKE:	-pick add $@ %<
+?S:i_pthread:
+?S:     This variable conditionally defines the I_PTHREADEAD symbol,
+?S:     and indicates whether a C program should include <pthread.h>.
+?S:.
+?C:I_PTHREADEAD:
+?C:     This symbol, if defined, indicates to the C program that it should
+?C:     include <pthread.h>.
+?C:.
+?H:#$i_pthread   I_PTHREADEAD	/**/
+?H:.
+?LINT:set i_pthread
+: see if POSIX threads are available
+if test "X$usethreads" = "X$define"; then
+	set pthread.h i_pthread
+	eval $inhdr
+else
+	i_pthread="$undef"
+fi
+
+
+

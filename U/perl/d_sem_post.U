@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sem_post: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sem_post:
+?S:	This variable conditionally defines HAS_SEM_POST if sem_post() is
+?S:	available to post (release, unlock) a POSIX semaphore.
+?S:.
+?C:HAS_SEM_POST:
+?C:	This symbol, if defined, indicates that the sem_post system call is
+?C:	available to post (release, unlock) a POSIX semaphore.
+?C:.
+?H:#$d_sem_post HAS_SEM_POST		/**/
+?H:.
+?LINT:set d_sem_post
+: see if sem_post exists
+set sem_post d_sem_post
+eval $inlibc
+

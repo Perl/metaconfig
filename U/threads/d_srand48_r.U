@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_srand48_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_srand48_r:
+?S:	This variable conditionally defines the HAS_SRAND48_R symbol,
+?S:	which indicates to the C program that the srand48_r()
+?S:	routine is available.
+?S:.
+?C:HAS_SRAND48_R:
+?C:	This symbol, if defined, indicates that the srand48_r routine
+?C:	is available to srand48 re-entrantly.
+?C:.
+?H:#$d_srand48_r HAS_SRAND48_R		/**/
+?H:.
+?LINT:set d_srand48_r
+: see if srand48_r exists
+set srand48_r d_srand48_r
+eval $inlibc
+

@@ -1,0 +1,115 @@
+?RCS: $Id: localarch.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS:
+?MAKE:localarch localarchexp installlocalarch installlocalarchexp: \
+	afs cat sed Getfile \
+	Oldconfig Prefixit test archname uselocallib locallib sitearch
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:localarch:
+?S:	This variable contains the eventual value of the LOCALARCH symbol,
+?S:	which is the name of the private library for this package.  It may
+?S:	have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:	This differs from $sitearch in that $sitearch is often
+?S:	a shared network directory while $localarch is
+?S:	at a local disk, because of policy/administrative issues
+?S:	like for example caching (performance), licensing, or security.
+?S:.
+?S:localarchexp:
+?S:	This variable is the ~name expanded version of localarch, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installlocalarch:
+?S:	This variable is really the same as localarchexp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?S:installlocalarchexp:
+?S:	This variable is the ~name expanded version of installlocalarch,
+?S:	so that you may use it directly in Makefiles or shell scripts.
+?S:.
+?C:LOCALARCH:
+?C:	This symbol contains the name of the private library for this package.
+?C:	The library is private in the sense that it needn't be in anyone's
+?C:	execution path, but it should be accessible by the world.  The program
+?C:	should be prepared to do ~ expansion.
+?C:	The standard distribution will put nothing in this directory.
+?C:	Local administration may place extensions and modules in
+?C:	this directory.
+?C:	This differs from SITEARCH in that SITEARCH is often
+?C:	a shared network directory while LOCALARCH is
+?C:	at a local disk, because of policy/administrative issues
+?C:	like for example caching (performance), licensing, or security.
+?C:.
+?C:LOCALARCH_EXP:
+?C:	This symbol contains the ~name expanded version of LOCALARCH,
+?C:	to be used in programs that are not prepared to deal with ~
+?C:	expansion at run-time.
+?C:.
+?H:#define LOCALARCH "$localarch"		/**/
+?H:#define LOCALARCH_EXP "$localarchexp"		/**/
+?H:.
+?T:tdflt
+?LINT:extern sitearch
+case "$uselocallib" in
+"$define")
+	case "$sitearch" in
+	'')	tdflt="$tdflt/$archname"
+		set sitearch sitearch none
+		eval $prefixit
+		dflt="$tdflt" ;;
+	*)	dflt="$sitearch" ;;
+	esac
+	$cat <<EOM
+
+The installation process will also create a directory for
+architecture-dependent extensions and modules to be installed
+alongside $locallib.
+
+EOM
+	fn=nd~+
+	rp='Pathname for local architecture-dependent library files?'
+	. ./getfile
+	if $test "X$localarchexp" != "X$ansexp"; then
+		installlocalarch=''
+	fi
+	localarch="$ans"
+	localarchexp="$ansexp"
+	if $afs; then
+		$cat <<EOM
+
+Since you are running AFS, I need to distinguish the directory in
+which locally installed architecture-dependent library files reside
+from the directory in which they are installed (and from which they
+are presumably copied to the former directory by occult means).
+
+EOM
+		case "$installlocalarch" in
+		'') dflt=`echo $localarchexp | sed 's#^/afs/#/afs/.#'`;;
+		*) dflt="$installlocalarch";;
+		esac
+		fn=de~
+		rp='Where will local architecture-dependent files be installed?'
+		. ./getfile
+		installlocalarch="$ans"
+	else
+		installlocalarch="$localarchexp"
+	fi
+	;;
+*)
+	localarch=""
+	localarchexp=""
+	installlocalarch=""
+	installlocalarchexp=""
+	;;
+esac
+

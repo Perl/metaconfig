@@ -1,0 +1,32 @@
+?RCS: $Id: Target.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: Target.U,v $
+?RCS:
+?MAKE:target_host target_root target_run : Oldconfig
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?X:  This unit provides some basic stubs to support cross-compilation.
+?X:  Thanks to Jarkko Hietaniemi <jhi@iki.fi>.
+?X:
+?S:target_host:
+?S:	This variable describes the cross-compilation host.  By
+?S:	default, it is empty.  Nothing useful is done with it yet.
+?S:.
+?S:target_root:
+?S:	This variable describes the cross-compilation host.  By
+?S:	default, it is empty.  Nothing useful is done with it yet.
+?S:.
+?S:target_run:
+?S:	This variable describes how to run a C program for the target.
+?S:	All Configure units that compile and run a test C program ought to
+?S:	do something like
+?S:		$target_run ./try args
+?S:	By default, it is empty and nothing useful is done with it yet.
+?S:.
+?LINT:set target_host target_root target_run
+

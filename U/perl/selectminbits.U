@@ -1,0 +1,130 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:selectminbits: Compile cat rm Oldconfig d_select \
+	i_time i_systime i_systimek i_sysselct selecttype d_socket \
+	byteorder Myread Setvar
+?MAKE:	-pick add $@ %<
+?S:selectminbits:
+?S:	This variable holds the minimum number of bits operated by select.
+?S:	That is, if you do select(n, ...), how many bits at least will be
+?S:	cleared in the masks if some activity is detected.  Usually this
+?S:	is either n or 32*ceil(n/32), especially many little-endians do
+?S:	the latter.  This is only useful if you have select(), naturally.
+?S:.
+?C:SELECT_MIN_BITS:
+?C:	This symbol holds the minimum number of bits operated by select.
+?C:	That is, if you do select(n, ...), how many bits at least will be
+?C:	cleared in the masks if some activity is detected.  Usually this
+?C:	is either n or 32*ceil(n/32), especially many little-endians do
+?C:	the latter.  This is only useful if you have select(), naturally.
+?C:.
+?H:#define SELECT_MIN_BITS 	$selectminbits	/**/
+?H:.
+?F:!try
+?T:bits
+: check for the select 'width'
+case "$selectminbits" in
+'') case "$d_select" in
+	$define)
+		$cat <<EOM
+
+Checking to see on how many bits at a time your select() operates...
+EOM
+		$cat >try.c <<EOCP
+#include <sys/types.h>
+#$i_time I_TIME
+#$i_systime I_SYS_TIME
+#$i_systimek I_SYS_TIME_KERNEL
+#ifdef I_TIME
+#   include <time.h>
+#endif
+#ifdef I_SYS_TIME
+#   ifdef I_SYS_TIME_KERNEL
+#	define KERNEL
+#   endif
+#   include <sys/time.h>
+#   ifdef I_SYS_TIME_KERNEL
+#	undef KERNEL
+#   endif
+#endif
+#$i_sysselct I_SYS_SELECT
+#ifdef I_SYS_SELECT
+#include <sys/select.h>
+#endif
+#$d_socket HAS_SOCKET
+#ifdef HAS_SOCKET
+#   include <sys/socket.h> /* Might include <sys/bsdtypes.h> */
+#endif
+#include <stdio.h>
+$selecttype b;
+#define S sizeof(*(b))
+#define MINBITS	64
+#define NBYTES (S * 8 > MINBITS ? S : MINBITS/8)
+#define NBITS  (NBYTES * 8)
+int main() {
+    char s[NBYTES];
+    struct timeval t;
+    int i;
+    FILE* fp;
+    int fd;
+
+    fclose(stdin);
+    fp = fopen("try.c", "r");
+    if (fp == 0)
+      exit(1);
+    fd = fileno(fp);
+    if (fd < 0)
+      exit(2);
+    b = ($selecttype)s;
+    for (i = 0; i < NBITS; i++)
+	FD_SET(i, b);
+    t.tv_sec  = 0;
+    t.tv_usec = 0;
+    select(fd + 1, b, 0, 0, &t);
+    for (i = NBITS - 1; i > fd && FD_ISSET(i, b); i--);
+    printf("%d\n", i + 1);
+    return 0;
+}
+EOCP
+		set try
+		if eval $compile_ok; then
+			selectminbits=`./try`
+			case "$selectminbits" in
+			'')	cat >&4 <<EOM
+Cannot figure out on how many bits at a time your select() operates.
+I'll play safe and guess it is 32 bits.
+EOM
+				selectminbits=32
+				bits="32 bits"
+				;;
+			1)	bits="1 bit" ;;
+			*)	bits="$selectminbits bits" ;;
+			esac
+			echo "Your select() operates on $bits at a time." >&4
+		else
+			rp='What is the minimum number of bits your select() operates on?'
+			case "$byteorder" in
+			1234|12345678)	dflt=32 ;;
+			*)		dflt=1	;;
+			esac
+			. ./myread
+			val=$ans
+			selectminbits="$val"
+		fi
+		$rm -f try.* try
+		;;
+	*)	: no select, so pick a harmless default
+		selectminbits='32'
+		;;
+	esac
+	;;
+esac
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_rand_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_rand_r:
+?S:	This variable conditionally defines the HAS_RAND_R symbol,
+?S:	which indicates to the C program that the rand_r()
+?S:	routine is available.
+?S:.
+?C:HAS_RAND_R:
+?C:	This symbol, if defined, indicates that the rand_r routine
+?C:	is available to rand re-entrantly.
+?C:.
+?H:#$d_rand_r HAS_RAND_R		/**/
+?H:.
+?LINT:set d_rand_r
+: see if rand_r exists
+set rand_r d_rand_r
+eval $inlibc
+

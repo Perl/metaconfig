@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getspnam_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getspnam_r:
+?S:	This variable conditionally defines the HAS_GETSPNAM_R symbol,
+?S:	which indicates to the C prospam that the getspnam_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETSPNAM_R:
+?C:	This symbol, if defined, indicates that the getspnam_r routine
+?C:	is available to getspnam re-entrantly.
+?C:.
+?H:#$d_getspnam_r HAS_GETSPNAM_R		/**/
+?H:.
+?LINT:set d_getspnam_r
+: see if getspnam_r exists
+set getspnam_r d_getspnam_r
+eval $inlibc
+

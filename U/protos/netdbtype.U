@@ -1,0 +1,192 @@
+?RCS: $Id: netdbtype.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: netdbtype.U,v $
+?RCS:
+?MAKE:netdb_host_type netdb_hlen_type netdb_name_type netdb_net_type: \
+	Protochk Oldconfig Myread cat \
+	d_gethbyaddr d_gethbyname d_getnbyaddr \
+	i_niin i_netdb i_unistd d_socket sizetype
+?MAKE:	-pick add $@ %<
+?S:netdb_host_type:
+?S:	This variable holds the type used for the 1st argument to
+?S:	gethostbyaddr().  Usually, this is char * or void *,  possibly
+?S:	with or without a const prefix.
+?S:	This is only useful if you have gethostbyaddr(), naturally.
+?S:.
+?S:netdb_hlen_type:
+?S:	This variable holds the type used for the 2nd argument to
+?S:	gethostbyaddr().  Usually, this is int or size_t or unsigned.
+?S:	This is only useful if you have gethostbyaddr(), naturally.
+?S:.
+?S:netdb_name_type:
+?S:	This variable holds the type used for the argument to
+?S:	gethostbyname().  Usually, this is char * or const char *.
+?S:	This is only useful if you have gethostbyname(), naturally.
+?S:.
+?S:netdb_net_type:
+?S:	This variable holds the type used for the 1st argument to
+?S:	getnetbyaddr().  Usually, this is int or long.
+?S:	This is only useful if you have getnetbyaddr(), naturally.
+?S:.
+?C:Netdb_host_t:
+?C:	This symbol holds the type used for the 1st argument
+?C:	to gethostbyaddr().
+?C:.
+?C:Netdb_hlen_t:
+?C:	This symbol holds the type used for the 2nd argument
+?C:	to gethostbyaddr().
+?C:.
+?C:Netdb_name_t:
+?C:	This symbol holds the type used for the argument to
+?C:	gethostbyname().
+?C:.
+?C:Netdb_net_t:
+?C:	This symbol holds the type used for the 1st argument to
+?C:	getnetbyaddr().
+?C:.
+?H:#define Netdb_host_t		$netdb_host_type /**/
+?H:#define Netdb_hlen_t		$netdb_hlen_type /**/
+?H:#define Netdb_name_t		$netdb_name_type /**/
+?H:#define Netdb_net_t		$netdb_net_type /**/
+?H:.
+?T:xxx yyy try hdrs
+@if netdb_host_type || Netdb_host_t || netdb_hlen_type || Netdb_hlen_t
+: check for type of arguments to gethostbyaddr. 
+if test "X$netdb_host_type" = X -o "X$netdb_hlen_type" = X; then
+	case "$d_gethbyaddr" in
+	$define)
+		$cat <<EOM
+
+Checking to see what type of arguments are accepted by gethostbyaddr().
+EOM
+		hdrs="$define sys/types.h
+			$d_socket sys/socket.h 
+			$i_niin netinet/in.h 
+			$i_netdb netdb.h
+			$i_unistd unistd.h"
+		: The first arg can 'char *' or 'void *'
+		: The second arg is some of integral type
+		for xxx in in_addr_t 'const void *' 'const char *' 'void *' 'char *'; do
+			for yyy in size_t long int; do
+				case "$netdb_host_type" in
+				'')	try="extern struct hostent *gethostbyaddr($xxx, $yyy, int);"
+					if ./protochk "$try" $hdrs; then
+						echo "Your system accepts $xxx for the first arg."
+						echo "...and $yyy for the second arg."
+						netdb_host_type="$xxx"
+						netdb_hlen_type="$yyy"
+					fi
+					;;
+				esac
+			done
+		done
+		: In case none of those worked, prompt the user.
+		case "$netdb_host_type" in
+		'')	rp='What is the type for the 1st argument to gethostbyaddr?'
+			dflt='char *'
+			. ./myread
+			netdb_host_type=$ans
+			rp='What is the type for the 2nd argument to gethostbyaddr?'
+			dflt="$sizetype"
+			. ./myread
+			netdb_hlen_type=$ans
+			;;
+		esac
+		;;
+	*)	: no gethostbyaddr, so pick harmless defaults
+		netdb_host_type='char *'
+		netdb_hlen_type="$sizetype"
+		;;
+	esac
+	# Remove the "const" if needed. -- but then we'll have a 
+	# prototype clash!
+	# netdb_host_type=`echo "$netdb_host_type" | sed 's/^const //'`
+fi
+@end
+
+@if netdb_name_type || Netdb_name_t
+: check for type of argument to gethostbyname. 
+if test "X$netdb_name_type" = X ; then
+	case "$d_gethbyname" in
+	$define)
+		$cat <<EOM
+
+Checking to see what type of argument is accepted by gethostbyname().
+EOM
+		hdrs="$define sys/types.h
+			$d_socket sys/socket.h 
+			$i_niin netinet/in.h 
+			$i_netdb netdb.h
+			$i_unistd unistd.h"
+		for xxx in "const char *" "char *"; do
+			case "$netdb_name_type" in
+			'')	try="extern struct hostent *gethostbyname($xxx);"
+				if ./protochk "$try" $hdrs; then
+					echo "Your system accepts $xxx."
+					netdb_name_type="$xxx"
+				fi
+				;;
+			esac
+		done
+		: In case none of those worked, prompt the user.
+		case "$netdb_name_type" in
+		'')	rp='What is the type for the 1st argument to gethostbyname?'
+			dflt='char *'
+			. ./myread
+			netdb_name_type=$ans
+			;;
+		esac
+		;;
+	*)	: no gethostbyname, so pick harmless default
+		netdb_name_type='char *'
+		;;
+	esac
+fi
+@end
+
+@if netdb_net_type || Netdb_net_t
+: check for type of 1st argument to getnetbyaddr. 
+if test "X$netdb_net_type" = X ; then
+	case "$d_getnbyaddr" in
+	$define)
+		$cat <<EOM
+
+Checking to see what type of 1st argument is accepted by getnetbyaddr().
+EOM
+		hdrs="$define sys/types.h
+			$d_socket sys/socket.h 
+			$i_niin netinet/in.h 
+			$i_netdb netdb.h
+			$i_unistd unistd.h"
+		for xxx in in_addr_t "unsigned long" long "unsigned int" int; do
+			case "$netdb_net_type" in
+			'')	try="extern struct netent *getnetbyaddr($xxx, int);"
+				if ./protochk "$try" $hdrs; then
+					echo "Your system accepts $xxx."
+					netdb_net_type="$xxx"
+				fi
+				;;
+			esac
+		done
+		: In case none of those worked, prompt the user.
+		case "$netdb_net_type" in
+		'')	rp='What is the type for the 1st argument to getnetbyaddr?'
+			dflt='long'
+			. ./myread
+			netdb_net_type=$ans
+			;;
+		esac
+		;;
+	*)	: no getnetbyaddr, so pick harmless default
+		netdb_net_type='long'
+		;;
+	esac
+fi
+@end

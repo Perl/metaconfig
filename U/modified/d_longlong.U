@@ -1,0 +1,85 @@
+?RCS: $Id: d_longlong.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_longlong.U,v $
+?RCS:
+?MAKE:d_longlong longlongsize: Compile Setvar Myread +cc +ccflags +optimize \
+	echo n c cat rm test longsize
+?MAKE:	-pick add $@ %<
+?S:d_longlong:
+?S:	This variable conditionally defines HAS_LONG_LONG if 
+?S:	the long long type is supported.
+?S:.
+?S:longlongsize:
+?S:	This variable contains the value of the LONGLONGSIZE symbol, which
+?S:	indicates to the C program how many bytes there are in a long long,
+?S:	if this system supports long long.
+?S:.
+?C:HAS_LONG_LONG:
+?C:	This symbol will be defined if the C compiler supports long long.
+?C:.
+?C:LONGLONGSIZE:
+?C:	This symbol contains the size of a long long, so that the 
+?C:	C preprocessor can make decisions based on it.  It is only
+?C:	defined if the system supports long long.
+?C:.
+?H:#$d_longlong HAS_LONG_LONG		/**/
+?H:?LONGLONGSIZE:#ifdef HAS_LONG_LONG
+?H:?LONGLONGSIZE:#define LONGLONGSIZE $longlongsize		/**/
+?H:?LONGLONGSIZE:#endif
+?H:.
+?LINT:set d_longlong
+?F:!try
+: check for long long
+echo " "
+echo $n "Checking to see if your system supports long long...$c" >&4
+echo 'long long foo() { long long x; x = 7; return x; }' > try.c
+if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
+	val="$define"
+	echo " Yup, it does." >&4
+else
+	val="$undef"
+	echo " Nope, it doesn't." >&4
+fi
+$rm try.*
+set d_longlong
+eval $setvar
+
+@if LONGLONGSIZE || longlongsize
+: check for length of long long
+?X:  Check only if d_longlong and if longlongsize is not already set.
+case "${d_longlong}${longlongsize}" in
+$define)
+	echo " "
+	$echo $n "Checking to see how big your long longs are...$c" >&4
+	$cat >try.c <<'EOCP'
+#include <stdio.h>
+int main()
+{
+	printf("%d\n", sizeof(long long));
+}
+EOCP
+	set try
+	if eval $compile_ok; then
+		longlongsize=`./try`
+		$echo " $longlongsize bytes." >&4
+	else
+		dflt='8'
+		echo " "
+		echo "(I can't seem to compile the test program.  Guessing...)"
+		rp="What is the size of a long long (in bytes)?"
+		. ./myread
+		longlongsize="$ans"
+	fi
+	if $test "X$longsize" = "X$longlongsize"; then
+		echo "(That isn't any different from an ordinary long.)"
+	fi	
+	;;
+esac
+$rm -f try.c try
+@end
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_endhent_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_endhent_r:
+?S:	This variable conditionally defines the HAS_ENDHENT_R symbol,
+?S:	which indicates to the C program that the endhostent_r()
+?S:	routine is available.
+?S:.
+?C:HAS_ENDHOSTENT_R:
+?C:	This symbol, if defined, indicates that the endhostent_r routine
+?C:	is available to endhostent re-entrantly.
+?C:.
+?H:#$d_endhent_r HAS_ENDHOSTENT_R		/**/
+?H:.
+?LINT:set d_endhent_r
+: see if endhent_r exists
+set endhent_r d_endhent_r
+eval $inlibc
+

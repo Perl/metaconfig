@@ -1,0 +1,58 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_statfs d_fstatfs d_statfsflags: Inlibc Hasfield i_sysparam i_sysmount
+?MAKE:	-pick add $@ %<
+?S:d_statfs:
+?S:	This variable conditionally defines the HAS_STATFS symbol, which
+?S:	indicates to the C program that the statfs() routine is available.
+?S:.
+?S:d_fstatfs:
+?S:	This variable conditionally defines the HAS_FSTATFS symbol, which
+?S:	indicates to the C program that the fstatfs() routine is available.
+?S:.
+?S:d_statfsflags:
+?S:	This variable conditionally defines the HAS_STRUCT_STATFS_FLAGS
+?S:	symbol, which indicates to struct statfs from has f_flags member.
+?S:	This kind of struct statfs is coming from sys/mount.h (BSD),
+?S:	not from sys/statfs.h (SYSV).
+?S:.
+?C:HAS_STATFS:
+?C:	This symbol, if defined, indicates that the statfs routine is
+?C:	available to stat filesystems of files.
+?C:.
+?C:HAS_FSTATFS:
+?C:	This symbol, if defined, indicates that the fstatfs routine is
+?C:	available to stat filesystems of file descriptors.
+?C:.
+?C:HAS_STRUCT_STATFS_FLAGS:
+?C:	This symbol, if defined, indicates that the struct statfs
+?C:	does have the f_flags member containing the mount flags of
+?C:	the filesystem holding the file.
+?C:	This kind of struct statfs is coming from sys/mount.h (BSD),
+?C:	not from sys/statfs.h (SYSV).
+?C:.
+?H:#$d_statfs HAS_STATFS		/**/
+?H:#$d_fstatfs HAS_FSTATFS		/**/
+?H:#$d_statfsflags HAS_STRUCT_STATFS_FLAGS		/**/
+?H:.
+?LINT:set d_statfs
+?LINT:set d_fstatfs
+?LINT:set d_statfsflags
+
+: see if statfs exists
+set statfs d_statfs
+eval $inlibc
+
+: see if fstatfs exists
+set fstatfs d_fstatfs
+eval $inlibc
+
+: see if statfs knows about mount flags
+set d_statfsflags statfs f_flags $i_sysparam sys/param.h $i_sysmount sys/mount.h
+eval $hasfield
+

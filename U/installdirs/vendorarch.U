@@ -1,0 +1,87 @@
+?RCS: $Id: vendorarch.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: vendorarch.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:d_vendorarch vendorarch vendorarchexp installvendorarch: sed Getfile \
+	Oldconfig Prefixit test apiversion archname vendorlib \
+	vendorprefix prefix installprefix
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:vendorarch:
+?S:	This variable contains the eventual value of the PERL_VENDORARCH symbol,
+?S:	which is the name of the private library for this package.  It may
+?S:	have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:	Vendors who distribute perl binaries may place their own
+?S:	architecture-dependent extensions and modules in this directory.
+?S:.
+?S:vendorarchexp:
+?S:	This variable is the ~name expanded version of vendorarch, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installvendorarch:
+?S:	This variable is really the same as vendorarchexp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?S:d_vendorarch:
+?S:	This variable conditionally defined PERL_VENDORARCH.
+?S:.
+?C:PERL_VENDORARCH:
+?C:	If defined, this symbol contains the name of a private library for this package.
+?C:	The library is private in the sense that it needn't be in anyone's
+?C:	execution path, but it should be accessible by the world.  The program
+?C:	should be prepared to do ~ expansion.
+?C:	The standard distribution will put nothing in this directory.
+?C:	Vendors who distribute perl binaries may place their own
+?C:	architecture-dependent extensions and modules in this directory.
+?C:.
+?C:PERL_VENDORARCH_EXP:
+?C:	This symbol contains the ~name expanded version of PERL_VENDORARCH, to be used
+?C:	in programs that are not prepared to deal with ~ expansion at run-time.
+?C:.
+?H:#$d_vendorarch PERL_VENDORARCH "$vendorarch"		/**/
+?H:#$d_vendorarch PERL_VENDORARCH_EXP "$vendorarchexp"		/**/
+?H:.
+?T:tdflt
+case "$vendorprefix" in
+'')	d_vendorarch="$undef"
+	vendorarch=''
+	vendorarchexp=''
+	;;
+*)	d_vendorarch="$define"
+	: determine where vendor-supplied architecture-dependent libraries go.
+	: vendorlib  default is /usr/local/lib/perl5/vendor_perl/
+	: vendorarch default is /usr/local/lib/perl5/vendor_perl/$apiversion/$archname
+	: vendorlib may have an optional trailing /share.
+	tdflt=`echo $vendorlib | $sed 's,/share$,,'`
+	tdflt="$tdflt/$apiversion/$archname"
+	case "$vendorarch" in
+	'')	dflt="$tdflt" ;;
+	*)	dflt="$vendorarch" ;;
+	esac
+	fn=nd~+
+	rp='Pathname for vendor-supplied architecture-dependent files?'
+	. ./getfile
+	vendorarch="$ans"
+	vendorarchexp="$ansexp"
+	: Change installation prefix, if necessary.
+	if $test X"$prefix" != X"$installprefix"; then
+		installvendorarch=`echo $vendorarchexp | sed 's#^$prefix#$installprefix#'`
+	else
+		installvendorarch="$vendorarchexp"
+	fi
+	;;
+esac
+

@@ -1,0 +1,84 @@
+?RCS: $Id: d_sfio.U,v $
+?RCS:
+?RCS: Copyright (c) 1996-1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_sfio.U,v $
+?RCS:
+?MAKE:usesfio d_sfio: i_sfio Inlibc Myread Oldconfig sed libs \
+	Setvar package
+?MAKE:	-pick add $@ %<
+?S:usesfio:
+?S:	This variable is set to true when the user agrees to use sfio.
+?S:	It is set to false when sfio is not available or when the user
+?S:	explicitely requests not to use sfio.  It is here primarily so
+?S:	that command-line settings can override the auto-detection of
+?S:	d_sfio without running into a "WHOA THERE".
+?S:.
+?S:d_sfio:
+?S:	This variable conditionally defines the USE_SFIO symbol,
+?S:	and indicates whether sfio is available (and should be used).
+?S:.
+?C:USE_SFIO:
+?C:	This symbol, if defined, indicates that sfio should
+?C:	be used.
+?C:.
+?H:#$d_sfio	USE_SFIO		/**/
+?H:.
+?LINT:set d_sfio
+?LINT:change libs
+
+: see if sfio library is available
+case "$i_sfio" in
+$define)
+	val=''
+	set sfreserve val
+	eval $inlibc
+	;;
+*)
+	val="$undef"
+	;;
+esac
+: Ok, but do we want to use it.
+case "$val" in
+$define)
+	case "$usesfio" in
+	true|$define|[yY]*) dflt='y';;
+	*) dflt='n';;
+	esac
+	echo "$package can use the sfio library, but it is experimental."
+	rp="You seem to have sfio available, do you want to try using it?"
+	. ./myread
+	case "$ans" in
+	y|Y) ;;
+	*)	echo "Ok, avoiding sfio this time.  I'll use stdio instead."
+		val="$undef"
+		: Remove sfio from list of libraries to use
+		set `echo X $libs | $sed -e 's/-lsfio / /' -e 's/-lsfio$//'`
+		shift
+		libs="$*"
+		echo "libs = $libs" >&4
+		;;
+	esac
+	;;
+*)	case "$usesfio" in
+	true|$define|[yY]*)
+		echo "Sorry, cannot find sfio on this machine" >&4
+		echo "Ignoring your setting of usesfio=$usesfio" >&4
+		;;
+	esac
+	;;
+esac
+?X:
+?X: Only set d_sfio when final value is known to avoid spurious Whoas
+?X: Then set usesfio accordingly to the current value, for next run
+?X:
+set d_sfio
+eval $setvar
+case "$d_sfio" in
+$define) usesfio='true';;
+*) usesfio='false';;
+esac
+

@@ -1,0 +1,78 @@
+?RCS: $Id: vendorbin.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS: 
+?RCS: $Log: vendorbin.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:d_vendorbin vendorbin vendorbinexp installvendorbin: Getfile \
+	Oldconfig Prefixit test vendorprefix prefix sed installprefix
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:vendorbin:
+?S:	This variable contains the eventual value of the VENDORBIN symbol,
+?S:	which is the name of the private directory for exuctables for this package.
+?S:	It may have a ~ on the front. It is up to the makefile to eventually create
+?S:	this directory while performing installation (with ~ substitution).
+?S:	Vendors who distribute perl binaries may place their own
+?S:	extensions and modules in this directory.
+?S:.
+?S:vendorbinexp:
+?S:	This variable is the ~name expanded version of vendorbin, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installvendorbin:
+?S:	This variable is really the same as vendorbinexp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+?S:d_vendorbin:
+?S:	This variable conditionally defines PERL_VENDORBIN.
+?S:.
+?C:PERL_VENDORBIN:
+?C:	If defined, this symbol contains the name of a private directory
+?C:	holding executables.
+?C:	The directory is private in the sense that it needn't be in anyone's
+?C:	execution path, but it should be accessible by the world.  The program
+?C:	should be prepared to do ~ expansion.
+?C:	The standard distribution will put nothing in this directory.
+?C:	Vendors who distribute perl binaries may place their own
+?C:	extensions and modules in this directory.
+?C:.
+?C:PERL_VENDORBIN_EXP:
+?C:	This symbol contains the ~name expanded version of VENDORBIN, to be used
+?C:	in programs that are not prepared to deal with ~ expansion at run-time.
+?C:.
+?H:#$d_vendorbin PERL_VENDORBIN "$vendorbin"		/**/
+?H:#$d_vendorbin PERL_VENDORBIN_EXP "$vendorbinexp"		/**/
+?H:.
+case "$vendorprefix" in
+'')	d_vendorbin="$undef"
+	vendorbin=''
+	vendorbinexp=''
+	;;
+*)	d_vendorbin="$define"
+	: determine where vendor-supplied executables go.
+	dflt=$vendorprefix/bin
+	fn=d~+
+	rp='Pathname for the vendor-supplied executables directory?'
+	. ./getfile
+	vendorbin="$ans"
+	vendorbinexp="$ansexp"
+	: Change installation prefix, if necessary.
+	if $test X"$prefix" != X"$installprefix"; then
+		installvendorbin=`echo $vendorbinexp | $sed 's#^$prefix#$installprefix#'`
+	else
+		installvendorbin="$vendorbinexp"
+	fi
+	;;
+esac
+

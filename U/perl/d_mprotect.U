@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_mprotect: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mprotect:
+?S:	This variable conditionally defines HAS_MPROTECT if mprotect() is
+?S:	available to modify the access protection of a memory mapped file.
+?S:.
+?C:HAS_MPROTECT:
+?C:	This symbol, if defined, indicates that the mprotect system call is
+?C:	available to modify the access protection of a memory mapped file.
+?C:.
+?H:#$d_mprotect HAS_MPROTECT		/**/
+?H:.
+?LINT:set d_mprotect
+: see if mprotect exists
+set mprotect d_mprotect
+eval $inlibc
+

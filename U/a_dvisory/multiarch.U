@@ -1,0 +1,34 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS:
+?RCS: This file is included with or a derivative work of a file included
+?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
+?RCS: In accordance with clause 7 of dist's modified Artistic License:
+?RCS: 
+?RCS:     You may distribute under the terms of either the GNU General Public
+?RCS:     License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:multiarch: osname
+?MAKE:	-pick add $@ %<
+?S:multiarch:
+?S:	This variable conditionally defines the MULTIARCH symbol
+?S:	which signifies the presence of multiplatform files.
+?S:	This is normally set by hints files.
+?S:.
+?C:MULTIARCH:
+?C:	This symbol, if defined, signifies that the build
+?C:	process will produce some binary files that are going to be
+?C:	used in a cross-platform environment.  This is the case for
+?C:	example with the NeXT "fat" binaries that contain executables
+?C:	for several CPUs.
+?C:.
+?H:#$multiarch MULTIARCH		/**/
+?H:.
+case "$osname" in
+next|rhapsody) multiarch="$define" ;;
+esac
+case "$multiarch" in
+''|[nN]*) multiarch="$undef" ;;
+esac
+

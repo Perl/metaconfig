@@ -1,0 +1,50 @@
+?RCS: $Id: d_portable.U,v 3.0.1.2 1995/01/11 15:28:52 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: This file is included with or a derivative work of a file included
+?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
+?RCS: In accordance with clause 7 of dist's modified Artistic License:
+?RCS: 
+?RCS:     You may distribute under the terms of either the GNU General Public
+?RCS:     License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_portable.U,v $
+?RCS: Revision 3.0.1.2  1995/01/11  15:28:52  ram
+?RCS: patch45: executable path stripping moved to the end in Config_sh.U
+?RCS:
+?RCS: Revision 3.0.1.1  1993/12/15  08:21:17  ram
+?RCS: patch15: did not strip variables properly when needed
+?RCS: patch15: now also strips down variables from trylist
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:06:48  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?X:   This is the same as the dist version, except I don't bother
+?X:   prompting people since it makes no difference for perl5,
+?X:   and only confuses people.
+?X:
+?X: The Loc unit is wanted to get the definition of all the locating variables.
+?X:
+?MAKE:d_portable: Loc Oldconfig
+?MAKE:	-pick add $@ %<
+?S:d_portable:
+?S:	This variable conditionally defines the PORTABLE symbol, which
+?S:	indicates to the C program that it should not assume that it is
+?S:	running on the machine it was compiled on.
+?S:.
+?C:PORTABLE:
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	not assume that it is running on the machine it was compiled on.
+?C:	The program should be prepared to look up the host name, translate
+?C:	generic filenames, use PATH, etc.
+?C:.
+?H:#$d_portable PORTABLE	/**/
+?H:.
+?D:d_portable=''
+: decide how portable to be.  Allow command line overrides.
+case "$d_portable" in
+"$undef") ;;
+*)	d_portable="$define" ;;
+esac
+

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:full_ar: ar
+?MAKE:	-pick add $@ %<
+?S:full_ar:
+?S:	This variable contains the full pathname to 'ar', whether or
+?S:	not the user has specified 'portability'.  This is only used
+?S:	in the Makefile.SH.
+?S:.
+?LINT:use ar
+: Store the full pathname to the ar program for use in the C program
+: Respect a hint or command line value for full_ar.
+case "$full_ar" in
+'') full_ar=$ar ;;
+esac
+

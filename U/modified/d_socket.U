@@ -1,0 +1,293 @@
+?RCS: $Id: d_socket.U,v 3.0.1.2 1997/02/28 15:46:00 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: d_socket.U,v $
+?RCS: Revision 3.0.1.2  1997/02/28  15:46:00  ram
+?RCS: patch61: replaced .a with $_a all over the place
+?RCS:
+?RCS: Revision 3.0.1.1  1994/01/24  14:08:04  ram
+?RCS: patch16: can now safely declare private nm_extract in dependencies
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:07:26  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:d_socket d_oldsock d_sockpair socketlib sockethdr \
+	d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy \
+	d_scm_rights d_sendmsg d_recvmsg d_msghdr_s d_cmsghdr_s: \
+	contains libc echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
+	Compile cat rm Setvar Hasfield i_sysuio
+?MAKE:	-pick add $@ %<
+?S:d_socket:
+?S:	This variable conditionally defines HAS_SOCKET, which indicates
+?S:	that the BSD socket interface is supported.
+?S:.
+?S:d_sockpair:
+?S:	This variable conditionally defines the HAS_SOCKETPAIR symbol, which
+?S:	indicates that the BSD socketpair() is supported.
+?S:.
+?S:d_oldsock:
+?S:	This variable conditionally defines the OLDSOCKET symbol, which
+?S:	indicates that the BSD socket interface is based on 4.1c and not 4.2.
+?S:.
+?S:d_msg_ctrunc:
+?S:	This variable conditionally defines the HAS_MSG_CTRUNC symbol,
+?S:	which indicates that the MSG_CTRUNC is available.  #ifdef is
+?S:	not enough because it may be an enum, glibc has been known to do this.
+?S:.
+?S:d_msg_dontroute:
+?S:	This variable conditionally defines the HAS_MSG_DONTROUTE symbol,
+?S:	which indicates that the MSG_DONTROUTE is available.  #ifdef is
+?S:	not enough because it may be an enum, glibc has been known to do this.
+?S:.
+?S:d_msg_oob:
+?S:	This variable conditionally defines the HAS_MSG_OOB symbol,
+?S:	which indicates that the MSG_OOB is available.  #ifdef is
+?S:	not enough because it may be an enum, glibc has been known to do this.
+?S:.
+?S:d_msg_peek:
+?S:	This variable conditionally defines the HAS_MSG_PEEK symbol,
+?S:	which indicates that the MSG_PEEK is available.  #ifdef is
+?S:	not enough because it may be an enum, glibc has been known to do this.
+?S:.
+?S:d_msg_proxy:
+?S:	This variable conditionally defines the HAS_MSG_PROXY symbol,
+?S:	which indicates that the MSG_PROXY is available.  #ifdef is
+?S:	not enough because it may be an enum, glibc has been known to do this.
+?S:.
+?S:d_scm_rights:
+?S:	This variable conditionally defines the HAS_SCM_RIGHTS symbol,
+?S:	which indicates that the SCM_RIGHTS is available.  #ifdef is
+?S:	not enough because it may be an enum, glibc has been known to do this.
+?S:.
+?S:d_sendmsg:
+?S:	This variable conditionally defines the HAS_SENDMSG symbol,
+?S:	which indicates that the sendmsg is supported.
+?S:.
+?S:d_recvmsg:
+?S:	This variable conditionally defines the HAS_RECVMSG symbol,
+?S:	which indicates that the recvmsg is supported.
+?S:.
+?S:d_msghdr_s:
+?S:	This variable conditionally defines the HAS_STRUCT_MSGHDR symbol,
+?S:	which indicates that the struct msghdr is supported.
+?S:.
+?S:d_cmsghdr_s:
+?S:	This variable conditionally defines the HAS_STRUCT_CMSGHDR symbol,
+?S:	which indicates that the the struct cmsghdr is supported.
+?S:.
+?S:socketlib:
+?S:	This variable has the names of any libraries needed for socket support.
+?S:.
+?S:sockethdr:
+?S:	This variable has any cpp '-I' flags needed for socket support.
+?S:.
+?C:HAS_SOCKET (SOCKET):
+?C:	This symbol, if defined, indicates that the BSD socket interface is
+?C:	supported.
+?C:.
+?C:HAS_SOCKETPAIR (SOCKETPAIR):
+?C:	This symbol, if defined, indicates that the BSD socketpair() call is
+?C:	supported.
+?C:.
+?C:USE_OLDSOCKET (OLDSOCKET):
+?C:	This symbol, if defined, indicates that the 4.1c BSD socket interface
+?C:	is supported instead of the 4.2/4.3 BSD socket interface. For instance,
+?C:	there is no setsockopt() call.
+?C:.
+?C:HAS_MSG_CTRUNC:
+?C:	This symbol, if defined, indicates that the MSG_CTRUNC is supported.
+?C:	Checking just with #ifdef might not be enough because this symbol
+?C:	has been known to be an enum.
+?C:.
+?C:HAS_MSG_DONTROUTE:
+?C:	This symbol, if defined, indicates that the MSG_DONTROUTE is supported.
+?C:	Checking just with #ifdef might not be enough because this symbol
+?C:	has been known to be an enum.
+?C:.
+?C:HAS_MSG_OOB:
+?C:	This symbol, if defined, indicates that the MSG_OOB is supported.
+?C:	Checking just with #ifdef might not be enough because this symbol
+?C:	has been known to be an enum.
+?C:.
+?C:HAS_MSG_PEEK:
+?C:	This symbol, if defined, indicates that the MSG_PEEK is supported.
+?C:	Checking just with #ifdef might not be enough because this symbol
+?C:	has been known to be an enum.
+?C:.
+?C:HAS_MSG_PROXY:
+?C:	This symbol, if defined, indicates that the MSG_PROXY is supported.
+?C:	Checking just with #ifdef might not be enough because this symbol
+?C:	has been known to be an enum.
+?C:.
+?C:HAS_SCM_RIGHTS:
+?C:	This symbol, if defined, indicates that the SCM_RIGHTS is supported.
+?C:	Checking just with #ifdef might not be enough because this symbol
+?C:	has been known to be an enum.
+?C:.
+?C:HAS_SENDMSG:
+?C:	This symbol, if defined, indicates that the sendmsg is supported
+?C:	to send messages between sockets.  You will also need struct
+?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
+?C:.
+?C:HAS_RECVMSG:
+?C:	This symbol, if defined, indicates that the recvmsg is supported
+?C:	to send messages between sockets.  You will also need struct
+?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
+?C:.
+?C:HAS_STRUCT_MSGHDR:
+?C:	This symbol, if defined, indicates that the struct msghdr
+?C:	(BSD 4.3 or 4.4) is supported.  You will also need struct
+?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
+?C:.
+?C:HAS_STRUCT_CMSGHDR:
+?C:	This symbol, if defined, indicates that the struct cmsghdr
+?C:	(BSD 4.4) is supported.  You will also need struct
+?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
+?C:.
+?H:#$d_socket	HAS_SOCKET		/**/
+?H:#$d_sockpair	HAS_SOCKETPAIR	/**/
+?H:#$d_oldsock	USE_OLDSOCKET	/**/
+?H:#$d_msg_ctrunc	HAS_MSG_CTRUNC	/**/
+?H:#$d_msg_dontroute	HAS_MSG_DONTROUTE	/**/
+?H:#$d_msg_oob	HAS_MSG_OOB	/**/
+?H:#$d_msg_peek	HAS_MSG_PEEK	/**/
+?H:#$d_msg_proxy	HAS_MSG_PROXY	/**/
+?H:#$d_scm_rights	HAS_SCM_RIGHTS	/**/
+?H:#$d_sendmsg	HAS_SENDMSG	/**/
+?H:#$d_recvmsg	HAS_RECVMSG	/**/
+?H:#$d_msghdr_s	HAS_STRUCT_MSGHDR	/**/
+?H:#$d_cmsghdr_s	HAS_STRUCT_CMSGHDR	/**/
+?H:.
+?T:val net ENUM enum
+?F:try.c
+?LINT:set d_sockpair
+?LINT:set d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy
+?LINT:set d_scm_rights d_sendmsg d_recvmsg d_msghdr_s d_cmsghdr_s
+socketlib=''
+sockethdr=''
+: see whether socket exists
+echo " "
+$echo $n "Hmm... $c" >&4
+if set socket val -f d_socket; eval $csym; $val; then
+	echo "Looks like you have Berkeley networking support." >&4
+	d_socket="$define"
+?X: now check for advanced features
+	if set setsockopt val -f; eval $csym; $val; then
+		d_oldsock="$undef"
+	else
+		echo "...but it uses the old BSD 4.1c interface, rather than 4.2." >&4
+		d_oldsock="$define"
+	fi
+else
+?X: HP-UX, for one, puts all the socket stuff in socklib.o. Note that if we
+?X: come here on HP-UX, then we must have used nm to get symbols, or we really
+?X: don't have sockets anyway...
+	if $contains socklib libc.list >/dev/null 2>&1; then
+		echo "Looks like you have Berkeley networking support." >&4
+		d_socket="$define"
+		: we will have to assume that it supports the 4.2 BSD interface
+		d_oldsock="$undef"
+	else
+		echo "You don't have Berkeley networking in libc$_a..." >&4
+?X: look for optional networking libraries
+		if test "X$d_socket" = "X$define"; then
+		   echo "...but you seem to believe that you have sockets." >&4
+		else
+			for net in net socket
+			do
+				if test -f /usr/lib/lib$net$_a; then
+?X: space between two  '(' needed for ksh
+					( ($nm $nm_opt /usr/lib/lib$net$_a | eval $nm_extract) ||  \
+					$ar t /usr/lib/lib$net$_a) 2>/dev/null >> libc.list
+					if $contains socket libc.list >/dev/null 2>&1; then
+						d_socket="$define"
+						socketlib="-l$net"
+						case "$net" in
+						net)
+							echo "...but the Wollongong group seems to have hacked it in." >&4
+							sockethdr="-I/usr/netinclude"
+							;;
+						esac
+						echo "Found Berkeley sockets interface in lib$net." >& 4 
+?X: now check for advanced features
+						if $contains setsockopt libc.list >/dev/null 2>&1; then
+							d_oldsock="$undef"
+						else
+							echo "...using the old BSD 4.1c interface, rather than 4.2." >&4
+							d_oldsock="$define"
+						fi
+						break
+					fi
+				fi
+			done
+			if test "X$d_socket" != "X$define"; then
+			   echo "or anywhere else I see." >&4
+			   d_socket="$undef"
+			   d_oldsock="$undef"
+			fi
+		fi
+	fi
+fi
+
+@if HAS_SOCKETPAIR || d_sockpair
+: see if socketpair exists
+set socketpair d_sockpair
+eval $inlibc
+
+@end
+
+echo " "
+?X: these constants are known to be troublesomely defined as enums
+?X: so that ifdef will not work for detecting their presence.
+echo "Checking the availability of certain socket constants..." >& 4
+for ENUM in MSG_CTRUNC MSG_DONTROUTE MSG_OOB MSG_PEEK MSG_PROXY SCM_RIGHTS; do
+	enum=`$echo $ENUM|./tr '[A-Z]' '[a-z]'`
+	$cat >try.c <<EOF
+#include <sys/types.h>
+#include <sys/socket.h>
+int main() {
+    int i = $ENUM;
+}
+EOF
+	val="$undef"
+	set try; if eval $compile; then
+		val="$define"
+	fi
+	set d_${enum}; eval $setvar
+	$rm -f try.c try
+done
+
+set sendmsg d_sendmsg
+eval $inlibc
+
+set recvmsg d_recvmsg
+eval $inlibc
+
+echo " "
+$echo $n "Checking to see if your system supports struct msghdr...$c" >&4
+set d_msghdr_s msghdr msg_name define sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h
+eval $hasfield
+case "$d_msghdr_s" in
+"$define")      echo "Yup, it does." >&4
+                ;;
+*)              echo "Nope, it doesn't." >&4
+                ;;
+esac
+
+$echo $n "Checking to see if your system supports struct cmsghdr...$c" >&4
+set d_cmsghdr_s cmsghdr cmsg_len define sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h
+eval $hasfield
+case "$d_cmsghdr_s" in
+"$define")      echo "Yup, it does." >&4
+                ;;
+*)              echo "Nope, it doesn't." >&4
+                ;;
+esac
+

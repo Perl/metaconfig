@@ -1,0 +1,65 @@
+?RCS: $Id: vendorprefix.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999 Andy Dougherty
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: vendorprefix.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?MAKE:vendorprefix vendorprefixexp +oldvendorprefix: Getfile Loc Oldconfig cat prefix
+?MAKE:	-pick add $@ %<
+?S:vendorprefix:
+?S:	This variable holds the full absolute path of the directory below
+?S:	which the vendor will install add-on packages.
+?S:.
+?S:vendorprefixexp:
+?S:	This variable holds the full absolute path of the directory below
+?S:	which the vendor will install add-on packages.  Derived from vendorprefix.
+?S:.
+?S:oldvendorprefix:
+?S:	This variable is set non-null if the vendorprefix was previously defined
+?S:	and gets set to a new value. Used internally by Configure only.
+?S:.
+$cat <<EOM
+
+The installation process will also create a directory for
+vendor-supplied add-ons.  Vendors who supply perl with their system
+may find it convenient to place all vendor-supplied files in this
+directory rather than in the main distribution directory.  This will
+ease upgrades between binary-compatible maintenance versions of perl.
+
+The default answer (empty) should be fine for most people.
+This causes further questions about vendor add-ons to be skipped
+and no vendor-specific directories will be configured for perl.
+
+Of course you may also use these directories in whatever way you see
+fit.  For example, you might use them to access modules shared over a
+company-wide network.
+
+EOM
+fn=d~+
+rp='Installation prefix to use for vendor-supplied add-ons?'
+case "$vendorprefix" in
+'') dflt='' ;;
+*)  dflt=$vendorprefix ;;
+esac
+. ./getfile
+oldvendorprefix=''
+case "$vendorprefix" in
+'') ;;
+*)
+	case "$ans" in
+	"$prefix") ;;
+	*) oldvendorprefix="$prefix";;
+	esac
+	;;
+esac
+vendorprefix="$ans"
+vendorprefixexp="$ansexp"
+

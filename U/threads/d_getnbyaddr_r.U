@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getnbyaddr_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getnbyaddr_r:
+?S:	This variable conditionally defines the HAS_GETNETBYADDR_R symbol,
+?S:	which indicates to the C program that the getnetbyaddr_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETNETBYADDR_R:
+?C:	This symbol, if defined, indicates that the getnetbyaddr_r routine
+?C:	is available to getnetbyaddr re-entrantly.
+?C:.
+?H:#$d_getnbyaddr_r HAS_GETNETBYADDR_R		/**/
+?H:.
+?LINT:set d_getnbyaddr_r
+: see if getnetbyaddr_r exists
+set getnetbyaddr_r d_getnbyaddr_r
+eval $inlibc
+

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the WRITEME file.
+?RCS:
+?MAKE:d_writev: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_writev:
+?S:	This variable conditionally defines the HAS_WRITEV symbol, which
+?S:	indicates to the C program that the writev() routine is available.
+?S:.
+?C:HAS_WRITEV:
+?C:	This symbol, if defined, indicates that the writev routine is
+?C:	available to do scatter writes.
+?C:.
+?H:#$d_writev HAS_WRITEV		/**/
+?H:.
+?LINT:set d_writev
+: see if writev exists
+set writev d_writev
+eval $inlibc
+

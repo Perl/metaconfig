@@ -1,0 +1,28 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS:
+?RCS: This file is included with or a derivative work of a file included
+?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
+?RCS: In accordance with clause 7 of dist's modified Artistic License:
+?RCS: 
+?RCS:     You may distribute under the terms of either the GNU General Public
+?RCS:     License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:crosscompile: 
+?MAKE:	-pick add $@ %<
+?S:crosscompile:
+?S:	This variable conditionally defines the CROSSCOMPILE symbol
+?S:	which signifies that the build process is be a cross-compilation.
+?S:	This is normally set by hints files or from Configure command line.
+?S:.
+?C:CROSSCOMPILE:
+?C:	This symbol, if defined, signifies that we our
+?C:	build process is a cross-compilation.
+?C:.
+?H:#$crosscompile CROSSCOMPILE		/**/
+?H:.
+case "$crosscompile" in
+''|[nN]*) crosscompile="$undef" ;;
+esac
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_gethent_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_gethent_r:
+?S:	This variable conditionally defines the HAS_GETHOSTENT_R symbol,
+?S:	which indicates to the C program that the gethostent_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETHOSTENT_R:
+?C:	This symbol, if defined, indicates that the gethostent_r routine
+?C:	is available to gethostent re-entrantly.
+?C:.
+?H:#$d_gethent_r HAS_GETHOSTENT_R		/**/
+?H:.
+?LINT:set d_gethent_r
+: see if gethent_r exists
+set gethent_r d_gethent_r
+eval $inlibc
+

@@ -1,0 +1,78 @@
+?RCS: $Id: startperl.U,v 3.0 1993/08/18 12:09:50 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: This file is included with or a derivative work of a file included
+?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
+?RCS: In accordance with clause 7 of dist's modified Artistic License:
+?RCS: 
+?RCS:     You may distribute under the terms of either the GNU General Public
+?RCS:     License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: startperl.U,v $
+?RCS: Perl5 version -- I always have d_portable=define.
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:09:50  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:startperl: cat Myread sharpbang binexp test
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?X: This is different from dist's standard startperl.U unit because
+?X: we can't directly test #!/usr/local/bin/perl (or whatever) because
+?X: we haven't built and installed perl yet.
+?S:startperl:
+?S:	This variable contains the string to put on the front of a perl
+?S:	script to make sure (hopefully) that it runs with perl and not some
+?S:	shell. Of course, that leading line must be followed by the classical
+?S:	perl idiom:
+?S:		eval 'exec perl -S $0 ${1+"$@"}'
+?S:			if $running_under_some_shell;
+?S:	to guarantee perl startup should the shell execute the script. Note
+?S:	that this magic incatation is not understood by csh.
+?S:.
+?C:STARTPERL:
+?C:	This variable contains the string to put in front of a perl
+?C:	script to make sure (one hopes) that it runs with perl and not
+?C:	some shell.
+?C:.
+?H:#define STARTPERL "$startperl"		/**/
+?H:.
+: figure out how to guarantee perl startup
+case "$startperl" in
+'')
+	case "$sharpbang" in
+	*!)
+		$cat <<EOH
+
+I can use the #! construct to start perl on your system. This will
+make startup of perl scripts faster, but may cause problems if you
+want to share those scripts and perl is not in a standard place
+($binexp/perl) on all your platforms. The alternative is to force
+a shell by starting the script with a single ':' character.
+
+EOH
+		dflt="$binexp/perl"
+		rp='What shall I put after the #! to start up perl ("none" to not use #!)?'
+		. ./myread
+		case "$ans" in
+		none)	startperl=": # use perl";;
+		*)	startperl="#!$ans"
+			if $test 30 -lt `echo "$ans" | wc -c`; then
+				$cat >&4 <<EOM
+
+WARNING:  Some systems limit the #! command to 32 characters.
+If you experience difficulty running Perl scripts with #!, try
+installing Perl in a directory with a shorter pathname.
+
+EOM
+			fi ;;
+		esac
+		;;
+	*) startperl=": # use perl"
+		;;
+	esac
+	;;
+esac
+echo "I'll use $startperl to start perl scripts."
+

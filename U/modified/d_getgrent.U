@@ -1,0 +1,27 @@
+?RCS: $Id: d_getgrent.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_getgrent.U,v $
+?RCS:
+?MAKE:d_getgrent: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getgrent:
+?S:	This variable conditionally defines the HAS_GETGRENT symbol, which
+?S:	indicates to the C program that the getgrent() routine is available
+?S:	for sequential access of the group database.
+?S:.
+?C:HAS_GETGRENT:
+?C:	This symbol, if defined, indicates that the getgrent routine is
+?C:	available for sequential access of the group database.
+?C:.
+?H:#$d_getgrent HAS_GETGRENT		/**/
+?H:.
+?LINT:set d_getgrent
+: see if getgrent exists
+set getgrent d_getgrent
+eval $inlibc
+

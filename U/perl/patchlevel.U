@@ -1,0 +1,88 @@
+?RCS: $Id: patchlevel.U,v 3.0.1.1 1997/02/28 16:18:41 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: This file is included with or a derivative work of a file included
+?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
+?RCS: In accordance with clause 7 of dist's modified Artistic License:
+?RCS:
+?RCS:     You may distribute under the terms of either the GNU General Public
+?RCS:     License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: patchlevel.U,v $
+?RCS: Revision 3.0.1.1  1997/02/28  16:18:41  ram
+?RCS: patch61: added support for src.U
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:09:31  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:patchlevel version subversion apiversion: package baserev test \
+	rsrc echo n c awk
+?MAKE:	-pick add $@ %<
+?S:patchlevel:
+?S:	The patchlevel level of this package.
+?S:	The value of patchlevel comes from the patchlevel.h file.
+?S:.
+?S:subversion:
+?S:	The subversion level of this package.
+?S:	The value of subversion comes from the patchlevel.h file.
+?S:	This is unique to perl.
+?S:.
+?S:version:
+?S:	The full version number of this package.  This combines
+?S:	baserev, patchlevel, and subversion to get the full
+?S:	version number, including any possible subversions.  Care
+?S:	is taken to use the C locale in order to get something
+?S:	like 5.004 instead of 5,004.  This is unique to perl.
+?S:.
+?S:apiversion:
+?S:	This is a number which identifies the lowest version of perl
+?S:	to have an API (for XS extensions) compatible with the present
+?S:	version.  For example, for 5.005_01, the apiversion should be
+?S:	5.005, since 5.005_01 should be binary compatible with 5.005.
+?S:	This should probably be incremented manually somehow, perhaps
+?S:	from patchlevel.h.  For now, we'll guess maintenance subversions
+?S:	will retain binary compatibility.
+?S:.
+?LINT:extern LC_ALL
+?LINT:change LC_ALL
+?LINT:extern LANGUAGE
+?LINT:change LANGUAGE
+: get the patchlevel
+echo " "
+echo "Getting the current patchlevel..." >&4
+if $test -r $rsrc/patchlevel.h;then
+	patchlevel=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
+	subversion=`awk '/define[ 	]+PERL_SUBVERSION/ {print $3}' $rsrc/patchlevel.h`
+else
+	patchlevel=0
+	subversion=0
+fi
+$echo $n "(You have $package" $c
+case "$package" in
+"*$baserev")	;;
+*)		$echo $n " $baserev" $c ;;
+esac
+$echo $n " patchlevel $patchlevel" $c
+test 0 -eq "$subversion" || $echo $n " subversion $subversion" $c
+echo ".)"
+
+if test 0 -eq "$subversion"; then
+	version=`LC_ALL=C; export LC_ALL; \
+		 echo $baserev $patchlevel | \
+		 $awk '{ printf "%.3f\n", $1 + $2/1000.0 }'`
+else
+	version=`LC_ALL=C; export LC_ALL; \
+		 echo $baserev $patchlevel $subversion | \
+		 $awk '{ printf "%.5f\n", $1 + $2/1000.0 + $3/100000.0 }'`
+fi
+: Figure out perl API version.  Perhaps this should be in patchlevel.h
+if test "$subversion" -lt 50; then
+	apiversion=`LC_ALL=C; export LC_ALL; \
+		 LANGUAGE=C; export LANGUAGE; \
+		 echo $baserev $patchlevel | \
+		 $awk '{ printf "%.3f\n", $1 + $2/1000.0 }'`
+else
+	apiversion="$version"
+fi
+

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_gethbyaddr_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_gethbyaddr_r:
+?S:	This variable conditionally defines the HAS_GETHOSTBYADDR_R symbol,
+?S:	which indicates to the C program that the gethostbyaddr_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETHOSTBYADDR_R:
+?C:	This symbol, if defined, indicates that the gethostbyaddr_r routine
+?C:	is available to gethostbyaddr re-entrantly.
+?C:.
+?H:#$d_gethbyaddr_r HAS_GETHOSTBYADDR_R		/**/
+?H:.
+?LINT:set d_gethbyaddr_r
+: see if gethostbyaddr_r exists
+set gethostbyaddr_r d_gethbyaddr_r
+eval $inlibc
+

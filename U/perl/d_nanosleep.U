@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_nanosleep: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_nanosleep:
+?S:	This variable conditionally defines HAS_NANOSLEEP
+?S:	if nanosleep() is available to sleep with 1E-9 sec accuracy.
+?S:.
+?C:HAS_NANOSLEEP:
+?C:	This symbol, if defined, indicates that the nanosleep
+?C:	system call is available to sleep with 1E-9 sec accuracy.
+?C:.
+?H:#$d_nanosleep HAS_NANOSLEEP		/**/
+?H:.
+?LINT:set d_nanosleep
+: see if nanosleep exists
+set nanosleep d_nanosleep
+eval $inlibc
+

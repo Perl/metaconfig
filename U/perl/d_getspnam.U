@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_getspnam: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getspnam:
+?S:	This variable conditionally defines HAS_GETSPNAM if getspnam() is
+?S:	available to retrieve SysV shadow password entries by name.
+?S:.
+?C:HAS_GETSPNAM:
+?C:	This symbol, if defined, indicates that the getspnam system call is
+?C:	available to retrieve SysV shadow password entries by name.
+?C:.
+?H:#$d_getspnam HAS_GETSPNAM		/**/
+?H:.
+?LINT:set d_getspnam
+: see if getspnam exists
+set getspnam d_getspnam
+eval $inlibc
+

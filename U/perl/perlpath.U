@@ -1,0 +1,69 @@
+?RCS: $Id: perlpath.U,v 3.0.1.2 1995/09/25 09:17:04 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: This file is included with or a derivative work of a file included
+?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
+?RCS: In accordance with clause 7 of dist's modified Artistic License:
+?RCS: 
+?RCS:     You may distribute under the terms of either the GNU General Public
+?RCS:     License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: perlpath.U,v $
+?RCS:
+?RCS: Special perl5 unit -- we haven't installed perl yet.
+?RCS:
+?RCS: Revision 3.0.1.2  1995/09/25  09:17:04  ram
+?RCS: patch59: unit is now forced to the top of Configure, if possible
+?RCS:
+?RCS: Revision 3.0.1.1  1995/01/11  15:33:53  ram
+?RCS: patch45: can now use Loc variables since path stripping is deferred
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:09:32  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?X:
+?X: The purpose of this unit is to locate perl good enough to construct a #!
+?X:
+?MAKE:perlpath: cat Getfile Loc Myread Oldconfig binexp startperl
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:perlpath:
+?S:	This variable contains the eventual value of the PERLPATH symbol,
+?S:	which contains the name of the perl interpreter to be used in
+?S:	shell scripts and in the "eval 'exec'" idiom.
+?S:.
+?C:PERLPATH:
+?C:	This symbol contains the name of the perl interpreter to be
+?C:	used in shell scripts and in the "eval 'exec'" idiom.
+?C:.
+?H:#define PERLPATH "$perlpath"		/**/
+?H:.
+: figure best path for perl in scripts
+case "$perlpath" in
+'')
+	perlpath="$binexp/perl"
+	case "$startperl" in
+	*!*) ;;
+	*)
+		$cat <<EOH
+
+I will use the "eval 'exec'" idiom to start Perl on your system.
+I can use the full path of your Perl binary for this purpose, but
+doing so may cause problems if you want to share those scripts and
+Perl is not always in a standard place ($binexp/perl).
+
+EOH
+		dflt="$binexp/perl"
+		rp="What path shall I use in \"eval 'exec'\"?"
+		. ./myread
+		perlpath="$ans"
+		;;
+	esac
+	;;
+esac
+case "$startperl" in
+*!*)	;;
+*)	echo "I'll use $perlpath in \"eval 'exec'\"" ;;
+esac
+

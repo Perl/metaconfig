@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sched_setscheduler: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sched_setscheduler:
+?S:	This variable conditionally defines HAS_SCHED_SETSCHEDULER if
+?S:	sched_setscheduler() is available to set the scheduling policy.
+?S:.
+?C:HAS_SCHED_SETSCHEDULER:
+?C:	This symbol, if defined, indicates that the sched_setscheduler
+?C:	system call is available to set the scheduling policy.
+?C:.
+?H:#$d_sched_setscheduler HAS_SCHED_SETSCHEDULER		/**/
+?H:.
+?LINT:set d_sched_setscheduler
+: see if sched_setscheduler exists
+set sched_setscheduler d_sched_setscheduler
+eval $inlibc
+

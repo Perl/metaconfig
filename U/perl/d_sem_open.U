@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sem_open: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sem_open:
+?S:	This variable conditionally defines HAS_SEM_OPEN if sem_open() is
+?S:	available to open a POSIX semaphore.
+?S:.
+?C:HAS_SEM_OPEN:
+?C:	This symbol, if defined, indicates that the sem_open system call is
+?C:	available to open a POSIX semaphore.
+?C:.
+?H:#$d_sem_open HAS_SEM_OPEN		/**/
+?H:.
+?LINT:set d_sem_open
+: see if sem_open exists
+set sem_open d_sem_open
+eval $inlibc
+

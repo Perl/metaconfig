@@ -1,0 +1,28 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sched_get_priority_min: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sched_get_priority_min:
+?S:	This variable conditionally defines HAS_SCHED_GET_PRIORITY_MIN if
+?S:	sched_get_priority_min() is available to get the minimum scheduling
+?S:	priority.
+?S:.
+?C:HAS_SCHED_GET_PRIORITY_MIN:
+?C:	This symbol, if defined, indicates that the sched_get_priority_min
+?C:	system call is available to get the minimum scheduling priority.
+?C:.
+?H:#$d_sched_get_priority_min HAS_SCHED_GET_PRIORITY_MIN		/**/
+?H:.
+?LINT:set d_sched_get_priority_min
+: see if sched_get_priority_min exists
+set sched_get_priority_min d_sched_get_priority_min
+eval $inlibc
+

@@ -1,0 +1,24 @@
+?RCS: $Id: i_mntent.U,v $
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_mntent: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_mntent:
+?S:	This variable conditionally defines the I_MNTENT symbol, and indicates
+?S:	whether a C program should include <mntent.h>.
+?S:.
+?C:I_MNTENT:
+?C:	This symbol, if defined, indicates that <mntent.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_mntent	I_MNTENT		/**/
+?H:.
+?LINT:set i_mntent
+: see if this is a mntent.h system
+set mntent.h i_mntent
+eval $inhdr
+

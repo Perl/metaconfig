@@ -1,0 +1,24 @@
+?RCS: $Id: i_netdb.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_netdb: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_netdb:
+?S:	This variable conditionally defines the I_NETDB symbol, and indicates
+?S:	whether a C program should include <netdb.h>.
+?S:.
+?C:I_NETDB:
+?C:	This symbol, if defined, indicates that <netdb.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_netdb I_NETDB		/**/
+?H:.
+?LINT:set i_netdb
+: see if this is a netdb.h system
+set netdb.h i_netdb
+eval $inhdr
+

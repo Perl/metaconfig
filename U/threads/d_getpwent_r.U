@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getpwent_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getpwent_r:
+?S:	This variable conditionally defines the HAS_GETPWENT_R symbol,
+?S:	which indicates to the C propwam that the getpwent_r()
+?S:	routine is available.
+?S:.
+?C:HAS_GETPWENT_R:
+?C:	This symbol, if defined, indicates that the getpwent_r routine
+?C:	is available to getpwent re-entrantly.
+?C:.
+?H:#$d_getpwent_r HAS_GETPWENT_R		/**/
+?H:.
+?LINT:set d_getpwent_r
+: see if getpwent_r exists
+set getpwent_r d_getpwent_r
+eval $inlibc
+

@@ -1,0 +1,27 @@
+?RCS: $Id: d_setgrent.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_setgrent.U,v $
+?RCS:
+?MAKE:d_setgrent: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_setgrent:
+?S:	This variable conditionally defines the HAS_SETGRENT symbol, which
+?S:	indicates to the C program that the setgrent() routine is available
+?S:	for initializing sequential access to the group database.
+?S:.
+?C:HAS_SETGRENT:
+?C:	This symbol, if defined, indicates that the setgrent routine is
+?C:	available for initializing sequential access of the group database.
+?C:.
+?H:#$d_setgrent HAS_SETGRENT		/**/
+?H:.
+?LINT:set d_setgrent
+: see if setgrent exists
+set setgrent d_setgrent
+eval $inlibc
+

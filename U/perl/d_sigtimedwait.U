@@ -1,0 +1,29 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sigtimedwait: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sigtimedwait:
+?S:	This variable conditionally defines HAS_SIGTIMEDWAIT
+?S:	if sigtimedwait() is available to wait a signal and additional
+?S:	information, with a timeout.
+?S:.
+?C:HAS_SIGTIMEDWAIT:
+?C:	This symbol, if defined, indicates that the sigtimedwait
+?C:	system call is available to wait a signal and additional information,
+?C:	with a timeout.
+?C:.
+?H:#$d_sigtimedwait HAS_SIGTIMEDWAIT		/**/
+?H:.
+?LINT:set d_sigtimedwait
+: see if sigtimedwait exists
+set sigtimedwait d_sigtimedwait
+eval $inlibc
+

@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:i_syssecrt: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_syssecrt:
+?S:     This variable conditionally defines the I_SYS_SECURITY symbol,
+?S:     and indicates whether a C program should include <sys/security.h>.
+?S:.
+?C:I_SYS_SECURITY:
+?C:     This symbol, if defined, indicates to the C program that it should
+?C:     include <sys/security.h>.
+?C:.
+?H:#$i_syssecrt   I_SYS_SECURITY	/**/
+?H:.
+?LINT:set i_syssecrt
+: see if sys/security.h is available
+set sys/security.h i_syssecrt
+eval $inhdr
+
