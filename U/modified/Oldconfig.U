@@ -181,6 +181,7 @@ EOM
 	$test -f /dnix && osname=dnix
 	$test -f /lynx.os && osname=lynxos
 	$test -f /unicos && osname=unicos && osvers=`$uname -r`
+	$test -f /unicosmk && osname=unicosmk && osvers=`$uname -r`
 	$test -f /unicosmk.ar && osname=unicosmk && osvers=`$uname -r`
 	$test -f /bin/mips && /bin/mips && osname=mips
 	$test -d /NextApps && set X `hostinfo | grep 'NeXT Mach.*:' | \
