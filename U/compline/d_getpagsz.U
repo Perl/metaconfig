@@ -15,92 +15,22 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:14  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_getpagsz pagesize: Compile Oldconfig Myread Inlibc cat contains \
+?MAKE:d_getpagsz: Compile Oldconfig Myread Inlibc cat contains \
 	rm Findhdr +cc +optimize +ccflags +ldflags +libs
 ?MAKE:	-pick add $@ %<
 ?S:d_getpagsz:
 ?S:	This variable conditionally defines HAS_GETPAGESIZE if getpagesize()
 ?S:	is available to get the system page size.
 ?S:.
-?S:pagesize (pagsize):
-?S:	This variable holds the size in bytes of a system page.
-?S:.
 ?C:HAS_GETPAGESIZE (GETPAGESIZE):
 ?C:	This symbol, if defined, indicates that the getpagesize system call
 ?C:	is available to get system page size, which is the granularity of
 ?C:	many memory management calls.
 ?C:.
-?X: Don't name it PAGESIZE, this is sometimes used by <sys/param.h>
-?C:PAGESIZE_VALUE (PAGSIZE):
-?C:	This symbol holds the size in bytes of a system page (obtained via
-?C:	the getpagesize() system call at configuration time or asked to the
-?C:	user if the system call is not available).
-?C:.
 ?H:#$d_getpagsz HAS_GETPAGESIZE		/**/
-?H:#define PAGESIZE_VALUE $pagesize	/* System page size, in bytes */
 ?H:.
-?F:!page
-?T:guess
 ?LINT:set d_getpagsz
 : see if getpagesize exists
 set getpagesize d_getpagsz
 eval $inlibc
 
-@if pagesize || PAGESIZE_VALUE
-: determine the system page size
-echo " "
-guess=' (OK to guess)'
-case "$pagesize" in
-'')
-	$cat >page.c <<EOP
-extern int getpagesize();
-int main()
-{
-	printf("%d\n", getpagesize());
-}
-EOP
-	echo "Computing the granularity of memory management calls..." >&4
-	dflt='4096'
-	case "$d_getpagsz" in
-	"$define")
-		set page
-		if eval $compile_ok; then
-			dflt=`./page`
-			guess=''
-		else
-			echo "(I can't seem to compile the test program--guessing)"
-		fi
-		;;
-	*)
-		if $cc $optimize $ccflags $ldflags -o page page.c $libs -lPW >/dev/null 2>&1; then
-			dflt=`./page`
-			guess=''
-			echo "(For your eyes only: I used the getpagesize() from -lPW.)"
-		else
-			if $contains PAGESIZE `./findhdr sys/param.h` >/dev/null 2>&1; then
-				$cat >page.c <<EOP
-#include <sys/param.h>
-int main()
-{
-	printf("%d\n", PAGESIZE);
-}
-EOP
-				set page
-				if eval $compile; then
-					dflt=`./page`
-					guess=''
-					echo "(Using value of PAGESIZE found in <sys/param.h>.)"
-				fi
-			fi
-		fi
-		;;
-	esac
-	;;
-*) dflt="$pagesize"; guess='';;
-esac
-rp="What is the system page size, in bytes$guess?"
-. ./myread
-pagesize=$ans
-$rm -f page.c page
-
-@end
