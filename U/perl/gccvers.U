@@ -29,6 +29,7 @@
 ?LINT:extern ldflags
 ?LINT:extern ccname
 ?LINT:change ccname
+?LINT:change ccflags
 ?X: Check if they have gcc in any guise.  
 echo " "
 echo "Checking for GNU cc in disguise and/or its version number..." >&4
@@ -102,5 +103,14 @@ EOM
 esac
 case "$ccname" in
 '') ccname="$cc" ;;
+esac
+
+case "$gccversion" in
+'') ;;
+*)  case "$ccflags" in
+    *-Wall*) ;;
+    *) ccflags="$ccflags -Wall -ansi" ;;
+    esac
+    ;;
 esac
 

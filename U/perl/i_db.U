@@ -20,8 +20,10 @@
 ?RCS: Revision 3.0.1.1  1994/08/29  16:21:50  ram
 ?RCS: patch32: created by ADO
 ?RCS:
-?MAKE:i_db db_hashtype db_prefixtype: Inhdr +cc +ccflags rm contains cat \
-		Compile d_const libs sed
+?MAKE:i_db db_hashtype db_prefixtype \
+	db_version_major db_version_minor db_version_patch : \
+	Inhdr +cc +ccflags rm contains cat \
+	Compile d_const libs sed
 ?MAKE:	-pick add $@ %<
 ?S:i_db:
 ?S:	This variable conditionally defines the I_DB symbol, and indicates
@@ -37,6 +39,20 @@
 ?S:	in the <db.h> header file.  In older versions of DB, it was
 ?S:	int, while in newer ones it is size_t.
 ?S:.
+?S:db_version_major:
+?S:	This variable contains the major version number of
+?S:	Berkeley DB found in the <db.h> header file.
+?S:.
+?S:db_version_minor:
+?S:	This variable contains the minor version number of
+?S:	Berkeley DB found in the <db.h> header file.
+?S:	For DB version 1 this is always 0.
+?S:.
+?S:db_version_patch:
+?S:	This variable contains the patch version number of
+?S:	Berkeley DB found in the <db.h> header file.
+?S:	For DB version 1 this is always 0.
+?S:.
 ?C:I_DB:
 ?C:	This symbol, if defined, indicates to the C program that it should
 ?C:	include Berkeley's DB include file <db.h>.
@@ -51,10 +67,28 @@
 ?C:	in the <db.h> header file.  In older versions of DB, it was
 ?C:	int, while in newer ones it is size_t.
 ?C:.
+?C:DB_VERSION_MAJOR_CFG:
+?C:	This symbol, if defined, defines the major version number of
+?C:	Berkeley DB found in the <db.h> header when Perl was configured.
+?C:.
+?C:DB_VERSION_MINOR_CFG:
+?C:	This symbol, if defined, defines the minor version number of
+?C:	Berkeley DB found in the <db.h> header when Perl was configured.
+?C:	For DB version 1 this is always 0.
+?C:.
+?C:DB_VERSION_PATCH_CFG:
+?C:	This symbol, if defined, defines the patch version number of
+?C:	Berkeley DB found in the <db.h> header when Perl was configured.
+?C:	For DB version 1 this is always 0.
+?C:.
 ?H:#$i_db I_DB		/**/
 ?H:#define DB_Hash_t	$db_hashtype		/**/
 ?H:#define DB_Prefix_t	$db_prefixtype  	/**/
+?H:#define DB_VERSION_MAJOR_CFG	$db_version_major  	/**/
+?H:#define DB_VERSION_MINOR_CFG	$db_version_minor  	/**/
+?H:#define DB_VERSION_PATCH_CFG	$db_version_patch  	/**/
 ?H:.
+?F:!try
 ?LINT:set i_db
 ?LINT:change libs
 : see if this is a db.h system
@@ -74,13 +108,19 @@ $define)
 #include <sys/types.h>
 #include <stdio.h>
 #include <db.h>
-int main()
+int main(int argc, char *argv[])
 {
 #ifdef DB_VERSION_MAJOR	/* DB version >= 2 */
     int Major, Minor, Patch ;
     unsigned long Version ;
     (void)db_version(&Major, &Minor, &Patch) ;
-    printf("You have Berkeley DB Version 2 or greater\n");
+    if (argc == 2) {
+        printf("%d %d %d %d %d %d\n",
+               DB_VERSION_MAJOR, DB_VERSION_MINOR, DB_VERSION_PATCH,
+               Major, Minor, Patch);
+        exit(0);
+    }
+    printf("You have Berkeley DB Version 2 or greater.\n");
 
     printf("db.h is from Berkeley DB Version %d.%d.%d\n",
 		DB_VERSION_MAJOR, DB_VERSION_MINOR, DB_VERSION_PATCH);
@@ -89,11 +129,11 @@ int main()
 
     /* check that db.h & libdb are compatible */
     if (DB_VERSION_MAJOR != Major || DB_VERSION_MINOR != Minor || DB_VERSION_PATCH != Patch) {
-	printf("db.h and libdb are incompatible\n") ;
+	printf("db.h and libdb are incompatible.\n") ;
         exit(3);	
     }
 
-    printf("db.h and libdb are compatible\n") ;
+    printf("db.h and libdb are compatible.\n") ;
 
     Version = DB_VERSION_MAJOR * 1000000 + DB_VERSION_MINOR * 1000
 		+ DB_VERSION_PATCH ;
@@ -101,14 +141,18 @@ int main()
     /* needs to be >= 2.3.4 */
     if (Version < 2003004) {
     /* if (DB_VERSION_MAJOR == 2 && DB_VERSION_MINOR == 0 && DB_VERSION_PATCH < 5) { */
-	printf("but Perl needs Berkeley DB 2.3.4 or greater\n") ;
+	printf("Perl needs Berkeley DB 2.3.4 or greater.\n") ;
         exit(2);	
     }
 
     exit(0);
 #else
 #if defined(_DB_H_) && defined(BTREEMAGIC) && defined(HASHMAGIC)
-    printf("You have Berkeley DB Version 1\n");
+    if (argc == 2) {
+        printf("1 0 0\n");
+        exit(0);
+    }
+    printf("You have Berkeley DB Version 1.\n");
     exit(0);	/* DB version < 2: the coast is clear. */
 #else
     exit(1);	/* <db.h> not Berkeley DB? */
@@ -119,6 +163,10 @@ EOCP
 	set try
 	if eval $compile_ok && ./try; then
 		echo 'Looks OK.' >&4
+		set `./try 1`
+		db_version_major=$1
+		db_version_minor=$2
+		db_version_patch=$3
 	else
 		echo "I can't use Berkeley DB with your <db.h>.  I'll disable Berkeley DB." >&4
 		i_db=$undef

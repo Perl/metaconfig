@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_realpath: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_realpath:
+?S:	This variable conditionally defines the HAS_REALPATH symbol, which
+?S:	indicates to the C program that the realpath() routine is available.
+?S:.
+?C:HAS_REALPATH:
+?C:	This symbol, if defined, indicates that the realpath routine is
+?C:	available to do resolve paths.
+?C:.
+?H:#$d_realpath HAS_REALPATH		/**/
+?H:.
+?LINT:set d_realpath
+: see if realpath exists
+set realpath d_realpath
+eval $inlibc
+
