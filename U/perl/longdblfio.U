@@ -141,10 +141,6 @@ EOCP
 fi
 
 if $test X"$sPRIfldbl" = X; then
-	echo "Cannot figure out how to print long doubles." >&4
-fi
-
-if $test X"$sPRIfldbl" = X; then
 	$cat >try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
@@ -186,6 +182,10 @@ EOCP
 			;;
 		esac
 	fi
+fi
+
+if $test X"$sPRIfldbl" = X; then
+	echo "Cannot figure out how to print long doubles." >&4
 fi
 
 $rm -f try try.*
