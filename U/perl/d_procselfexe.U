@@ -1,30 +1,57 @@
-?MAKE:d_procselfexe: Oldconfig Setvar rm ls contains issymlink d_readlink
+?MAKE:d_procselfexe procselfexe: \
+	Oldconfig Setvar rm ls contains issymlink d_readlink
 ?MAKE:	-pick add $@ %<
 ?S:d_procselfexe:
-?S:	Defined if /proc/self/exe is symlink to executing program.
+?S:	Defined if $procselfexe is symlink to the absolute
+?S:	pathname of the executing program.
+?S:.
+?S:procselfexe:
+?S:	If d_procselfexe is defined, $procselfexe is the filename
+?S:	of the symbolic link pointing to the absolute pathname of
+?S:	the executing program.
 ?S:.
 ?C:HAS_PROCSELFEXE:
-?C:	This symbol is defined if /proc/self/exe is a symlink
-?C:	to the executing program.
+?C:	This symbol is defined if PROCSELFEXE_PATH is a symlink
+?C:	to the absolute pathname of the executing program.
+?C:.
+?C:PROCSELFEXE_PATH:
+?C:	If HAS_PROCSELFEXE is defined this symbol is the filename
+?C:	of the symbolic link pointing to the absolute pathname of
+?C:	the executing program.
 ?C:.
 ?H:#$d_procselfexe HAS_PROCSELFEXE	/**/
+?H:?%<:#if defined(HAS_PROCSELFEXE) && !defined(PROCSELFEXE_PATH)
+?H:?%<:#define PROCSELFEXE_PATH	$procselfexe	/**/
+?H:?%<:#endif
 ?H:.
 ?LINT: set d_procselfexe
+?LINT: set procselfexe
 echo " "
-echo "Checking for /proc/self/exe..." >&4
+procselfexe=''
 val="$undef"
 case "$d_readlink" in
 "$define")
 	if $issymlink /proc/self/exe ; then
 		$ls -l /proc/self/exe > reflect
 		if $contains /`basename $ls` reflect >/dev/null 2>&1; then
-			val="$define"
 			echo "You have Linux-like /proc/self/exe."
+			procselfexe=/proc/self/exe
+			val="$define"
+			break
 		fi
-		$rm reflect
+	fi
+	if $issymlink /proc/curproc/file ; then
+		$ls -l /proc/curproc/file > reflect
+		if $contains /`basename $ls` reflect >/dev/null 2>&1; then
+			echo "You have BSD-like /proc/curproc/file."
+			procselfexe=/proc/curproc/file
+			val="$define"
+			break
+		fi
 	fi
 	;;
 esac
+$rm reflect
 set d_procselfexe
 eval $setvar
 
