@@ -1,0 +1,65 @@
+?RCS:
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?X: 
+?X: This unit produces a bit of shell code that must be dotted in order
+?X: to make quick check on whether the current C compiler is working.
+?X:	
+?MAKE:Mksymlinks: lns testsyml src
+?MAKE:	-pick add $@ %<
+?T: directory filename
+?LINT:extern mksymlinks
+
+case "$mksymlinks" in
+$define|true|[yY]*)
+	case "$src" in
+	''|'.')	echo "Cannot create symlinks in the original directory." >&4
+		exit 1
+		;;
+	*)	case "$lns:$testsyml" in
+		*"ln -s:-"?)
+			echo "Creating the symbolic links..." >&4
+			echo "(First creating the subdirectories...)" >&4
+			cd ..
+			awk '{print $1}' $src/MANIFEST | grep / | sed 's:/[^/]*$::' | sort -u | while true; do
+				read directory
+				test -z "$directory" && break
+				mkdir -p $directory
+			done
+			# Sanity check 1.
+			if test ! -d t/base; then
+				echo "Failed to create the subdirectories.  Aborting." >&4
+				exit 1
+			fi
+			echo "(Then creating the symlinks...)" >&4
+			awk '{print $1}' $src/MANIFEST | while true; do
+				read filename
+				test -z "$filename" && break
+				if test -f $filename; then
+					if test $testsyml $filename; then
+						rm -f $filename
+					fi
+				fi
+				if test -f $filename; then
+					echo "$filename already exists, not symlinking."
+				else
+					ln -s $src/$filename $filename
+				fi
+			done
+			# Sanity check 2.
+			if test ! -f t/base/commonsense.t; then
+				echo "Failed to create the symlinks.  Aborting." >&4
+				exit 1
+			fi
+			cd UU
+			;;
+		*)	echo "(I cannot figure out how to do symbolic links, ignoring mksymlinks)." >&4
+			;;
+		esac
+		;;
+	esac
+	;;
+esac
+

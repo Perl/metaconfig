@@ -57,7 +57,8 @@
 ?X: This unit tries to remember what we did last time we ran Configure, mostly
 ?X: for the sake of setting defaults.
 ?X:
-?MAKE:Oldconfig hint myuname osname osvers: Instruct Myread uname Checkcc \
+?MAKE:Oldconfig hint myuname osname osvers: Instruct Myread uname \
+	Checkcc Mksymlinks \
 	sh awk sed test cat rm lns tr n c contains Loc Options Tr src trnl ln
 ?MAKE:	-pick wipe $@ %<
 ?S:myuname:

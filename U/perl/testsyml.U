@@ -23,17 +23,29 @@
 ?S:.
 : determine whether symbolic links are supported
 echo " "
-$lns blurfl sym
-if $test "X$testsyml" != X -a -h blurfl sym > /dev/null 2>&1 ; then
-	testsyml=-h
-fi
-if $test "X$testsyml" != X -a -L blurfl sym > /dev/null 2>&1 ; then
-	testsyml=-L
-fi
-if $test "X$testsyml" != X; then
-	echo "You can test for symbolic links with $testsyml." >&4
-else
-	echo "I do not know how you can test for symbolic links.." >&4
-fi
-$rm -f blurfl sym
+case "$lns" in
+*"ln -s")
+	echo "Checking how to test for symbolic links..." >&4
+	$lns blurfl sym
+	if $test "X$testsyml" = X; then
+		if $test -h sym 2>/dev/null; then
+			testsyml=-h
+		fi
+	fi
+	if $test "X$testsyml" = X; then
+		if $test -L sym 2>/dev/null; then
+			testsyml=-L
+		fi
+	fi
+	if $test "X$testsyml" != X; then
+		echo "You can test for symbolic links with $testsyml." >&4
+	else
+		echo "I do not know how you can test for symbolic links." >&4
+	fi
+	$rm -f blurfl sym
+	;;
+*)	echo "No symbolic links, so not testing for their testing..." >&4
+	;;
+esac
+echo " "
 
