@@ -11,10 +11,12 @@
 ?S:usefaststdio:
 ?S:	This variable conditionally defines the USE_FAST_STDIO symbol,
 ?S:	and indicates that Perl should be built to use 'fast stdio'.
+?S:	Defaults to define in Perls 5.8 and earlier, to undef later.
 ?S:.
 ?C:USE_FAST_STDIO:
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use 'fast stdio'.
+?C:	Defaults to define in Perls 5.8 and earlier, to undef later.
 ?C:.
 ?H:?%<:#ifndef USE_FAST_STDIO
 ?H:?%<:#$usefaststdio	USE_FAST_STDIO		/**/
