@@ -69,9 +69,7 @@
 ?INIT:loclibpth="$loclibpth /opt/gnu/lib /usr/GNU/lib /opt/GNU/lib"
 ?INIT:
 ?INIT:: general looking path for locating libraries
-?X:	I don't know why the large & small libraries are in this order.
-?INIT:glibpth="/usr/lib/large /lib /usr/lib $xlibpth"
-?INIT:glibpth="$glibpth /lib/large /usr/lib/small /lib/small"
+?INIT:glibpth="/lib /usr/lib $xlibpth"
 ?INIT:glibpth="$glibpth /usr/ccs/lib /usr/ucblib /usr/local/lib"
 ?X:	/shlib is for Digital Unix 4.0
 ?X:	/usr/shlib is for OSF/1 systems.
