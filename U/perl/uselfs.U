@@ -18,7 +18,9 @@
 ?C:	should be used when available.  The USE_64_BITS symbol will
 ?C:	also be turned on if necessary.
 ?C:.
-?H:#$uselargefiles	USE_LARGE_FILES		/**/
+?H:?%<:#ifndef USE_LARGE_FILES
+?H:?%<:#$uselargefiles	USE_LARGE_FILES		/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:set uselargefiles
 ?LINT:extern use64bits

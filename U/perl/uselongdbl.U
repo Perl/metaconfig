@@ -16,7 +16,9 @@
 ?C:	This symbol, if defined, indicates that long doubles should
 ?C:	be used when available.
 ?C:.
-?H:#$uselongdouble	USE_LONG_DOUBLE		/**/
+?H:?%<:#ifndef USE_LONG_DOUBLE
+?H:?%<:#$uselongdouble	USE_LONG_DOUBLE		/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:set uselongdouble
 ?LINT:extern ccflags
@@ -27,11 +29,15 @@
 cat <<EOM
 
 Perl can be built to take advantage of long doubles which
-(if available) may give more accuracy and range for floating point
-numbers.  To do so, Configure must be run with -Duselongdouble.
+(if available) may give more accuracy and range for floating point numbers.
 
 If this doesn't make any sense to you, just accept the default 'n'.
 EOM
+
+case "$ccflags" in
+*-DUSE_LONG_DOUBLE*|*-DUSE_MORE_BITS*) uselongdouble="$define" ;;
+esac
+
 case "$uselongdouble" in
 $define|true|[yY]*)	dflt='y';;
 *) dflt='n';;
@@ -46,7 +52,11 @@ set uselongdouble
 eval $setvar
 
 case "$uselongdouble" in
-"$define"|true|[yY]*)
+true|[yY]*) uselongdouble="$define" ;;
+esac
+
+case "$uselongdouble" in
+$define)
 : Look for a hint-file generated 'call-back-unit'.  If the
 : user has specified that long doubles should be used,
 : we may need to set or change some other defaults.

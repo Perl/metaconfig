@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_fs_data_s: Hasstruct i_sysparam i_sysmount i_systypes Setvar
+?MAKE:d_fs_data_s: Hasstruct i_sysparam i_sysmount i_systypes Setvar echo n c
 ?MAKE:	-pick add $@ %<
 ?S:d_fs_data_s:
 ?S:	This variable conditionally defines the HAS_STRUCT_FS_DATA symbol,
@@ -20,7 +20,7 @@
 ?LINT:set d_fs_data_s
 
 echo " "
-echo "Checking to see if your system supports struct fs_data..." >&4
+$echo $n "Checking to see if your system supports struct fs_data..." $c >&4
 set d_fs_data_s fs_data $i_systypes sys/types.h $i_sysparam sys/param.h $i_sysmount sys/mount.h
 eval $hasstruct
 case "$d_fs_data_s" in

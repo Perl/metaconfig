@@ -22,7 +22,9 @@
 ?C:	be used when available.  If not defined, the native default interfaces
 ?C:	will be used (be they 32 or 64 bits).
 ?C:.
-?H:#$use64bits	USE_64_BITS		/**/
+?H:?%<:#ifndef USE_64_BITS
+?H:?%<:#$use64bits	USE_64_BITS		/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:set use64bits
 ?LINT:set archname64

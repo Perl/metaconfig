@@ -7,8 +7,8 @@
 ?RCS:
 ?RCS: $Log: d_longdbl.U,v $
 ?RCS:
-?MAKE:d_longdbl longdblsize: Compile Setvar Myread +cc +ccflags +optimize \
-	echo n c cat rm test doublesize
+?MAKE:d_longdbl longdblsize: Compile Setvar Myread \
+	echo n c cat rm test doublesize exe_ext
 ?MAKE:	-pick add $@ %<
 ?S:d_longdbl:
 ?S:	This variable conditionally defines HAS_LONG_DOUBLE if 
@@ -37,14 +37,15 @@
 ?F:!try
 : check for long doubles
 echo " "
-$echo $n "Checking to see if your system supports long double...$c" >&4
-echo 'long double foo() { long double x; x = 7.0; return x; }' > try.c
-if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
+$echo $n "Checking to see if your system supports long double..." $c >&4
+echo 'int main() { long double x = 7.0; }' > try.c
+set try
+if eval $compile; then
 	val="$define"
-	echo " Yup, it does." >&4
+	echo " Yes, it does." >&4
 else
 	val="$undef"
-	echo " Nope, it doesn't." >&4
+	echo " No, it doesn't." >&4
 fi
 $rm try.*
 set d_longdbl
@@ -56,7 +57,7 @@ eval $setvar
 case "${d_longdbl}${longdblsize}" in
 $define)
 	echo " "
-	$echo $n "Checking to see how big your long doubles are...$c" >&4
+	$echo $n "Checking to see how big your long doubles are..." $c >&4
 	$cat >try.c <<'EOCP'
 #include <stdio.h>
 int main()
@@ -67,8 +68,9 @@ EOCP
 	set try
 ?X:	Don't use compile_ok because some compilers warn you that they have
 ?X:	'long double' as just 'double'.
+	set try
 	if eval $compile; then
-		longdblsize=`./try`
+		longdblsize=`./try$exe_ext`
 		$echo " $longdblsize bytes." >&4
 	else
 		dflt='8'
@@ -83,6 +85,6 @@ EOCP
 	fi	
 	;;
 esac
-$rm -f try.c try
+$rm -f try.* try
 @end
 

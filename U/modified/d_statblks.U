@@ -23,9 +23,9 @@
 ?C:	This symbol is defined if this system has a stat structure declaring
 ?C:	st_blksize and st_blocks.
 ?C:.
-?H:#ifndef USE_STAT_BLOCKS
-?H:#$d_statblks USE_STAT_BLOCKS 	/**/
-?H:#endif
+?H:?%<:#ifndef USE_STAT_BLOCKS
+?H:?%<:#$d_statblks USE_STAT_BLOCKS 	/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:set d_statblks
 

@@ -16,7 +16,9 @@
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use multiplicity.
 ?C:.
-?H:#$usemultiplicity	MULTIPLICITY		/**/
+?H:?%<:#ifndef MULTIPLICTY
+?H:?%<:#$usemultiplicity	MULTIPLICITY		/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:set usemultiplicity
 ?INIT:: set usemultiplicity on the Configure command line to enable multiplicity.

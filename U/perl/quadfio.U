@@ -7,8 +7,7 @@
 ?RCS:
 ?MAKE:d_PRId64 d_PRIi64 d_PRIu64 d_PRIo64 d_PRIx64 d_PRIX64 \
 	sPRId64 sPRIi64 sPRIu64 sPRIo64 sPRIx64 sPRIX64: \
-	i_inttypes d_int64t d_longlong longlongsize longsize intsize \
-	test cat rm Setvar Compile exe_ext
+	quadtype i_inttypes test cat rm Setvar Compile exe_ext
 ?MAKE:	-pick add $@ %<
 ?S:d_PRId64:
 ?S:	This variable conditionally defines the PERL_PRId64 symbol, which
@@ -91,15 +90,14 @@
 ?H:#$d_PRIx64 PERL_PRIX64	$sPRIX64	/**/
 ?H:.
 ?F:!try
-?T:yyy quad
+?T:yyy
 echo " "
 
-if $test X"$intsize" = X8 -o X"$longsize" = X8 -o X"$d_int64t" = X"$define" -o X"$d_longlong" = X"$define"; then
+if $test X"$quadtype" != X; then
 
 echo "Checking how to print 64-bit integers..." >&4
 
-if $test X"$sPRId64" = X -a X"$intsize" = X8; then
-        quad=int
+if $test X"$sPRId64" = X -a X"$quadtype" = Xint; then
 	$cat >try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
@@ -121,8 +119,7 @@ EOCP
 	fi
 fi
 
-if $test X"$sPRId64" = X -a X"$longsize" = X8; then
-        quad=long
+if $test X"$sPRId64" = X -a X"$quadtype" = Xlong; then
 	$cat >try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
@@ -144,8 +141,7 @@ EOCP
 	fi
 fi
 
-if $test X"$sPRId64" = X -a X"$i_inttypes.h" = X"$define" -a X"$d_int64t" = X"$define"; then
-        quad=int64_t
+if $test X"$sPRId64" = X -a X"$i_inttypes.h" = X"$define" -a X"$quadtype" = Xint64_t; then
 	$cat >try.c <<'EOCP'
 #include <sys/types.h>
 #include <inttypes.h>
@@ -168,8 +164,7 @@ EOCP
 	fi
 fi
 
-if $test X"$sPRId64" = X -a X"$d_longlong" = X"$define" -a X"$longlongsize" = X8; then
-        quad="long long"
+if $test X"$sPRId64" = X -a X"$quadtype" = X"long long"; then
 	$cat >try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
@@ -191,12 +186,12 @@ EOCP
 	fi
 fi
 
-if $test X"$sPRId64" = X -a X"$quad" != X; then
+if $test X"$sPRId64" = X -a X"$quadtype" != X; then
 	$cat >try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
-  $quad q = 12345678901;
+  $quadtype q = 12345678901;
   printf("%Ld\n", q);
 }
 EOCP
@@ -207,18 +202,18 @@ EOCP
 		12345678901)
 			sPRId64='"Ld"'; sPRIi64='"Li"'; sPRIu64='"Lu"';
                 	sPRIo64='"Lo"'; sPRIx64='"Lx"'; sPRIX64='"LX"';
-			echo "We will use %lld."
+			echo "We will use %Ld."
 			;;
 		esac
 	fi
 fi
 
-if $test X"$sPRId64" = X -a X"$quad" != X; then
+if $test X"$sPRId64" = X -a X"$quadtype" != X; then
 	$cat >try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
-  $quad q = 12345678901;
+  $quadtype q = 12345678901;
   printf("%qd\n", q);
 }
 EOCP
@@ -241,7 +236,7 @@ fi
 
 $rm -f try try.*
 
-fi # intsize -o longsize -o d_int64t -o d_longlong
+fi
 
 case "$sPRId64" in
 '')	d_PRId64="$undef"; d_PRIi64="$undef"; d_PRIu64="$undef"; 

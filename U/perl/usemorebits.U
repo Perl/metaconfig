@@ -17,7 +17,9 @@
 ?C:	This symbol, if defined, indicates that 64-bit interfaces and
 ?C:	long doubles should be used when available.
 ?C:.
-?H:#$usemorebits	USE_MORE_BITS		/**/
+?H:?%<:#ifndef USE_MORE_BITS
+?H:?%<:#$usemorebits	USE_MORE_BITS		/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:extern use64bits
 ?LINT:change use64bits

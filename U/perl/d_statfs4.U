@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_statfs4: \
 	d_statfs Compile rm cat i_sysparam i_sysmount i_systypes \
-	i_sysvfs i_sysstatfs Setvar
+	i_sysvfs i_sysstatfs Setvar echo n c
 ?MAKE:	-pick add $@ %<
 ?S:d_statfs4:
 ?S:	This variable conditionally defines the HAS_STATFS symbol, which
@@ -45,7 +45,7 @@ define)
 #   include <sys/statfs.h>
 #endif
 EOCP
-	echo "Checking to see if your statfs can handle four arguments..." >&4
+	$echo $n "Checking to see if your statfs can handle four arguments..." $c >&4
 	$cat >try.c <<EOCP
 #include "try.h"
 int main() { struct statfs sf; statfs(".", &sf, sizeof(sf), 0) };

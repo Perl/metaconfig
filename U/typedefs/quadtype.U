@@ -1,0 +1,98 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:quadtype uquadtype quadcase: \
+	longsize intsize d_longlong longlongsize uselonglong d_int64t \
+	Inhdr Setvar
+?MAKE:	-pick add $@ %<
+?S:quadtype:
+?S:	This variable defines Quad_t to be something like long, int, 
+?S:	long long, int64_t, or whatever type is used for 64-bit integers.
+?S:.
+?S:quadcase:
+?S:	This variable, if defined, encodes the type of a quad:
+?S:	1 = int, 2 = long, 3 = long long, 4 = int64_t.
+?S:.
+?S:uquadtype:
+?S:	This variable defines Uquad_t to be something like unsigned long,
+?S:	unsigned int, unsigned long long, uint64_t, or whatever type is
+?S:	used for 64-bit integers.
+?S:.
+?C:Quad_t:
+?C:	This symbol holds the type used for 64-bit integers.
+?C:	It can be int, long, long long, int64_t etc...
+?C:.
+?C:QUADCASE:
+?C:	This symbol, if defined, encodes the type of a quad:
+?C:	1 = int, 2 = long, 3 = long long, 4 = int64_t.
+?C:.
+?C:Uquad_t:
+?C:	This symbol holds the type used for unsigned 64-bit integers.
+?C:	It can be unsigned int, unsigned long, unsigned long long,
+?C:	uint64_t etc...
+?C:.
+?H:#define Quad_t $quadtype
+?H:#define Uquad_t $uquadtype
+?H:#define QUADCASE $quadcase
+?H:.
+?LINT:set quadtype
+?LINT:set uquadtype
+
+echo " "
+echo "Checking which 64-bit integer type to use..." >&4
+
+case "$intsize" in
+8) val=int
+   set quadtype
+   eval $setvar
+   val='"unsigned int"'
+   set uquadtype
+   eval $setvar
+   quadcase=1
+   ;;
+*) case "$longsize" in
+   8) val=long
+      set quadtype
+      eval $setvar
+      val='"unsigned long"'
+      set uquadtype
+      eval $setvar
+      quadcase=2
+      ;;
+   *) case "$uselonglong:$d_longlong:$longlongsize" in
+      define:define:8)
+        val='"long long"'
+        set quadtype
+        eval $setvar
+        val='"unsigned long long"'
+        set uquadtype
+        eval $setvar
+        quadcase=3
+        ;;
+      *) case "$d_int64t" in
+         define)
+           val=int64_t
+           set quadtype
+           eval $setvar
+           val=uint64_t
+           set uquadtype
+           eval $setvar
+           quadcase=4
+           ;;
+         esac
+         ;;
+      esac
+      ;;
+   esac
+   ;;
+esac
+
+case "$quadtype" in
+'') echo "Alas, no 64-bit integer types in sight."    >&4 ;;
+*)  echo "Using '$quadtype' for 64-bit integers." >&4 ;;
+esac
+

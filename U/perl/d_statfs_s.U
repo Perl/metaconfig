@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_statfs_s: \
 	Hasstruct i_sysparam i_sysmount i_systypes \
-	i_sysvfs i_sysstatfs Setvar
+	i_sysvfs i_sysstatfs Setvar echo n c
 ?MAKE:	-pick add $@ %<
 ?S:d_statfs_s:
 ?S:	This variable conditionally defines the HAS_STRUCT_STATFS symbol,
@@ -22,7 +22,7 @@
 ?LINT:set d_statfs_s
 
 echo " "
-echo "Checking to see if your system supports struct statfs..." >&4
+$echo $n "Checking to see if your system supports struct statfs..." $c >&4
 set d_statfs_s statfs $i_systypes sys/types.h $i_sysparam sys/param.h $i_sysmount sys/mount.h $i_sysvfs sys/vfs.h $i_sysstatfs sys/statfs.h
 eval $hasstruct
 case "$d_statfs_s" in

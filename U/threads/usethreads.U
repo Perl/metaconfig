@@ -31,7 +31,9 @@
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use the old draft POSIX threads API.
 ?C:.
-?H:#$usethreads	USE_THREADS		/**/
+?H:?%<:#ifndef USE_TTHREADS
+?H:?%<:#$usethreads	USE_THREADS		/**/
+?H:?%<:#endif
 ?H:#$d_oldpthreads	OLD_PTHREADS_API		/**/
 ?H:.
 ?LINT:set usethreads d_oldpthreads

@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_msghdr_s: Hasstruct i_systypes d_socket i_sysuio Setvar
+?MAKE:d_msghdr_s: Hasstruct i_systypes d_socket i_sysuio Setvar echo n c
 ?MAKE:	-pick add $@ %<
 ?S:d_msghdr_s:
 ?S:	This variable conditionally defines the HAS_STRUCT_MSGHDR symbol,
@@ -20,7 +20,7 @@
 ?LINT:set d_msghdr_s
 
 echo " "
-echo "Checking to see if your system supports struct msghdr..." >&4
+$echo $n "Checking to see if your system supports struct msghdr..." $c >&4
 set d_cmsghdr_s cmsghdr cmsg_len $i_systypes sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h
 eval $hasstruct
 case "$d_msghdr_s" in

@@ -20,7 +20,9 @@
 ?C:	be used throughout.  If not defined, stdio should be
 ?C:	used in a fully backward compatible manner.
 ?C:.
-?H:#$useperlio	USE_PERLIO		/**/
+?H:?%<:#ifndef USE_PERLIO
+?H:?%<:#$useperlio	USE_PERLIO		/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:set useperlio
 cat <<EOM

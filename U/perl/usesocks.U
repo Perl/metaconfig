@@ -16,7 +16,9 @@
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use socks.
 ?C:.
-?H:#$usesocks	USE_SOCKS		/**/
+?H:?%<:#ifndef USE_SOCKS
+?H:?%<:#$usesocks	USE_SOCKS		/**/
+?H:?%<:#endif
 ?H:.
 ?LINT:set usesocks
 ?INIT:: set usesocks on the Configure command line to enable socks.

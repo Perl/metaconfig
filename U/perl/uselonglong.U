@@ -1,0 +1,73 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:uselonglong: Myread Oldconfig Setvar cat test usemorebits ccflags
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:uselonglong:
+?S:	This variable conditionally defines the USE_LONG_LONG symbol,
+?S:	and indicates that long longs should be used when available.
+?S:.
+?C:USE_LONG_LONG:
+?C:	This symbol, if defined, indicates that long longs should
+?C:	be used when available.
+?C:.
+?H:?%<:#ifndef USE_LONG_LONG
+?H:?%<:#$uselonglong	USE_LONG_LONG		/**/
+?H:?%<:#endif
+?H:.
+?LINT:set uselonglong
+?LINT:extern ccflags
+?LINT:change ccflags
+?LINT:use usemorebits
+?LINT:use uselargefiles
+?F:!uselonglong.cbu
+cat <<EOM
+
+Perl can be built to take advantage of long longs which
+(if available) may give more range for integer numbers.
+
+If this doesn't make any sense to you, just accept the default 'n'.
+EOM
+
+case "$ccflags" in
+*-DUSE_LONG_LONG*) uselonglong="$define" ;;
+esac
+
+case "$uselonglong" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+rp='Try to use long longs if available?'
+. ./myread
+case "$ans" in
+y|Y) 	val="$define"	;;
+*)      val="$undef"	;;
+esac
+set uselonglong
+eval $setvar
+
+case "$uselonglong" in
+true|[yY]*) uselonglong="$define" ;;
+esac
+
+case "$uselonglong" in
+$define)
+: Look for a hint-file generated 'call-back-unit'.  If the
+: user has specified that long longs should be used,
+: we may need to set or change some other defaults.
+	if $test -f uselonglong.cbu; then
+		echo "Your platform has some specific hints for long longs, using them..."
+		. ./uselonglong.cbu
+	else
+		$cat <<EOM
+(Your platform doesn't have any specific hints for long longs.)
+EOM
+	fi
+	;;
+esac
+
