@@ -25,9 +25,10 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:31  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_stdstdio d_stdiobase stdio_ptr stdio_cnt stdio_base \
+?MAKE:d_stdstdio d_stdiobase stdio_ptr stdio_cnt \
+	d_stdio_ptr_lval_sets_cnt d_stdio_ptr_lval_nochange_cnt stdio_base \
 	stdio_bufsiz d_stdio_cnt_lval d_stdio_ptr_lval stdio_filbuf: cat \
-	Compile contains rm \
+	Compile contains rm exe_ext \
 	Setvar Findhdr Oldconfig
 ?MAKE:	-pick weed $@ %<
 ?S:d_stdstdio:
@@ -52,6 +53,15 @@
 ?S:d_stdio_cnt_lval:
 ?S:	This variable conditionally defines STDIO_CNT_LVALUE if the
 ?S:	FILE_cnt macro can be used as an lvalue.
+?S:.
+?S:d_stdio_ptr_lval_sets_cnt:
+?S:	This symbol is defined if using the FILE_ptr macro as an lvalue
+?S:	to increase the pointer by n has the side effect of decreasing the
+?S:	value of File_cnt(fp) by n.
+?S:.
+?S:d_stdio_ptr_lval_nochange_cnt:
+?S:	This symbol is defined if using the FILE_ptr macro as an lvalue
+?S:	to increase the pointer by n leaves File_cnt(fp) unchanged.
 ?S:.
 ?S:stdio_filbuf:
 ?S:	This variable defines how, given a FILE pointer, fp, to tell
@@ -99,6 +109,15 @@
 ?C:	This symbol is defined if the FILE_cnt macro can be used as an
 ?C:	lvalue.
 ?C:.
+?C:STDIO_PTR_LVAL_SETS_CNT:
+?C:	This symbol is defined if using the FILE_ptr macro as an lvalue
+?C:	to increase the pointer by n has the side effect of decreasing the
+?C:	value of File_cnt(fp) by n.
+?C:.
+?C:STDIO_PTR_LVAL_NOCHANGE_CNT:
+?C:	This symbol is defined if using the FILE_ptr macro as an lvalue
+?C:	to increase the pointer by n leaves File_cnt(fp) unchanged.
+?C:.
 ?C:FILE_filbuf:
 ?C:	This macro is used to access the internal stdio _filbuf function
 ?C:	(or equivalent), if STDIO_CNT_LVALUE and STDIO_PTR_LVALUE
@@ -112,6 +131,8 @@
 ?H:#$d_stdio_ptr_lval STDIO_PTR_LVALUE 		/**/
 ?H:#define FILE_cnt(fp)	$stdio_cnt
 ?H:#$d_stdio_cnt_lval STDIO_CNT_LVALUE 		/**/
+?H:#$d_stdio_ptr_lval_sets_cnt STDIO_PTR_LVAL_SETS_CNT	/**/
+?H:#$d_stdio_ptr_lval_nochange_cnt STDIO_PTR_LVAL_NOCHANGE_CNT	/**/
 ?H:?FILE_filbuf:#if defined(STDIO_PTR_LVALUE) && defined(STDIO_CNT_LVALUE)
 ?H:?FILE_filbuf:#define FILE_filbuf(fp)	$stdio_filbuf 		/**/
 ?H:?FILE_filbuf:#endif
@@ -232,8 +253,8 @@ $define$define) val=$define ;;
 esac
 set d_stdio_ptr_lval
 eval $setvar
-
 @end
+
 @if STDIO_CNT_LVALUE || d_stdio_cnt_lval
 : Can _cnt be used as an lvalue?
 ?X: Only makes sense if we have a known stdio implementation.
@@ -243,8 +264,8 @@ $define$define) val=$define ;;
 esac
 set d_stdio_cnt_lval
 eval $setvar
-
 @end
+
 @if FILE_filbuf
 : How to access the stdio _filbuf or __filbuf function.
 : If this fails, check how the getc macro in stdio.h works.
@@ -288,6 +309,84 @@ EOP
 	;;
 esac
 @end
+
+@if STDIO_PTR_LVALUE
+: test whether setting _ptr sets _cnt as a side effect
+d_stdio_ptr_lval_sets_cnt="$undef"
+d_stdio_ptr_lval_nochange_cnt="$undef"
+case "$d_stdio_ptr_lval$d_stdstdio" in
+$define$define)
+	echo "Checking to see what happens if we set the stdio ptr..." >&4
+$cat >try.c <<EOP
+#include <stdio.h>
+/* Can we scream? */
+/* Eat dust sed :-) */
+#define FILE_ptr(fp)	$stdio_ptr
+#define FILE_cnt(fp)	$stdio_cnt
+int main() {
+	FILE *fp = fopen("try.c", "r");
+	char c = getc(fp);
+	char *ptr;
+	size_t cnt;
+	if (!(
+		18 <= FILE_cnt(fp) &&
+		strncmp(FILE_ptr(fp), "include <stdio.h>\n", 18) == 0
+	)) {
+		puts("Fail even to read");
+		exit (1);
+	}
+	ptr = FILE_ptr(fp);
+	cnt = FILE_cnt(fp);
+
+	FILE_ptr(fp)+= 42;
+
+	if (FILE_ptr(fp) != (ptr + 42)) {
+		printf("Fail ptr check %p != %p", FILE_ptr(fp), (ptr + 42));
+		exit (1);
+	}
+	if (FILE_cnt(fp) <= 20) {
+		printf ("Fail (<20 chars to test)");
+		exit (1);
+	}
+	if (strncmp(FILE_ptr(fp), "Eat dust sed :-) */\n", 20) != 0) {
+		puts("Fail compare");
+		exit (1);
+	}
+	if (cnt == FILE_cnt(fp)) {
+		puts("Pass_unchanged");
+		exit (0);
+	}	
+	if (FILE_cnt(fp) == (cnt - 42)) {
+		puts("Pass_changed");
+		exit (0);
+	}
+	printf("Fail count was %d now %d\n", cnt, FILE_cnt(fp));
+	return 1;
+
+}
+EOP
+	set try
+	if eval $compile; then
+ 		case `./try$exe_ext` in
+		Pass_changed)
+			echo "Increasing ptr in your stdio decreases cnt by the same amount. Good." >&4
+			d_stdio_ptr_lval_sets_cnt="$define" ;;
+		Pass_unchanged)
+			echo "Increasing ptr in your stdio leaves cnt unchanged.  Good." >&4
+			d_stdio_ptr_lval_nochange_cnt="$define" ;;
+		Fail*)
+			echo "Increasing ptr in your stdio didn't do exactly what I expected.  We'll not be doing that then." >&4 ;;
+		*)
+			echo "It appears attempting to set ptr in your stdio is a bad plan." >&4 ;;
+	esac
+	else
+		echo "It seems we can't set ptr in your stdio.  Nevermind." >&4
+	fi
+	$rm -f try.c try
+	;;
+esac
+@end
+
 @if d_stdiobase || USE_STDIO_BASE || FILE_base || FILE_bufsiz
 : see if _base is also standard
 val="$undef"
