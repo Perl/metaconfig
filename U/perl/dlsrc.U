@@ -203,7 +203,10 @@ EOM
     case "$lddlflags" in
     '') case "$osname" in
   			beos) dflt='-nostart' ;;
-			hpux)  dflt='-b +vnocompatwarnings' ;;
+			hpux) case "$gccversion" in
+			      '') dflt='-b +vnocompatwarnings' ;;
+			      esac
+			      ;;	
 			linux|irix*)	dflt='-shared' ;;
 			next)  dflt='none' ;;
 			solaris) dflt='-G' ;;
