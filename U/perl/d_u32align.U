@@ -27,7 +27,6 @@ Checking to see whether you can access character data unalignedly...
 EOM
 case "$d_u32align" in
 '')   $cat >try.c <<EOCP
-$cat >try.c <<EOCP
 #include <stdio.h>
 #define U32 $u32type
 #define BYTEORDER 0x$byteorder
