@@ -91,7 +91,7 @@
 ?INIT:: no include file wanted by default
 ?INIT:inclwanted=''
 ?INIT:
-: determine optimize, if desired, or use for debug flag also
+: determine optimization, if desired, or use for debug flag also
 ?X: Allow for Configure -Uoptimize -- it's not strictly sensible, but
 ?X: it has happened and we know what they mean.   AD  2/16/98
 case "$optimize" in
@@ -101,11 +101,10 @@ case "$optimize" in
 esac
 $cat <<EOH
 
-Some C compilers have problems with their optimizers.  By default, $package
-compiles with the -O flag to use the optimizer.  Alternately, you might want
-to use the symbolic debugger, which uses the -g flag (on traditional Unix
-systems).  Either flag can be specified here.  To use neither flag, specify
-the word "none".
+By default, $package compiles with the -O flag to use the optimizer.
+Alternately, you might want to use the symbolic debugger, which uses
+the -g flag (on traditional Unix systems).  Either flag can be
+specified here.  To use neither flag, specify the word "none".
 
 EOH
 rp="What optimizer/debugger flag should be used?"
@@ -119,7 +118,7 @@ dflt=''
 : We will not override a previous value, but we might want to
 : augment a hint file
 case "$hint" in
-none|recommended)
+default|recommended)
 	case "$gccversion" in
 	1*) dflt='-fpcc-struct-return' ;;
 	esac
@@ -132,6 +131,30 @@ none|recommended)
 			$contains _POSIX_VERSION $usrinc/sys/unistd.h >/dev/null 2>&1
 		then
 			dflt="$dflt -posix"
+		fi
+		;;
+	esac
+?X: If the user has gcc-2.95 or greater, try adding -fno-strict-alias.
+?X: Since the gcc "version" can be non-numeric, e.g.
+?X: "2.95.1 19990809 (prerelease)" , we'll do the test on any version
+?X: greater than 2.8.
+?X:	--Andy Dougherty  27 Aug 1999
+	case "$gccversion" in
+	1*) ;;
+	2.[0-8]*) ;;
+	*) 	echo " "
+		echo "Checking if your compiler accepts -fno-strict-aliasing" 2>&1
+		echo 'int main(void) { return 0; }' > gcctest.c
+		if $cc -O2 -fno-strict-aliasing -o gcctest gcctest.c; then
+			echo "Yes, it does." 2>&1
+			case "$ccflags" in
+			*strict-aliasing*) 
+				echo "Leaving current flags $ccflags alone." 2>&1
+				;;
+			*) dflt="$dflt -fno-strict-aliasing" ;;
+			esac
+		else
+			echo "Nope, it doesn't, but that's ok." 2>&1
 		fi
 		;;
 	esac
@@ -178,7 +201,7 @@ $define)
 esac
 
 case "$hint" in
-none|recommended) dflt="$ccflags $dflt" ;;
+default|recommended) dflt="$ccflags $dflt" ;;
 *) dflt="$ccflags";;
 esac
 

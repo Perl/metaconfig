@@ -98,10 +98,7 @@ fi
 if $test -f cc.cbu; then
     . ./cc.cbu
 fi
-?X: Check if they have gcc in any guise.  This is really only needed
-?X: if the user has version 1.x.x and needs -fpcc-struct-return.  Alas
-?X: BSD/386 ships a version of gcc 1.4.2 and calls it cc.  Hence the
-?X: paranoid test -- ADO.
+?X: Check if they have gcc in any guise.  
 echo " "
 echo "Checking for GNU cc in disguise and/or its version number..." >&4
 $cat >gccvers.c <<EOM
