@@ -5,19 +5,20 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_strtouq: Inlibc
+?MAKE:d_strtoull: Inlibc
 ?MAKE:	-pick add $@ %<
-?S:d_strtouq:
-?S:	This variable conditionally defines the HAS_STRTOUQ symbol, which
-?S:	indicates to the C program that the strtouq() routine is available.
+?S:d_strtoull:
+?S:	This variable conditionally defines the HAS_STRTOULL symbol, which
+?S:	indicates to the C program that the strtoull() routine is available.
 ?S:.
-?C:HAS_STRTOUQ:
-?C:	This symbol, if defined, indicates that the strtouq routine is
+?C:HAS_STRTOULL:
+?C:	This symbol, if defined, indicates that the strtoull routine is
 ?C:	available to convert strings to unsigned long longs.
 ?C:.
-?H:#$d_strtouq HAS_STRTOUQ		/**/
+?H:#$d_strtoull HAS_STRTOULL		/**/
 ?H:.
-?LINT:set d_strtouq
-: see if strtouq exists
-set strtouq d_strtouq
+?LINT:set d_strtoull
+: see if strtoull exists
+set strtoull d_strtoull
 eval $inlibc
+

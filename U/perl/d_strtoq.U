@@ -21,3 +21,4 @@
 : see if strtoq exists
 set strtoq d_strtoq
 eval $inlibc
+

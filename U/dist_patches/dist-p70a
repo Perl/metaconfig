@@ -1,0 +1,1397 @@
+
+From Raphael_Manfredi@grenoble.hp.com Thu Feb 12 09:37:34 1998
+Date: Thu, 12 Feb 98 10:37:17 +0100
+From: Raphael Manfredi <Raphael_Manfredi@grenoble.hp.com>
+To: Andy Dougherty <doughera@newton.phys.lafayette.edu>
+Subject: Unofficial patch over dist-3.0PL70
+
+Index: mcon/U/Extractall.U
+*** /tmp/RCSAa22428	Thu Feb 12 10:33:08 1998
+--- mcon/U/Extractall.U	Fri Mar  7 15:07:56 1997
+***************
+*** 17,23 ****
+  ?X:
+  ?MAKE:Extractall: Extract Options rsrc
+  ?MAKE:	-pick wipe $@ %<
+- ?T:config
+  : extract files and exit if asked to do so
+  case "$extractsh" in
+  true)
+--- 17,22 ----
+***************
+*** 28,44 ****
+  	*) exec 1>&4;;
+  	esac
+  	case "$config_sh" in
+! 	'') config_sh='config.sh'; config="$rsrc/config.sh";;
+! 	/*) config="$config_sh";;
+! 	*) config="$rsrc/$config_sh";;
+  	esac
+  	echo " "
+  	echo "Fetching answers from $config_sh..."
+! 	. $config
+  	test "$override" && . ./optdef.sh
+  	echo " "
+  ?X: extract has to be run from the top directory, not within UU.
+- 	cd ..
+  	. UU/extract
+  	rm -rf UU
+  	echo "Done."
+--- 27,41 ----
+  	*) exec 1>&4;;
+  	esac
+  	case "$config_sh" in
+! 	'') config_sh='config.sh';;
+  	esac
+  	echo " "
+  	echo "Fetching answers from $config_sh..."
+! 	cd ..
+! 	. $config_sh
+  	test "$override" && . ./optdef.sh
+  	echo " "
+  ?X: extract has to be run from the top directory, not within UU.
+  	. UU/extract
+  	rm -rf UU
+  	echo "Done."
+ 
+Index: mcon/U/Head.U
+*** /tmp/RCSAa22431	Thu Feb 12 10:33:10 1998
+--- mcon/U/Head.U	Tue May 13 09:15:46 1997
+***************
+*** 194,200 ****
+  case "$inksh/$needksh" in
+  /[a-z]*)
+  ?X: Unset ENV to avoid any ~/.kshrc that could alias cd or whatever...
+! 		unset ENV
+  		changesh=true
+  		reason="$needksh"
+  	;;
+--- 194,200 ----
+  case "$inksh/$needksh" in
+  /[a-z]*)
+  ?X: Unset ENV to avoid any ~/.kshrc that could alias cd or whatever...
+! 		ENV=''
+  		changesh=true
+  		reason="$needksh"
+  	;;
+***************
+*** 235,240 ****
+  test -d UU || mkdir UU
+  ?X: Use ./* to avoid any confirmation prompts from enhanced shells -- WED
+  ?X: Unset CDPATH to avoid surprised when using cd under some shells
+! unset CDPATH
+  cd UU && rm -f ./*
+  
+--- 235,240 ----
+  test -d UU || mkdir UU
+  ?X: Use ./* to avoid any confirmation prompts from enhanced shells -- WED
+  ?X: Unset CDPATH to avoid surprised when using cd under some shells
+! CDPATH=''
+  cd UU && rm -f ./*
+  
+ 
+Index: mcon/U/Oldconfig.U
+*** /tmp/RCSAa22434	Thu Feb 12 10:33:11 1998
+--- mcon/U/Oldconfig.U	Fri Mar  7 15:07:33 1997
+***************
+*** 363,373 ****
+  			*)	if test -f /etc/systemid; then
+  					osname=sco
+  					set `echo $3 | $sed 's/\./ /g'` $4
+! 					if $test -f sco_$1_$2_$3.sh; then
+  						osvers=$1.$2.$3
+! 					elif $test -f sco_$1_$2.sh; then
+  						osvers=$1.$2
+! 					elif $test -f sco_$1.sh; then
+  						osvers=$1
+  					fi
+  				else
+--- 363,373 ----
+  			*)	if test -f /etc/systemid; then
+  					osname=sco
+  					set `echo $3 | $sed 's/\./ /g'` $4
+! 					if $test -f $src/hints/sco_$1_$2_$3.sh; then
+  						osvers=$1.$2.$3
+! 					elif $test -f $src/hints/sco_$1_$2.sh; then
+  						osvers=$1.$2
+! 					elif $test -f $src/hints/sco_$1.sh; then
+  						osvers=$1
+  					fi
+  				else
+ 
+Index: mcon/U/Signal.U
+*** /tmp/RCSAa22437	Thu Feb 12 10:33:11 1998
+--- mcon/U/Signal.U	Mon Sep 29 13:05:31 1997
+***************
+*** 165,171 ****
+  $cat >signal_cmd <<EOS
+  $startsh
+  $test -s signal.lst && exit 0
+! if $cc $ccflags signal.c -o signal $ldflags >/dev/null 2>&1; then
+  	./signal | $sort -n +1 | $uniq | $awk -f signal.awk >signal.lst
+  else
+  	echo "(I can't seem be able to compile the test program -- Guessing)"
+--- 165,171 ----
+  $cat >signal_cmd <<EOS
+  $startsh
+  $test -s signal.lst && exit 0
+! if $cc $ccflags $ldflags -o signal signal.c >/dev/null 2>&1; then
+  	./signal | $sort -n +1 | $uniq | $awk -f signal.awk >signal.lst
+  else
+  	echo "(I can't seem be able to compile the test program -- Guessing)"
+ 
+Index: mcon/U/alignbytes.U
+*** /tmp/RCSAa22440	Thu Feb 12 10:33:12 1998
+--- mcon/U/alignbytes.U	Mon Mar  3 14:25:43 1997
+***************
+*** 45,51 ****
+  		dflt=`./try`
+  	else
+  		dflt='8'
+! 		echo"(I can't seem to compile the test program...)"
+  	fi
+  	;;
+  *) dflt="$alignbytes"
+--- 45,51 ----
+  		dflt=`./try`
+  	else
+  		dflt='8'
+! 		echo "(I can't seem to compile the test program...)"
+  	fi
+  	;;
+  *) dflt="$alignbytes"
+ 
+Index: mcon/U/bitpbyte.U
+*** /tmp/RCSAa22443	Thu Feb 12 10:33:12 1998
+--- mcon/U/bitpbyte.U	Mon Sep 29 13:06:25 1997
+***************
+*** 50,56 ****
+  	printf("%d\n", BITSPERBYTE);
+  }
+  EOCP
+! 	if $cc $ccflags try.c -o try >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='8'
+--- 50,56 ----
+  	printf("%d\n", BITSPERBYTE);
+  }
+  EOCP
+! 	if $cc $ccflags -o try try.c >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='8'
+ 
+Index: mcon/U/byteorder.U
+*** /tmp/RCSAa22446	Thu Feb 12 10:33:13 1998
+--- mcon/U/byteorder.U	Mon Sep 29 13:06:33 1997
+***************
+*** 61,67 ****
+  }
+  EOCP
+  	xxx_prompt=y
+! 	if $cc $ccflags try.c -o try >/dev/null 2>&1 && ./try > /dev/null; then
+  		dflt=`./try`
+  		case "$dflt" in
+  		[1-4][1-4][1-4][1-4]|12345678|87654321)
+--- 61,67 ----
+  }
+  EOCP
+  	xxx_prompt=y
+! 	if $cc $ccflags -o try try.c >/dev/null 2>&1 && ./try > /dev/null; then
+  		dflt=`./try`
+  		case "$dflt" in
+  		[1-4][1-4][1-4][1-4]|12345678|87654321)
+ 
+Index: mcon/U/ccflags.U
+*** /tmp/RCSAa22449	Thu Feb 12 10:33:14 1998
+--- mcon/U/ccflags.U	Mon Sep 29 13:07:28 1997
+***************
+*** 86,92 ****
+  ?INIT:
+  : determine optimize, if desired, or use for debug flag also
+  case "$optimize" in
+! ' ') dflt='none';;
+  '') dflt='-O';;
+  *) dflt="$optimize";;
+  esac
+--- 86,92 ----
+  ?INIT:
+  : determine optimize, if desired, or use for debug flag also
+  case "$optimize" in
+! ' '|$undef) dflt='none';;
+  '') dflt='-O';;
+  *) dflt="$optimize";;
+  esac
+***************
+*** 335,341 ****
+  echo " "
+  echo "Checking your choice of C compiler and flags for coherency..." >&4
+  ?X: Strip extra blanks in case some of the following variables are empty
+! set X $cc $optimize $ccflags $ldflags try.c -o try
+  shift
+  $cat >try.msg <<EOM
+  I've tried to compile and run a simple program with:
+--- 335,341 ----
+  echo " "
+  echo "Checking your choice of C compiler and flags for coherency..." >&4
+  ?X: Strip extra blanks in case some of the following variables are empty
+! set X $cc $optimize $ccflags $ldflags -o try try.c
+  shift
+  $cat >try.msg <<EOM
+  I've tried to compile and run a simple program with:
+***************
+*** 355,361 ****
+  ?X: We need to try the resulting executable, because cc might yield a 0 status
+  ?X: even when ld failed, in which case the executable will not run properly,
+  ?X: if its x bit is set at all...
+! if sh -c "$cc $optimize $ccflags try.c -o try $ldflags" >>try.msg 2>&1; then
+  	if sh -c './try' >>try.msg 2>&1; then
+  		dflt=n
+  	else
+--- 355,361 ----
+  ?X: We need to try the resulting executable, because cc might yield a 0 status
+  ?X: even when ld failed, in which case the executable will not run properly,
+  ?X: if its x bit is set at all...
+! if sh -c "$cc $optimize $ccflags $ldflags -o try try.c" >>try.msg 2>&1; then
+  	if sh -c './try' >>try.msg 2>&1; then
+  		dflt=n
+  	else
+***************
+*** 370,376 ****
+  fi
+  case "$dflt" in
+  y)
+! 	$cat try.msg
+  ?X: using -K will prevent default aborting--maybe they're cross compiling?
+  	case "$knowitall" in
+  	'')
+--- 370,376 ----
+  fi
+  case "$dflt" in
+  y)
+! 	$cat try.msg >&4
+  ?X: using -K will prevent default aborting--maybe they're cross compiling?
+  	case "$knowitall" in
+  	'')
+ 
+Index: mcon/U/cf_who.U
+*** /tmp/RCSAa22452	Thu Feb 12 10:33:14 1998
+--- mcon/U/cf_who.U	Tue Aug 19 16:34:29 1997
+***************
+*** 27,32 ****
+--- 27,34 ----
+  ?S:	questions. This is used to tag both config.sh and config_h.SH.
+  ?S:.
+  : who configured the system
++ ?X: Ensure English date -- Jarkko Hietaniemi
++ LC_ALL=C; export LC_ALL
+  cf_time=`$date 2>&1`
+  ?X:
+  ?X: Leave a white space between first two '(' for ksh. The sub-shell is needed
+ 
+Index: mcon/U/charsize.U
+*** /tmp/RCSAa22455	Thu Feb 12 10:33:15 1998
+--- mcon/U/charsize.U	Mon Sep 29 13:07:51 1997
+***************
+*** 34,40 ****
+  	printf("%d\n", sizeof(char));
+  }
+  EOCP
+! 	if $cc $ccflags try.c -o try >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='1'
+--- 34,40 ----
+  	printf("%d\n", sizeof(char));
+  }
+  EOCP
+! 	if $cc $ccflags -o try try.c >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='1'
+ 
+Index: mcon/U/d_NOFILE.U
+*** /tmp/RCSAa22458	Thu Feb 12 10:33:15 1998
+--- mcon/U/d_NOFILE.U	Mon Sep 29 13:09:18 1997
+***************
+*** 58,64 ****
+  }
+  EOCP
+  	nofile=''
+! 	if $cc $ccflags nofile.c -o nofile $libs >/dev/null 2>&1; then
+  		nofile=`./nofile 2>/dev/null`
+  	fi
+  	if $test "$nofile"; then
+--- 58,64 ----
+  }
+  EOCP
+  	nofile=''
+! 	if $cc $ccflags -o nofile nofile.c $libs >/dev/null 2>&1; then
+  		nofile=`./nofile 2>/dev/null`
+  	fi
+  	if $test "$nofile"; then
+***************
+*** 92,99 ****
+  		exit(0);
+  }
+  EOCP
+! 		if $cc $ccflags -DGETPARAM_H nofile.c -o nofile $libs >/dev/null 2>&1 \
+! 			|| $cc $ccflags nofile.c -o nofile $libs >/dev/null 2>&1 ; then
+  			set `./nofile`
+  			d_gettblsz=$1
+  			d_ulimit4=$2
+--- 92,99 ----
+  		exit(0);
+  }
+  EOCP
+! 		if $cc $ccflags -DGETPARAM_H -o nofile nofile.c $libs >/dev/null 2>&1 \
+! 			|| $cc $ccflags -o nofile nofile.c $libs >/dev/null 2>&1 ; then
+  			set `./nofile`
+  			d_gettblsz=$1
+  			d_ulimit4=$2
+***************
+*** 163,170 ****
+  		exit(0);
+  }
+  EOCP
+! 	if $cc $ccflags -DGETPARAM_H nofile.c -o nofile $libs >/dev/null 2>&1 \
+! 		|| $cc $ccflags nofile.c -o nofile $libs >/dev/null 2>&1 ; then
+  		nofile=`./nofile 2>/dev/null`
+  	fi
+  	if $test "$nofile"; then
+--- 163,170 ----
+  		exit(0);
+  }
+  EOCP
+! 	if $cc $ccflags -DGETPARAM_H -o nofile nofile.c $libs >/dev/null 2>&1 \
+! 		|| $cc $ccflags -o nofile nofile.c $libs >/dev/null 2>&1 ; then
+  		nofile=`./nofile 2>/dev/null`
+  	fi
+  	if $test "$nofile"; then
+ 
+Index: mcon/U/d_PORTAR.U
+*** /tmp/RCSAa22461	Thu Feb 12 10:33:15 1998
+--- mcon/U/d_PORTAR.U	Mon Sep 29 13:09:39 1997
+***************
+*** 45,52 ****
+  #endif
+  	exit(0);}
+  EOCP
+! if $cc portar.c -o portar >/dev/null 2>&1 || \
+! 	$cc -DPORTAR=1 portar.c -o portar >/dev/null 2>&1 ; then
+  	case "`./portar`" in
+  	D)
+  		val="$define"
+--- 45,52 ----
+  #endif
+  	exit(0);}
+  EOCP
+! if $cc -o portar portar.c >/dev/null 2>&1 || \
+! 	$cc -DPORTAR=1 -o portar portar.c >/dev/null 2>&1 ; then
+  	case "`./portar`" in
+  	D)
+  		val="$define"
+ 
+Index: mcon/U/d_SHM_MAC.U
+*** /tmp/RCSAa22464	Thu Feb 12 10:33:16 1998
+--- mcon/U/d_SHM_MAC.U	Mon Sep 29 13:09:57 1997
+***************
+*** 99,107 ****
+  			echo "Trying $D_sys_immu $D_sys_param $D_sys_sysmacros $D_sys_seg"
+  			;;
+  			esac
+! 			if $cc shm_mac.c $ccflags \
+  			$D_sys_immu $D_sys_param $D_sys_sysmacros $D_sys_seg \
+! 			-o shm_mac >/dev/null 2>&1 ; then
+  				set X $D_sys_immu $D_sys_param $D_sys_sysmacros $D_sys_seg
+  				shift
+  				flags="$*"
+--- 99,107 ----
+  			echo "Trying $D_sys_immu $D_sys_param $D_sys_sysmacros $D_sys_seg"
+  			;;
+  			esac
+! 			if $cc $ccflags \
+  			$D_sys_immu $D_sys_param $D_sys_sysmacros $D_sys_seg \
+! 			-o shm_mac shm_mac.c >/dev/null 2>&1 ; then
+  				set X $D_sys_immu $D_sys_param $D_sys_sysmacros $D_sys_seg
+  				shift
+  				flags="$*"
+ 
+Index: mcon/U/d_access.U
+*** /tmp/RCSAa22467	Thu Feb 12 10:33:16 1998
+--- mcon/U/d_access.U	Mon Sep 29 13:10:19 1997
+***************
+*** 47,62 ****
+  EOCP
+  	: check sys/file.h first, no particular reason here
+  	if $test `./findhdr sys/file.h` && \
+! 		$cc $cppflags -DI_SYS_FILE access.c -o access >/dev/null 2>&1 ; then
+  		h_sysfile=true;
+  		echo "<sys/file.h> defines the *_OK access constants." >&4
+  	elif $test `./findhdr fcntl.h` && \
+! 		$cc $cppflags -DI_FCNTL access.c -o access >/dev/null 2>&1 ; then
+  		h_fcntl=true;
+  		echo "<fcntl.h> defines the *_OK access constants." >&4
+  @if I_UNISTD
+  	elif $test `./findhdr unistd.h` && \
+! 		$cc $cppflags -DI_UNISTD access.c -o access >/dev/null 2>&1 ; then
+  		echo "<unistd.h> defines the *_OK access constants." >&4
+  @end
+  	else
+--- 47,62 ----
+  EOCP
+  	: check sys/file.h first, no particular reason here
+  	if $test `./findhdr sys/file.h` && \
+! 		$cc $cppflags -DI_SYS_FILE -o access access.c >/dev/null 2>&1 ; then
+  		h_sysfile=true;
+  		echo "<sys/file.h> defines the *_OK access constants." >&4
+  	elif $test `./findhdr fcntl.h` && \
+! 		$cc $cppflags -DI_FCNTL -o access access.c >/dev/null 2>&1 ; then
+  		h_fcntl=true;
+  		echo "<fcntl.h> defines the *_OK access constants." >&4
+  @if I_UNISTD
+  	elif $test `./findhdr unistd.h` && \
+! 		$cc $cppflags -DI_UNISTD -o access access.c >/dev/null 2>&1 ; then
+  		echo "<unistd.h> defines the *_OK access constants." >&4
+  @end
+  	else
+ 
+Index: mcon/U/d_attribut.U
+No differences encountered
+ 
+Index: mcon/U/d_bsdjmp.U
+*** /tmp/RCSAa22473	Thu Feb 12 10:33:17 1998
+--- mcon/U/d_bsdjmp.U	Mon Sep 29 13:10:47 1997
+***************
+*** 46,52 ****
+  	exit(1);
+  }
+  EOP
+! 	if $cc set.c -o set $libs >/dev/null 2>&1; then
+  		if ./set >/dev/null 2>&1; then
+  			echo "Good! You have BSD _setjmp and _longjmp routines." >&4
+  			val="$define"
+--- 46,52 ----
+  	exit(1);
+  }
+  EOP
+! 	if $cc -o set set.c $libs >/dev/null 2>&1; then
+  		if ./set >/dev/null 2>&1; then
+  			echo "Good! You have BSD _setjmp and _longjmp routines." >&4
+  			val="$define"
+ 
+Index: mcon/U/d_casti32.U
+*** /tmp/RCSAa22476	Thu Feb 12 10:33:17 1998
+--- mcon/U/d_casti32.U	Mon Sep 29 13:10:57 1997
+***************
+*** 59,65 ****
+  	exit(result);
+  }
+  EOCP
+! if $cc -o try $ccflags try.c >/dev/null 2>&1; then
+  	./try
+  	yyy=$?
+  else
+--- 59,65 ----
+  	exit(result);
+  }
+  EOCP
+! if $cc $ccflags -o try try.c >/dev/null 2>&1; then
+  	./try
+  	yyy=$?
+  else
+ 
+Index: mcon/U/d_castneg.U
+*** /tmp/RCSAa22479	Thu Feb 12 10:33:18 1998
+--- mcon/U/d_castneg.U	Mon Sep 29 13:11:03 1997
+***************
+*** 115,121 ****
+  
+  }
+  EOCP
+! if $cc -o try $ccflags try.c >/dev/null 2>&1; then
+  	./try
+  	castflags=$?
+  else
+--- 115,121 ----
+  
+  }
+  EOCP
+! if $cc $ccflags -o try try.c >/dev/null 2>&1; then
+  	./try
+  	castflags=$?
+  else
+ 
+Index: mcon/U/d_charsprf.U
+*** /tmp/RCSAa22482	Thu Feb 12 10:33:18 1998
+--- mcon/U/d_charsprf.U	Mon Sep 29 13:11:25 1997
+***************
+*** 32,38 ****
+  	exit((unsigned long)sprintf(buf,"%s","foo") > 10L);
+  }
+  EOF
+! if $cc ucbsprf.c -o ucbsprf >/dev/null 2>&1 && ./ucbsprf; then
+  	echo "Your sprintf() returns (int)." >&4
+  	val="$undef"
+  else
+--- 32,38 ----
+  	exit((unsigned long)sprintf(buf,"%s","foo") > 10L);
+  }
+  EOF
+! if $cc -o ucbsprf ucbsprf.c >/dev/null 2>&1 && ./ucbsprf; then
+  	echo "Your sprintf() returns (int)." >&4
+  	val="$undef"
+  else
+ 
+Index: mcon/U/d_eofpipe.U
+*** /tmp/RCSAa22485	Thu Feb 12 10:33:19 1998
+--- mcon/U/d_eofpipe.U	Mon Sep 29 13:11:59 1997
+***************
+*** 52,58 ****
+  	exit(1);
+  }
+  EOP
+! 	if $cc $ccflags pipe.c -o pipe $libs >/dev/null 2>&1; then
+  ?X: Use a script to avoid the possible 'alarm call' message
+  		echo "./pipe || exit 1" > mpipe
+  		chmod +x mpipe
+--- 52,58 ----
+  	exit(1);
+  }
+  EOP
+! 	if $cc $ccflags -o pipe pipe.c $libs >/dev/null 2>&1; then
+  ?X: Use a script to avoid the possible 'alarm call' message
+  		echo "./pipe || exit 1" > mpipe
+  		chmod +x mpipe
+ 
+Index: mcon/U/d_fd_set.U
+*** /tmp/RCSAa22488	Thu Feb 12 10:33:19 1998
+--- mcon/U/d_fd_set.U	Mon Sep 29 13:12:18 1997
+***************
+*** 90,96 ****
+  #endif
+  }
+  EOCP
+! if $cc $ccflags -DTRYBITS fd_set.c -o fd_set >fd_set.out 2>&1 ; then
+  	d_fds_bits="$define"
+  	d_fd_set="$define"
+  	echo "Well, your system knows about the normal fd_set typedef..." >&4
+--- 90,96 ----
+  #endif
+  }
+  EOCP
+! if $cc $ccflags -DTRYBITS -o fd_set fd_set.c >fd_set.out 2>&1 ; then
+  	d_fds_bits="$define"
+  	d_fd_set="$define"
+  	echo "Well, your system knows about the normal fd_set typedef..." >&4
+***************
+*** 107,113 ****
+  	$cat <<'EOM'
+  Hmm, your compiler has some difficulty with fd_set.  Checking further...
+  EOM
+! 	if $cc $ccflags fd_set.c -o fd_set >fd_set.out 2>&1 ; then
+  		d_fds_bits="$undef"
+  		d_fd_set="$define"
+  		echo "Well, your system has some sort of fd_set available..." >&4
+--- 107,113 ----
+  	$cat <<'EOM'
+  Hmm, your compiler has some difficulty with fd_set.  Checking further...
+  EOM
+! 	if $cc $ccflags -o fd_set fd_set.c >fd_set.out 2>&1 ; then
+  		d_fds_bits="$undef"
+  		d_fd_set="$define"
+  		echo "Well, your system has some sort of fd_set available..." >&4
+ 
+Index: mcon/U/d_getpagsz.U
+*** /tmp/RCSAa22491	Thu Feb 12 10:33:20 1998
+--- mcon/U/d_getpagsz.U	Mon Sep 29 13:12:48 1997
+***************
+*** 57,63 ****
+  	dflt='4096'
+  	case "$d_getpagsz" in
+  	"$define")
+! 		if $cc $ccflags page.c -o page $libs >/dev/null 2>&1; then
+  			dflt=`./page`
+  			guess=''
+  		else
+--- 57,63 ----
+  	dflt='4096'
+  	case "$d_getpagsz" in
+  	"$define")
+! 		if $cc $ccflags -o page page.c $libs >/dev/null 2>&1; then
+  			dflt=`./page`
+  			guess=''
+  		else
+***************
+*** 65,71 ****
+  		fi
+  		;;
+  	*)
+! 		if $cc $ccflags page.c -o page $libs -lPW >/dev/null 2>&1; then
+  			dflt=`./page`
+  			guess=''
+  			echo "(For your eyes only: I used the getpagesize() from -lPW.)"
+--- 65,71 ----
+  		fi
+  		;;
+  	*)
+! 		if $cc $ccflags -o page page.c $libs -lPW >/dev/null 2>&1; then
+  			dflt=`./page`
+  			guess=''
+  			echo "(For your eyes only: I used the getpagesize() from -lPW.)"
+***************
+*** 78,84 ****
+  	printf("%d\n", PAGESIZE);
+  }
+  EOP
+! 				if $cc $ccflags page.c -o page $libs >/dev/null 2>&1; then
+  					dflt=`./page`
+  					guess=''
+  					echo "(Using value of PAGESIZE found in <sys/param.h>.)"
+--- 78,84 ----
+  	printf("%d\n", PAGESIZE);
+  }
+  EOP
+! 				if $cc $ccflags -o page page.c $libs >/dev/null 2>&1; then
+  					dflt=`./page`
+  					guess=''
+  					echo "(Using value of PAGESIZE found in <sys/param.h>.)"
+ 
+Index: mcon/U/d_keepsig.U
+*** /tmp/RCSAa22494	Thu Feb 12 10:33:20 1998
+--- mcon/U/d_keepsig.U	Mon Sep 29 13:13:17 1997
+***************
+*** 47,53 ****
+  	printf("abc\n");
+  }
+  EOCP
+! if $cc -o try $ccflags try.c >/dev/null 2>&1; then
+  ?X: On AIX a single ./try will not work (with ksh)
+  ?X: Backquotes required on Linux and SGI (prevents "ambiguous output redirect")
+  ?X: (reported by Xavier LeVourch <xavierl@eiffel.com>)
+--- 47,53 ----
+  	printf("abc\n");
+  }
+  EOCP
+! if $cc $ccflags -o try try.c >/dev/null 2>&1; then
+  ?X: On AIX a single ./try will not work (with ksh)
+  ?X: Backquotes required on Linux and SGI (prevents "ambiguous output redirect")
+  ?X: (reported by Xavier LeVourch <xavierl@eiffel.com>)
+ 
+Index: mcon/U/d_msem.U
+ 
+Index: mcon/U/d_nolnbuf.U
+*** /tmp/RCSAa22498	Thu Feb 12 10:33:21 1998
+--- mcon/U/d_nolnbuf.U	Mon Sep 29 13:13:31 1997
+***************
+*** 41,47 ****
+  	putchar('\n');
+  }
+  EOT
+! 	$cc blurfl.c -o blurfl >/dev/null 2>&1;
+  	$rm -f blurfl.c
+  	$cat >&4 <<'EOM'
+  Checking for buffering of stdout to terminal.
+--- 41,47 ----
+  	putchar('\n');
+  }
+  EOT
+! 	$cc -o blurfl blurfl.c >/dev/null 2>&1;
+  	$rm -f blurfl.c
+  	$cat >&4 <<'EOM'
+  Checking for buffering of stdout to terminal.
+ 
+Index: mcon/U/d_open3.U
+*** /tmp/RCSAa22501	Thu Feb 12 10:33:21 1998
+--- mcon/U/d_open3.U	Mon Sep 29 13:13:48 1997
+***************
+*** 53,59 ****
+  EOCP
+  : check sys/file.h first to get FREAD on Sun
+  if $test `./findhdr sys/file.h` && \
+! 		$cc $cppflags "-DI_SYS_FILE" open3.c -o open3 >/dev/null 2>&1 ; then
+  	h_sysfile=true;
+  	echo "<sys/file.h> defines the O_* constants..." >&4
+  	if ./open3; then
+--- 53,59 ----
+  EOCP
+  : check sys/file.h first to get FREAD on Sun
+  if $test `./findhdr sys/file.h` && \
+! 		$cc $cppflags "-DI_SYS_FILE" -o open3 open3.c >/dev/null 2>&1 ; then
+  	h_sysfile=true;
+  	echo "<sys/file.h> defines the O_* constants..." >&4
+  	if ./open3; then
+***************
+*** 64,70 ****
+  		val="$undef"
+  	fi
+  elif $test `./findhdr fcntl.h` && \
+! 		$cc "-DI_FCNTL" open3.c -o open3 >/dev/null 2>&1 ; then
+  	h_fcntl=true;
+  	echo "<fcntl.h> defines the O_* constants..." >&4
+  	if ./open3; then
+--- 64,70 ----
+  		val="$undef"
+  	fi
+  elif $test `./findhdr fcntl.h` && \
+! 		$cc "-DI_FCNTL" -o open3 open3.c >/dev/null 2>&1 ; then
+  	h_fcntl=true;
+  	echo "<fcntl.h> defines the O_* constants..." >&4
+  	if ./open3; then
+ 
+Index: mcon/U/d_pidcheck.U
+*** /tmp/RCSAa22504	Thu Feb 12 10:33:22 1998
+--- mcon/U/d_pidcheck.U	Mon Sep 29 13:13:57 1997
+***************
+*** 50,56 ****
+  	exit(status0 == status9);
+  	}
+  EOCP
+! 	if $cc try.c -o try >/dev/null 2>&1 ; then
+  		if ./try >/dev/null 2>&1 ; then
+  			echo "Yes, it does marvels."
+  			d_pidcheck="$undef"
+--- 50,56 ----
+  	exit(status0 == status9);
+  	}
+  EOCP
+! 	if $cc -o try try.c >/dev/null 2>&1 ; then
+  		if ./try >/dev/null 2>&1 ; then
+  			echo "Yes, it does marvels."
+  			d_pidcheck="$undef"
+ 
+Index: mcon/U/d_safebcpy.U
+*** /tmp/RCSAa22507	Thu Feb 12 10:33:22 1998
+--- mcon/U/d_safebcpy.U	Mon Sep 29 13:14:09 1997
+***************
+*** 93,100 ****
+  exit(0);
+  }
+  EOCP
+! 	if $cc $optimize $ccflags $ldflags foo.c \
+! 		    -o safebcpy $libs >/dev/null 2>&1; then
+  		if ./safebcpy 2>/dev/null; then
+  			echo "Yes, it can."
+  			val="$define"
+--- 93,100 ----
+  exit(0);
+  }
+  EOCP
+! 	if $cc $optimize $ccflags $ldflags \
+! 		    -o safebcpy foo.c $libs >/dev/null 2>&1; then
+  		if ./safebcpy 2>/dev/null; then
+  			echo "Yes, it can."
+  			val="$define"
+ 
+Index: mcon/U/d_safemcpy.U
+*** /tmp/RCSAa22510	Thu Feb 12 10:33:23 1998
+--- mcon/U/d_safemcpy.U	Mon Sep 29 13:14:20 1997
+***************
+*** 96,103 ****
+  exit(0);
+  }
+  EOCP
+! 	if $cc $optimize $ccflags $ldflags foo.c \
+! 		    -o safemcpy $libs >/dev/null 2>&1; then
+  		if ./safemcpy 2>/dev/null; then
+  			echo "Yes, it can."
+  			val="$define"
+--- 96,103 ----
+  exit(0);
+  }
+  EOCP
+! 	if $cc $optimize $ccflags $ldflags \
+! 		    -o safemcpy foo.c $libs >/dev/null 2>&1; then
+  		if ./safemcpy 2>/dev/null; then
+  			echo "Yes, it can."
+  			val="$define"
+ 
+Index: mcon/U/d_sanemcmp.U
+*** /tmp/RCSAa22513	Thu Feb 12 10:33:23 1998
+--- mcon/U/d_sanemcmp.U	Mon Sep 29 13:14:28 1997
+***************
+*** 63,70 ****
+  exit(0);
+  }
+  EOCP
+! 	if $cc $optimize $ccflags $ldflags foo.c \
+! 		    -o sanemcmp $libs >/dev/null 2>&1; then
+  		if ./sanemcmp 2>/dev/null; then
+  			echo "Yes, it can."
+  			val="$define"
+--- 63,70 ----
+  exit(0);
+  }
+  EOCP
+! 	if $cc $optimize $ccflags $ldflags \
+! 		    -o sanemcmp foo.c $libs >/dev/null 2>&1; then
+  		if ./sanemcmp 2>/dev/null; then
+  			echo "Yes, it can."
+  			val="$define"
+ 
+Index: mcon/U/d_scannl.U
+*** /tmp/RCSAa22516	Thu Feb 12 10:33:24 1998
+--- mcon/U/d_scannl.U	Mon Sep 29 13:14:36 1997
+***************
+*** 48,54 ****
+  	exit(0);
+  }
+  EOCP
+! if $cc -o try $ccflags try.c >/dev/null 2>&1; then
+  	if ./try <<'EOD'
+  2
+  3
+--- 48,54 ----
+  	exit(0);
+  }
+  EOCP
+! if $cc $ccflags -o try try.c >/dev/null 2>&1; then
+  	if ./try <<'EOD'
+  2
+  3
+ 
+Index: mcon/U/d_vprintf.U
+*** /tmp/RCSAa22519	Thu Feb 12 10:33:24 1998
+--- mcon/U/d_vprintf.U	Mon Sep 29 13:15:27 1997
+***************
+*** 54,60 ****
+  	exit((unsigned long)vsprintf(buf,"%s",args) > 10L);
+  }
+  EOF
+! 	if $cc $ccflags vprintf.c -o vprintf >/dev/null 2>&1 && ./vprintf; then
+  		echo "Your vsprintf() returns (int)." >&4
+  		val2="$undef"
+  	else
+--- 54,60 ----
+  	exit((unsigned long)vsprintf(buf,"%s",args) > 10L);
+  }
+  EOF
+! 	if $cc $ccflags -o vprintf vprintf.c >/dev/null 2>&1 && ./vprintf; then
+  		echo "Your vsprintf() returns (int)." >&4
+  		val2="$undef"
+  	else
+ 
+Index: mcon/U/d_wifstat.U
+*** /tmp/RCSAa22522	Thu Feb 12 10:33:24 1998
+--- mcon/U/d_wifstat.U	Mon Sep 29 13:15:37 1997
+***************
+*** 65,71 ****
+  }
+  EOCP
+  	d_wifstat="$undef"
+! 	if $cc $ccflags $ldflags foo.c -o foo $libs >/dev/null 2>&1; then
+  		if ./foo >/dev/null; then
+  			echo "Great! Looks like we can use the WIFxxx macros." >&4
+  			d_wifstat="$define"
+--- 65,71 ----
+  }
+  EOCP
+  	d_wifstat="$undef"
+! 	if $cc $ccflags $ldflags -o foo foo.c $libs >/dev/null 2>&1; then
+  		if ./foo >/dev/null; then
+  			echo "Great! Looks like we can use the WIFxxx macros." >&4
+  			d_wifstat="$define"
+ 
+Index: mcon/U/doublesize.U
+*** /tmp/RCSAa22525	Thu Feb 12 10:33:25 1998
+--- mcon/U/doublesize.U	Mon Sep 29 13:15:45 1997
+***************
+*** 34,40 ****
+  	printf("%d\n", sizeof(double));
+  }
+  EOCP
+! 	if $cc $ccflags try.c -o try >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='8'
+--- 34,40 ----
+  	printf("%d\n", sizeof(double));
+  }
+  EOCP
+! 	if $cc $ccflags -o try try.c >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='8'
+ 
+Index: mcon/U/floatsize.U
+*** /tmp/RCSAa22528	Thu Feb 12 10:33:25 1998
+--- mcon/U/floatsize.U	Mon Sep 29 13:16:01 1997
+***************
+*** 34,40 ****
+  	printf("%d\n", sizeof(float));
+  }
+  EOCP
+! 	if $cc $ccflags try.c -o try >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='4'
+--- 34,40 ----
+  	printf("%d\n", sizeof(float));
+  }
+  EOCP
+! 	if $cc $ccflags -o try try.c >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='4'
+ 
+Index: mcon/U/fpu.U
+*** /tmp/RCSAa22531	Thu Feb 12 10:33:25 1998
+--- mcon/U/fpu.U	Mon Sep 29 13:16:11 1997
+***************
+*** 22,28 ****
+  	$cat>fpa.c << GOOP
+  	main(){return(1);}
+  GOOP
+! 	$cc -ffpa fpa.c -o fpa
+  	fpa > fpa.out 2>&1
+  	if $test ! -s fpa.out; then
+  		dflt='y'
+--- 22,28 ----
+  	$cat>fpa.c << GOOP
+  	main(){return(1);}
+  GOOP
+! 	$cc -ffpa -o fpa fpa.c
+  	fpa > fpa.out 2>&1
+  	if $test ! -s fpa.out; then
+  		dflt='y'
+ 
+Index: mcon/U/i_time.U
+*** /tmp/RCSAa22534	Thu Feb 12 10:33:26 1998
+--- mcon/U/i_time.U	Mon Sep 29 13:16:37 1997
+***************
+*** 112,118 ****
+  	'') $echo $n ".$c"
+  		if $cc $ccflags \
+  		$i_time $i_systime $i_systimek $sysselect $s_timeval $s_timezone \
+! 		try.c -o try >/dev/null 2>&1 ; then
+  			set X $i_time $i_systime $i_systimek $sysselect $s_timeval
+  			shift
+  			flags="$*"
+--- 112,118 ----
+  	'') $echo $n ".$c"
+  		if $cc $ccflags \
+  		$i_time $i_systime $i_systimek $sysselect $s_timeval $s_timezone \
+! 		-o try try.c >/dev/null 2>&1 ; then
+  			set X $i_time $i_systime $i_systimek $sysselect $s_timeval
+  			shift
+  			flags="$*"
+ 
+Index: mcon/U/install.U
+*** /tmp/RCSAa22537	Thu Feb 12 10:33:26 1998
+--- mcon/U/install.U	Mon Sep 29 13:16:53 1997
+***************
+*** 53,59 ****
+  	exit(0);
+  }
+  EOC
+! 	if $cc try.c -o try >/dev/null 2>&1; then
+  		cp try try.ns
+  		strip try >/dev/null 2>&1
+  	else
+--- 53,59 ----
+  	exit(0);
+  }
+  EOC
+! 	if $cc -o try try.c >/dev/null 2>&1; then
+  		cp try try.ns
+  		strip try >/dev/null 2>&1
+  	else
+ 
+Index: mcon/U/mkdep.U
+*** /tmp/RCSAa22540	Thu Feb 12 10:33:27 1998
+--- mcon/U/mkdep.U	Mon Mar 17 14:45:52 1997
+***************
+*** 61,67 ****
+  '')
+  	;;
+  *)
+! 	if test -x "$mkdep" &&
+  		$mkdep dep.c >dep.out 2>/dev/null &&
+  		$contains "dep$_o:.*dep\.h" dep.out >/dev/null 2>&1
+  	then
+--- 61,67 ----
+  '')
+  	;;
+  *)
+! 	if test -f "$mkdep" &&
+  		$mkdep dep.c >dep.out 2>/dev/null &&
+  		$contains "dep$_o:.*dep\.h" dep.out >/dev/null 2>&1
+  	then
+ 
+Index: mcon/U/nblock_io.U
+*** /tmp/RCSAa22543	Thu Feb 12 10:33:27 1998
+--- mcon/U/nblock_io.U	Mon Sep 29 13:17:30 1997
+***************
+*** 103,109 ****
+  	exit(0);
+  }
+  EOCP
+! 	if $cc $ccflags $ldflags try.c -o try >/dev/null 2>&1; then
+  		o_nonblock=`./try`
+  		case "$o_nonblock" in
+  		'') echo "I can't figure it out, assuming O_NONBLOCK will do.";;
+--- 103,109 ----
+  	exit(0);
+  }
+  EOCP
+! 	if $cc $ccflags $ldflags -o try try.c >/dev/null 2>&1; then
+  		o_nonblock=`./try`
+  		case "$o_nonblock" in
+  		'') echo "I can't figure it out, assuming O_NONBLOCK will do.";;
+***************
+*** 181,187 ****
+  	exit(0);				/* Bye bye, thank you for playing! */
+  }
+  EOCP
+! 	if $cc $ccflags $ldflags try.c -o try >/dev/null 2>&1; then
+  ?X: Use script to avoid the possible 'alarm call' message
+  		echo "$startsh" >mtry
+  		echo "./try >try.out 2>try.ret 3>try.err || exit 4" >>mtry
+--- 181,187 ----
+  	exit(0);				/* Bye bye, thank you for playing! */
+  }
+  EOCP
+! 	if $cc $ccflags $ldflags -o try try.c >/dev/null 2>&1; then
+  ?X: Use script to avoid the possible 'alarm call' message
+  		echo "$startsh" >mtry
+  		echo "./try >try.out 2>try.ret 3>try.err || exit 4" >>mtry
+ 
+Index: mcon/U/patchlevel.U
+*** /tmp/RCSAa22546	Thu Feb 12 10:33:28 1998
+--- mcon/U/patchlevel.U	Tue May 20 10:17:36 1997
+***************
+*** 19,25 ****
+  echo " "
+  echo "Getting the current patchlevel..." >&4
+  if $test -r $rsrc/patchlevel.h;then
+! 	patchlevel=`awk '/PATCHLEVEL/ {print $3}' < $rsrc/patchlevel.h`
+  else
+  	patchlevel=0
+  fi
+--- 19,27 ----
+  echo " "
+  echo "Getting the current patchlevel..." >&4
+  if $test -r $rsrc/patchlevel.h;then
+! 	patchlevel=`awk \
+! 		'/^#[ 	]*define[ 	][ 	]*PATCHLEVEL/ {print $3}' \
+! 		< $rsrc/patchlevel.h`
+  else
+  	patchlevel=0
+  fi
+ 
+Index: mcon/U/ptrsize.U
+*** /tmp/RCSAa22549	Thu Feb 12 10:33:28 1998
+--- mcon/U/ptrsize.U	Mon Sep 29 13:18:02 1997
+***************
+*** 34,40 ****
+  	printf("%d\n", sizeof(char *));
+  }
+  EOCP
+! 	if $cc $ccflags try.c -o try >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='4'
+--- 34,40 ----
+  	printf("%d\n", sizeof(char *));
+  }
+  EOCP
+! 	if $cc $ccflags -o try try.c >/dev/null 2>&1 ; then
+  		dflt=`./try`
+  	else
+  		dflt='4'
+ 
+Index: mcon/U/randbits.U
+*** /tmp/RCSAa22552	Thu Feb 12 10:33:28 1998
+--- mcon/U/randbits.U	Mon Sep 29 13:18:10 1997
+***************
+*** 59,65 ****
+  	printf("%d\n",i);
+  }
+  EOCP
+! 	if $cc try.c -o try >/dev/null 2>&1 ; then
+  		dflt=`try`
+  	else
+  		dflt='?'
+--- 59,65 ----
+  	printf("%d\n",i);
+  }
+  EOCP
+! 	if $cc -o try try.c >/dev/null 2>&1 ; then
+  		dflt=`try`
+  	else
+  		dflt='?'
+ 
+Index: mcon/U/randfunc.U
+*** /tmp/RCSAa22555	Thu Feb 12 10:33:29 1998
+--- mcon/U/randfunc.U	Mon Sep 29 13:18:16 1997
+***************
+*** 117,123 ****
+  	printf("%d\n",i);
+  }
+  EOCP
+! 			if $cc try.c -o try >/dev/null 2>&1 ; then
+  			dflt=`try`
+  			else
+  			dflt='?'
+--- 117,123 ----
+  	printf("%d\n",i);
+  }
+  EOCP
+! 			if $cc -o try try.c >/dev/null 2>&1 ; then
+  			dflt=`try`
+  			else
+  			dflt='?'
+ 
+Index: mcon/U/sockopt.U
+*** /tmp/RCSAa22558	Thu Feb 12 10:33:29 1998
+--- mcon/U/sockopt.U	Mon Sep 29 13:18:39 1997
+***************
+*** 47,53 ****
+  	exit(0);
+  }
+  EOP
+! 		if $cc $ccflags $sockethdr socket.c -o socket $libs \
+  			$socketlib >/dev/null 2>&1; then
+  			./socket >/dev/null 2>&1
+  			case $? in
+--- 47,53 ----
+  	exit(0);
+  }
+  EOP
+! 		if $cc $ccflags $sockethdr -o socket socket.c $libs \
+  			$socketlib >/dev/null 2>&1; then
+  			./socket >/dev/null 2>&1
+  			case $? in
+ 
+Index: mcon/U/src.U
+*** /tmp/RCSAa22561	Thu Feb 12 10:33:29 1998
+--- mcon/U/src.U	Fri Mar  7 15:08:15 1997
+***************
+*** 9,15 ****
+  ?RCS: Revision 3.0.1.1  1997/02/28  16:23:54  ram
+  ?RCS: patch61: created
+  ?RCS:
+! ?MAKE:src +rsrc: Options Myread package contains
+  ?MAKE:	-pick add $@ %<
+  ?Y:TOP
+  ?S:src (srcdir):
+--- 9,15 ----
+  ?RCS: Revision 3.0.1.1  1997/02/28  16:23:54  ram
+  ?RCS: patch61: created
+  ?RCS:
+! ?MAKE:src +rsrc: Options package contains
+  ?MAKE:	-pick add $@ %<
+  ?Y:TOP
+  ?S:src (srcdir):
+***************
+*** 18,39 ****
+  ?S:	find the sources remotely.
+  ?S:.
+  ?S:rsrc (relsrcdir):
+! ?S:	This variable holds the relative path to the package source.
+! ?S:	The contents are correct for the configuration environment,
+! ?S:	i.e. there is an extra .. either appended or prepended.
+  ?S:	Configure units should use this, not the src variable.
+  ?S:.
+  ?LINT:change package
+  : Find the path to the source tree
+  case "$src" in
+! '') src=`echo $0 | sed -e 's%/[^/][^/]*$%%'`;;
+  esac
+  case "$src" in
+! '')
+! 	src=.
+! 	rsrc=..
+  	;;
+! /*) rsrc="$src/..";;
+  *) rsrc="../$src";;
+  esac
+  ?X:
+--- 18,41 ----
+  ?S:	find the sources remotely.
+  ?S:.
+  ?S:rsrc (relsrcdir):
+! ?S:	This variable holds a potentially relative path to the package
+! ?S:	source.  The contents are correct for the configuration environment,
+! ?S:	i.e. there might be an extra .. prepended to get out of the UU dir.
+  ?S:	Configure units should use this, not the src variable.
+  ?S:.
+  ?LINT:change package
+  : Find the path to the source tree
+  case "$src" in
+! '') case "$0" in
+!     */*) src=`echo $0 | sed -e 's%/[^/][^/]*$%%'`;;
+!     *)   src='.';;
+!     esac;;
+  esac
+  case "$src" in
+! '')	src=/
+! 	rsrc=/
+  	;;
+! /*) rsrc="$src";;
+  *) rsrc="../$src";;
+  esac
+  ?X:
+***************
+*** 46,52 ****
+  ?X: If it matches, we know we found the right source tree. -- RAM, 15/03/96
+  ?X:
+  if test -f $rsrc/Configure && \
+! 	$contains "^package=$package" $rsrc/Configure >/dev/null 2>&1
+  then
+     : found it, so we are ok.
+  else
+--- 48,54 ----
+  ?X: If it matches, we know we found the right source tree. -- RAM, 15/03/96
+  ?X:
+  if test -f $rsrc/Configure && \
+! 	$contains "^package=$package$" $rsrc/Configure >/dev/null 2>&1
+  then
+     : found it, so we are ok.
+  else
+***************
+*** 55,61 ****
+  	rsrc=''
+  	for src in . .. ../.. ../../.. ../../../..; do
+  		if test -f ../$src/Configure && \
+! 			$contains "^package=$package" ../$src/Configure >/dev/null 2>&1
+  		then
+  			rsrc=../$src
+  			break
+--- 57,63 ----
+  	rsrc=''
+  	for src in . .. ../.. ../../.. ../../../..; do
+  		if test -f ../$src/Configure && \
+! 			$contains "^package=$package$" ../$src/Configure >/dev/null 2>&1
+  		then
+  			rsrc=../$src
+  			break
+***************
+*** 64,91 ****
+  fi
+  case "$rsrc" in
+  '')
+! ?X: It's too early to use Getfile.U (would stack too much units before this)
+! 	echo " "
+! 	dflt=
+! 	rp="Directory where sources for $package are located?"
+! 	. ./myread
+! 	src="$ans"
+! 	rsrc="$src"
+! 	if test -f $rsrc/Configure && \
+! 		$contains "^package=$package" $rsrc/Configure >/dev/null 2>&1
+! 	then
+! 		echo "Ok, I've found them under $src"
+! 	else
+! 		echo "Sorry, I can't seem to be able to locate $package sources." >&4
+! 		exit 1
+! 	fi
+  	;;
+  ?X: Don't echo anything if the sources are in . -- they should know already ;-)
+  ?X: In that case, rsrc is ../. since we lookup from within UU
+! ../.) ;;
+  *)
+  	echo " "
+! 	echo "Sources for $package found in $src" >&4
+  	;;
+  esac
+  
+--- 66,85 ----
+  fi
+  case "$rsrc" in
+  '')
+! 	cat <<EOM >&4
+! 
+! Sorry, I can't seem to locate the source dir for $package.  Please start
+! Configure with an explicit path -- i.e. /some/path/Configure.
+! 
+! EOM
+! 	exit 1
+  	;;
+  ?X: Don't echo anything if the sources are in . -- they should know already ;-)
+  ?X: In that case, rsrc is ../. since we lookup from within UU
+! ../.)	rsrc='..';;
+  *)
+  	echo " "
+! 	echo "Sources for $package found in \"$src\"." >&4
+  	;;
+  esac
+  
+ 
+Index: mcon/U/sunscanf.U
+*** /tmp/RCSAa22564	Thu Feb 12 10:33:30 1998
+--- mcon/U/sunscanf.U	Mon Sep 29 13:18:52 1997
+***************
+*** 31,37 ****
+  	printf("%d\n", value == 4.5);
+  }
+  EOCP
+! if $cc $ccflags scanf.c -o scanf >/dev/null 2>&1 ; then
+  	if $test `scanf` = 0; then
+  		echo "Hmm.. seems your not running the USG flavor.."
+  		val="$undef"
+--- 31,37 ----
+  	printf("%d\n", value == 4.5);
+  }
+  EOCP
+! if $cc $ccflags -o scanf scanf.c >/dev/null 2>&1 ; then
+  	if $test `scanf` = 0; then
+  		echo "Hmm.. seems your not running the USG flavor.."
+  		val="$undef"
+ 
+Index: mcon/U/usenm.U
+*** /tmp/RCSAa22567	Thu Feb 12 10:33:30 1998
+--- mcon/U/usenm.U	Fri Mar  7 15:07:34 1997
+***************
+*** 11,17 ****
+  ?RCS: Baseline for dist 3.0 netwide release.
+  ?RCS:
+  ?MAKE:usenm runnm nm_opt nm_so_opt: cat test Myread Oldconfig myuname grep \
+! 	d_gnulibc
+  ?MAKE:	-pick add $@ %<
+  ?S:usenm:
+  ?S:	This variable contains 'true' or 'false' depending whether the
+--- 11,17 ----
+  ?RCS: Baseline for dist 3.0 netwide release.
+  ?RCS:
+  ?MAKE:usenm runnm nm_opt nm_so_opt: cat test Myread Oldconfig myuname grep \
+! 	d_gnulibc egrep rsrc
+  ?MAKE:	-pick add $@ %<
+  ?S:usenm:
+  ?S:	This variable contains 'true' or 'false' depending whether the
+***************
+*** 45,51 ****
+  		dflt=n
+  		;;
+  	*)
+! 		dflt=`egrep 'inlibc|csym' ../Configure | wc -l 2>/dev/null`
+  		if $test $dflt -gt 20; then
+  			dflt=y
+  		else
+--- 45,51 ----
+  		dflt=n
+  		;;
+  	*)
+! 		dflt=`$egrep 'inlibc|csym' $rsrc/Configure | wc -l 2>/dev/null`
+  		if $test $dflt -gt 20; then
+  			dflt=y
+  		else
+ 
+Index: mcon/man/mconfig.SH
+*** /tmp/RCSAa22570	Thu Feb 12 10:33:38 1998
+--- mcon/man/mconfig.SH	Mon Mar 17 14:48:30 1997
+***************
+*** 366,371 ****
+--- 366,374 ----
+  .IP *
+  Always use echo " " (with a space) because of Eunice systems.
+  .IP *
++ Only use \fBtest\fR with \-r, \-w, \-f or \-d since those are the only
++ portable switches. In particular, avoid "test -x".
++ .IP *
+  Use only programs that came with V7, so that you know everyone has them.
+  .IP *
+  Use \$\&contains when you want to grep conditionally, since not all
+ 
+*** end of unofficial patch ***

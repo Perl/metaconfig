@@ -89,11 +89,21 @@ dist_patches/
     and installed.  I have submitted these for inclusion in the
     regular dist distribution.
 
+installdirs/
+    These are units to handle perl's installation directories and
+    related issues.
+
 modified/
     These are modified versions of the standard units.  Also included in
     this directory are new units that are clearly derived from existing
     units.  I have submitted these for inclusion in the regular dist
     distribution.
+
+nullified/
+    These are null units that replace units in the standard
+    distribution.  Typically they are there because some part of the
+    perl source accidentally uses a symbol that metaconfig means we
+    want the corresponding unit.
 
 perl/
     These are specific to perl.  Some are heavily derived from

@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:usemultiplicity: Myread Oldconfig Setvar
+?MAKE:usemultiplicity: useithreads Myread Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usemultiplicity:
@@ -27,22 +27,30 @@
 cat <<EOM
 
 Perl can be built so that multiple Perl interpreters can coexist
-within the same Perl executable.  To do so, Configure must be run with
--Dusemultiplicity.
-
-Normally you do not need this and you should answer no.
-
+within the same Perl executable.
 EOM
-case "$usemultiplicity" in
-$define|true|[yY]*)	dflt='y';;
-*) dflt='n';;
-esac
-rp='Build Perl for multiplicity?'
-. ./myread
-case "$ans" in
-y|Y)	val="$define" ;;     
-*)      val="$undef" ;;
+
+case "$useithreads" in
+$define)
+	cat <<EOM
+This multiple interpreter support is required for interpreter-based threads.
+EOM
+	val="$define"
+	;;
+*)
+	echo 'Normally you do not need this and you should answer no.'
+	case "$usemultiplicity" in
+	$define|true|[yY]*)	dflt='y';;
+	*) dflt='n';;
+	esac
+	rp='Build Perl for multiplicity?'
+	. ./myread
+	case "$ans" in
+	y|Y)	val="$define" ;;
+	*)      val="$undef" ;;
+	esac
+	;;
 esac
 set usemultiplicity
-eval $setvar 
+eval $setvar
 

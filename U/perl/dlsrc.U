@@ -22,7 +22,7 @@
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:usedl:
-?S:	This variable indicates if the the system supports dynamic
+?S:	This variable indicates if the system supports dynamic
 ?S:	loading of some sort.  See also dlsrc and dlobj.
 ?S:.
 ?S:ld:

@@ -17,7 +17,7 @@
 ?RCS: patch61: created
 ?RCS:
 ?MAKE:sitearch sitearchexp installsitearch: cat sed Getfile \
-	Oldconfig Prefixit archname apiversion installprefix \
+	Oldconfig Prefixit archname installprefix \
 	prefix sitelib test
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -61,11 +61,11 @@
 ?H:.
 ?T:tdflt
 : determine where site specific architecture-dependent libraries go.
-: sitelib  default is /usr/local/lib/perl5/site_perl/
-: sitearch default is /usr/local/lib/perl5/site_perl/$apiversion/$archname
+: sitelib  default is /usr/local/lib/perl5/site_perl/$version
+: sitearch default is /usr/local/lib/perl5/site_perl/$version/$archname
 : sitelib may have an optional trailing /share.
 tdflt=`echo $sitelib | $sed 's,/share$,,'`
-tdflt="$tdflt/$apiversion/$archname"
+tdflt="$tdflt/$archname"
 set sitearch sitearch none
 eval $prefixit
 case "$sitearch" in

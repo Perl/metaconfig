@@ -117,7 +117,7 @@ int main()
 }
 EOCP
 	set try
-	if eval $compile && ./try; then
+	if eval $compile_ok && ./try; then
 		echo 'Looks OK.' >&4
 	else
 		echo "I can't use Berkeley DB with your <db.h>.  I'll disable Berkeley DB." >&4

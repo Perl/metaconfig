@@ -21,3 +21,4 @@
 : see if strtouq exists
 set strtouq d_strtouq
 eval $inlibc
+

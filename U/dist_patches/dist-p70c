@@ -1,0 +1,745 @@
+This patch goes on top of the dist-3.0@70 patches a and b.
+It changes the main() function in C programs in various units to
+explicitly be entered as    int main().  I gather this helps make
+some C++ compilers happier.
+
+This is done as a dist patch rather than privatizing all the relevant
+units because the patch is trivial and this is easier.
+
+    Andy Dougherty		doughera@lafayette.edu
+    Dept. of Physics
+    Lafayette College, Easton PA 18042
+
+
+diff -r -u U.old/abortsig.U U/abortsig.U
+--- U.old/abortsig.U	Tue Apr 14 15:10:09 1998
++++ U/abortsig.U	Tue Dec 14 16:10:33 1999
+@@ -40,7 +40,7 @@
+ 		'') $cat >abort.c <<EOP
+ #include <signal.h>
+ caught() { exit(0); }
+-main()
++int main()
+ {
+ #ifdef $signal
+ 	signal($signal, caught);
+diff -r -u U.old/alignbytes.U U/alignbytes.U
+--- U.old/alignbytes.U	Tue Apr 14 15:10:09 1998
++++ U/alignbytes.U	Tue Dec 14 16:10:36 1999
+@@ -42,7 +42,7 @@
+ 	char foo;
+ 	double bar;
+ } try;
+-main()
++int main()
+ {
+ 	printf("%d\n", (char *)&try.bar - (char *)&try.foo);
+ }
+diff -r -u U.old/bitpbyte.U U/bitpbyte.U
+--- U.old/bitpbyte.U	Tue Apr 14 15:10:09 1998
++++ U/bitpbyte.U	Tue Dec 14 16:10:38 1999
+@@ -51,7 +51,7 @@
+ #define BITSPERBYTE 8
+ #endif
+ #endif
+-main()
++int main()
+ {
+ 	printf("%d\n", BITSPERBYTE);
+ }
+diff -r -u U.old/byteorder.U U/byteorder.U
+--- U.old/byteorder.U	Tue Apr 14 15:10:09 1998
++++ U/byteorder.U	Tue Dec 14 16:10:40 1999
+@@ -48,7 +48,7 @@
+ EOM
+ 	$cat >try.c <<'EOCP'
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	int i;
+ 	union {
+diff -r -u U.old/ccflags.U U/ccflags.U
+--- U.old/ccflags.U	Tue Apr 14 15:10:09 1998
++++ U/ccflags.U	Tue Dec 14 16:10:42 1999
+@@ -354,7 +354,7 @@
+ EOM
+ $cat > try.c <<'EOF'
+ #include <stdio.h>
+-main() { exit(0); }
++int main() { exit(0); }
+ EOF
+ dflt=y
+ ?X: Use "sh -c" to avoid error messages tagged with leading "Configure:".
+diff -r -u U.old/charorder.U U/charorder.U
+--- U.old/charorder.U	Tue Apr 14 15:10:09 1998
++++ U/charorder.U	Tue Dec 14 16:10:44 1999
+@@ -52,7 +52,7 @@
+ $cat >byteorder.c <<'EOCP'
+ #include <stdio.h>
+ 
+-main(argc, argv)
++int main(argc, argv)
+ 	int argc;
+ 	char *argv[]; {
+ 	int i;
+diff -r -u U.old/charsize.U U/charsize.U
+--- U.old/charsize.U	Tue Apr 14 15:10:09 1998
++++ U/charsize.U	Tue Dec 14 16:10:46 1999
+@@ -35,7 +35,7 @@
+ 	echo "Checking to see how big your characters are..." >&4
+ 	$cat >try.c <<'EOCP'
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	printf("%d\n", sizeof(char));
+ }
+diff -r -u U.old/d_NOFILE.U U/d_NOFILE.U
+--- U.old/d_NOFILE.U	Tue Apr 14 15:10:09 1998
++++ U/d_NOFILE.U	Tue Dec 14 16:10:49 1999
+@@ -58,7 +58,7 @@
+ @if VAL_NOFILE || nofile
+ 	$cat >nofile.c <<'EOCP'
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	printf("%d\n", getdtablesize());
+ }
+diff -r -u U.old/d_PORTAR.U U/d_PORTAR.U
+--- U.old/d_PORTAR.U	Tue Apr 14 15:10:09 1998
++++ U/d_PORTAR.U	Tue Dec 14 16:10:52 1999
+@@ -37,7 +37,7 @@
+ echo 'Checking to see if we need to define PORTAR for portable archives...' >&4
+ $cat >portar.c <<'EOCP'
+ #include <ar.h>
+-main() {
++int main() {
+ 	char *arfmag = ARFMAG;
+ 	int sarmag = SARMAG;
+ 	struct ar_hdr arh;
+diff -r -u U.old/d_SHM_MAC.U U/d_SHM_MAC.U
+--- U.old/d_SHM_MAC.U	Tue Apr 14 15:10:09 1998
++++ U/d_SHM_MAC.U	Tue Dec 14 16:10:54 1999
+@@ -86,7 +86,7 @@
+ #include <sys/seg.h>
+ #endif
+ 
+-main() {
++int main() {
+ 	int foo = SHMLBA ;
+ 	}
+ EOCP
+diff -r -u U.old/d_access.U U/d_access.U
+--- U.old/d_access.U	Tue Apr 14 15:10:09 1998
++++ U/d_access.U	Tue Dec 14 16:10:56 1999
+@@ -47,7 +47,7 @@
+ #ifdef I_UNISTD
+ #include <unistd.h>
+ #endif
+-main() {
++int main() {
+ 	exit(R_OK);
+ }
+ EOCP
+diff -r -u U.old/d_bsdjmp.U U/d_bsdjmp.U
+--- U.old/d_bsdjmp.U	Tue Apr 14 15:10:09 1998
++++ U/d_bsdjmp.U	Tue Dec 14 16:10:59 1999
+@@ -43,7 +43,7 @@
+ #include <setjmp.h>
+ jmp_buf env;
+ int set = 1;
+-main()
++int main()
+ {
+ 	if (_setjmp(env))
+ 		exit(set);
+diff -r -u U.old/d_casti32.U U/d_casti32.U
+--- U.old/d_casti32.U	Tue Apr 14 15:10:09 1998
++++ U/d_casti32.U	Tue Dec 14 16:11:01 1999
+@@ -49,7 +49,7 @@
+ #include <sys/types.h>
+ #include <signal.h>
+ $signal_t blech() { exit(3); }
+-main()
++int main()
+ {
+ 	$xxx i32;
+ 	double f;
+diff -r -u U.old/d_castneg.U U/d_castneg.U
+--- U.old/d_castneg.U	Tue Apr 14 15:10:09 1998
++++ U/d_castneg.U	Tue Dec 14 16:11:04 1999
+@@ -64,7 +64,7 @@
+ unsigned long dummy_long(p) unsigned long p; { return p; }
+ unsigned int dummy_int(p) unsigned int p; { return p; }
+ unsigned short dummy_short(p) unsigned short p; { return p; }
+-main()
++int main()
+ {
+ 	double f = -123.;
+ 	unsigned long along;
+diff -r -u U.old/d_charsprf.U U/d_charsprf.U
+--- U.old/d_charsprf.U	Tue Apr 14 15:10:09 1998
++++ U/d_charsprf.U	Tue Dec 14 16:11:06 1999
+@@ -31,7 +31,7 @@
+ : see if sprintf is declared as int or pointer to char
+ echo " "
+ $cat >ucbsprf.c <<'EOF'
+-main()
++int main()
+ {
+ 	int sprintf();
+ 	char buf[10];
+diff -r -u U.old/d_ckeypad.U U/d_ckeypad.U
+--- U.old/d_ckeypad.U	Tue Apr 14 15:10:10 1998
++++ U/d_ckeypad.U	Tue Dec 14 16:11:08 1999
+@@ -36,7 +36,7 @@
+ echo "Checking the curses library ($termlib) for the keypad() function..." >&4
+ 	$cat >c_keypad.c <<'EOCP'
+ #include <curses.h>
+-main() {
++int main() {
+ 	keypad(stdscr, TRUE);
+ 	exit(0);
+ }
+diff -r -u U.old/d_const.U U/d_const.U
+--- U.old/d_const.U	Tue Apr 14 15:10:10 1998
++++ U/d_const.U	Tue Dec 14 16:11:11 1999
+@@ -46,7 +46,7 @@
+ ?X: handle typedefs properly if they're declared const. To guard
+ ?X: against this, boost up the test by using an explicit typedef...
+ typedef struct spug { int drokk; } spug;
+-main()
++int main()
+ {
+ 	const char *foo;
+ 	const spug y;
+diff -r -u U.old/d_eofpipe.U U/d_eofpipe.U
+--- U.old/d_eofpipe.U	Tue Apr 14 15:10:10 1998
++++ U/d_eofpipe.U	Tue Dec 14 16:11:13 1999
+@@ -36,7 +36,7 @@
+ '')
+ 	echo "Let's see if your pipes return EOF to select() upon closing..." >&4
+ 	$cat >pipe.c <<'EOP'
+-main()
++int main()
+ {
+ 	int pd[2];
+ 	int mask;
+diff -r -u U.old/d_fd_set.U U/d_fd_set.U
+--- U.old/d_fd_set.U	Tue Apr 14 15:10:10 1998
++++ U/d_fd_set.U	Tue Dec 14 16:11:15 1999
+@@ -82,7 +82,7 @@
+ #ifdef I_SYS_SELECT
+ #include <sys/select.h>
+ #endif
+-main() {
++int main() {
+ 	fd_set fds;
+ 
+ #ifdef TRYBITS
+diff -r -u U.old/d_getpagsz.U U/d_getpagsz.U
+--- U.old/d_getpagsz.U	Tue Apr 14 15:10:10 1998
++++ U/d_getpagsz.U	Tue Dec 14 16:11:24 1999
+@@ -54,7 +54,7 @@
+ '')
+ 	$cat >page.c <<EOP
+ extern int getpagesize();
+-main()
++int main()
+ {
+ 	printf("%d\n", getpagesize());
+ }
+diff -r -u U.old/d_getpgrp.U U/d_getpgrp.U
+--- U.old/d_getpgrp.U	Tue Apr 14 15:10:10 1998
++++ U/d_getpgrp.U	Tue Dec 14 16:11:27 1999
+@@ -54,7 +54,7 @@
+ #ifdef I_UNISTD
+ #  include <unistd.h>
+ #endif
+-main()
++int main()
+ {
+ 	if (getuid() == 0) {
+ 		printf("(I see you are running Configure as super-user...)\n");
+diff -r -u U.old/d_isascii.U U/d_isascii.U
+--- U.old/d_isascii.U	Tue Apr 14 15:10:10 1998
++++ U/d_isascii.U	Tue Dec 14 16:11:35 1999
+@@ -36,7 +36,7 @@
+ $cat >isascii.c <<'EOCP'
+ #include <stdio.h>
+ #include <ctype.h>
+-main() {
++int main() {
+ 	int c = 'A';
+ 	if (isascii(c))
+ 		exit(0);
+diff -r -u U.old/d_keepsig.U U/d_keepsig.U
+--- U.old/d_keepsig.U	Tue Apr 14 15:10:10 1998
++++ U/d_keepsig.U	Tue Dec 14 16:11:37 1999
+@@ -45,7 +45,7 @@
+ $cat >try.c <<'EOCP'
+ foo() {}
+ 
+-main()
++int main()
+ {
+ 	signal(2, foo);
+ 	kill(getpid(), 2);
+diff -r -u U.old/d_nolnbuf.U U/d_nolnbuf.U
+--- U.old/d_nolnbuf.U	Tue Apr 14 15:10:11 1998
++++ U/d_nolnbuf.U	Tue Dec 14 16:11:39 1999
+@@ -36,7 +36,7 @@
+ '')
+ 	$cat <<'EOT' >blurfl.c
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	int i;
+ 
+diff -r -u U.old/d_open3.U U/d_open3.U
+--- U.old/d_open3.U	Tue Apr 14 15:10:11 1998
++++ U/d_open3.U	Tue Dec 14 16:11:41 1999
+@@ -48,7 +48,7 @@
+ #ifdef I_SYS_FILE
+ #include <sys/file.h>
+ #endif
+-main() {
++int main() {
+ 	if(O_RDONLY);
+ #ifdef O_TRUNC
+ 	exit(0);
+diff -r -u U.old/d_pidcheck.U U/d_pidcheck.U
+--- U.old/d_pidcheck.U	Tue Apr 14 15:10:11 1998
++++ U/d_pidcheck.U	Tue Dec 14 16:11:43 1999
+@@ -42,7 +42,7 @@
+ *)
+ 	echo "Checking to see if kill(pid, 0) works..." >&4
+ 	$cat >try.c <<'EOCP'
+-main()
++int main()
+ 	{
+ 	int	pid, status0, status9;
+ 
+diff -r -u U.old/d_safebcpy.U U/d_safebcpy.U
+--- U.old/d_safebcpy.U	Tue Apr 14 15:10:11 1998
++++ U/d_safebcpy.U	Tue Dec 14 16:11:46 1999
+@@ -72,7 +72,7 @@
+ #ifdef I_UNISTD
+ #  include <unistd.h>  /* Needed for NetBSD */
+ #endif
+-main()
++int main()
+ {
+ char buf[128], abc[128];
+ char *b;
+diff -r -u U.old/d_safemcpy.U U/d_safemcpy.U
+--- U.old/d_safemcpy.U	Tue Apr 14 15:10:11 1998
++++ U/d_safemcpy.U	Tue Dec 14 16:11:49 1999
+@@ -75,7 +75,7 @@
+ #ifdef I_UNISTD
+ #  include <unistd.h>  /* Needed for NetBSD */
+ #endif
+-main()
++int main()
+ {
+ char buf[128], abc[128];
+ char *b;
+diff -r -u U.old/d_sanemcmp.U U/d_sanemcmp.U
+--- U.old/d_sanemcmp.U	Tue Apr 14 15:10:11 1998
++++ U/d_sanemcmp.U	Tue Dec 14 16:11:51 1999
+@@ -60,7 +60,7 @@
+ #ifdef I_UNISTD
+ #  include <unistd.h>  /* Needed for NetBSD */
+ #endif
+-main()
++int main()
+ {
+ char a = -1;
+ char b = 0;
+diff -r -u U.old/d_scannl.U U/d_scannl.U
+--- U.old/d_scannl.U	Tue Apr 14 15:10:11 1998
++++ U/d_scannl.U	Tue Dec 14 16:11:53 1999
+@@ -45,7 +45,7 @@
+ ?X:	to the string given as argument to scanf().
+ echo 'Let'"'"'s see if scanf() handles "\\n" correctly...' >&4
+ $cat >try.c <<'EOCP'
+-main()
++int main()
+ {
+ 	int i = 0, j = 0;
+ 	scanf("%d\n%d", &i, &j);
+diff -r -u U.old/d_setpgrp.U U/d_setpgrp.U
+--- U.old/d_setpgrp.U	Tue Apr 14 15:10:11 1998
++++ U/d_setpgrp.U	Tue Dec 14 16:11:56 1999
+@@ -65,7 +65,7 @@
+ #ifdef I_UNISTD
+ #  include <unistd.h>
+ #endif
+-main()
++int main()
+ {
+ 	if (getuid() == 0) {
+ 		printf("(I see you are running Configure as super-user...)\n");
+diff -r -u U.old/d_sgndchr.U U/d_sgndchr.U
+--- U.old/d_sgndchr.U	Tue Apr 14 15:10:11 1998
++++ U/d_sgndchr.U	Tue Dec 14 16:11:58 1999
+@@ -37,7 +37,7 @@
+ echo " "
+ echo "Checking to see if your C compiler can do signed chars..." >&4
+ $cat >try.c <<'EOCP'
+-main()
++int main()
+ {
+ 	char c = 0;
+ 
+diff -r -u U.old/d_sigaction.U U/d_sigaction.U
+--- U.old/d_sigaction.U	Tue Apr 14 15:10:11 1998
++++ U/d_sigaction.U	Tue Dec 14 16:12:01 1999
+@@ -45,7 +45,7 @@
+ #include <stdio.h>
+ #include <sys/types.h>
+ #include <signal.h>
+-main()
++int main()
+ {
+     struct sigaction act, oact;
+ }
+diff -r -u U.old/d_sigsetjmp.U U/d_sigsetjmp.U
+--- U.old/d_sigsetjmp.U	Tue Apr 14 15:10:12 1998
++++ U/d_sigsetjmp.U	Tue Dec 14 16:12:03 1999
+@@ -67,7 +67,7 @@
+ #include <setjmp.h>
+ sigjmp_buf env;
+ int set = 1;
+-main()
++int main()
+ {
+ 	if (sigsetjmp(env,1))
+ 		exit(set);
+diff -r -u U.old/d_stdstdio.U U/d_stdstdio.U
+--- U.old/d_stdstdio.U	Tue Apr 14 15:10:12 1998
++++ U/d_stdstdio.U	Tue Dec 14 16:12:05 1999
+@@ -196,7 +196,7 @@
+ #include <stdio.h>
+ #define FILE_ptr(fp)	$stdio_ptr
+ #define FILE_cnt(fp)	$stdio_cnt
+-main() {
++int main() {
+ 	FILE *fp = fopen("try.c", "r");
+ 	char c = getc(fp);
+ 	if (
+diff -r -u U.old/d_strctcpy.U U/d_strctcpy.U
+--- U.old/d_strctcpy.U	Tue Apr 14 15:10:12 1998
++++ U/d_strctcpy.U	Tue Dec 14 16:12:07 1999
+@@ -31,7 +31,7 @@
+ echo " "
+ echo "Checking to see if your C compiler can copy structs..." >&4
+ $cat >try.c <<'EOCP'
+-main()
++int main()
+ {
+ 	struct blurfl {
+ 		int dyick;
+diff -r -u U.old/d_volatile.U U/d_volatile.U
+--- U.old/d_volatile.U	Tue Apr 14 15:10:12 1998
++++ U/d_volatile.U	Tue Dec 14 16:12:10 1999
+@@ -41,7 +41,7 @@
+ echo " "
+ echo 'Checking to see if your C compiler knows about "volatile"...' >&4
+ $cat >try.c <<'EOCP'
+-main()
++int main()
+ {
+ ?X:
+ ?X: The following seven lines added by Bill Campbell <billc@sierra.com>
+diff -r -u U.old/d_vprintf.U U/d_vprintf.U
+--- U.old/d_vprintf.U	Tue Apr 14 15:10:12 1998
++++ U/d_vprintf.U	Tue Dec 14 16:12:12 1999
+@@ -48,7 +48,7 @@
+ 	$cat >vprintf.c <<'EOF'
+ #include <varargs.h>
+ 
+-main() { xxx("foo"); }
++int main() { xxx("foo"); }
+ 
+ xxx(va_alist)
+ va_dcl
+diff -r -u U.old/d_wifstat.U U/d_wifstat.U
+--- U.old/d_wifstat.U	Tue Apr 14 15:10:12 1998
++++ U/d_wifstat.U	Tue Dec 14 16:12:15 1999
+@@ -56,7 +56,7 @@
+ #include <sys/types.h>
+ #include <sys/wait.h>
+ 
+-main()
++int main()
+ {
+ 	$type status;
+ 	int e = 0;
+diff -r -u U.old/doublesize.U U/doublesize.U
+--- U.old/doublesize.U	Tue Apr 14 15:10:12 1998
++++ U/doublesize.U	Tue Dec 14 16:12:17 1999
+@@ -35,7 +35,7 @@
+ 	echo "Checking to see how big your double precision numbers are..." >&4
+ 	$cat >try.c <<'EOCP'
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	printf("%d\n", sizeof(double));
+ }
+diff -r -u U.old/errnolist.U U/errnolist.U
+--- U.old/errnolist.U	Tue Apr 14 15:10:14 1998
++++ U/errnolist.U	Tue Dec 14 16:12:20 1999
+@@ -81,7 +81,7 @@
+ EOM
+ $cat >errnolist.c <<'EOCP'
+ extern char *sys_errnolist[];
+-main() {
++int main() {
+     char *p0 = sys_errnolist[0];
+     char *p1 = sys_errnolist[1];
+ 
+diff -r -u U.old/floatsize.U U/floatsize.U
+--- U.old/floatsize.U	Tue Apr 14 15:10:14 1998
++++ U/floatsize.U	Tue Dec 14 16:12:22 1999
+@@ -35,7 +35,7 @@
+ 	echo "Checking to see how big your floating point numbers are..." >&4
+ 	$cat >try.c <<'EOCP'
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	printf("%d\n", sizeof(float));
+ }
+diff -r -u U.old/i_db.U U/i_db.U
+--- U.old/i_db.U	Tue Apr 14 15:10:14 1998
++++ U/i_db.U	Tue Dec 14 16:12:24 1999
+@@ -79,7 +79,7 @@
+ {
+ }
+ HASHINFO info;
+-main()
++int main()
+ {
+ 	info.hash = hash_cb;
+ }
+diff -r -u U.old/i_sysioctl.U U/i_sysioctl.U
+--- U.old/i_sysioctl.U	Tue Apr 14 15:10:15 1998
++++ U/i_sysioctl.U	Tue Dec 14 16:12:27 1999
+@@ -177,7 +177,7 @@
+ #include <sys/types.h>	/* Just in case */
+ #include <$xxx>
+ 
+-main()
++int main()
+ {
+ #ifdef TIOCNOTTY
+ 	exit(0);
+diff -r -u U.old/i_time.U U/i_time.U
+--- U.old/i_time.U	Tue Apr 14 15:10:15 1998
++++ U/i_time.U	Tue Dec 14 16:12:30 1999
+@@ -73,7 +73,7 @@
+ #ifdef I_SYSSELECT
+ #include <sys/select.h>
+ #endif
+-main()
++int main()
+ {
+ 	struct tm foo;
+ #ifdef S_TIMEVAL
+diff -r -u U.old/install.U U/install.U
+--- U.old/install.U	Tue Apr 14 15:10:15 1998
++++ U/install.U	Tue Dec 14 16:12:32 1999
+@@ -53,7 +53,7 @@
+ 		done
+ 	done
+ 	$cat >try.c <<EOC
+-main()
++int main()
+ {
+ 	printf("OK\n");
+ 	exit(0);
+diff -r -u U.old/intsize.U U/intsize.U
+--- U.old/intsize.U	Tue Apr 14 15:10:15 1998
++++ U/intsize.U	Tue Dec 14 16:12:34 1999
+@@ -59,7 +59,7 @@
+ 	echo "Checking to see how big your integers are..." >&4
+ 	$cat >intsize.c <<'EOCP'
+ #include <stdio.h>
+-main()
++int main()
+ {
+ @if INTSIZE || intsize
+ 	printf("intsize=%d;\n", sizeof(int));
+diff -r -u U.old/models.U U/models.U
+--- U.old/models.U	Tue Apr 14 15:10:15 1998
++++ U/models.U	Tue Dec 14 16:12:37 1999
+@@ -63,7 +63,7 @@
+ ?X: We may not use Cppsym or we get a circular dependency through cc.
+ ?X: But this should work regardless of which cc we eventually use.
+ 	$cat >pdp11.c <<'EOP'
+-main() {
++int main() {
+ #ifdef pdp11
+ 	exit(0);
+ #else
+diff -r -u U.old/nblock_io.U U/nblock_io.U
+--- U.old/nblock_io.U	Tue Apr 14 15:10:15 1998
++++ U/nblock_io.U	Tue Dec 14 16:12:39 1999
+@@ -91,7 +91,7 @@
+ '')
+ 	$cat head.c > try.c
+ 	$cat >>try.c <<'EOCP'
+-main() {
++int main() {
+ #ifdef O_NONBLOCK
+ 	printf("O_NONBLOCK\n");
+ 	exit(0);
+diff -r -u U.old/nlist_pfx.U U/nlist_pfx.U
+--- U.old/nlist_pfx.U	Tue Apr 14 15:10:15 1998
++++ U/nlist_pfx.U	Tue Dec 14 16:12:41 1999
+@@ -46,7 +46,7 @@
+ #include <stdio.h>
+ #include <nlist.h>
+ 
+-main(argc, argv)
++int main(argc, argv)
+ int argc;
+ char **argv;
+ {
+diff -r -u U.old/orderlib.U U/orderlib.U
+--- U.old/orderlib.U	Tue Apr 14 15:10:15 1998
++++ U/orderlib.U	Tue Dec 14 16:12:43 1999
+@@ -50,7 +50,7 @@
+ echo 'int bar1() { return bar2(); }' > bar1.c
+ echo 'int bar2() { return 2; }' > bar2.c
+ $cat > foo.c <<'EOP'
+-main() { printf("%d\n", bar1()); exit(0); }
++int main() { printf("%d\n", bar1()); exit(0); }
+ EOP
+ $cc $ccflags -c bar1.c >/dev/null 2>&1
+ $cc $ccflags -c bar2.c >/dev/null 2>&1
+diff -r -u U.old/prototype.U U/prototype.U
+--- U.old/prototype.U	Tue Apr 14 15:10:16 1998
++++ U/prototype.U	Tue Dec 14 16:12:45 1999
+@@ -102,7 +102,7 @@
+ echo " "
+ echo "Checking out function prototypes..." >&4
+ $cat >prototype.c <<'EOCP'
+-main(int argc, char *argv[]) {
++int main(int argc, char *argv[]) {
+ 	exit(0);}
+ EOCP
+ if $cc $ccflags -c prototype.c >prototype.out 2>&1 ; then
+diff -r -u U.old/ptrsize.U U/ptrsize.U
+--- U.old/ptrsize.U	Tue Apr 14 15:10:16 1998
++++ U/ptrsize.U	Tue Dec 14 16:12:48 1999
+@@ -35,7 +35,7 @@
+ 	echo "Checking to see how big your pointers are..." >&4
+ 	$cat >try.c <<'EOCP'
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	printf("%d\n", sizeof(char *));
+ }
+diff -r -u U.old/randbits.U U/randbits.U
+--- U.old/randbits.U	Tue Apr 14 15:10:16 1998
++++ U/randbits.U	Tue Dec 14 16:12:50 1999
+@@ -50,7 +50,7 @@
+ #endif
+ EOCP
+ 	$cat >>try.c <<'EOCP'
+-main()
++int main()
+ {
+ 	register int i;
+ 	register unsigned long tmp;
+diff -r -u U.old/randfunc.U U/randfunc.U
+--- U.old/randfunc.U	Tue Apr 14 15:10:16 1998
++++ U/randfunc.U	Tue Dec 14 16:12:52 1999
+@@ -107,7 +107,7 @@
+ echo "Checking to see how many bits your $randfunc() function produces..." >&4
+ 			$cat >try.c <<EOCP
+ #include <stdio.h>
+-main()
++int main()
+ {
+ 	register int i;
+ 	register unsigned long tmp;
+diff -r -u U.old/sbrksmart.U U/sbrksmart.U
+--- U.old/sbrksmart.U	Tue Apr 14 15:10:16 1998
++++ U/sbrksmart.U	Tue Dec 14 16:12:55 1999
+@@ -39,7 +39,7 @@
+ 	$cat > sbrk.c <<'EOC'
+ #define INC 256		/* Small enough to be less than a page size */
+ 
+-main()
++int main()
+ {
+ 	char *obrk = (char *) sbrk(0);
+ 	char *nbrk;
+diff -r -u U.old/selecttype.U U/selecttype.U
+--- U.old/selecttype.U	Tue Apr 14 15:10:16 1998
++++ U/selecttype.U	Tue Dec 14 16:13:02 1999
+@@ -78,7 +78,7 @@
+ #ifdef I_SYS_SELECT
+ #include <sys/select.h>
+ #endif
+-main()
++int main()
+ {
+ 	int width;
+ 	Select_fd_set_t readfds;
+diff -r -u U.old/sockopt.U U/sockopt.U
+--- U.old/sockopt.U	Tue Apr 14 15:10:16 1998
++++ U/sockopt.U	Tue Dec 14 16:13:04 1999
+@@ -43,7 +43,7 @@
+ #include <netinet/in.h>
+ #include <netdb.h>
+ 
+-main()
++int main()
+ {
+ 	int s = socket(AF_INET, SOCK_STREAM, 0);
+ 	if (s == -1)
+diff -r -u U.old/ssizetype.U U/ssizetype.U
+--- U.old/ssizetype.U	Tue Apr 14 15:10:16 1998
++++ U/ssizetype.U	Tue Dec 14 16:13:07 1999
+@@ -51,7 +51,7 @@
+ #include <sys/types.h>
+ #define Size_t $sizetype
+ #define SSize_t $dflt
+-main()
++int main()
+ {
+ 	if (sizeof(Size_t) == sizeof(SSize_t))
+ 		printf("$dflt\n");
+diff -r -u U.old/sunscanf.U U/sunscanf.U
+--- U.old/sunscanf.U	Tue Apr 14 15:10:16 1998
++++ U/sunscanf.U	Tue Dec 14 16:13:09 1999
+@@ -29,7 +29,7 @@
+ echo " "
+ echo "Checking to see what flavor of scanf you have..." >&4
+ $cat >scanf.c <<'EOCP'
+-main()
++int main()
+ {
+ 	float value;
+ 
+diff -r -u U.old/voidflags.U U/voidflags.U
+--- U.old/voidflags.U	Tue Apr 14 15:10:16 1998
++++ U/voidflags.U	Tue Dec 14 16:13:11 1999
+@@ -95,7 +95,7 @@
+ #endif
+ 	exit(0);
+ }
+-main() { sub(); }
++int main() { sub(); }
+ EOCP
+ ?X: This unit used to use cc -S in those tests to try to speed up things, but
+ ?X: unfortunately, AIX 3.2 does not support this option.

@@ -1,0 +1,74 @@
+?RCS: $Id: fpu.U,v 3.0 1993/08/18 12:08:10 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: fpu.U,v $
+?RCS: Revision 3.0  1993/08/18  12:08:10  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?LINT: empty
+?X:?MAKE:fpu: test cat cc Myread
+?X:?MAKE:	-pick add $@ %<
+?X:?S:fpu (fpunit):
+?X:?S:	Set to be the compile flag for the local floating point unit.
+?X:?S:.
+?X:?C:FPU (FPUNIT):
+?X:?C:	String containing the flags for the local floating point unit.
+?X:?C:.
+?X:?H:#define FPU "$fpu" /**/
+?X:?H:.
+?X:: see what floating point compile flags should be used.
+?X:fpu=''
+?X:if $test -r /dev/fpa; then
+?X:	$cat>fpa.c << GOOP
+?X:	main(){return(1);}
+?X:GOOP
+?X:	$cc -ffpa -o fpa fpa.c
+?X:	fpa > fpa.out 2>&1
+?X:	if $test ! -s fpa.out; then
+?X:		dflt='y'
+?X:		$cat <<'EOM'
+?X:
+?X:You seem to have a sun fpa...  I can compile the code to use the fpa but it will
+?X:mean that the code can ONLY run on a machine with a fpa...
+?X:
+?X:EOM
+?X:		rp="Should I compile for fpa?"
+?X:		. ./myread
+?X:		if $test $ans = "n"; then
+?X:			fpu=''
+?X:		else
+?X:			fpu='-ffpa'
+?X:		fi
+?X:	else
+?X:		$cat <<'EOM'
+?X:
+?X:You have the fpa device but I can't seem to use it.  Maybe you should talk to
+?X:your sysadmin about this.  For now, I am not going to compile it in.
+?X:
+?X:EOM
+?X:	fi
+?X:fi
+?X:if $test "$fpu" = ''; then
+?X:	if $test -r /usr/etc/mc68881version; then
+?X:		dflt='y'
+?X:		$cat <<'EOM'
+?X:
+?X:There also seems to be the pieces for a 68881.  If I compile this in, it will
+?X:work on almost all Sun 3's except for a few Sun-3/50s without a 68881...
+?X:
+?X:EOM
+?X:		rp="Should I compile for a 68881?"
+?X:		. ./myread
+?X:		if $test $ans = "y"; then
+?X:			fpu='-f68881'
+?X:		fi
+?X:	fi
+?X:fi
+?X:

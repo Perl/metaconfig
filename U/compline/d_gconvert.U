@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0.1.1	1994/10/29  16:12:51  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_Gconvert: Compile cat Inlibc rm _o
+?MAKE:d_Gconvert: Compile cat Inlibc rm _o uselongdouble d_qgcvt
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
 ?S:	This variable holds what Gconvert is defined as to convert
@@ -64,6 +64,10 @@ char *myname = "gconvert";
 #ifdef TRY_gcvt
 #define Gconvert(x,n,t,b) gcvt((x),(n),(b))
 char *myname = "gcvt";
+#endif
+#ifdef TRY_qgcvt
+#define Gconvert(x,n,t,b) qgcvt((x),(n),(b))
+char *myname = "qgcvt";
 #endif
 #ifdef TRY_sprintf
 #define Gconvert(x,n,t,b) sprintf((b),"%.*g",(n),(x))
@@ -128,8 +132,12 @@ EOP
 	*) xxx_list='gconvert gcvt sprintf' ;;
 	esac
 
+        case "$uselongdouble$d_qgcvt" in
+        definedefine) xxx_list="`echo $xxx_list|sed s/gcvt/qgcvt/`" ;;
+	esac
+
 	for xxx_convert in $xxx_list; do
-		echo "Trying $xxx_convert"
+		echo "Trying $xxx_convert..."
 		$rm -f try try$_o
 		set try -DTRY_$xxx_convert
 		if eval $compile; then
@@ -148,6 +156,7 @@ EOP
 	case "$xxx_convert" in
 	gconvert) d_Gconvert='gconvert((x),(n),(t),(b))' ;;
 	gcvt) d_Gconvert='gcvt((x),(n),(b))' ;;
+	qgcvt) d_Gconvert='qgcvt((x),(n),(b))' ;;
 	*) d_Gconvert='sprintf((b),"%.*g",(n),(x))' ;;
 	esac
 fi

@@ -1,18 +1,29 @@
 ?RCS: $Id: usethreads.U,v $
 ?RCS:
-?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS: Copyright (c) 1998-2000 Andy Dougherty
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?RCS: $Log: usethreads.U,v $
 ?RCS:
-?MAKE:usethreads d_oldpthreads: Myread Oldconfig Setvar test cat
+?MAKE:usethreads useithreads use5005threads d_oldpthreads: \
+	Myread Oldconfig Setvar test cat
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usethreads:
 ?S:	This variable conditionally defines the USE_THREADS symbol,
 ?S:	and indicates that Perl should be built to use threads.
+?S:.
+?S:useithreads:
+?S:	This variable conditionally defines the USE_ITHREADS symbol,
+?S:	and indicates that Perl should be built to use the interpreter-based
+?S:	threading implementation.
+?S:.
+?S:use5005threads:
+?S:	This variable conditionally defines the USE_5005THREADS symbol,
+?S:	and indicates that Perl should be built to use the 5.005-based
+?S:	threading implementation.
 ?S:.
 ?X: I'm putting old_pthreads in this unit because it might eventually
 ?X: be part of an automatic determination to see if we can use threads
@@ -23,20 +34,32 @@
 ?S:	draft POSIX threads API.  This is only potentially meaningful if
 ?S:	usethreads is set.
 ?S:.
+?C:USE_ITHREADS:
+?C:	This symbol, if defined, indicates that Perl should be built to
+?C:	use the interpreter-based threading implementation.
+?C:.
+?C:USE_5005THREADS:
+?C:	This symbol, if defined, indicates that Perl should be built to
+?C:	use the 5.005-based threading implementation.
+?C:.
 ?C:USE_THREADS:
 ?C:	This symbol, if defined, indicates that Perl should
-?C:	be built to use threads.
+?C:	be built to use threads.  At present, it is a synonym for
+?C:	USE_5005THREADS, but eventually the source ought to be changed
+?C:	to use this to mean _any_ threading implementation.
 ?C:.
 ?C:OLD_PTHREADS_API:
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use the old draft POSIX threads API.
 ?C:.
-?H:?%<:#ifndef USE_TTHREADS
-?H:?%<:#$usethreads	USE_THREADS		/**/
+?H:#$use5005threads	USE_5005THREADS		/**/
+?H:#$useithreads	USE_ITHREADS		/**/
+?H:?%<:#if defined(USE_5005THREADS) && !defined(USE_ITHREADS)
+?H:?%<:#define		USE_THREADS		/* until src is revised*/
 ?H:?%<:#endif
 ?H:#$d_oldpthreads	OLD_PTHREADS_API		/**/
 ?H:.
-?LINT:set usethreads d_oldpthreads
+?LINT:set usethreads useithreads use5005threads d_oldpthreads
 ?INIT:: set usethreads on the Configure command line to enable threads.
 ?F:!usethreads.cbu
 ?X: We should really have some explanatory text here, and some
@@ -59,11 +82,52 @@ esac
 rp='Build a threading Perl?'
 . ./myread
 case "$ans" in
-y|Y)    val="$define" ;;     
+y|Y)    val="$define" ;;
 *)      val="$undef" ;;
 esac
 set usethreads
-eval $setvar 
+eval $setvar
+
+case "$usethreads" in
+$define)
+	$cat <<EOM
+
+As of 5.5.640, Perl has two different internal threading implementations,
+the 5.005 version (5005threads) and an interpreter-based version
+(ithreads) that has one interpreter per thread.  Both are very 
+experimental.  This arrangement exists to help developers work out
+which one is better.
+EOM
+	: Default to ithreads unless overridden on command line or with
+	: old config.sh
+	dflt='y'
+	case "$use5005threads" in
+		$define|true|[yY]*) dflt='n';;
+	esac
+	case "$useithreads" in
+		$undef|false|[nN]*) dflt='n';;
+	esac
+	rp='Use interpreter-based ithreads?'
+	. ./myread
+	case "$ans" in
+	y|Y)    val="$define" ;;
+	*)      val="$undef" ;;
+	esac
+	set useithreads
+	eval $setvar
+	: Now set use5005threads to the opposite value.
+	case "$useithreads" in
+	$define) val="$undef" ;;
+	*) val="$define" ;;
+	esac
+	set use5005threads
+	eval $setvar
+	;;
+*)
+	useithreads="$undef"
+	use5005threads="$undef"
+	;;
+esac
 
 ?X: Check out what kind of threads api we have
 case "$d_oldpthreads" in
@@ -76,7 +140,7 @@ eval $setvar
 
 ?X: In general, -lpthread needs to come before -lc but after other
 ?X: libraries such as -lgdbm and such like. We assume here that -lc
-?X: is present in libswanted. If that fails to be true in, then this
+?X: is present in libswanted. If that fails to be true, then this
 ?X: can be changed to add pthread to the very end of libswanted.
 
 case "$usethreads" in
@@ -93,6 +157,6 @@ case "$usethreads" in
  Assuming POSIX threads, then.)
 EOM
 	fi
-    ;;
+	;;
 esac
 

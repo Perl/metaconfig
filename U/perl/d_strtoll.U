@@ -21,3 +21,4 @@
 : see if strtoll exists
 set strtoll d_strtoll
 eval $inlibc
+

@@ -14,7 +14,7 @@
 ?RCS:
 ?RCS:
 ?MAKE:d_vendorarch vendorarch vendorarchexp installvendorarch: sed Getfile \
-	Oldconfig Prefixit test apiversion archname vendorlib \
+	Oldconfig Prefixit test archname vendorlib \
 	vendorprefix prefix installprefix
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -65,11 +65,11 @@ case "$vendorprefix" in
 	;;
 *)	d_vendorarch="$define"
 	: determine where vendor-supplied architecture-dependent libraries go.
-	: vendorlib  default is /usr/local/lib/perl5/vendor_perl/
-	: vendorarch default is /usr/local/lib/perl5/vendor_perl/$apiversion/$archname
+	: vendorlib  default is /usr/local/lib/perl5/vendor_perl/$version
+	: vendorarch default is /usr/local/lib/perl5/vendor_perl/$version/$archname
 	: vendorlib may have an optional trailing /share.
 	tdflt=`echo $vendorlib | $sed 's,/share$,,'`
-	tdflt="$tdflt/$apiversion/$archname"
+	tdflt="$tdflt/$archname"
 	case "$vendorarch" in
 	'')	dflt="$tdflt" ;;
 	*)	dflt="$vendorarch" ;;

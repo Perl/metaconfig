@@ -1,0 +1,115 @@
+?RCS: $Id: inc_version_list.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: inc_version_list.U,v $
+?RCS:
+?MAKE:inc_version_list : cat sed Getfile perl version api_versionstring \
+	rm Myread archname prefix sitelib 
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:inc_version_list:
+?S:	This variable specifies the list of subdirectories in over
+?S:	which perl.c:incpush() and lib/lib.pm will automatically
+?S:	search when adding directories to @INC.  This is only useful
+?S:	if you have a perl library directory tree structured like the
+?S:	default one.  See INSTALL for how this works.  The versioned
+?S:	site_perl directory was introduced in 5.005, so that is the
+?S:	lowest possible value.
+?S:	
+?S:	This list includes architecture-dependent directories back to
+?S:	version $api_versionstring (e.g. 5.5.640) and
+?S:	architecture-independent directories all the way back to
+?S:	5.005.
+?S:.
+?C:PERL_INC_VERSION_LIST:
+?C:	This variable specifies the list of subdirectories in over
+?C:	which perl.c:incpush() and lib/lib.pm will automatically
+?C:	search when adding directories to @INC, in a format suitable
+?C:	for a C initialization string.  See the inc_version_list entry
+?C:	in Porting/Glossary for more details.
+?C:.
+?H:#define PERL_INC_VERSION_LIST $inc_version_list		/**/
+?H:.
+?T: stem d
+: Determine list of previous versions to include in @INC
+$cat > getverlist <<EOPL
+#!$perl -w
+use File::Basename;
+\$api_versionstring = "$api_versionstring";
+\$version = "$version";
+\$sitelib = "$sitelib";
+\$archname = "$archname";
+EOPL
+	$cat >> getverlist <<'EOPL'
+# Can't have leading @ because metaconfig interprets it as a command!
+;@inc_version_list=();
+$stem=dirname($sitelib);
+# Redo to do opendir/readdir? 
+if (-d $stem) {
+    chdir($stem);
+    ;@candidates = glob("5.*");
+}
+else {
+    ;@candidates = ();
+}
+
+foreach $d (@candidates) {
+    if ($d lt $version) {
+	if ($d ge $api_versionstring) {
+	    unshift(@inc_version_list, "$d/$archname", $d);
+	}
+	elsif ($d ge "5.005") {
+	    unshift(@inc_version_list, $d);
+	}
+    }
+    else {
+	# Skip newer version.  I.e. don't look in
+	# 5.7.0 if we're installing 5.6.1.
+    }
+}
+
+if (@inc_version_list) {
+    print '"';
+    print join('", "', @inc_version_list);
+    print '"';
+}
+else {
+    # Blank space to preserve value for next Configure run.
+    print " ";
+}
+EOPL
+chmod +x getverlist
+case "$inc_version_list" in
+'')	if test -x $perl; then
+		dflt=`$perl getverlist`
+	else
+		dflt=''
+	fi
+	;;
+*)  dflt="$inc_version_list" ;;
+esac
+$cat <<'EOM'
+
+In order to ease the process of upgrading, this version of perl 
+can be configured to use modules built and installed with earlier 
+versions of perl that were installed under $prefix.  Specify here
+the list of earlier versions that this version of perl should check.
+If Configure detected no earlier versions of perl installed under
+$prefix, then the list will be empty.
+
+The default should almost always be sensible, so if you're not sure,
+just accept the default.
+EOM
+
+rp='list of earlier versions to include in @INC?'
+. ./myread
+inc_version_list="$ans"
+$rm -f getverlist
+

@@ -21,3 +21,4 @@
 : see if strtold exists
 set strtold d_strtold
 eval $inlibc
+

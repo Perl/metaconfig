@@ -205,12 +205,14 @@ EOM
 			osvers="$2.$3"
 		fi
 	fi
-       $test -f /sys/posix.dll &&
-	       $test -f /usr/bin/what &&
-	       set X `/usr/bin/what /sys/posix.dll` &&
-	       $test "$3" = UWIN &&
-	       osname=uwin &&
-	       osvers="$5"
+
+	$test -f /sys/posix.dll &&
+		$test -f /usr/bin/what &&
+		set X `/usr/bin/what /sys/posix.dll` &&
+		$test "$3" = UWIN &&
+		osname=uwin &&
+		osvers="$5"
+
 ?X: If we have uname, we already computed a suitable uname -a output, correctly
 ?X: formatted for Xenix, and it lies in $myuname.
 	if $test -f $uname; then
@@ -279,6 +281,12 @@ EOM
 			*) osvers=$tmp;;
 			esac
 			;;
+		bsd386) osname=bsd386
+			osvers=`$uname -r`
+			;;
+		cygwin*) osname=cygwin
+			osvers="$3"
+			;;
 		*dc.osx) osname=dcosx
 			osvers="$3"
 			;;
@@ -329,17 +337,17 @@ EOM
 			*) osname=newsos ;;
 			esac
 			;;
-		bsd386) osname=bsd386
-			osvers=`$uname -r`
+		next*) osname=next ;;
+		POSIX-BC | posix-bc ) osname=posix-bc
+			osvers="$3"
 			;;
-                POSIX-BC | posix-bc ) osname=posix-bc
-                        osvers="$3"
-                        ;;
 		powerux | power_ux | powermax_os | powermaxos | \
 		powerunix | power_unix) osname=powerux
 			osvers="$3"
 			;;
-		next*) osname=next ;;
+		qnx) osname=qnx
+			osvers="$4"
+			;;
 		solaris) osname=solaris
 			case "$3" in
 			5*) osvers=`echo $3 | $sed 's/^5/2/g'` ;;
@@ -382,9 +390,6 @@ EOM
 			;;
 		uts) osname=uts
 			osvers="$3"
-			;;
-		qnx) osname=qnx
-			osvers="$4"
 			;;
 		$2) case "$osname" in
 			*isc*) ;;
