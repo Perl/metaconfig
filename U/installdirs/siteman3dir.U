@@ -39,6 +39,9 @@ case "$siteman3dir" in
 '')	dflt=`echo $man3dir | $sed "s#^$prefix#$siteprefix#"` ;;
 *)  	dflt=$siteman3dir ;;
 esac
+case "$dflt" in
+''|' ') dflt=none ;;
+esac
 fn=dn+~
 rp='Pathname where the site-specific library manual pages should be installed?'
 . ./getfile

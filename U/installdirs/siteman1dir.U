@@ -39,6 +39,9 @@ case "$siteman1dir" in
 '')	dflt=`echo $man1dir | $sed "s#^$prefix#$siteprefix#"` ;;
 *)  	dflt=$siteman1dir ;;
 esac
+case "$dflt" in
+''|' ') dflt=none ;;
+esac
 fn=dn+~
 rp='Pathname where the site-specific manual pages should be installed?'
 . ./getfile
