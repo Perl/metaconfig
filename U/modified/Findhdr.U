@@ -80,6 +80,7 @@ echo "Your cpp writes the filename in the $pos field of the line."
 
 case "$osname" in
 vos) cppfilter="tr '\\\\>' '/' |" ;; # path component separator is >
+os2) cppfilter="sed -e 's|\\\\\\\\|/|g' |" ;; # path component separator is \
 *)   cppfilter='' ;;
 esac
 ?X: To locate a header file, we cannot simply check for $usrinc/file.h, since

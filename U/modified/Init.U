@@ -41,6 +41,7 @@
 ?LINT:extern DJGPP
 ?LINT:extern _exe
 ?LINT:change _exe
+?LINT:extern is_os2
 define='define'
 undef='undef'
 smallmach='pdp11 i8086 z8000 i80286 iAPX286'
@@ -65,7 +66,7 @@ elif test -f "/system/gnu_library/bin/ar.pm"; then
 elif test -n "$DJGPP"; then
 : DOS DJGPP
     _exe=".exe"
-elif test -d c:/. ; then
+elif test -d c:/. -o -n "$is_os2" ; then
 : OS/2 or cygwin
     _exe=".exe"
 fi

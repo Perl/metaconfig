@@ -109,6 +109,7 @@
 ?LINT:extern hostarch
 ?LINT:change hostarch
 ?LINT:use run
+?LINT:extern is_os2
 : Try to determine whether config.sh was made on this system
 case "$config_sh" in
 '')
@@ -361,6 +362,9 @@ EOM
 		openbsd) osname=openbsd
                 	osvers="$3"
                 	;;
+		os2)	osname=os2
+			osvers="$4"
+			;;
 		POSIX-BC | posix-bc ) osname=posix-bc
 			osvers="$3"
 			;;
@@ -485,7 +489,7 @@ EOM
 			fi
 			$rm -f UU/kernel.what
 ?X: Maybe it's OS/2 or DOS or something similar
-		elif test -d c:/.; then
+		elif test -d c:/. -o -n "$is_os2" ; then
 			set X $myuname
 			osname=os2
 			osvers="$5"

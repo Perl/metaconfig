@@ -51,8 +51,8 @@
 ?V:PATH p_ me
 ?T:argv Id p paths OS2_SHELL DJGPP
 ?T:inksh needksh avoidksh newsh changesh reason
-?LINT:extern ENV CDPATH SHELL MACHTYPE _exe
-?LINT:change ENV CDPATH _exe
+?LINT:extern ENV CDPATH SHELL MACHTYPE _exe is_os2
+?LINT:change ENV CDPATH _exe is_os2
 #! /bin/sh
 #
 # If these # comments don't work, trim them. Don't worry about any other
@@ -144,12 +144,13 @@ esac
 : Proper separator for the PATH environment variable
 p_=:
 : On OS/2 this directory should exist if this is not floppy only system :-]
-if test -d c:/. ; then
+if test -d c:/. || ( uname -a | grep -i 'os\(/\|\)2' ) 2>&1 >/dev/null ; then
     if test -n "$OS2_SHELL"; then
 		p_=\;
 		PATH=`cmd /c "echo %PATH%" | tr '\\\\' / `
 ?X: That's a bug in ksh5.22
 		OS2_SHELL=`cmd /c "echo %OS2_SHELL%" | tr '\\\\' / | tr '[A-Z]' '[a-z]'`
+		is_os2=yes
 	elif test -n "$DJGPP"; then
 		case "X${MACHTYPE:-nonesuchmach}" in
 		*cygwin) ;;
