@@ -56,7 +56,7 @@ if `$sh -c '#' >/dev/null 2>&1`; then
 	xcat=/bin/cat
 	test -f $xcat$_exe || xcat=/usr/bin/cat
 	if test ! -f $xcat$_exe; then
-		for p in $paths; do
+		for p in `echo $PATH | sed -e "s/$p_/ /g"` $paths; do
 			if test -f $p/cat$_exe; then
 				xcat=$p/cat
 				break
