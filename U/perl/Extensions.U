@@ -90,7 +90,7 @@ find_extensions='
     done'
 tdir=`pwd`
 cd $rsrc/ext
-set
+set X
 shift
 eval $find_extensions
 set X $nonxs_extensions

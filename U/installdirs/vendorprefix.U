@@ -12,7 +12,8 @@
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
 ?RCS:
-?MAKE:vendorprefix vendorprefixexp +oldvendorprefix: Getfile Loc Oldconfig cat prefix
+?MAKE:usevendorprefix vendorprefix vendorprefixexp +oldvendorprefix: \
+	Getfile Loc Oldconfig cat prefix
 ?MAKE:	-pick add $@ %<
 ?S:vendorprefix:
 ?S:	This variable holds the full absolute path of the directory below
@@ -34,32 +35,45 @@ may find it convenient to place all vendor-supplied files in this
 directory rather than in the main distribution directory.  This will
 ease upgrades between binary-compatible maintenance versions of perl.
 
-The default answer (empty) should be fine for most people.
-This causes further questions about vendor add-ons to be skipped
-and no vendor-specific directories will be configured for perl.
-
 Of course you may also use these directories in whatever way you see
 fit.  For example, you might use them to access modules shared over a
 company-wide network.
 
+The default answer should be fine for most people.
+This causes further questions about vendor add-ons to be skipped
+and no vendor-specific directories will be configured for perl.
+
 EOM
-fn=d~+
-rp='Installation prefix to use for vendor-supplied add-ons?'
-case "$vendorprefix" in
-'') dflt='' ;;
-*)  dflt=$vendorprefix ;;
+rp='Do you want to configure vendor-specific add-on directories?'
+case "$usevendorprefix" in
+define|true|[yY]*) dflt=y ;;
+*) dflt=n ;;
 esac
-. ./getfile
-oldvendorprefix=''
-case "$vendorprefix" in
-'') ;;
-*)
-	case "$ans" in
-	"$prefix") ;;
-	*) oldvendorprefix="$prefix";;
+. ./myread
+case "$ans" in
+[yY]*)	fn=d~+
+	rp='Installation prefix to use for vendor-supplied add-ons?'
+	case "$vendorprefix" in
+	'') dflt='' ;;
+	*)  dflt=$vendorprefix ;;
 	esac
+	. ./getfile
+	oldvendorprefix=''
+	case "$vendorprefix" in
+	'') ;;
+	*)	case "$ans" in
+		"$prefix") ;;
+		*) oldvendorprefix="$prefix";;
+		esac
+		;;
+	esac
+	usevendorprefix="$define"
+	vendorprefix="$ans"
+	vendorprefixexp="$ansexp"
+	;;
+*)	usevendorprefix="$undef"
+	vendorprefix=''
+	vendorprefixexp=''
 	;;
 esac
-vendorprefix="$ans"
-vendorprefixexp="$ansexp"
 

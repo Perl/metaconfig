@@ -514,7 +514,7 @@ EOM
 
 You may give one or more space-separated answers, or "none" if appropriate.
 A well-behaved OS will have no hints, so answering "none" or just "Policy"
-is a good thing.  DO NOT give a wrong version.
+is a good thing.  DO NOT give a wrong version or a wrong OS.
 
 EOM
 
