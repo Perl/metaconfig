@@ -33,12 +33,13 @@
 ?S:	man3direxp only points to the read-only access location. For extra
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
+?INIT:siteman3dir=''
 : determine where add-on library man pages go
 case "$siteman3dir" in
-'')	dflt=`echo $man3dir | $sed "s#^$prefix#$siteprefix$#"`
+'')	dflt=`echo $man3dir | $sed "s#^$prefix#$siteprefix#"` ;;
 *)  	dflt=$siteman3dir ;;
 esac
-fn=d~
+fn=dn+~
 rp='Pathname where the site-specific library manual pages should be installed?'
 . ./getfile
 siteman3dir="$ans"
