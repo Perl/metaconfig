@@ -211,7 +211,7 @@ case "$use64bitall" in
 		. ./use64bitall.cbu
 	fi
 	case "$longsize" in
-	4) ccase "$archname64" in
+	4) case "$archname64" in
 	   ''|64int) archname64=64all ;;
 	   esac
 	   ;;
