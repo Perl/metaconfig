@@ -409,7 +409,7 @@ int main() {
 #endif
       }	
     }
-    printf("%d\n", ((i == n) ? -n : i), u);
+    printf("%d\n", ((i == n) ? -n : i));
     exit(0);
 }
 EOP
