@@ -93,6 +93,7 @@ case "$o_nonblock" in
 	$cat head.c > try.c
 	$cat >>try.c <<'EOCP'
 #include <stdio.h>
+#include <stdlib.h>
 int main() {
 #ifdef O_NONBLOCK
 	printf("O_NONBLOCK\n");
@@ -136,6 +137,7 @@ case "$eagain" in
 #include <sys/types.h>
 #include <signal.h>
 #include <stdio.h> 
+#include <stdlib.h> 
 #define MY_O_NONBLOCK $o_nonblock
 #ifndef errno  /* XXX need better Configure test */
 extern int errno;
