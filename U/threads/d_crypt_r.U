@@ -48,6 +48,10 @@ case "$d_crypt_r" in
 	./protochk "extern $try" $hdrs && crypt_r_proto=B_CCS ;;
 	esac
 	case "$crypt_r_proto" in
+	''|0) try='char* crypt_r(const char*, const char*, CRYPTD*);'
+	./protochk "extern $try" $hdrs && crypt_r_proto=B_CCD ;;
+	esac
+	case "$crypt_r_proto" in
 	'')	d_crypt_r=undef
  	        crypt_r_proto=0
 		echo "Disabling crypt_r, cannot determine prototype." >&4 ;;
