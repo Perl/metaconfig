@@ -402,7 +402,7 @@ EOM
 ?X: where the version number can be something like [xvt]n.n
 					osname=dec_osf
 ?X: sizer knows the minor minor version: the letter
-					osvers=`sizer -v | -FUNIX '{print $2}' | awk '{print $1}' |  tr '[A-Z]' '[a-z]' | sed 's/^[xvt]//'`
+					osvers=`sizer -v | awk -FUNIX '{print $2}' | awk '{print $1}' |  tr '[A-Z]' '[a-z]' | sed 's/^[xvt]//'`
 					case "$osvers" in
 					[1-9].[0-9]*) ;;
 					*) osvers=`echo "$3" | sed 's/^[xvt]//'` ;;
