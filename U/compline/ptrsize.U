@@ -44,8 +44,8 @@ case "$ptrsize" in
 #include <stdio.h>
 int main()
 {
-	printf("%d\n", sizeof(VOID_PTR));
-	exit(0);
+    printf("%d\n", (int)sizeof(VOID_PTR));
+    return(0);
 }
 EOCP
 	set try

@@ -61,13 +61,13 @@ case "$intsize" in
 int main()
 {
 @if INTSIZE || intsize
-	printf("intsize=%d;\n", sizeof(int));
+	printf("intsize=%d;\n", (int)sizeof(int));
 @end
 @if LONGSIZE || longsize
-	printf("longsize=%d;\n", sizeof(long));
+	printf("longsize=%d;\n", (int)sizeof(long));
 @end
 @if SHORTSIZE || shortsize
-	printf("shortsize=%d;\n", sizeof(short));
+	printf("shortsize=%d;\n", (int)sizeof(short));
 @end
 	exit(0);
 }

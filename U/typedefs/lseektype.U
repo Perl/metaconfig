@@ -53,7 +53,8 @@ $cat >try.c <<EOCP
 #include <stdio.h>
 int main()
 {
-	printf("%d\n", sizeof($lseektype));
+    printf("%d\n", (int)sizeof($lseektype));
+    return(0); 
 }
 EOCP
 set try

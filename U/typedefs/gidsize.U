@@ -30,7 +30,8 @@ cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
-    printf("%d\n", sizeof($gidtype));
+    printf("%d\n", (int)sizeof($gidtype));
+    return(0);
 }
 EOCP
 set try

@@ -37,7 +37,8 @@ case "$doublesize" in
 #include <stdio.h>
 int main()
 {
-	printf("%d\n", sizeof(double));
+    printf("%d\n", (int)sizeof(double));
+    return(0);
 }
 EOCP
 	set try

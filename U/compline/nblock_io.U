@@ -22,7 +22,8 @@
 ?X: (Problem reported on FreeBSD; it's unclear if this helps.)  --AD
 ?X:
 ?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm Compile \
-	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar startsh
+	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar \
+	startsh i_unistd i_string
 ?MAKE:	-pick add $@ %<
 ?S:o_nonblock:
 ?S:	This variable bears the symbol value to be used during open() or fcntl()
@@ -91,6 +92,7 @@ case "$o_nonblock" in
 '')
 	$cat head.c > try.c
 	$cat >>try.c <<'EOCP'
+#include <stdio.h>
 int main() {
 #ifdef O_NONBLOCK
 	printf("O_NONBLOCK\n");
@@ -133,9 +135,18 @@ case "$eagain" in
 #include <errno.h>
 #include <sys/types.h>
 #include <signal.h>
+#include <stdio.h> 
 #define MY_O_NONBLOCK $o_nonblock
 #ifndef errno  /* XXX need better Configure test */
 extern int errno;
+#endif
+#ifdef $i_unistd
+#include <unistd.h>
+#endif
+#ifdef $i_string
+#include <string.h>
+#else
+#include <strings.h>
 #endif
 $signal_t blech(x) int x; { exit(3); }
 EOCP

@@ -61,7 +61,8 @@ struct foobar {
 } try_algn;
 int main()
 {
-	printf("%d\n", (char *)&try_algn.bar - (char *)&try_algn.foo);
+    printf("%d\n", (int)((char *)&try_algn.bar - (char *)&try_algn.foo));
+    return(0);
 }
 EOCP
 		set try

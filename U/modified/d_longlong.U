@@ -37,7 +37,7 @@
 : check for long long
 echo " "
 $echo $n "Checking to see if your system supports long long..." $c >&4
-echo 'int main() { long long x = 7; }' > try.c
+echo 'int main() { long long x = 7; return 0; }' > try.c
 set try
 if eval $compile; then
 	val="$define"
@@ -61,7 +61,8 @@ $define)
 #include <stdio.h>
 int main()
 {
-	printf("%d\n", sizeof(long long));
+    printf("%d\n", (int)sizeof(long long));
+    return(0);
 }
 EOCP
 	set try

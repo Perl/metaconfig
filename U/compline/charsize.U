@@ -37,7 +37,8 @@ case "$charsize" in
 #include <stdio.h>
 int main()
 {
-	printf("%d\n", sizeof(char));
+    printf("%d\n", (int)sizeof(char));
+    return(0);
 }
 EOCP
 	set try
