@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_setitimer: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_setitimer:
+?S:	This variable conditionally defines the HAS_SETITIMER symbol, which
+?S:	indicates to the C program that the setitimer() routine is available.
+?S:.
+?C:HAS_SETITIMER:
+?C:	This symbol, if defined, indicates that the setitimer routine is
+?C:	available to set interval timers.
+?C:.
+?H:#$d_setitimer HAS_SETITIMER		/**/
+?H:.
+?LINT:set d_setitimer
+: see if setitimer exists
+set setitimer d_setitimer
+eval $inlibc
+

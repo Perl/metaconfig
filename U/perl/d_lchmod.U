@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_lchmod: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_lchmod:
+?S:	This variable conditionally defines the HAS_LCHMOD symbol, which
+?S:	indicates to the C program that the lchmod() routine is available.
+?S:.
+?C:HAS_LCHMOD:
+?C:	This symbol, if defined, indicates that the lchmod routine is
+?C:	available to change symbolic link modes.
+?C:.
+?H:#$d_lchmod HAS_LCHMOD		/**/
+?H:.
+?LINT:set d_lchmod
+: see if lchmod exists
+set lchmod d_lchmod
+eval $inlibc
+

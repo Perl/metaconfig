@@ -1,0 +1,36 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_class: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_class:
+?S:	This variable conditionally defines the HAS_CLASS symbol, which
+?S:	indicates to the C program that the class() routine is available.
+?S:.
+?C:HAS_CLASS:
+?C:	This symbol, if defined, indicates that the class routine is
+?C:	available to classify doubles.  Available for example in AIX.
+?C:	The returned values are defined in <float.h> and are:
+?C:
+?C:	FP_PLUS_NORM	Positive normalized, nonzero
+?C:	FP_MINUS_NORM	Negative normalized, nonzero
+?C:	FP_PLUS_DENORM	Positive denormalized, nonzero
+?C:	FP_MINUS_DENORM	Negative denormalized, nonzero
+?C:	FP_PLUS_ZERO	+0.0
+?C:	FP_MINUS_ZERO	-0.0
+?C:	FP_PLUS_INF	+INF
+?C:	FP_MINUS_INF	-INF
+?C:	FP_NANS		Signaling Not a Number (NaNS)
+?C:	FP_NANQ		Quiet Not a Number (NaNQ)
+?C:.
+?H:#$d_class HAS_CLASS		/**/
+?H:.
+?LINT:set d_class
+: see if class exists
+set class d_class
+eval $inlibc
+

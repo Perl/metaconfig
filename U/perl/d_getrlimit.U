@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getrlimit: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getrlimit:
+?S:	This variable conditionally defines the HAS_GETRLIMIT symbol, which
+?S:	indicates to the C program that the getrlimit() routine is available.
+?S:.
+?C:HAS_GETRLIMIT:
+?C:	This symbol, if defined, indicates that the getrlimit routine is
+?C:	available to get process resource limits.
+?C:.
+?H:#$d_getrlimit HAS_GETRLIMIT		/**/
+?H:.
+?LINT:set d_getrlimit
+: see if getrlimit exists
+set getrlimit d_getrlimit
+eval $inlibc
+

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_ualarm: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_ualarm:
+?S:	This variable conditionally defines the HAS_UALARM symbol, which
+?S:	indicates to the C program that the ualarm() routine is available.
+?S:.
+?C:HAS_UALARM:
+?C:	This symbol, if defined, indicates that the ualarm routine is
+?C:	available to do alarms with microsecond granularity.
+?C:.
+?H:#$d_ualarm HAS_UALARM		/**/
+?H:.
+?LINT:set d_ualarm
+: see if ualarm exists
+set ualarm d_ualarm
+eval $inlibc
+

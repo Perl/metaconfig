@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getitimer: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getitimer:
+?S:	This variable conditionally defines the HAS_GETITIMER symbol, which
+?S:	indicates to the C program that the getitimer() routine is available.
+?S:.
+?C:HAS_GETITIMER:
+?C:	This symbol, if defined, indicates that the getitimer routine is
+?C:	available to return interval timers.
+?C:.
+?H:#$d_getitimer HAS_GETITIMER		/**/
+?H:.
+?LINT:set d_getitimer
+: see if getitimer exists
+set getitimer d_getitimer
+eval $inlibc
+

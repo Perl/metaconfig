@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_utimes: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_utimes:
+?S:	This variable conditionally defines the HAS_UTIMES symbol, which
+?S:	indicates to the C program that the utimes() routine is available.
+?S:.
+?C:HAS_UTIMES:
+?C:	This symbol, if defined, indicates that the utimes routine is
+?C:	available to do change file time stamps using struct timevals.
+?C:.
+?H:#$d_utimes HAS_UTIMES		/**/
+?H:.
+?LINT:set d_utimes
+: see if utimes exists
+set utimes d_utimes
+eval $inlibc
+

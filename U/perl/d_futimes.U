@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_futimes: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_futimes:
+?S:	This variable conditionally defines the HAS_FUTIMES symbol, which
+?S:	indicates to the C program that the futimes() routine is available.
+?S:.
+?C:HAS_FUTIMES:
+?C:	This symbol, if defined, indicates that the futimes routine is
+?C:	available to change file descriptor time stamps with struct timevals.
+?C:.
+?H:#$d_futimes HAS_FUTIMES		/**/
+?H:.
+?LINT:set d_futimes
+: see if futimes exists
+set futimes d_futimes
+eval $inlibc
+

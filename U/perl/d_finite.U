@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_finite: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_finite:
+?S:	This variable conditionally defines the HAS_FINITE symbol, which
+?S:	indicates to the C program that the finite() routine is available.
+?S:.
+?C:HAS_FINITE:
+?C:	This symbol, if defined, indicates that the finite routine is
+?C:	available to check whether a double is finite (non-infinity non-NaN).
+?C:.
+?H:#$d_finite HAS_FINITE		/**/
+?H:.
+?LINT:set d_finite
+: see if finite exists
+set finite d_finite
+eval $inlibc
+

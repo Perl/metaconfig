@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_isnanl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_isnanl:
+?S:	This variable conditionally defines the HAS_ISNANL symbol, which
+?S:	indicates to the C program that the isnanl() routine is available.
+?S:.
+?C:HAS_ISNANL:
+?C:	This symbol, if defined, indicates that the isnanl routine is
+?C:	available to check whether a long double is a NaN.
+?C:.
+?H:#$d_isnanl HAS_ISNANL		/**/
+?H:.
+?LINT:set d_isnanl
+: see if isnanl exists
+set isnanl d_isnanl
+eval $inlibc
+

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_lutimes: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_lutimes:
+?S:	This variable conditionally defines the HAS_LUTIMES symbol, which
+?S:	indicates to the C program that the lutimes() routine is available.
+?S:.
+?C:HAS_LUTIMES:
+?C:	This symbol, if defined, indicates that the lutimes routine is
+?C:	available to change symbolic link timestamps with struct timevals.
+?C:.
+?H:#$d_lutimes HAS_LUTIMES		/**/
+?H:.
+?LINT:set d_lutimes
+: see if lutimes exists
+set lutimes d_lutimes
+eval $inlibc
+

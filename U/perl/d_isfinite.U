@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_isfinite: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_isfinite:
+?S:	This variable conditionally defines the HAS_ISFINITE symbol, which
+?S:	indicates to the C program that the isfinite() routine is available.
+?S:.
+?C:HAS_ISFINITE:
+?C:	This symbol, if defined, indicates that the isfinite routine is
+?C:	available to check whether a double is finite (non-infinity non-NaN).
+?C:.
+?H:#$d_isfinite HAS_ISFINITE		/**/
+?H:.
+?LINT:set d_isfinite
+: see if isfinite exists
+set isfinite d_isfinite
+eval $inlibc
+

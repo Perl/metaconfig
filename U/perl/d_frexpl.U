@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_frexpl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_frexpl:
+?S:	This variable conditionally defines the HAS_FREXPL symbol, which
+?S:	indicates to the C program that the frexpl() routine is available.
+?S:.
+?C:HAS_FREXPL:
+?C:	This symbol, if defined, indicates that the frexpl routine is
+?C:	available to break a long double floating-point number into
+?C:	a normalized fraction and an integral power of 2.
+?C:.
+?H:#$d_frexpl HAS_FREXPL		/**/
+?H:.
+?LINT:set d_frexpl
+: see if frexpl exists
+set frexpl d_frexpl
+eval $inlibc
+

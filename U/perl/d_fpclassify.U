@@ -1,0 +1,32 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fpclassify: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fpclassify:
+?S:	This variable conditionally defines the HAS_FPCLASSIFY symbol, which
+?S:	indicates to the C program that the fpclassify() routine is available.
+?S:.
+?C:HAS_FPCLASSIFY:
+?C:	This symbol, if defined, indicates that the fpclassify routine is
+?C:	available to classify doubles.  Available for example in HP-UX.
+?C:	The returned values are defined in <math.h> and are
+?C:
+?C:           FP_NORMAL     Normalized
+?C:           FP_ZERO       Zero
+?C:           FP_INFINITE   Infinity
+?C:           FP_SUBNORMAL  Denormalized
+?C:           FP_NAN        NaN
+?C:
+?C:.
+?H:#$d_fpclassify HAS_FPCLASSIFY		/**/
+?H:.
+?LINT:set d_fpclassify
+: see if fpclassify exists
+set fpclassify d_fpclassify
+eval $inlibc
+

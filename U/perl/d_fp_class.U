@@ -1,0 +1,36 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fp_class: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fp_class:
+?S:	This variable conditionally defines the HAS_FP_CLASS symbol, which
+?S:	indicates to the C program that the fp_class() routine is available.
+?S:.
+?C:HAS_FP_CLASS:
+?C:	This symbol, if defined, indicates that the fp_class routine is
+?C:	available to classify doubles.  Available for example in Digital UNIX.
+?C:	The returned values are defined in <math.h> and are:
+?C:
+?C:	FP_SNAN           Signaling NaN (Not-a-Number)
+?C:	FP_QNAN           Quiet NaN (Not-a-Number)
+?C:	FP_POS_INF        +infinity
+?C:	FP_NEG_INF        -infinity
+?C:	FP_POS_NORM       Positive normalized
+?C:	FP_NEG_NORM       Negative normalized
+?C:	FP_POS_DENORM     Positive denormalized
+?C:	FP_NEG_DENORM     Negative denormalized
+?C:	FP_POS_ZERO       +0.0 (positive zero)
+?C:	FP_NEG_ZERO       -0.0 (negative zero)
+?C:.
+?H:#$d_fp_class HAS_FP_CLASS		/**/
+?H:.
+?LINT:set d_fp_class
+: see if fp_class exists
+set fp_class d_fp_class
+eval $inlibc
+

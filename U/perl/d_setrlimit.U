@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_setrlimit: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_setrlimit:
+?S:	This variable conditionally defines the HAS_SETRLIMIT symbol, which
+?S:	indicates to the C program that the setrlimit() routine is available.
+?S:.
+?C:HAS_SETRLIMIT:
+?C:	This symbol, if defined, indicates that the setrlimit routine is
+?C:	available to set process resource limits.
+?C:.
+?H:#$d_setrlimit HAS_SETRLIMIT		/**/
+?H:.
+?LINT:set d_setrlimit
+: see if setrlimit exists
+set setrlimit d_setrlimit
+eval $inlibc
+

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_iconv: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_iconv:
+?S:	This variable conditionally defines the HAS_ICONV symbol, which
+?S:	indicates to the C program that the iconv() routine is available.
+?S:.
+?C:HAS_ICONV:
+?C:	This symbol, if defined, indicates that the iconv routine is
+?C:	available to do character set conversions.
+?C:.
+?H:#$d_iconv HAS_ICONV		/**/
+?H:.
+?LINT:set d_iconv
+: see if iconv exists
+set iconv d_iconv
+eval $inlibc
+
