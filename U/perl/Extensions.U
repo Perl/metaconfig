@@ -431,9 +431,10 @@ extensions="$*"
 #    DB_File ... Fcntl ... IO  ....
 # or something like
 #    Fcntl ... NDBM_File ... IO  ....
-case "$extensions" in
-*"_File "*" Fcntl "*" IO "*) ;;
-*" Fcntl "*"_File "*" IO "*) ;;
+case " $extensions"  in
+*"_File "*" Fcntl "*" IO "*) ;; # DB_File
+*" Fcntl "*"_File "*" IO "*) ;; # GDBM_File
+*" Fcntl "*" IO "*"_File "*) ;; # NDBM_File
 *) echo "WARNING: Extensions DB_File or *DBM_File, Fcntl, and IO not configured." >&4
    echo "WARNING: The Perl you are building will be quite crippled." >& 4
    ;;
