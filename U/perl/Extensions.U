@@ -123,7 +123,7 @@ for xxx in $known_extensions ; do
 		case "$i_ndbm" in
 		$define)
 		    case "$osname-$use64bitint" in
-		    hpux-define)
+		    cygwin-*|hpux-define)
 			case "$libs" in
 			*-lndbm*) avail_ext="$avail_ext $xxx" ;;
 			esac
@@ -137,7 +137,7 @@ for xxx in $known_extensions ; do
 		case "${i_dbm}${i_rpcsvcdbm}" in
 		*"${define}"*)
 		    case "$osname-$use64bitint" in
-		    hpux-define)
+		    cygwin-*|hpux-define)
 			case "$libs" in
 			*-ldbm*) avail_ext="$avail_ext $xxx" ;;
 			esac
