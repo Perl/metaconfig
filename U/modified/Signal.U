@@ -16,15 +16,15 @@
 ?X: This unit produces three files:
 ?X: 1- A signal.c file, which, when compiled and run, produces an output like:
 ?X:
-?X:   1 HUP
-?X:   2 INT
-?X:   3 QUIT
+?X:   HUP 1
+?X:   INT 2
+?X:   QUIT 3
 ?X:   etc...
 ?X:
 ?X: 2- A signal.awk script to parse the output of signal.c, fill
 ?X: in gaps (up to NSIG) and move duplicates to the end.
 ?X: 3- A signal_cmd script to compile signal.c and run it
-?X: through sort -n | uniq | awk -f signal.awk.
+?X: through sort -n -k 2 | uniq | awk -f signal.awk.
 ?X: (This is called signal_cmd to avoid OS/2 confusion with
 ?X: signal.cmd vs. signal.
 ?X: The signal_cmd script also falls back on checking signals one at a
@@ -149,7 +149,7 @@ EOCP
 echo $xxx | $tr ' ' $trnl | $sort | $uniq | $awk '
 {
 	printf "#ifdef SIG"; printf $1; printf "\n"
-	printf "printf(\"%%d "; printf $1; printf "\\n\",SIG";
+	printf "printf(\""; printf $1; printf " %%d\\n\",SIG";
 	printf $1; printf ");\n"
 	printf "#endif\n"
 }
@@ -160,17 +160,17 @@ END {
 ' >>signal.c
 $cat >signal.awk <<'EOP'
 BEGIN { ndups = 0 }
-$2 ~ /^NSIG$/ { nsig = $1 }
-($2 !~ /^NSIG$/) && (NF == 2) {
-    if ($1 > maxsig) { maxsig = $1 }
-    if (sig_name[$1]) {
-	dup_name[ndups] = $2
-	dup_num[ndups] = $1
+$1 ~ /^NSIG$/ { nsig = $2 }
+($1 !~ /^NSIG$/) && (NF == 2) {
+    if ($2 > maxsig) { maxsig = $2 }
+    if (sig_name[$2]) {
+	dup_name[ndups] = $1
+	dup_num[ndups] = $2
 	ndups++ 
     }
     else {
-	sig_name[$1] = $2
-	sig_num[$1] = $1
+	sig_name[$2] = $1
+	sig_num[$2] = $2
     }
 }
 END { 
@@ -205,7 +205,7 @@ $cat >>signal_cmd <<'EOS'
 
 set signal
 if eval $compile_ok; then
-	$run ./signal$_exe | $sort -n | $uniq | $awk -f signal.awk >signal.lst
+	$run ./signal$_exe | $sort -n -k 2 | $uniq | $awk -f signal.awk >signal.lst
 else
 	echo "(I can't seem be able to compile the whole test program)" >&4
 	echo "(I'll try it in little pieces.)" >&4
@@ -239,7 +239,7 @@ EOCP
 	done
 	if $test -s signal.ls1; then
 		$cat signal.nsg signal.ls1 |
-			$sort -n -k 2 | $uniq | $awk -f signal.awk >signal.lst
+			$sort -n | $uniq | $awk -f signal.awk >signal.lst
 	fi
 
 fi
