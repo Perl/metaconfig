@@ -47,14 +47,14 @@
 ?LINT:extern CONFIG_SH
 ?LINT:change CONFIG_H
 ?LINT:change CONFIG_SH
-?T:CONFIG TOP
+?T:PERL_CONFIG_SH TOP
 case "$CONFIG_SH" in
 '') CONFIG_SH=config.sh ;;
 esac
 case "$CONFIG_H" in
 '') CONFIG_H=config.h ;;
 esac
-case $CONFIG in
+case $PERL_CONFIG_SH in
 '')
 	if test -f $CONFIG_SH; then TOP=.;
 	elif test -f ../$CONFIG_SH; then TOP=..;

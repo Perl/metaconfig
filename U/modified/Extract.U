@@ -28,11 +28,11 @@
 ?MAKE:Extract: src
 ?MAKE:	-pick add $@ %<
 ?F:./extract
-?T:CONFIGDOTSH dir file name create mkdir_p
-?LINT:use CONFIGDOTSH
+?T:PERL_CONFIG_SH dir file name create mkdir_p
+?LINT:use PERL_CONFIG_SH
 : script used to extract .SH files with variable substitutions
 cat >extract <<'EOS'
-CONFIGDOTSH=true
+PERL_CONFIG_SH=true
 echo "Doing variable substitutions on .SH files..."
 if test -f $src/MANIFEST; then
 	set x `awk '{print $1}' <$src/MANIFEST | grep '\.SH$'`

@@ -17,13 +17,13 @@
 ?RCS:
 ?X: 
 ?X: This unit follows the creation of the config.sh file. It adds some
-?X: special symbols: defines from patchlevel.h file if any and CONFIGDOTSH,
+?X: special symbols: defines from patchlevel.h file if any and PERL_CONFIG_SH,
 ?X: which is set to true. Then, we try to keep all the new symbols that
 ?X: may come from a hint file or a previous config.sh file.
 ?X: 
 ?MAKE:Oldsym: Config_sh cat test hint src sort uniq
 ?MAKE:	-pick add $@ %<
-?T:CONFIGDOTSH sym tmp s
+?T:PERL_CONFIG_SH sym tmp s
 ?X: Command line options can be saved by the Options.U unit in the
 ?X: temporary file UU/cmdline.opt.
 : Add in command line options if available
@@ -32,7 +32,7 @@ $test -f UU/cmdline.opt && $cat UU/cmdline.opt >> config.sh
 : add special variables
 $test -f $src/patchlevel.h && \
 awk '/^#define[ 	]+PERL_/ {printf "%s=%s\n",$2,$3}' $src/patchlevel.h >>config.sh
-echo "CONFIGDOTSH=true" >>config.sh
+echo "PERL_CONFIG_SH=true" >>config.sh
 
 : propagate old symbols
 if $test -f UU/config.sh; then
