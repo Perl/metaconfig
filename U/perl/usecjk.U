@@ -1,0 +1,55 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2002 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usecjk: Myread Oldconfig Setvar
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usecjk:
+?S:	This variable conditionally defines the USE_CJK symbol,
+?S:	and indicates that Perl should be built to use CJK.
+?S:.
+?C:USE_CJK:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	be built to use the CJK support of Encode.
+?C:.
+?H:?%<:#ifndef USE_CJK
+?H:?%<:#$usecjk	USE_CJK		/**/
+?H:?%<:#endif
+?H:.
+?LINT:set usecjk
+?LINT:set useperlio
+?LINT:extern useperlio
+?LINT:change useperlio
+?INIT:: set usecjk on the Configure command line to enable cjk.
+?X: We should really have some explanatory text here, and some
+?X: automatic setting of sensible defaults.
+case "$usecjk" in
+''|$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+cat <<EOM
+
+Starting from 5.8.0 Perl comes with encoding support for the CJK languags
+(Chinese-Japanese-Korean, CN/JP/KR/TW).  Normally shared libraries are used,
+which means that the (relatively large, a few megabytes total) CJK encodings
+are loaded on demand (not consuming any memory if the are unused).  However,
+if you are building Perl statically, and/or are space-constrained, and
+if you are certain you won't be needing CJK support, you may consider
+leaving it out.  Note that the CJK support will always be built, but
+if you choose not to have it, it will be skipped in the installation phase.
+
+If this doesn't make any sense to you, just accept the default '$dflt'.
+EOM
+rp='Build Perl for CJK?'
+. ./myread
+case "$ans" in
+y*|Y*)	val="$define" ;;     
+*)      val="$undef"  ;;
+esac
+set usecjk
+eval $setvar
+

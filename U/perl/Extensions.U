@@ -12,7 +12,7 @@
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \ 
 	i_ndbm usethreads useithreads package test cat rsrc \
 	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
-	libs
+	libs usecjk
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:known_extensions:
@@ -331,7 +331,14 @@ EOM
             *" Encode "*) # Add the subextensions of Encode
                 cd "$rsrc/ext"
                 for xxx in `ls Encode/*/Makefile.PL|awk -F/ '{print $2}'`; do
-                        dflt="$dflt Encode/$xxx"
+			case "$usecjk" in
+			define)	dflt="$dflt Encode/$xxx" ;;
+			*)	case "$xxx" in
+				CN|JP|KR|TW) ;;
+				*) dflt="$dflt Encode/$xxx" ;;
+				esac
+				;;
+			esac
                 done
                 cd "$tdir"
                 ;;
