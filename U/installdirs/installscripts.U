@@ -1,0 +1,44 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:installscripts: cat Myread Setvar
+?MAKE:	-pick add $@ %<
+?LINT:set installscripts
+?Y:TOP
+?S:installscripts:
+?S:	This variable tells whether the various scripts accompanying
+?S:	Perl should be installed.    Usually this is the case.
+?S:.
+?C:INSTALL_SCRIPTS:
+?C:	This symbol, if defined, indicates that the various scripts
+?C: 	accompanying Perl should be installed.  Usually this is the case.
+?C:.
+?H:#$installscripts INSTALL_SCRIPTS	/**/
+?H:.
+: determine whether to install the scripts
+
+echo " "
+$cat <<EOM
+Do you want to install the various scripts accompanying Perl?
+Usually you do want this.
+EOM
+case "$installscripts" in
+"$undef"|[nN]*)	dflt='n';;
+*)		dflt='y';;
+esac
+rp="Do you want to install the scripts?"
+. ./myread
+case "$ans" in
+[yY]*)	val="$define";;
+*)	val="$undef" ;;
+esac
+set installscripts
+eval $setvar
+
