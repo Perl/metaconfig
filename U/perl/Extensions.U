@@ -330,7 +330,7 @@ EOM
         *)  case " $dflt " in
             *" Encode "*) # Add the subextensions of Encode
                 cd "$rsrc/ext"
-                for xxx in `ls Encode/*/*.xs|awk -F/ '{print $2}'`; do
+                for xxx in `ls Encode/*/Makefile.PL|awk -F/ '{print $2}'`; do
                         dflt="$dflt Encode/$xxx"
                 done
                 cd "$tdir"
