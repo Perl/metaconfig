@@ -7,7 +7,8 @@
 ?RCS:
 ?MAKE:d_modfl d_modflproto d_modfl_pow32_bug: Inlibc Compile Hasproto cat \
 	rm test sPRIfldbl d_longdbl osname gccversion ccflags run \
-	uselongdouble d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl
+	uselongdouble i_math \
+	d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl
 ?MAKE:	-pick add $@ %<
 ?S:d_modfl:
 ?S:	This variable conditionally defines the HAS_MODFL symbol, which
@@ -60,7 +61,7 @@ eval $inlibc
 
 : see if prototype for modfl is available
 echo " "
-set d_modflproto modfl math.h
+set d_modflproto modfl $i_math math.h
 eval $hasproto
 
 d_modfl_pow32_bug="$undef"
