@@ -87,7 +87,7 @@
 ?V:ansexp:fn gfpth gfpthkeep
 ?F:./getfile
 ?T:tilde type what orig_rp orig_dflt fullpath already redo skip none_ok \
-	value exp_file nopath_ok loc_file fp pf
+	value exp_file nopath_ok loc_file fp pf direxp
 ?LINT:change ans
 ?LINT:change gfpth
 : now set up to get a file name
@@ -265,13 +265,15 @@ while test "$type"; do
 			Directory)
 				for fp in $gfpth; do
 					if test "X$fp" = X.; then
-					    pf="$ansexp"
+					    dir="$ans"
+					    direxp="$ansexp"
 					else    
-					    pf="$fp/$ansexp"
+					    dir="$fp/$ans"
+					    direxp="$fp/$ansexp"
 					fi
-					if test -d "$pf"; then
+					if test -d "$direxp"; then
 						type=''
-						value="$pf"
+						value="$dir"
 						break
 					fi
 				done

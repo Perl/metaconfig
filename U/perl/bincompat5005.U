@@ -8,17 +8,18 @@
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:bincompat5005:
-?S:	This variable contains y if Perl 5.006 should be binary-compatible
-?S:	with Perl 5.005.
+?S:	This variable contains y if this version of Perl should be
+?S:	binary-compatible with Perl 5.005.
 ?S:.
 ?S:d_bincompat5005:
 ?S:	This variable conditionally defines BINCOMPAT5005 so that embed.h
-?S:	can take special action if Perl 5.006 should be binary-compatible
-?S:	with Perl 5.005.  This is impossible for builds that use features
-?S:	like threads and multiplicity it is always $undef for those versions.
+?S:	can take special action if this version of Perl should be
+?S:	binary-compatible with Perl 5.005.  This is impossible for builds
+?S:	that use features like threads and multiplicity it is always $undef
+?S:	for those versions.
 ?S:.
 ?C:PERL_BINCOMPAT_5005:
-?C:	This symbol, if defined, indicates that Perl 5.006 should be
+?C:	This symbol, if defined, indicates that this version of Perl should be
 ?C:	binary-compatible with Perl 5.005.  This is impossible for builds
 ?C:	that use features like threads and multiplicity it is always $undef
 ?C:	for those versions.
@@ -36,9 +37,9 @@ case "$usethreads$usemultiplicity" in
 	;;
 *)	$cat <<EOM
 
-Perl 5.006 can be compiled for binary compatibility with 5.005.
-If you decide to do so, you will be able to continue using most
-of the extensions that were compiled for Perl 5.005.
+This version of Perl can be compiled for binary compatibility with 5.005.
+If you decide to do so, you will be able to continue using most of the
+extensions that were compiled for Perl 5.005.
 
 EOM
 	case "$bincompat5005$d_bincompat5005" in
