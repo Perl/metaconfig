@@ -190,6 +190,19 @@
 ?H:#define	NVSIZE		$nvsize		/**/
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
 ?H:#define	NV_PRESERVES_UV_BITS	$nv_preserves_uv_bits
+?H:?%<:#if UVSIZE == 8
+?H:?%<:#   ifdef BYTEORDER
+?H:?%<:#       if BYTEORDER == 0x1234
+?H:?%<:#           undef BYTEORDER
+?H:?%<:#           define BYTEORDER 0x12345678
+?H:?%<:#       else
+?H:?%<:#           if BYTEORDER == 0x4321
+?H:?%<:#               undef BYTEORDER
+?H:?%<:#               define BYTEORDER 0x87654321
+?H:?%<:#           endif
+?H:?%<:#       endif
+?H:?%<:#   endif
+?H:?%<:#endif
 ?H:.
 ?T:volatile
 
