@@ -358,6 +358,9 @@ EOM
 			;;
 		next*) osname=next ;;
 		nonstop-ux) osname=nonstopux ;;
+		openbsd) osname=openbsd
+                	osvers="$3"
+                	;;
 		POSIX-BC | posix-bc ) osname=posix-bc
 			osvers="$3"
 			;;
