@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:i_pthread: Inhdr usethreads
+?MAKE:i_pthread: Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:i_pthread:
 ?S:     This variable conditionally defines the I_PTHREAD symbol,
