@@ -8,13 +8,17 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:gccversion: cat cpp rm +cc \
-	Mcc Myread Guess Options Oldconfig Loc
+?MAKE:gccversion gccosandvers: cat cpp rm +cc \
+	Mcc Myread Guess Options Oldconfig Loc osname osvers
 ?MAKE:	-pick add $@ %<
 ?S:gccversion:
 ?S:	If GNU cc (gcc) is used, this variable holds '1' or '2' to 
 ?S:	indicate whether the compiler is version 1 or 2.  This is used in
 ?S:	setting some of the default cflags.  It is set to '' if not gcc.
+?S:.
+?S:gccosandvers:
+?S:	If GNU cc (gcc) is used, this variable the operating system and
+?S:	version used to compile the gcc.  It is set to '' if not gcc.
 ?S:.
 ?F:!gccvers
 ?D:gccversion=''
@@ -59,4 +63,34 @@ $rm -f gccvers*
 case "$gccversion" in
 1*) cpp=`./loc gcc-cpp $cpp $pth` ;;
 esac
+case "$gccversion" in
+'') gccosandvers='' ;;
+*) gccosandvers=`gcc -v 2>&1|grep '/specs$'|sed 's!.*/[^-]*-[^-]*-\([^/]*\)/'$gccversion'/specs$!\1!'`
+   case "$gccosandvers" in
+   $osname$osvers) ;;
+   $osname*) cat <<EOM >&4
+
+*** WHOA THERE!!! ***
+
+    Your gcc has not been compiled for the exact release of
+    your operating system ($gccosandvers versus $osname$osvers).
+
+    In general it is a good idea to keep gcc synchronized with
+    the operating system because otherwise serious problems
+    may ensue when trying to compile software, like Perl.
+
+    I'm trying to be optimistic here, though, and will continue.
+    If later during the configuration and build icky compilation
+    problems appear, I suggest reinstalling the gcc to match
+    your operating system release.
+
+EOM
+      ;;
+   *) ;; # failed to parse, better be silent
+   esac
+   ;;
+esac
+
+
+
 
