@@ -133,7 +133,7 @@ EOCP
 #include <stdio.h>
 int main() {
     printf("%d\n", (int)sizeof($fpostype));
-    exit(0);
+    return(0);
 }
 EOCP
 		set try

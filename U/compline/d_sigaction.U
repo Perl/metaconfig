@@ -13,7 +13,7 @@
 ?RCS: patch61: created
 ?RCS:
 ?RCS:
-?MAKE:d_sigaction: Csym Compile Setvar cat rm _o
+?MAKE:d_sigaction: Csym Compile Setvar cat rm _o i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_sigaction:
 ?S:	This variable conditionally defines the HAS_SIGACTION symbol, which
@@ -36,10 +36,14 @@ if set sigaction val -f d_sigaction; eval $csym; $val; then
 ?X: sigaction structure if compiled with cc -Xc.  This compile test
 ?X: will fail then.  <doughera@lafcol.lafayette.edu>
 ?X:
-	$cat > try.c <<'EOP'
+	$cat > try.c <<EOP
 #include <stdio.h>
 #include <sys/types.h>
 #include <signal.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 int main()
 {
     struct sigaction act, oact;
