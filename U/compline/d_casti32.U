@@ -71,7 +71,7 @@ int main()
 	i32  = ($xxx) g;
 
 	/* x86 processors will probably give 0x8000 0000, which is a
-       sign change.  We don't want that.  We want to mimic SPARC
+	   sign change.  We don't want that.  We want to mimic SPARC
 	   behavior here, which is to preserve the sign and give
 	   back 0x7fff ffff.
 	*/
