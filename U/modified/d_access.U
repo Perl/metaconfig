@@ -53,16 +53,16 @@ int main() {
 EOCP
 	: check sys/file.h first, no particular reason here
 	if $test `./findhdr sys/file.h` && \
-		$cc $cppflags -DI_SYS_FILE -o access access.c >/dev/null 2>&1 ; then
+		$cc -o access $cppflags -DI_SYS_FILE access.c >/dev/null 2>&1 ; then
 		h_sysfile=true;
 		echo "<sys/file.h> defines the *_OK access constants." >&4
 	elif $test `./findhdr fcntl.h` && \
-		$cc $cppflags -DI_FCNTL -o access access.c >/dev/null 2>&1 ; then
+		$cc -o access $cppflags -DI_FCNTL access.c >/dev/null 2>&1 ; then
 		h_fcntl=true;
 		echo "<fcntl.h> defines the *_OK access constants." >&4
 @if I_UNISTD
 	elif $test `./findhdr unistd.h` && \
-		$cc $cppflags -DI_UNISTD -o access access.c >/dev/null 2>&1 ; then
+		$cc -o access $cppflags -DI_UNISTD access.c >/dev/null 2>&1 ; then
 		echo "<unistd.h> defines the *_OK access constants." >&4
 @end
 	else

@@ -377,7 +377,7 @@ $cat > try.c <<'EOF'
 int main() { printf("Ok\n"); exit(0); }
 EOF
 ?X: Strip extra blanks in case some of the following variables are empty
-set X $cc $optimize $ccflags -o try $ldflags try.c $libs
+set X $cc -o try $optimize $ccflags $ldflags try.c $libs
 shift
 $cat >try.msg <<'EOM'
 I've tried to compile and run the following simple program:
@@ -406,7 +406,7 @@ dflt=y
 ?X: output buffers don't get flushed and we don't see any output
 ?X: when run from within `backticks`.  What fun.  
 ?X: --Andy Dougherty 2/13/1998
-if sh -c "$cc $optimize $ccflags -o try $ldflags try.c $libs" >>try.msg 2>&1; then
+if sh -c "$cc -o try $optimize $ccflags $ldflags try.c $libs" >>try.msg 2>&1; then
 	if sh -c './try' >>try.msg 2>&1; then
 		xxx=`./try`
 		case "$xxx" in

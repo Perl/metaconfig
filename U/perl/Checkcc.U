@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 EOM
-    if $cc $cflags -o try try.c; then
+    if $cc -o try $ccflags try.c; then
        :
     else
         echo "Uh-oh, the C compiler '$cc' doesn't seem to be working." >&4

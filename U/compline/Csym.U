@@ -80,7 +80,7 @@ yes)
 ?X: trick is obsoleted by future gcc releases). -- RAM
 ?X:
 		echo "int main() { extern short $1$tdc; printf(\"%hd\", $1$tc); }" > t.c;
-		if $cc $optimize $ccflags $ldflags -o t t.c $libs >/dev/null 2>&1;
+		if $cc -o t $optimize $ccflags $ldflags t.c $libs >/dev/null 2>&1;
 		then tval=true;
 		else tval=false;
 		fi;

@@ -203,7 +203,7 @@ case "$osname-$gccversion" in
 irix-) ccflags="\$ccflags -woff 1178" ;;
 os2-*) ccflags="\$ccflags -Zlinker /PM:VIO" ;;
 esac
-$cc $optimize \$ccflags $ldflags -o try try.c $libs && ./try$exe_ext
+$cc -o try $optimize \$ccflags $ldflags try.c $libs && ./try$exe_ext
 EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try

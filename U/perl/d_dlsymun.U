@@ -88,8 +88,8 @@ EOM
 	: Call the object file tmp-dyna.o in case dlext=o.
 	if $cc $ccflags $cccdlflags -c dyna.c > /dev/null 2>&1 && 
 		mv dyna${_o} tmp-dyna${_o} > /dev/null 2>&1 && 
-		$ld $lddlflags -o dyna.$dlext tmp-dyna${_o} > /dev/null 2>&1 && 
-		$cc $ccflags -o fred $ldflags $cccdlflags $ccdlflags fred.c $libs > /dev/null 2>&1; then
+		$ld -o dyna.$dlext $lddlflags tmp-dyna${_o} > /dev/null 2>&1 && 
+		$cc -o fred $ccflags $ldflags $cccdlflags $ccdlflags fred.c $libs > /dev/null 2>&1; then
 		xxx=`./fred`
 		case $xxx in
 		1)	echo "Test program failed using dlopen." >&4
