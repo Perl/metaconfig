@@ -261,7 +261,7 @@ EOM
     ' ')  dflt='none' ;;
     *)  dflt="$ccdlflags" ;;
     esac
-    rp="Any special flags to pass to $cc to use dynamic loading?"
+    rp="Any special flags to pass to $cc to use dynamic linking?"
     . ./myread
     case "$ans" in
 ?X: Use ' ' so that a subsequent Configure run preserves the old state.
