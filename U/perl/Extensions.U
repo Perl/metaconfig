@@ -185,7 +185,7 @@ for xxx in $known_extensions ; do
                         esac
 		esac
 		;;
-	threads)
+	threads|threads/shared)
                 case "$usethreads" in
                 true|$define|y)
                         case "$useithreads" in
