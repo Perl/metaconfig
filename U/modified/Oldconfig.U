@@ -417,7 +417,8 @@ EOM
 ?X:	hp and mips were unsupported Technology Releases -- ADO, 24/10/94
 			esac
 			;;
-		unixware) osname=svr5
+		# UnixWare 8 is now known as OpenUnix
+		openunix|unixware) osname=svr5
 			osvers="$4"
 			;;
 		uts)	osname=uts
