@@ -1,0 +1,325 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
+	i8type u8type i16type u16type i32type u32type i64type u64type \
+	i8size u8size i16size u16size i32size u32size i64size u64size: \
+	echo rm use64bits quadtype uquadtype \
+	d_longdbl uselongdouble longdblsize doublesize \
+	charsize shortsize intsize longsize \
+	cat Compile i_inttypes exe_ext
+?MAKE:	-pick add $@ %<
+?S:ivtype:
+?S:	This variable contains the C type used for Perl's IV.
+?S:.
+?S:uvtype:
+?S:	This variable contains the C type used for Perl's UV.
+?S:.
+?S:nvtype:
+?S:	This variable contains the C type used for Perl's NV.
+?S:.
+?S:i8type:
+?S:	This variable contains the C type used for Perl's I8.
+?S:.
+?S:u8type:
+?S:	This variable contains the C type used for Perl's U8.
+?S:.
+?S:i16type:
+?S:	This variable contains the C type used for Perl's I16.
+?S:.
+?S:u16type:
+?S:	This variable contains the C type used for Perl's U16.
+?S:.
+?S:i32type:
+?S:	This variable contains the C type used for Perl's I32.
+?S:.
+?S:u32type:
+?S:	This variable contains the C type used for Perl's U32.
+?S:.
+?S:i64type:
+?S:	This variable contains the C type used for Perl's I64.
+?S:.
+?S:u64type:
+?S:	This variable contains the C type used for Perl's U64.
+?S:.
+?S:ivsize:
+?S:	This variable is the size of an IV in bytes.
+?S:.
+?S:uvsize:
+?S:	This variable is the size of a UV in bytes.
+?S:.
+?S:i8size:
+?S:	This variable is the size of an I8 in bytes.
+?S:.
+?S:u8size:
+?S:	This variable is the size of an U8 in bytes.
+?S:.
+?S:i16size:
+?S:	This variable is the size of an I16 in bytes.
+?S:.
+?S:u16size:
+?S:	This variable is the size of an U16 in bytes.
+?S:.
+?S:i32size:
+?S:	This variable is the size of an I32 in bytes.
+?S:.
+?S:u32size:
+?S:	This variable is the size of an U32 in bytes.
+?S:.
+?S:i64size:
+?S:	This variable is the size of an I64 in bytes.
+?S:.
+?S:u64size:
+?S:	This variable is the size of an U64 in bytes.
+?S:.
+?S:nvsize:
+?S:	This variable is the size of an NV in bytes.
+?S:.
+?C:IVTYPE:
+?C:	This symbol defines the C type used for Perl's IV.
+?C:.
+?C:UVTYPE:
+?C:	This symbol defines the C type used for Perl's UV.
+?C:.
+?C:I8TYPE:
+?C:	This symbol defines the C type used for Perl's I8.
+?C:.
+?C:U8TYPE:
+?C:	This symbol defines the C type used for Perl's U8.
+?C:.
+?C:I16TYPE:
+?C:	This symbol defines the C type used for Perl's I16.
+?C:.
+?C:U16TYPE:
+?C:	This symbol defines the C type used for Perl's U16.
+?C:.
+?C:I32TYPE:
+?C:	This symbol defines the C type used for Perl's I32.
+?C:.
+?C:U32TYPE:
+?C:	This symbol defines the C type used for Perl's U32.
+?C:.
+?C:I64TYPE:
+?C:	This symbol defines the C type used for Perl's I64.
+?C:.
+?C:U64TYPE:
+?C:	This symbol defines the C type used for Perl's U64.
+?C:.
+?C:NVTYPE:
+?C:	This symbol defines the C type used for Perl's NV.
+?C:.
+?C:IVSIZE:
+?C:	This symbol contains the sizeof(IV).
+?C:.
+?C:UVSIZE:
+?C:	This symbol contains the sizeof(UV).
+?C:.
+?C:I8SIZE:
+?C:	This symbol contains the sizeof(I8).
+?C:.
+?C:U8SIZE:
+?C:	This symbol contains the sizeof(U8).
+?C:.
+?C:I16SIZE:
+?C:	This symbol contains the sizeof(I16).
+?C:.
+?C:U16SIZE:
+?C:	This symbol contains the sizeof(U16).
+?C:.
+?C:I32SIZE:
+?C:	This symbol contains the sizeof(I32).
+?C:.
+?C:U32SIZE:
+?C:	This symbol contains the sizeof(U32).
+?C:.
+?C:I64SIZE:
+?C:	This symbol contains the sizeof(I64).
+?C:.
+?C:U64SIZE:
+?C:	This symbol contains the sizeof(U64).
+?C:.
+?C:NVSIZE:
+?C:	This symbol contains the sizeof(NV).
+?C:.
+?H:#define	IVTYPE		$ivtype		/**/
+?H:#define	UVTYPE		$uvtype		/**/
+?H:#define	I8TYPE		$i8type		/**/
+?H:#define	U8TYPE		$u8type		/**/
+?H:#define	I16TYPE		$i16type	/**/
+?H:#define	U16TYPE		$u16type	/**/
+?H:#define	I32TYPE		$i32type	/**/
+?H:#define	U32TYPE		$u32type	/**/
+?H:?%<:#ifdef Quad_t
+?H:?%<:#define	I64TYPE		$i64type	/**/
+?H:?%<:#define	U64TYPE		$u64type	/**/
+?H:?%<:#endif
+?H:#define	NVTYPE		$nvtype		/**/
+?H:#define	IVSIZE		$ivsize		/**/
+?H:#define	UVSIZE		$uvsize		/**/
+?H:#define	I8SIZE		$i8size		/**/
+?H:#define	U8SIZE		$u8size		/**/
+?H:#define	I16SIZE		$i16size	/**/
+?H:#define	U16SIZE		$u16size	/**/
+?H:#define	I32SIZE		$i32size	/**/
+?H:#define	U32SIZE		$u32size	/**/
+?H:?%<:#ifdef Quad_t
+?H:?%<:#define	I64SIZE		$i64size	/**/
+?H:?%<:#define	U64SIZE		$u64size	/**/
+?H:?%<:#endif
+?H:#define	NVSIZE		$nvsize		/**/
+?H:.
+?F:!try
+
+echo " "
+$echo "Choosing the C types to be used for Perl's internal types..." >&4
+
+case "$use64bits:$quadtype" in
+define:?*)
+	ivtype="$quadtype"
+	uvtype="$uquadtype"
+	ivsize=8
+	uvsize=8
+	;;
+*)	ivtype="long"
+	uvtype="unsigned long"
+	ivsize=$longsize
+	uvsize=$longsize
+	;;
+esac
+
+case "$uselongdouble:$d_longdbl" in
+define:define)
+	nvtype="long double"
+	nvsize=$longdblsize
+	;;
+*)	nvtype=double
+	nvsize=$doublesize
+	;;
+esac
+
+echo "(IV will be "$ivtype", $ivsize bytes)"
+echo "(UV will be "$uvtype", $uvsize bytes)"
+echo "(NV will be "$nvtype", $nvsize bytes)"
+
+$cat >try.c <<EOCP
+#$i_inttypes I_INTTYPES
+#ifdef I_INTTYPES
+#include <inttypes.h>
+#endif
+#include <stdio.h>
+int main() {
+#ifdef INT8
+   int8_t i =  INT8_MAX;
+  uint8_t u = UINT8_MAX;
+  printf("int8_t\n");
+#endif
+#ifdef INT16
+   int16_t i =  INT16_MAX;
+  uint16_t i = UINT16_MAX;
+  printf("int16_t\n");
+#endif
+#ifdef INT32
+   int32_t i =  INT32_MAX;
+  uint32_t u = UINT32_MAX;
+  printf("int32_t\n");
+#endif
+#ifdef INT64
+   int64_t i =  INT64_MAX;
+  uint64_t u = UINT64_MAX;
+  printf("int64_t\n");
+#endif
+}
+EOCP
+set try -DINT8
+if eval $compile; then
+	case "`./try$exe_ext`" in
+	int8_t)	i8type=int8_t
+		u8type=uint8_t
+		i8size=1
+		u8size=1
+		;;
+	esac
+fi
+case "$i8type" in
+'')	i8type=char
+	u8type="unsigned char"
+	i8size=$charsize
+	u8size=$charsize
+	;;
+esac
+set try -DINT16
+if eval $compile; then
+	case "`./try$exe_ext`" in
+	int16_t)
+		i16type=int16_t
+		u16type=uint16_t
+		i16size=2
+		u16size=2
+		;;
+	esac
+fi
+case "$i16type" in
+'')	i16type=short
+	u16type="unsigned short"
+	i16size=$shortsize
+	u16size=$shortsize
+	;;
+esac
+set try -DINT32
+if eval $compile; then
+	case "`./try$exe_ext`" in
+	int32_t)
+		i32type=int32_t
+		u32type=uint32_t
+		i32size=4
+		u32size=4
+		;;
+	esac
+fi
+case "$i32type" in
+'')	case "$longsize" in
+	4)	i32type=long
+		u32type="unsigned long"
+		i32size=longsize
+		u32size=$longsize
+		;;
+	*)	case "$intsize" in
+		4)	i32type=int
+			u32type="unsigned int"
+			i32size=$intsize
+			u32size=$intsize
+			;;
+		esac
+		;;
+	esac
+	;;
+esac
+set try -DINT64
+if eval $compile; then
+	case "`./try$exe_ext`" in
+	int64_t)
+		i64type=int64_t
+		u64type=uint64_t
+		i64size=8
+		u64size=8
+		;;
+	esac
+fi
+case "$i64type" in
+'')	case "$quadtype" in
+	'')	;;
+	*)	i64type="$quadtype"
+		u64type="$uquadtype"
+		i64size=8
+		u64size=8
+		;;
+	esac
+	;;
+esac
+
+$rm -f try.* try
+

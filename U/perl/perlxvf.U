@@ -1,0 +1,87 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:ivdformat uvuformat uvoformat uvxformat: \
+	ivsize longsize intsize shortsize sPRId64 sPRIu64 sPRIo64 sPRIx64 \
+	test echo
+?MAKE:	-pick add $@ %<
+?S:ivdformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl IV as a signed decimal integer. 
+?S:.
+?S:uvuformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl UV as an unsigned decimal integer. 
+?S:.
+?S:uvoformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl UV as an unsigned octal integer. 
+?S:.
+?S:uvxformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl UV as an unsigned hexadecimal integer. 
+?S:.
+?C:IVdf:
+?C:	This symbol defines the format string used for printing a Perl IV
+?C:	as a signed decimal integer.
+?C:.
+?C:UVuf:
+?C:	This symbol defines the format string used for printing a Perl UV
+?C:	as an unsigned decimal integer.
+?C:.
+?C:UVof:
+?C:	This symbol defines the format string used for printing a Perl UV
+?C:	as an unsigned octal integer.
+?C:.
+?C:UVxf:
+?C:	This symbol defines the format string used for printing a Perl UV
+?C:	as an unsigned hexadecimal integer.
+?C:.
+?H:#define	IVdf		$ivdformat		/**/
+?H:#define	UVuf		$uvuformat		/**/
+?H:#define	UVof		$uvoformat		/**/
+?H:#define	UVxf		$uvxformat		/**/
+?H:.
+
+echo " "
+$echo "Checking the format strings to be used for Perl's internal types..." >&4
+
+if $test X"$ivsize" = X8; then
+	ivdformat="$sPRId64"
+	uvuformat="$sPRIu64"
+	uvoformat="$sPRIo64"
+	uvxformat="$sPRIx64"
+else
+	if $test X"$ivsize" = X"$longsize"; then
+		ivdformat='"ld"'
+		uvuformat='"lu"'
+		uvoformat='"lo"'
+		uvxformat='"lx"'
+	else
+		if $test X"$ivsize" = X"$intsize"; then
+			ivdformat='"d"'
+			uvuformat='"u"'
+			uvoformat='"o"'
+			uvxformat='"x"'
+		else
+			: far out
+			if $test X"$ivsize" = X"$shortsize"; then
+				ivdformat='"hd"'
+				uvuformat='"hu"'
+				uvoformat='"ho"'
+				uvxformat='"hx"'
+			fi
+		fi
+	fi
+fi
+
+case "$ivdformat" in
+'') echo "$0: Fatal: failed to find format strings, cannot continue." >& 4
+    exit 1
+    ;;
+esac
+
