@@ -327,6 +327,11 @@ EOM
 		freebsd) osname=freebsd 
 			osvers="$3" ;;
 		genix)	osname=genix ;;
+?X: GNU/Hurd uname -a gives something like:
+?X: GNU foo 0.3 GNU-Mach 1.4/Hurd-0.3 i386-AT386 GNU
+?X: GNU gnu 0.3 GNUmach-1.2/Hurd-0.3 i386-AT386 GNU
+?X: Note the hostname on the second one, which will fool Configure
+?X: into using the SysV case!
 		gnu)	osname=gnu
 			osvers="$3" ;;
 ?X: HP-UX uname -a gives something like
