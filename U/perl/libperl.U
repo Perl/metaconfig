@@ -19,8 +19,8 @@
 ?S:	library.
 ?S:.
 ?S:useshrplib:
-?S:	This variable is set to 'yes' if the user wishes
-?S:	to build a shared libperl, and 'no' otherwise.
+?S:	This variable is set to 'true' if the user wishes
+?S:	to build a shared libperl, and 'false' otherwise.
 ?S:.
 ?S:shrpenv:
 ?S:	If the user builds a shared libperl.so, then we need to tell the
