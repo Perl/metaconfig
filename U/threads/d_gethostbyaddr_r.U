@@ -59,7 +59,7 @@ case "$d_gethostbyaddr_r" in
 	esac
 	case "$gethostbyaddr_r_proto" in
 	'') d_gethostbyaddr_r=undef ; echo "Disabling gethostbyaddr_r, cannot find prototype." ;;
-	* ) gethostbyaddr_r_proto="REENTRANT_$gethostbyaddr_r_proto" ; echo "$try" ;;
+	* ) gethostbyaddr_r_proto="REENTRANT_PROTO_$gethostbyaddr_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

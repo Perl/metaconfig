@@ -39,7 +39,7 @@ case "$d_endpwent_r" in
 	esac
 	case "$endpwent_r_proto" in
 	'') d_endpwent_r=undef ; echo "Disabling endpwent_r, cannot find prototype." ;;
-	* ) endpwent_r_proto="REENTRANT_$endpwent_r_proto" ; echo "$try" ;;
+	* ) endpwent_r_proto="REENTRANT_PROTO_$endpwent_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -44,7 +44,7 @@ case "$d_getprotobynumber_r" in
 	esac
 	case "$getprotobynumber_r_proto" in
 	'') d_getprotobynumber_r=undef ; echo "Disabling getprotobynumber_r, cannot find prototype." ;;
-	* ) getprotobynumber_r_proto="REENTRANT_$getprotobynumber_r_proto" ; echo "$try" ;;
+	* ) getprotobynumber_r_proto="REENTRANT_PROTO_$getprotobynumber_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

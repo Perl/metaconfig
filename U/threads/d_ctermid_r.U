@@ -34,7 +34,7 @@ case "$d_ctermid_r" in
 	esac
 	case "$ctermid_r_proto" in
 	'') d_ctermid_r=undef ; echo "Disabling ctermid_r, cannot find prototype." ;;
-	* ) ctermid_r_proto="REENTRANT_$ctermid_r_proto" ; echo "$try" ;;
+	* ) ctermid_r_proto="REENTRANT_PROTO_$ctermid_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

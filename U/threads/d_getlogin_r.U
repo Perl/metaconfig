@@ -29,17 +29,17 @@ case "$d_getlogin_r" in
 	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$getlogin_r_proto" in
 	'')	try='extern int getlogin_r(char*, size_t);'
-		./protochk "$try" $hdrs && getlogin_r_proto=I_AW;
+		./protochk "$try" $hdrs && getlogin_r_proto=I_BW;
 	;;
 	esac
 	case "$getlogin_r_proto" in
 	'')	try='extern int getlogin_r(char*, int);'
-		./protochk "$try" $hdrs && getlogin_r_proto=I_AI;
+		./protochk "$try" $hdrs && getlogin_r_proto=I_BI;
 	;;
 	esac
 	case "$getlogin_r_proto" in
 	'') d_getlogin_r=undef ; echo "Disabling getlogin_r, cannot find prototype." ;;
-	* ) getlogin_r_proto="REENTRANT_$getlogin_r_proto" ; echo "$try" ;;
+	* ) getlogin_r_proto="REENTRANT_PROTO_$getlogin_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

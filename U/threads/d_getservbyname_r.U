@@ -44,7 +44,7 @@ case "$d_getservbyname_r" in
 	esac
 	case "$getservbyname_r_proto" in
 	'') d_getservbyname_r=undef ; echo "Disabling getservbyname_r, cannot find prototype." ;;
-	* ) getservbyname_r_proto="REENTRANT_$getservbyname_r_proto" ; echo "$try" ;;
+	* ) getservbyname_r_proto="REENTRANT_PROTO_$getservbyname_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

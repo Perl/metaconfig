@@ -44,7 +44,7 @@ case "$d_gethostbyname_r" in
 	esac
 	case "$gethostbyname_r_proto" in
 	'') d_gethostbyname_r=undef ; echo "Disabling gethostbyname_r, cannot find prototype." ;;
-	* ) gethostbyname_r_proto="REENTRANT_$gethostbyname_r_proto" ; echo "$try" ;;
+	* ) gethostbyname_r_proto="REENTRANT_PROTO_$gethostbyname_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

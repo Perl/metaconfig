@@ -39,7 +39,7 @@ case "$d_strerror_r" in
 	esac
 	case "$strerror_r_proto" in
 	'') d_strerror_r=undef ; echo "Disabling strerror_r, cannot find prototype." ;;
-	* ) strerror_r_proto="REENTRANT_$strerror_r_proto" ; echo "$try" ;;
+	* ) strerror_r_proto="REENTRANT_PROTO_$strerror_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -28,13 +28,13 @@ case "$d_drand48_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$drand48_r_proto" in
-	'')	try='extern int drand48_r(long, double*);'
-		./protochk "$try" $hdrs && drand48_r_proto=I_LT;
+	'')	try='extern int drand48_r(struct drand48_data*, double*);'
+		./protochk "$try" $hdrs && drand48_r_proto=I_ST;
 	;;
 	esac
 	case "$drand48_r_proto" in
 	'') d_drand48_r=undef ; echo "Disabling drand48_r, cannot find prototype." ;;
-	* ) drand48_r_proto="REENTRANT_$drand48_r_proto" ; echo "$try" ;;
+	* ) drand48_r_proto="REENTRANT_PROTO_$drand48_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

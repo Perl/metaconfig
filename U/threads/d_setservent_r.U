@@ -34,7 +34,7 @@ case "$d_setservent_r" in
 	esac
 	case "$setservent_r_proto" in
 	'') d_setservent_r=undef ; echo "Disabling setservent_r, cannot find prototype." ;;
-	* ) setservent_r_proto="REENTRANT_$setservent_r_proto" ; echo "$try" ;;
+	* ) setservent_r_proto="REENTRANT_PROTO_$setservent_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

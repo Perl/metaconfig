@@ -49,7 +49,7 @@ case "$d_getpwnam_r" in
 	esac
 	case "$getpwnam_r_proto" in
 	'') d_getpwnam_r=undef ; echo "Disabling getpwnam_r, cannot find prototype." ;;
-	* ) getpwnam_r_proto="REENTRANT_$getpwnam_r_proto" ; echo "$try" ;;
+	* ) getpwnam_r_proto="REENTRANT_PROTO_$getpwnam_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -44,7 +44,7 @@ case "$d_getnetbyname_r" in
 	esac
 	case "$getnetbyname_r_proto" in
 	'') d_getnetbyname_r=undef ; echo "Disabling getnetbyname_r, cannot find prototype." ;;
-	* ) getnetbyname_r_proto="REENTRANT_$getnetbyname_r_proto" ; echo "$try" ;;
+	* ) getnetbyname_r_proto="REENTRANT_PROTO_$getnetbyname_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

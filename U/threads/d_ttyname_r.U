@@ -44,7 +44,7 @@ case "$d_ttyname_r" in
 	esac
 	case "$ttyname_r_proto" in
 	'') d_ttyname_r=undef ; echo "Disabling ttyname_r, cannot find prototype." ;;
-	* ) ttyname_r_proto="REENTRANT_$ttyname_r_proto" ; echo "$try" ;;
+	* ) ttyname_r_proto="REENTRANT_PROTO_$ttyname_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

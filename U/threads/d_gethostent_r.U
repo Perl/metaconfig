@@ -49,7 +49,7 @@ case "$d_gethostent_r" in
 	esac
 	case "$gethostent_r_proto" in
 	'') d_gethostent_r=undef ; echo "Disabling gethostent_r, cannot find prototype." ;;
-	* ) gethostent_r_proto="REENTRANT_$gethostent_r_proto" ; echo "$try" ;;
+	* ) gethostent_r_proto="REENTRANT_PROTO_$gethostent_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -34,7 +34,7 @@ case "$d_tmpnam_r" in
 	esac
 	case "$tmpnam_r_proto" in
 	'') d_tmpnam_r=undef ; echo "Disabling tmpnam_r, cannot find prototype." ;;
-	* ) tmpnam_r_proto="REENTRANT_$tmpnam_r_proto" ; echo "$try" ;;
+	* ) tmpnam_r_proto="REENTRANT_PROTO_$tmpnam_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -39,7 +39,7 @@ case "$d_gmtime_r" in
 	esac
 	case "$gmtime_r_proto" in
 	'') d_gmtime_r=undef ; echo "Disabling gmtime_r, cannot find prototype." ;;
-	* ) gmtime_r_proto="REENTRANT_$gmtime_r_proto" ; echo "$try" ;;
+	* ) gmtime_r_proto="REENTRANT_PROTO_$gmtime_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

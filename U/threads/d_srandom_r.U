@@ -34,7 +34,7 @@ case "$d_srandom_r" in
 	esac
 	case "$srandom_r_proto" in
 	'') d_srandom_r=undef ; echo "Disabling srandom_r, cannot find prototype." ;;
-	* ) srandom_r_proto="REENTRANT_$srandom_r_proto" ; echo "$try" ;;
+	* ) srandom_r_proto="REENTRANT_PROTO_$srandom_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -34,7 +34,7 @@ case "$d_srand48_r" in
 	esac
 	case "$srand48_r_proto" in
 	'') d_srand48_r=undef ; echo "Disabling srand48_r, cannot find prototype." ;;
-	* ) srand48_r_proto="REENTRANT_$srand48_r_proto" ; echo "$try" ;;
+	* ) srand48_r_proto="REENTRANT_PROTO_$srand48_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

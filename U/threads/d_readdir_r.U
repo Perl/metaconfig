@@ -39,7 +39,7 @@ case "$d_readdir_r" in
 	esac
 	case "$readdir_r_proto" in
 	'') d_readdir_r=undef ; echo "Disabling readdir_r, cannot find prototype." ;;
-	* ) readdir_r_proto="REENTRANT_$readdir_r_proto" ; echo "$try" ;;
+	* ) readdir_r_proto="REENTRANT_PROTO_$readdir_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

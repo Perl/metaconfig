@@ -34,7 +34,7 @@ case "$d_crypt_r" in
 	esac
 	case "$crypt_r_proto" in
 	'') d_crypt_r=undef ; echo "Disabling crypt_r, cannot find prototype." ;;
-	* ) crypt_r_proto="REENTRANT_$crypt_r_proto" ; echo "$try" ;;
+	* ) crypt_r_proto="REENTRANT_PROTO_$crypt_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -44,7 +44,7 @@ case "$d_getnetbyaddr_r" in
 	esac
 	case "$getnetbyaddr_r_proto" in
 	'') d_getnetbyaddr_r=undef ; echo "Disabling getnetbyaddr_r, cannot find prototype." ;;
-	* ) getnetbyaddr_r_proto="REENTRANT_$getnetbyaddr_r_proto" ; echo "$try" ;;
+	* ) getnetbyaddr_r_proto="REENTRANT_PROTO_$getnetbyaddr_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

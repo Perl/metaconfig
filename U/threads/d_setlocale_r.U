@@ -34,7 +34,7 @@ case "$d_setlocale_r" in
 	esac
 	case "$setlocale_r_proto" in
 	'') d_setlocale_r=undef ; echo "Disabling setlocale_r, cannot find prototype." ;;
-	* ) setlocale_r_proto="REENTRANT_$setlocale_r_proto" ; echo "$try" ;;
+	* ) setlocale_r_proto="REENTRANT_PROTO_$setlocale_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -49,7 +49,7 @@ case "$d_ctime_r" in
 	esac
 	case "$ctime_r_proto" in
 	'') d_ctime_r=undef ; echo "Disabling ctime_r, cannot find prototype." ;;
-	* ) ctime_r_proto="REENTRANT_$ctime_r_proto" ; echo "$try" ;;
+	* ) ctime_r_proto="REENTRANT_PROTO_$ctime_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

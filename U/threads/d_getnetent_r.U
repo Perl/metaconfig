@@ -49,7 +49,7 @@ case "$d_getnetent_r" in
 	esac
 	case "$getnetent_r_proto" in
 	'') d_getnetent_r=undef ; echo "Disabling getnetent_r, cannot find prototype." ;;
-	* ) getnetent_r_proto="REENTRANT_$getnetent_r_proto" ; echo "$try" ;;
+	* ) getnetent_r_proto="REENTRANT_PROTO_$getnetent_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -49,7 +49,7 @@ case "$d_getgrent_r" in
 	esac
 	case "$getgrent_r_proto" in
 	'') d_getgrent_r=undef ; echo "Disabling getgrent_r, cannot find prototype." ;;
-	* ) getgrent_r_proto="REENTRANT_$getgrent_r_proto" ; echo "$try" ;;
+	* ) getgrent_r_proto="REENTRANT_PROTO_$getgrent_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -49,7 +49,7 @@ case "$d_getgrnam_r" in
 	esac
 	case "$getgrnam_r_proto" in
 	'') d_getgrnam_r=undef ; echo "Disabling getgrnam_r, cannot find prototype." ;;
-	* ) getgrnam_r_proto="REENTRANT_$getgrnam_r_proto" ; echo "$try" ;;
+	* ) getgrnam_r_proto="REENTRANT_PROTO_$getgrnam_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -49,7 +49,7 @@ case "$d_getgrgid_r" in
 	esac
 	case "$getgrgid_r_proto" in
 	'') d_getgrgid_r=undef ; echo "Disabling getgrgid_r, cannot find prototype." ;;
-	* ) getgrgid_r_proto="REENTRANT_$getgrgid_r_proto" ; echo "$try" ;;
+	* ) getgrgid_r_proto="REENTRANT_PROTO_$getgrgid_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

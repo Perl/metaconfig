@@ -49,7 +49,7 @@ case "$d_getpwuid_r" in
 	esac
 	case "$getpwuid_r_proto" in
 	'') d_getpwuid_r=undef ; echo "Disabling getpwuid_r, cannot find prototype." ;;
-	* ) getpwuid_r_proto="REENTRANT_$getpwuid_r_proto" ; echo "$try" ;;
+	* ) getpwuid_r_proto="REENTRANT_PROTO_$getpwuid_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -34,7 +34,7 @@ case "$d_sethostent_r" in
 	esac
 	case "$sethostent_r_proto" in
 	'') d_sethostent_r=undef ; echo "Disabling sethostent_r, cannot find prototype." ;;
-	* ) sethostent_r_proto="REENTRANT_$sethostent_r_proto" ; echo "$try" ;;
+	* ) sethostent_r_proto="REENTRANT_PROTO_$sethostent_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -39,7 +39,7 @@ case "$d_localtime_r" in
 	esac
 	case "$localtime_r_proto" in
 	'') d_localtime_r=undef ; echo "Disabling localtime_r, cannot find prototype." ;;
-	* ) localtime_r_proto="REENTRANT_$localtime_r_proto" ; echo "$try" ;;
+	* ) localtime_r_proto="REENTRANT_PROTO_$localtime_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac

@@ -34,7 +34,7 @@ case "$d_setnetent_r" in
 	esac
 	case "$setnetent_r_proto" in
 	'') d_setnetent_r=undef ; echo "Disabling setnetent_r, cannot find prototype." ;;
-	* ) setnetent_r_proto="REENTRANT_$setnetent_r_proto" ; echo "$try" ;;
+	* ) setnetent_r_proto="REENTRANT_PROTO_$setnetent_r_proto" ; echo "$try" ;;
 	esac
 	;;
 esac
