@@ -31,11 +31,7 @@ $cat >try.c <<EOCP
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-#ifdef SIGALRM
 $signal_t blech(x) int x; { exit(3); }
-#endif
-EOCP
-$cat >try.c <<'EOCP'
 int main() {
 #if defined(F_SETLK) && defined(F_SETLKW)
      struct flock flock;
@@ -44,10 +40,8 @@ int main() {
      flock.l_type = F_RDLCK;
      flock.l_whence = SEEK_SET;
      flock.l_start = flock.l_len = 0;
-#ifdef SIGALRM
      signal(SIGALRM, blech);
      alarm(10);
-#endif
      retval = fcntl(fd, F_SETLK, &flock);
      close(fd);
      (retval < 0 ? exit(2) : exit(0));
