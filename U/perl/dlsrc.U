@@ -107,7 +107,7 @@ y*) usedl="$define"
 	esac
     echo "The following dynamic loading files are available:"
 	: Can not go over to $dldir because getfile has path hard-coded in.
-	tdir=`pwd`; cd $rsrc; $ls -C $dldir/dl*.xs; cd $tdir
+	tdir=`pwd`; cd "$rsrc"; $ls -C $dldir/dl*.xs; cd "$tdir"
 	rp="Source file to use for dynamic loading"
 	fn="fne"
 	gfpth="$src"

@@ -81,7 +81,7 @@ find_extensions='
            else
                if $test -d $xxx -a $# -lt 10; then
                    set $1$xxx/ $*;
-                   cd $xxx;
+                   cd "$xxx";
                    eval $find_extensions;
                    cd ..;
                    shift;
@@ -91,7 +91,7 @@ find_extensions='
        esac;
     done'
 tdir=`pwd`
-cd $rsrc/ext
+cd "$rsrc/ext"
 set X
 shift
 eval $find_extensions
@@ -105,7 +105,7 @@ nonxs_extensions="$*"
 set X $known_extensions
 shift
 known_extensions="$*"
-cd $tdir
+cd "$tdir"
 
 : Now see which are supported on this system.
 ?X: avail_ext lists available XS extensions.

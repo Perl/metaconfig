@@ -38,13 +38,13 @@ if test -f MANIFEST; then
 	set x `awk '{print $1}' < MANIFEST | grep '\.SH$'`
 else
 	echo "(Looking for .SH files under the source directory.)"
-	set x `(cd $src; find . -name "*.SH" -print)`
+	set x `(cd "$src"; find . -name "*.SH" -print)`
 fi
 shift
 case $# in
-0) set x `(cd $src; echo *.SH)`; shift;;
+0) set x `(cd "$src"; echo *.SH)`; shift;;
 esac
-if test ! -f $src/$1; then
+if test ! -f "$src/$1"; then
 	shift
 fi
 ?X: script to emulate mkdir -p
@@ -71,7 +71,7 @@ for file in $*; do
 		*/*)
 			dir=`expr X$file : 'X\(.*\)/'`
 			file=`expr X$file : 'X.*/\(.*\)'`
-			(cd $dir && . ./$file)
+			(cd "$dir" && . ./$file)
 			;;
 		*)
 			. ./$file
@@ -101,19 +101,19 @@ for file in $*; do
 			dir=`expr X$file : 'X\(.*\)/'`
 			file=`expr X$file : 'X.*/\(.*\)'`
 			(set x $dir; shift; eval $mkdir_p)
-			sh <$src/$dir/$file
+			sh <"$src/$dir/$file"
 			;;
 		*)
-			sh <$src/$file
+			sh <"$src/$file"
 			;;
 		esac
 		;;
 	esac
 done
-if test -f $src/config_h.SH; then
+if test -f "$src/config_h.SH"; then
 	if test ! -f config.h; then
 	: oops, they left it out of MANIFEST, probably, so do it anyway.
-	. $src/config_h.SH
+	. "$src/config_h.SH"
 	fi
 fi
 EOS

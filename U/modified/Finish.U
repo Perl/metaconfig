@@ -81,7 +81,7 @@ echo " "
 exec 1>&4
 pwd=`pwd`
 . ./UU/extract
-cd $pwd
+cd "$pwd"
 
 if $contains '^depend:' [Mm]akefile >/dev/null 2>&1; then
 	dflt=y
