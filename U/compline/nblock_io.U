@@ -78,11 +78,13 @@
 ?LINT:use d_open3
 : check for non-blocking I/O stuff
 case "$h_sysfile" in
-true) echo "#include <sys/file.h>" >  head.c;;
-esac
-case "$h_fcntl" in
-true) echo "#include <fcntl.h>"    >> head.c;;
-*) echo "#include <sys/fcntl.h>"   >> head.c;;
+true) echo "#include <sys/file.h>" > head.c;;
+*)
+       case "$h_fcntl" in
+       true) echo "#include <fcntl.h>" > head.c;;
+       *) echo "#include <sys/fcntl.h>" > head.c;;
+       esac
+       ;;
 esac
 echo " "
 echo "Figuring out the flag used by open() for non-blocking I/O..." >&4
@@ -164,8 +166,12 @@ int main()
 		int ret;
 		close(pd[1]);	/* Parent reads from pd[0] */
 		close(pu[0]);	/* Parent writes (blocking) to pu[1] */
+#ifdef F_SETFL
 		if (-1 == fcntl(pd[0], F_SETFL, MY_O_NONBLOCK))
 			exit(1);
+#else
+		exit(4);
+#endif
 		signal(SIGALRM, blech);
 		alarm(5);
 		if ((ret = read(pd[0], buf, 1)) > 0)	/* Nothing to read! */
@@ -213,6 +219,7 @@ EOCP
 		1) echo "Could not perform non-blocking setting!";;
 		2) echo "I did a successful read() for something that was not there!";;
 		3) echo "Hmm... non-blocking I/O does not seem to be working!";;
+		4) echo "Could not find F_SETFL!";;
 		*) echo "Something terribly wrong happened during testing.";;
 		esac
 		rd_nodata=`$cat try.ret`
