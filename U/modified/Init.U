@@ -53,16 +53,17 @@ if test -f /etc/unixtovms.exe; then
 fi
 
 : Set executable suffix now -- needed before hints available
-: maybe Stratus VOS
-if test -f "/system/gnu_library/bin/ar.pm"; then
+if test -f "/libs/version.library"; then
+: Amiga OS
+    _exe=""
+elif test -f "/system/gnu_library/bin/ar.pm"; then
+: Stratus VOS
     _exe=".pm"
-fi
-: maybe dos djgpp
-if test -n "$DJGPP"; then
+elif test -n "$DJGPP"; then
+: DOS DJGPP
     _exe=".exe"
-fi
-: maybe os/2
-if test -d c:/. ; then
+elif test -d c:/. ; then
+: OS/2
     _exe=".exe"
 fi
 
