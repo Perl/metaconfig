@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:use64bitint use64bitall archname64: Myread Oldconfig Setvar test \
-	uselargefiles usemorebits longsize ccflags ptrsize d_quad
+	usemorebits longsize ccflags ptrsize d_quad
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bitint:
@@ -60,7 +60,6 @@
 ?LINT:set use64bitint
 ?LINT:extern ccflags
 ?LINT:change ccflags
-?LINT:use uselargefiles
 ?LINT:use usemorebits
 ?LINT:extern use64bits
 ?LINT:use use64bits
