@@ -14,7 +14,7 @@
 ?S:.
 ?C:HAS_PTHREAD_ATFORK:
 ?C:	This symbol, if defined, indicates that the pthread_atfork routine
-?C:	is available setup fork handlers.
+?C:	is available to setup fork handlers.
 ?C:.
 ?H:#$d_pthread_atfork HAS_PTHREAD_ATFORK		/**/
 ?H:.
