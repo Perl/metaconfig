@@ -109,7 +109,12 @@ case "$gccversion" in
 '') ;;
 *)  case "$ccflags" in
     *-Wall*) ;;
-    *) ccflags="$ccflags -Wall -ansi" ;;
+?X: Can't add -ansi here because it will fail e.g. in Solaris.
+?X: Off_t/off_t is a struct in Solaris with largefiles, and with -ansi
+?X: that struct cannot be compared with a flat integer, such as STRLEN.
+?X: The -ansi will also cause a lot of noise in Solaris because of:
+?X: /usr/include/sys/resource.h:148: warning: `struct rlimit64' declared inside parameter list
+    *) ccflags="$ccflags -Wall" ;;
     esac
     ;;
 esac
