@@ -169,7 +169,7 @@ $1 ~ /^NSIG$/ { nsig = $2 }
 	dup_num[ndups] = $2
 	ndups++ 
     }
-    else {
+    else if ($2 >= 0) {
 	sig_name[$2] = $1
 	sig_num[$2] = $2
     }

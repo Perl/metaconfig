@@ -32,8 +32,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:sig_name:
 ?S:	This variable holds the signal names, space separated. The leading
-?S:	SIG in signal name is removed.  A ZERO is prepended to the
-?S:	list.  This is currently not used.
+?S:	SIG in signal name is removed.  A ZERO is prepended to the list.
+?S:	This is currently not used, sig_name_init is used instead.
 ?S:.
 ?S:sig_name_init:
 ?S:	This variable holds the signal names, enclosed in double quotes and
@@ -44,10 +44,10 @@
 ?S:.
 ?S:sig_num:
 ?S:	This variable holds the signal numbers, space separated. A ZERO is
-?S:	prepended to the list (corresponding to the fake SIGZERO), and 
-?S:	the list is terminated with a 0.  Those numbers correspond to 
-?S:	the value of the signal listed in the same place within the
-?S:	sig_name list.
+?S:	prepended to the list (corresponding to the fake SIGZERO).
+?S:	Those numbers correspond to  the value of the signal listed
+?S:	in the same place within the sig_name list.
+?S:	This is currently not used, sig_num_init is used instead.
 ?S:.
 ?S:sig_num_init:
 ?S:	This variable holds the signal numbers, enclosed in double quotes and
@@ -75,7 +75,9 @@
 ?C:	etc., where nn is the actual signal number (e.g. NUM37).
 ?C:	The signal number for sig_name[i] is stored in sig_num[i].
 ?C:	The last element is 0 to terminate the list with a NULL.  This
-?C:	corresponds to the 0 at the end of the sig_num list.
+?C:	corresponds to the 0 at the end of the sig_name_init list.
+?C:	Note that this variable is initialized from the sig_name_init,
+?C:	not from sig_name (which is unused).
 ?C:.
 ?C:SIG_NUM:
 ?C:	This symbol contains a list of signal numbers, in the same order as the
@@ -89,7 +91,9 @@
 ?C:	The signal number corresponding to sig_name[i] is sig_number[i].
 ?C:	if (i < NSIG) then sig_number[i] == i.  
 ?C:	The last element is 0, corresponding to the 0 at the end of
-?C:	the sig_name list.
+?C:	the sig_name_init list.
+?C:	Note that this variable is initialized from the sig_num_init,
+?C:	not from sig_num (which is unused).
 ?C:.
 ?C:SIG_COUNT:
 ?C:	This variable contains a number larger than the largest
