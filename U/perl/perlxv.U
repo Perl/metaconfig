@@ -8,11 +8,13 @@
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size \
-	d_nv_preserves_uv d_nv_preserves_uv_bits: \
+	d_nv_preserves_uv d_nv_preserves_uv_bits \
+	nvdig nvmax nvbufsize nvivbufsize: \
 	echo rm use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
-	cat Compile i_inttypes exe_ext test
+	cat Compile i_inttypes exe_ext test \
+	i_values i_limits i_math i_float
 ?MAKE:	-pick add $@ %<
 ?S:ivtype:
 ?S:	This variable contains the C type used for Perl's IV.
@@ -88,6 +90,22 @@
 ?S:	This variable indicates how many of bits type uvtype
 ?S:	a variable nvtype can preserve.
 ?S:.
+?S:nvdig:
+?S:	This variable indicates the number of decimal digits
+?S:	of precision of type nvtype.
+?S:.
+?S:nvmax:
+?S:	This variable indicates the maximum value of type nvtype.
+?S:.
+?S:nvbufsize:
+?S:	This variable indicates in bytes the size of a buffer
+?S:	which can hold the decimal representation of an nvtype value.
+?S:.
+?S:nvivbufsize:
+?S:	This variable indicates in bytes the size of a buffer
+?S:	which can hold the decimal representation of an nvtype value
+?S:	or an ivtype value.
+?S:.
 ?C:IVTYPE:
 ?C:	This symbol defines the C type used for Perl's IV.
 ?C:.
@@ -162,6 +180,22 @@
 ?C:	This symbol contains the number of bits a variable of type NVTYPE
 ?C:	can preserve of a variable of type UVTYPE.
 ?C:.
+?C:NV_DIG:
+?C:	This variable indicates the number of decimal digits
+?C:	of precision of type NVTYPE.
+?C:.
+?C:NV_MAX:
+?C:	This variable indicates the maximum value of type NVTYPE.
+?C:.
+?C:NV_BUFSIZE:
+?C:	This variable indicates in bytes the size of a buffer
+?C:	which can hold the decimal representation of an NVTYPE value.
+?C:.
+?C:NVIV_BUFSIZE:
+?C:	This variable indicates in bytes the size of a buffer
+?C:	which can hold the decimal representation of an NVTYPE value
+?C:	or an IVTYPE value.
+?C:.
 ?H:#define	IVTYPE		$ivtype		/**/
 ?H:#define	UVTYPE		$uvtype		/**/
 ?H:#define	I8TYPE		$i8type		/**/
@@ -190,6 +224,10 @@
 ?H:#define	NVSIZE		$nvsize		/**/
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
 ?H:#define	NV_PRESERVES_UV_BITS	$d_nv_preserves_uv_bits
+?H:#define	NV_DIG		$nvdig		/**/
+?H:#define	NV_MAX		$nvmax		/**/
+?H:#define	NV_BUFSIZE	$nvbufsize	/**/
+?H:#define	NVIV_BUFSIZE	$nvivbufsize	/**/
 ?H:.
 ?F:!try
 
@@ -430,5 +468,54 @@ EOP
 	$rm -f try.* try
 	;;
 esac
+
+$echo "Checking the maximum of your NVs..." >&4
+$cat <<EOP >try.c
+#include <stdio.h>
+#$i_float I_FLOAT
+#$i_limits I_LIMITS
+#$i_math I_MATH
+#$i_values I_VALUES
+#ifdef I_FLOAT
+#include <float.h>
+#endif
+#ifdef I_LIMITS
+#include <limits.h>
+#endif
+#ifdef I_MATH
+#include <math.h>
+#endif
+#ifdef I_VALUES
+#include <values.h>
+#endif
+#$d_longdbl HAS_LONG_DOUBLE
+#$uselongdouble USE_LONG_DOUBLE
+int main() {
+#if defined(USE_LONG_DOUBLE) && defined(HAS_LONG_DOUBLE)
+#   ifdef LDBL_MAX
+	printf("%"PERL_PRIgldbl\n");
+#   else
+#       ifdef HUGE_VALL
+	printf("LDBL_MAX\n");
+#       endif
+#   endif
+#else
+#endif
+}
+EOP
+set try
+if eval $compile; then
+	case "`./try$exe_ext`" in
+	preserve) d_nv_preserves_uv="$define" ;;
+	esac
+fi	
+case "$d_nv_preserves_uv" in
+$define) $echo "Yes, they can."  2>&1 ;;
+*)	 $echo "No, they can't." 2>&1
+	 d_nv_preserves_uv="$undef"
+	 ;;
+esac
+
+$rm -f try.* try
 
 
