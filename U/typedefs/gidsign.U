@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:gidsign: Myread Typedef gidtype
+?MAKE:gidsign: Myread Typedef gidtype Compile
 ?MAKE:	-pick add $@ %<
 ?S:gidsign:
 ?S:	This variable contains the signedness of a gidtype.
@@ -24,7 +24,7 @@
 ?LINT: set gidsign
 echo " "
 echo "Checking the sign of $gidtype..." >&4 
-ry.c <<'EOCP'
+cat > try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
 int main() {

@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:pidsign: Myread Typedef pidtype
+?MAKE:pidsign: Myread Typedef pidtype Compile
 ?MAKE:	-pick add $@ %<
 ?S:pidsign:
 ?S:	This variable contains the signedness of a pidtype.
@@ -24,7 +24,7 @@
 ?LINT: set pidsign
 echo " "
 echo "Checking the sign of $pidtype..." >&4 
-ry.c <<'EOCP'
+cat > try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
 int main() {

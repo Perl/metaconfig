@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:uidsign: Myread Typedef uidtype
+?MAKE:uidsign: Myread Typedef uidtype Compile
 ?MAKE:	-pick add $@ %<
 ?S:uidsign:
 ?S:	This variable contains the signedness of a uidtype.
@@ -24,7 +24,7 @@
 ?LINT: set uidsign
 echo " "
 echo "Checking the sign of $uidtype..." >&4 
-ry.c <<'EOCP'
+cat > try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
 int main() {

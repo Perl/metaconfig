@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:uidsize: Myread Typedef uidtype
+?MAKE:uidsize: Myread Typedef uidtype Compile
 ?MAKE:	-pick add $@ %<
 ?S:uidsize:
 ?S:	This variable contains the size of a uidtype in bytes.
@@ -22,14 +22,14 @@
 ?LINT: set uidsize
 echo " "
 echo "Checking the size of $uidtype..." >&4 
-ry.c <<'EOCP'
+cat > try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
     printf("%d\n", sizeof(uid_t));
 }
 EOCP
-if eval $compile; then
+if eval $compile_ok; then
 	yyy=`./try`
 	case "$yyy" in
 	'')	uidsize=4

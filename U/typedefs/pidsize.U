@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:pidsize: Myread Typedef pidtype
+?MAKE:pidsize: Myread Typedef pidtype Compile
 ?MAKE:	-pick add $@ %<
 ?S:pidsize:
 ?S:	This variable contains the size of a pidtype in bytes.
@@ -22,14 +22,14 @@
 ?LINT: set pidsize
 echo " "
 echo "Checking the size of $pidtype..." >&4 
-ry.c <<'EOCP'
+cat > try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
     printf("%d\n", sizeof(pid_t));
 }
 EOCP
-if eval $compile; then
+if eval $compile_ok; then
 	yyy=`./try`
 	case "$yyy" in
 	'')	pidsize=4
