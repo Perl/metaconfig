@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:use64bits archname64: Myread Oldconfig Setvar test osname
+?MAKE:use64bits archname64: Myread Oldconfig Setvar test gccversion cat
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bits:
@@ -25,6 +25,8 @@
 ?H:.
 ?LINT:set use64bits
 ?LINT:set archname64
+?LINT:extern ccflags
+?LINT:change ccflags
 ?F:!use64bits.cbu
 cat <<EOM
 
@@ -60,22 +62,23 @@ case "$use64bits" in
 : user has specified that a 64 bit perl is to be built,
 : we may need to set or change some other defaults.
 	if $test -f use64bits.cbu; then
+		echo "Your platform has some specific hints for 64-bit builds, using them..."
 		. ./use64bits.cbu
-	fi
-	case "$osname" in
-	aix|dec_osf|hpux|irix|solaris|unicos)
-		# Known 64-bit capable platforms.
-		;;
-	*)
-		cat >&4 <<EOM
-$osname is not known to support 64-bit interfaces.
-Please let perlbug@perl.com know how to do that.
-
-Cannot continue, aborting.
+	else
+		$cat <<EOM
+(Your platform doesn't have any specific hints for 64-bit builds.
+ This is probably okay, especially if your system is a true 64-bit system.)
 EOM
-		exit 1
-		;;
-	esac
+		case "$gccversion" in
+		'')	;;
+		*)	$cat <<EOM
+But since you seem to be using gcc,
+I will now add -DUSE_LONG_LONG to the compilation flags.
+EOM
+			ccflags="$ccflags -DUSE_LONG_LONG"
+			;;
+		esac
+	fi
 	;;
 esac
 
