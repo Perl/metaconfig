@@ -8,7 +8,7 @@
 ?MAKE:libperl useshrplib shrpenv ldlibpthname: \
 	Myread Oldconfig archlibexp awk cat libc \
 	_a osname osvers so patchlevel subversion usedl ld \
-	version lib_ext ccdlflags installarchlib
+	lib_ext ccdlflags installarchlib
 ?MAKE:	-pick wipe $@ %<
 ?S:libperl:
 ?S:	The perl executable is obtained by linking perlmain.c with

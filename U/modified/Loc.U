@@ -275,7 +275,7 @@ for file in $trylist; do
 	'') xxx=`./loc $file $file $pth`;;
 	*) xxx=`./loc $xxx $xxx $pth`;;
 	esac
-	eval $file=$xxx
+	eval $file=$xxx$_exe
 	eval _$file=$xxx
 	case "$xxx" in
 	/*)
