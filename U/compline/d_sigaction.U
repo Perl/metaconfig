@@ -43,7 +43,7 @@ if set sigaction val -f d_sigaction; eval $csym; $val; then
 int main()
 {
     struct sigaction act, oact;
-    act.flags = 0;
+    act.sa_flags = 0;
     oact.sa_handler = 0;
 }
 EOP
