@@ -24,8 +24,8 @@ $echo $n "Checking to see if your system supports struct msghdr..." $c >&4
 set d_cmsghdr_s cmsghdr cmsg_len $i_systypes sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h
 eval $hasstruct
 case "$d_msghdr_s" in
-"$define")      echo "Yup, it does."     >&4 ;;
-*)              echo "Nope, it doesn't." >&4 ;;
+"$define")      echo "Yup, it does."     ;;
+*)              echo "Nope, it doesn't." ;;
 esac
 
 

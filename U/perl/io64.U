@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_llseek d_fpos64_t d_off64_t: \
-	Inlibc Setvar n c cc optimize ccflags rm cat echo
+	Inlibc Setvar n c Compile rm cat echo lseeksize
 ?MAKE:	-pick add $@ %<
 ?S:d_llseek:
 ?S:	This variable conditionally defines the HAS_LLSEEK symbol, which
@@ -47,16 +47,20 @@ $echo $n "Checking to see if your system supports off64_t...$c" >&4
 $cat >try.c <<EOCP
 #include <sys/types.h>
 #include <unistd.h>
-off64_t foo() { off64_t x; x = 7; return x; }'
+int main() { off64_t x = 7; }'
 EOCP
-if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
+set try
+if eval $compile; then
 	val="$define"
-	echo " Yup, it does." >&4
+	echo " Yup, it does."
 else
 	val="$undef"
-	echo " Nope, it doesn't." >&4
+	echo " Nope, it doesn't."
+	case "$lseeksize" in
+	8) echo "(This is okay because your off_t is 64 bits wide.)" ;;
+	esac
 fi
-$rm -f try.*
+$rm -f try.* try
 set d_off64_t
 eval $setvar
 
@@ -65,16 +69,20 @@ echo " "
 $echo $n "Checking to see if your system supports fpos64_t...$c" >&4
 $cat >try.c <<EOCP
 #include <sys/stdio.h>
-fpos64_t foo() { fpos64_t x; x = 7; return x; }'
+int main() { fpos64_t x x = 7; }'
 EOCP
-if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
+set try
+if eval $compile; then
 	val="$define"
-	echo " Yup, it does." >&4
+	echo " Yup, it does."
 else
 	val="$undef"
-	echo " Nope, it doesn't." >&4
+	echo " Nope, it doesn't."
+	case "$lseeksize" in
+	8) echo "(This is okay because your off_t is 64 bits wide.)" ;;
+	esac
 fi
-$rm -f try.*
+$rm -f try.* try
 set d_fpos64_t
 eval $setvar
 

@@ -54,16 +54,16 @@ EOCP
 	if eval $compile; then
 		yyy=`./try`
 		case "$yyy" in
-			detached) echo "Nope, they aren't." >&4 ;;
-			*) echo "Yup, they are." >&4 ;;
+			detached) echo "Nope, they aren't." ;;
+			*) echo "Yup, they are." ;;
 		esac
 	else
 		set try -DPTHREAD_ATTR_GETDETACHSTATE_INT
 		if eval $compile; then
 			yyy=`./try`
 			case "$yyy" in
-				detached) echo "Nope, they aren't." >&4 ;;
-				*) echo "Yup, they are." >&4 ;;
+				detached) echo "Nope, they aren't." ;;
+				*) echo "Yup, they are." ;;
 			esac
 		else		
 			echo " "

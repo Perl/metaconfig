@@ -1,0 +1,28 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_iovec_s: i_sysuio Hasfield
+?MAKE:	-pick add $@ %<
+?S:d_iovec_s:
+?S:	This variable conditionally defines the HAS_STRUCT_IOVEC symbol,
+?S:	which indicates that the struct iovec is supported.
+?S:.
+?C:HAS_STRUCT_IOVEC:
+?C:	This symbol, if defined, indicates that the struct iovec
+?C:	to do scatter writes/gather reads is supported.
+?C:.
+?H:#$d_iovec_s	HAS_STRUCT_IOVEC		/**/
+?H:.
+?LINT:set d_iovec_s
+echo "Checking to see if your system supports struct iovec..." >&4
+set d_iovec_s iovec iov_base $i_sysuio sys/uio.h
+eval $hasfield
+case "$d_iovec_s" in
+"$define")      echo "Yup, it does."     ;;
+*)              echo "Nope, it doesn't." ;;
+esac
+

@@ -57,8 +57,8 @@ EOCP
 		val="$undef"
 	fi
 	case "$val" in
-	$define) echo "Yup, it can."  >&4 ;;
-	$undef)  echo "No, it can't." >&4 ;;
+	$define) echo "Yup, it can."  ;;
+	$undef)  echo "No, it can't." ;;
 	esac
 	;;
 *)	val="$undef"
