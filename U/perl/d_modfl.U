@@ -5,7 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_modfl: Inlibc Compile cat rm sPRIfldbl d_longdbl
+?MAKE:d_modfl: Inlibc Compile cat rm sPRIfldbl d_longdbl \
+	osname gccversion ccflags
 ?MAKE:	-pick add $@ %<
 ?S:d_modfl:
 ?S:	This variable conditionally defines the HAS_MODFL symbol, which
@@ -20,7 +21,7 @@
 ?H:.
 ?LINT:set d_modfl
 ?F:!try
-?T:foo
+?T:foo saveccflags
 : see if modfl exists
 set modfl d_modfl
 eval $inlibc
@@ -44,6 +45,10 @@ int main() {
     return 0;
 }
 EOCP
+	case "$osname:$gccversion" in
+	aix:)	saveccflags="$ccflags"
+		ccflags="$ccflags -qlongdouble" ;; # to avoid core dump
+	esac
 	set try
 	if eval $compile; then
 		foo=`./try`
@@ -68,6 +73,9 @@ EOCP
 		echo "I cannot figure out whether your modfl() is okay, assuming it isn't."
 		d_modfl="$undef"
 	fi
+	case "$osname:$gccversion" in
+	aix:)	$ccflags="saveccflags" ;; # restore
+	esac
 	;;
 esac
 
