@@ -36,7 +36,7 @@ $signal_t bletch(s) int s; { exit(4); }
 #endif
 int main() {
 #if BYTEORDER == 0x1234 || BYTEORDER == 0x4321
-    U8 buf[] = "\0\0\0\1\0\0\0\0";
+    U8 *buf = "\0\0\0\1\0\0\0\0";
     U32 *up;
     int i;
 
