@@ -36,7 +36,6 @@ case "$uselfs" in
 	cat <<EOM >&4
 
 *** Configure -Duselfs is deprecated, using -Duselargefiles instead.
-
 EOM
 	uselargefiles="$define"
 	;;
