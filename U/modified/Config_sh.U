@@ -33,10 +33,17 @@
 ?MAKE:	-pick add $@ ./Obsol_sh
 ?MAKE:	-pick close.Config_sh $@ %<
 ?F:!config.over
+?F:!config.arch
 ?T:file temp
 : back to where it started
 if test -d ../UU; then
 	cd ..
+fi
+
+: configuration may be patched via a 'config.arch' file
+if $test -f config.arch; then
+	echo "I see a config.arch file, loading it."
+	. ./config.arch
 fi
 
 : configuration may be patched via a 'config.over' file
