@@ -18,13 +18,14 @@
 ?X: To force any unit to be included, copy this unit to your private U directory
 ?X: and add the name of the unit desired to the ?MAKE: dependency line.
 ?X: 
-?MAKE:End perllibs: cppstdin gzip zip libs usedl
+?MAKE:End perllibs: $W cppstdin gzip zip libs usedl
 ?MAKE:	-pick add $@ %<
 ?S:perllibs:
 ?S:	The list of libraries needed by Perl only (any libraries needed
 ?S:	by extensions only will by dropped, if using dynamic loading).
 ?S:.
 ?INIT:perllibs=''
+?LINT:use $W
 ?LINT:use gzip zip
 ?LINT:change cppstdin
 : Remove libraries needed only for extensions
