@@ -34,11 +34,16 @@
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
 : determine where add-on html pages go
+: There is no standard location, so try to copy the previously-selected
+: directory structure for the core html pages.
 case "$sitehtml1dir" in
-'')	dflt=`echo $html1dir | $sed "s#^$prefix#$siteprefix$#"`
-*)  	dflt=$sitehtml1dir ;;
+'')    dflt=`echo "$html1dir" | $sed "s#^$prefix#$siteprefix#"` ;;
+*)     dflt=$sitehtml1dir ;;
 esac
-fn=d~
+case "$dflt" in
+''|' ') dflt=none ;;
+esac
+fn=dn+~
 rp='Pathname where the site-specific html pages should be installed?'
 . ./getfile
 sitehtml1dir="$ans"

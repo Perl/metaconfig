@@ -34,11 +34,16 @@
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
 : determine where add-on library html pages go
+: There is no standard location, so try to copy the previously-selected
+: directory structure for the core html pages.
 case "$sitehtml3dir" in
-'')	dflt=`echo $html3dir | $sed "s#^$prefix#$siteprefix$#"`
-*)  	dflt=$sitehtml3dir ;;
+'')    dflt=`echo "$html3dir" | $sed "s#^$prefix#$siteprefix#"` ;;
+*)     dflt=$sitehtml3dir ;;
 esac
-fn=d~
+case "$dflt" in
+''|' ') dflt=none ;;
+esac
+fn=dn+~
 rp='Pathname where the site-specific library html pages should be installed?'
 . ./getfile
 sitehtml3dir="$ans"
