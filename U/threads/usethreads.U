@@ -196,20 +196,20 @@ eval $setvar
 ?X: is present in libswanted. If that fails to be true, then this
 ?X: can be changed to add pthread to the very end of libswanted.
 
-case "$usethreads" in
-"$define"|true|[yY]*)
 : Look for a hint-file generated 'call-back-unit'.  If the
 : user has specified that a threading perl is to be built,
 : we may need to set or change some other defaults.
-	if $test -f usethreads.cbu; then
-		echo "Your platform has some specific hints for threaded builds, using them..."
-		. ./usethreads.cbu
-	else
+if $test -f usethreads.cbu; then
+    echo "Your platform has some specific hints regarding threaded builds, using them..."
+    . ./usethreads.cbu
+else
+    case "$usethreads" in
+	"$define"|true|[yY]*)
 		$cat <<EOM
-(Your platform doesn't have any specific hints for threaded builds.
+(Your platform does not have any specific hints for threaded builds.
  Assuming POSIX threads, then.)
 EOM
-	fi
 	;;
-esac
+    esac
+fi
 

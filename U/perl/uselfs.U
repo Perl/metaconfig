@@ -91,14 +91,16 @@ EOM
 esac
 set uselargefiles
 eval $setvar
-case "$uselargefiles" in
-"$define")
 : Look for a hint-file generated 'call-back-unit'.  If the
 : user has specified that a large files perl is to be built,
 : we may need to set or change some other defaults.
+if $test -f uselargefiles.cbu; then
+	echo "Your platform has some specific hints regarding large file builds, using them..."
+	. ./uselargefiles.cbu
+fi
+case "$uselargefiles" in
+"$define")
 	if $test -f uselargefiles.cbu; then
-		echo "Your platform has some specific hints for large file builds, using them..."
-		. ./uselargefiles.cbu
 		echo " "
 		echo "Rechecking to see how big your file offsets are..." >&4
 		$cat >try.c <<EOCP
