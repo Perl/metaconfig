@@ -26,7 +26,8 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:50  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:Csym: Options contains libc libs runnm +cc +optimize +ccflags +ldflags rm
+?MAKE:Csym: Options contains libc libs runnm test \
+	+cc +optimize +ccflags +ldflags rm
 ?MAKE:	-pick add $@ %<
 ?LINT:define csym
 ?LINT:use libc
