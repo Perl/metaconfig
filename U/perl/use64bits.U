@@ -5,7 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:use64bits archname64: Myread Oldconfig Setvar test gccversion cat
+?MAKE:use64bits archname64: Myread Oldconfig Setvar test gccversion cat \
+	usemorebits
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bits:
@@ -27,6 +28,8 @@
 ?LINT:set archname64
 ?LINT:extern ccflags
 ?LINT:change ccflags
+?LINT:use usemorebits
+?LINT:use uselfs
 ?F:!use64bits.cbu
 cat <<EOM
 

@@ -1,0 +1,36 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usemorebits: Setvar
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usemorebits:
+?S:	This variable conditionally defines the USE_MORE_BITS symbol,
+?S:	and indicates that explicit 64-bit interfaces and long doubles
+?S:	should be used when available.
+?S:.
+?C:USE_MORE_BITS:
+?C:	This symbol, if defined, indicates that 64-bit interfaces and
+?C:	long doubles should be used when available.
+?C:.
+?H:#$usemorebits	USE_MORE_BITS		/**/
+?H:.
+?LINT:extern use64bits
+?LINT:change use64bits
+?LINT:extern uselongdouble
+?LINT:change uselongdouble
+
+case "$usemorebits" in
+"$define"|true|[yY]*)
+	use64bits="$define"
+	uselongdouble="$define"
+	usemorebits="$define"
+	;;
+*)	usemorebits="$undef"
+	;;
+esac
+

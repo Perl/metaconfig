@@ -1,0 +1,34 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:uselfs: Setvar
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:uselfs:
+?S:	This variable conditionally defines the USE_LARGE_FILES symbol,
+?S:	and indicates that large file interfaces should be used when
+?S:	available.  The use64bits symbol will also be turned on.
+?S:.
+?C:USE_LARGE_FILES:
+?C:	This symbol, if defined, indicates that large file support
+?C:	should be used when available.  The USE_64_BITS symbol will
+?C:	also be turned on.
+?C:.
+?H:#$uselfs	USE_LARGE_FILES		/**/
+?H:.
+?LINT:extern use64bits
+?LINT:change use64bits
+
+case "$uselfs" in
+"$define"|true|[yY]*)
+	uselfs="$define"
+	use64bits="$define"
+	;;
+*)	uselfs="$undef"
+	;;
+esac
+
