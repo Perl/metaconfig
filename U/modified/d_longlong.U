@@ -41,10 +41,10 @@ echo 'int main() { long long x = 7; return 0; }' > try.c
 set try
 if eval $compile; then
 	val="$define"
-	echo " Yes, it does." >&4
+	echo " Yes, it does."
 else
 	val="$undef"
-	echo " No, it doesn't." >&4
+	echo " No, it doesn't."
 fi
 $rm try.*
 set d_longlong
