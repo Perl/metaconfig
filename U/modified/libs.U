@@ -90,6 +90,7 @@
 ?INIT:ignore_versioned_solibs=''
 ?LINT:extern libscheck
 ?LINT:use libscheck
+?LINT:extern p
 : Looking for optional libraries
 echo " "
 echo "Checking for optional libraries..." >&4

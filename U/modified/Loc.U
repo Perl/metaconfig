@@ -80,6 +80,9 @@
 ?T:thisthing thing xxx dir file say _test DJGPP
 ?LINT:change PATH
 ?LINT:extern _exe
+?LINT:change _egrep
+?LINT:change _ln
+?LINT:change _make
 : find out where common programs are
 echo " "
 echo "Locating common programs..." >&4

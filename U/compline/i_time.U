@@ -74,6 +74,8 @@
 ?W::timezone
 ?T:xselect flags sysselect s_timeval s_timezone
 ?LINT:change i_sysselct
+?LINT:set d_tm_tm_zone
+?LINT:set d_tm_tm_gmtoff
 : see if we should include time.h, sys/time.h, or both
 echo " "
 if test "X$timeincl" = X; then

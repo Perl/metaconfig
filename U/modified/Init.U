@@ -38,6 +38,9 @@
 ?X: everyone inherits from those symbols since by convention Init.U is the
 ?X: root dependency.
 ?X:
+?LINT:extern DJGPP
+?LINT:extern _exe
+?LINT:change _exe
 define='define'
 undef='undef'
 smallmach='pdp11 i8086 z8000 i80286 iAPX286'

@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_pthread_atfork: Inlibc
+?MAKE:d_pthread_atfork: Inlibc cat Compile usethreads Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_pthread_atfork:
 ?S:	This variable conditionally defines the HAS_PTHREAD_ATFORK symbol,
