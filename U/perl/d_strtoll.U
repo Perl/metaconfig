@@ -1,0 +1,23 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_strtoll: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_strtoll:
+?S:	This variable conditionally defines the HAS_STRTOLL symbol, which
+?S:	indicates to the C program that the strtoll() routine is available.
+?S:.
+?C:HAS_STRTOLL:
+?C:	This symbol, if defined, indicates that the strtoll routine is
+?C:	available to convert strings to long longs.
+?C:.
+?H:#$d_strtoll HAS_STRTOLL		/**/
+?H:.
+?LINT:set d_strtoll
+: see if strtoll exists
+set strtoll d_strtoll
+eval $inlibc

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_qgcvt: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_qgcvt:
+?S:	This variable conditionally defines the HAS_QGCVT symbol, which
+?S:	indicates to the C program that the qgcvt() routine is available.
+?S:.
+?C:HAS_QGCVT:
+?C:	This symbol, if defined, indicates that the qgcvt routine is
+?C:	available to convert long doubles ("quad doubles") to strings.
+?C:	This is a low-level routine hopefully faster than sprintf.
+?C:.
+?H:#$d_qgcvt HAS_QGCVT		/**/
+?H:.
+?LINT:set d_qgcvt
+: see if qgcvt exists
+set qgcvt d_qgcvt
+eval $inlibc

@@ -1,0 +1,23 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_strtoq: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_strtoq:
+?S:	This variable conditionally defines the HAS_STRTOQ symbol, which
+?S:	indicates to the C program that the strtoq() routine is available.
+?S:.
+?C:HAS_STRTOQ:
+?C:	This symbol, if defined, indicates that the strtoq routine is
+?C:	available to convert strings to long longs (quads).
+?C:.
+?H:#$d_strtoq HAS_STRTOQ		/**/
+?H:.
+?LINT:set d_strtoq
+: see if strtoq exists
+set strtoq d_strtoq
+eval $inlibc
