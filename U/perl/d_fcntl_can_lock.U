@@ -1,0 +1,75 @@
+?RCS: $Id: d_fcntl_can_lock.U,v$
+?RCS:
+?RCS: Copyright (c) 2000, Andrew Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_fcntl_can_lock.U,v $
+?RCS:
+?MAKE:d_fcntl_can_lock: d_fcntl Compile Setvar cat rm
+?MAKE:	-pick add $@ %<
+?S:d_fcntl_can_lock:
+?S:	This variable conditionally defines the FCNTL_CAN_LOCK symbol
+?S:	and indicates whether file locking with fcntl() works.
+?S:.
+?C:FCNTL_CAN_LOCK:
+?C:	This symbol, if defined, indicates that fcntl() can be used
+?C:	for file locking.  Normally on Unix systems this is defined.
+?C:	It may be undefined on VMS.
+?C:.
+?H:#$d_fcntl_can_lock FCNTL_CAN_LOCK		/**/
+?H:.
+?LINT: set d_fcntl_can_lock
+?F: !try
+?X: fcntl may not be fully functional.  As of November 2000, on VMS and
+?X: DOS/DJGPP, fctnl-based locking doesn't work.
+?X: Thanks to Craig A. Berry <craig.berry@psinetcs.com> for this test.
+echo " "
+: See if fcntl-based locking works.
+$cat >try.c <<'EOCP'
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+int main() {
+#if defined(F_SETLK) && defined(F_SETLKW)
+     struct flock flock;
+     int retval, fd;
+     fd = open("try.c", O_RDONLY);
+     flock.l_type = F_RDLCK;
+     flock.l_whence = SEEK_SET;
+     flock.l_start = flock.l_len = 0;
+     retval = fcntl(fd, F_SETLK, &flock);
+     close(fd);
+     (retval < 0 ? exit(2) : exit(0));
+#else
+     exit(2);
+#endif
+}
+EOCP
+echo "Checking if fcntl-based file locking works... "
+case "$d_fcntl" in
+"$define")
+	set try
+	if eval $compile_ok; then
+		if ./try; then
+			echo "Yes, it seems to work."
+			val="$define"
+		else
+			echo "Nope, it didn't work."
+			val="$undef"
+		fi
+	else
+		echo "I'm unable to compile the test program, so I'll assume not."
+		val="$undef"
+	fi
+	;;
+*) val="$undef";
+	echo "Nope, since you don't even have fcntl()."
+	;;
+esac
+set d_fcntl_can_lock
+eval $setvar
+$rm -f try*
+
+

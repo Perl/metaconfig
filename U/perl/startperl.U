@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:50  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:startperl: cat Myread sharpbang binexp test versiononly
+?MAKE:startperl: cat Myread sharpbang binexp test versiononly version
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?X: This is different from dist's standard startperl.U unit because
