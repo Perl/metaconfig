@@ -12,10 +12,9 @@
 ?S:	This variable holds a list of extra modules to install.
 ?S:.
 echo " "
-echo "Any extra modules..." >&4
 case "$extras" in
-'') dflt='y';;
-*) dflt='n';;
+'') dflt='n';;
+*) dflt='y';;
 esac
 cat <<EOM
 Perl can be built with extra modules or bundles of modules which
