@@ -12,7 +12,7 @@
 	Mcc Myread Guess Options Oldconfig Loc osname osvers run
 ?MAKE:	-pick add $@ %<
 ?S:gccversion:
-?S:	If GNU cc (gcc) is used, this variable holds '1' or '2' to 
+?S:	If GNU cc (gcc) is used, this variable holds '1' or '2' to
 ?S:	indicate whether the compiler is version 1 or 2.  This is used in
 ?S:	setting some of the default cflags.  It is set to '' if not gcc.
 ?S:.
@@ -39,7 +39,7 @@
 ?LINT:change ccflags
 ?LINT:change ccname
 ?LINT:change locincpth
-?X: Check if they have gcc in any guise.  
+?X: Check if they have gcc in any guise.
 echo " "
 echo "Checking for GNU cc in disguise and/or its version number..." >&4
 $cat >try.c <<EOM
@@ -60,7 +60,7 @@ if $cc -o try $ccflags $ldflags try.c; then
 	case "$gccversion" in
 	'') echo "You are not using GNU cc." ;;
 	*)  echo "You are using GNU cc $gccversion."
-	    ccname=gcc	
+	    ccname=gcc
 	    ;;
 	esac
 else
@@ -121,7 +121,7 @@ case "$gccversion" in
     echo "main(){}">try.c
     for incdir in $locincpth; do
        warn=`$cc $ccflags -I$incdir -c try.c 2>&1 | \
-	     grep '^cc1: warning: changing search order '`
+	     grep '^c[cp]p*[01]: warning: changing search order '`
        if test "X$warn" != X; then
 	   locincpth=`echo " $locincpth " | sed "s! $incdir ! !"`
        fi
