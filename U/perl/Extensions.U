@@ -119,7 +119,7 @@ for xxx in $known_extensions ; do
 		$define) avail_ext="$avail_ext $xxx" ;;
 		esac
 		;;
-	I18N::Langinfo|i18n_lan)
+	I18N/Langinfo|i18n_lan)
 		case "$i_langinfo$d_nl_langinfo" in 
 		$define$define) avail_ext="$avail_ext $xxx" ;;
 		esac
