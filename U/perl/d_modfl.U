@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_modfl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_modfl:
+?S:	This variable conditionally defines the HAS_MODFL symbol, which
+?S:	indicates to the C program that the modfl() routine is available.
+?S:.
+?C:HAS_MODFL:
+?C:	This symbol, if defined, indicates that the modfl routine is
+?C:	available to split a long double x into a fractional part f and
+?C:	an integer part i such that |f| < 1.0 and (f + i) = x.
+?C:.
+?H:#$d_modfl HAS_MODFL		/**/
+?H:.
+?LINT:set d_modfl
+: see if modfl exists
+set modfl d_modfl
+eval $inlibc
+
