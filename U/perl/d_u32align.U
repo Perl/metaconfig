@@ -19,7 +19,9 @@
 ?C:	This symbol, if defined, indicates that you must access
 ?C:	character data through U32-aligned pointers.
 ?C:.
-?H:#$d_u32align U32_ALIGNMENT_REQUIRED	/**/
+?H:?%<:#ifndef U32_ALIGNMENT_REQUIRED
+?H:?%<:#$d_u32align U32_ALIGNMENT_REQUIRED	/**/
+?H:?%<:#endif
 ?H:.
 $cat <<EOM
 
