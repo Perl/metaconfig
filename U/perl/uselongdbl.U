@@ -26,14 +26,6 @@
 ?LINT:use usemorebits
 ?LINT:use uselargefiles
 ?F:!uselongdouble.cbu
-cat <<EOM
-
-Perl can be built to take advantage of long doubles which
-(if available) may give more accuracy and range for floating point numbers.
-
-If this doesn't make any sense to you, just accept the default 'n'.
-EOM
-
 case "$ccflags" in
 *-DUSE_LONG_DOUBLE*|*-DUSE_MORE_BITS*) uselongdouble="$define" ;;
 esac
@@ -42,6 +34,13 @@ case "$uselongdouble" in
 $define|true|[yY]*)	dflt='y';;
 *) dflt='n';;
 esac
+cat <<EOM
+
+Perl can be built to take advantage of long doubles which
+(if available) may give more accuracy and range for floating point numbers.
+
+If this doesn't make any sense to you, just accept the default '$dflt'.
+EOM
 rp='Try to use long doubles if available?'
 . ./myread
 case "$ans" in

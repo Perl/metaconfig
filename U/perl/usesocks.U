@@ -24,18 +24,17 @@
 ?INIT:: set usesocks on the Configure command line to enable socks.
 ?X: We should really have some explanatory text here, and some
 ?X: automatic setting of sensible defaults.
+case "$usesocks" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
 cat <<EOM
 
 Perl can be built to use the SOCKS proxy protocol library.  To do so,
 Configure must be run with -Dusesocks.
 
-Normally you do not need this and you should answer no.
-
+If this doesn't make any sense to you, just accept the default '$dflt'.
 EOM
-case "$usesocks" in
-$define|true|[yY]*)	dflt='y';;
-*) dflt='n';;
-esac
 rp='Build Perl for SOCKS?'
 . ./myread
 case "$ans" in

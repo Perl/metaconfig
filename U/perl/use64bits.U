@@ -57,7 +57,7 @@ EOM
 cat <<EOM
 
 Perl can be built to take advantage of 64-bit integer types
-on some systems.  To do so, Configure must be run with -Duse64bits.
+on some systems.  To do so, Configure can be run with -Duse64bits.
 
 If this doesn't make any sense to you, just accept the default '$dflt'.
 EOM

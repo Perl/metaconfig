@@ -37,12 +37,11 @@ This multiple interpreter support is required for interpreter-based threads.
 EOM
 	val="$define"
 	;;
-*)
-	echo 'Normally you do not need this and you should answer no.'
-	case "$usemultiplicity" in
+*)	case "$usemultiplicity" in
 	$define|true|[yY]*)	dflt='y';;
 	*) dflt='n';;
 	esac
+	echo "If this doesn't make any sense to you, just accept the default '$dflt'."
 	rp='Build Perl for multiplicity?'
 	. ./myread
 	case "$ans" in

@@ -37,17 +37,17 @@ case "$lseeksize:$fpossize" in
 You can have files larger than 2 gigabytes.
 EOM
    val="$define" ;;
-*) cat <<EOM
-
-Perl can be built to understand large files (files larger than 2 gigabytes)
-on some systems.  To do so, Configure must be run with -Duselargefiles.
-
-If this doesn't make any sense to you, just accept the default 'y'.
-EOM
-   case "$uselargefiles" in
+*)    case "$uselargefiles" in
    "$undef"|false|[nN]*) dflt='n' ;;
    *)	dflt='y' ;;
    esac
+   cat <<EOM
+
+Perl can be built to understand large files (files larger than 2 gigabytes)
+on some systems.  To do so, Configure can be run with -Duselargefiles.
+
+If this doesn't make any sense to you, just accept the default '$dflt'.
+EOM
    rp='Try to understand large files, if available?'
    . ./myread
    case "$ans" in
