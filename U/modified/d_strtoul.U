@@ -59,22 +59,26 @@ EOCP
 	    $cat >>try.c <<'EOCP'
 	check("18446744073709551615", 18446744073709551615UL, 0);
 	check("18446744073709551616", 18446744073709551615UL, ERANGE);
+#if 0 /* strtoul() for /^-/ strings is undefined. */
 	check("-1", 18446744073709551615UL, 0);
 	check("-18446744073709551614", 2, 0);
 	check("-18446744073709551615", 1, 0);
        	check("-18446744073709551616", 18446744073709551615UL, ERANGE);
 	check("-18446744073709551617", 18446744073709551615UL, ERANGE);
+#endif
 EOCP
 		;;
 	4)
 		    $cat >>try.c <<'EOCP'
 	check("4294967295", 4294967295UL, 0);
 	check("4294967296", 4294967295UL, ERANGE);
+#if 0 /* strtoul() for /^-/ strings is undefined. */
 	check("-1", 4294967295UL, 0);
 	check("-4294967294", 2, 0);
 	check("-4294967295", 1, 0);
        	check("-4294967296", 4294967295UL, ERANGE);
 	check("-4294967297", 4294967295UL, ERANGE);
+#endif
 EOCP
 		;;
 	*)
