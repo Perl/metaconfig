@@ -232,7 +232,10 @@ none) ccflags='';;
 esac
 
 : the following weeds options from ccflags that are of no interest to cpp
-cppflags="$ccflags"
+case "$cppflags" in
+'') cppflags="$ccflags" ;;
+*)  cppflags="$cppflags $ccflags" ;;
+esac
 case "$gccversion" in
 1*) cppflags="$cppflags -D__GNUC__"
 esac
