@@ -1,0 +1,33 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_syscallproto: Hasproto i_unistd
+?MAKE:	-pick add $@ %<
+?S:d_syscallproto:
+?S:	This variable conditionally defines the HAS_SYSCALL_PROTO symbol,
+?S:	which indicates to the C program that the system provides
+?S:	a prototype for the syscall() function.  Otherwise, it is
+?S:	up to the program to supply one.
+?S:.
+?C:HAS_SYSCALL_PROTO:
+?C:	This symbol, if defined, indicates that the system provides
+?C:	a prototype for the syscall() function.  Otherwise, it is up
+?C:	to the program to supply one.  Good guesses are
+?C:		extern int syscall(int,  ...);
+?C:		extern int syscall(long, ...);
+?C:.
+?H:#$d_syscallproto	HAS_SYSCALL_PROTO	/**/
+?H:.
+?LINT:set d_syscallproto 
+: see if prototype for syscall is available
+echo " "
+set d_syscallproto syscall $i_unistd unistd.h
+eval $hasproto
+
