@@ -18,7 +18,8 @@
 ?S:.
 ?S:gccosandvers:
 ?S:	If GNU cc (gcc) is used, this variable the operating system and
-?S:	version used to compile the gcc.  It is set to '' if not gcc.
+?S:	version used to compile the gcc.  It is set to '' if not gcc,
+?S:	or if nothing useful can be parsed as the os version.
 ?S:.
 ?F:!gccvers
 ?D:gccversion=''
@@ -67,7 +68,8 @@ case "$gccversion" in
 '') gccosandvers='' ;;
 *) gccosandvers=`$cc -v 2>&1|grep '/specs$'|sed 's!.*/[^-]*-[^-]*-\([^/]*\)/'$gccversion'/specs$!\1!'`
    case "$gccosandvers" in
-   $osname$osvers) ;;
+   $osname) gccosandvers='' ;; # linux gccs seem to have no linux osvers, grr
+   $osname$osvers) ;; # looking good
    $osname*) cat <<EOM >&4
 
 *** WHOA THERE!!! ***
@@ -81,7 +83,8 @@ case "$gccversion" in
 
     I'm trying to be optimistic here, though, and will continue.
     If later during the configuration and build icky compilation
-    problems appear, I suggest reinstalling the gcc to match
+    problems appear (headerfile conflicts being the most common
+    manifestation), I suggest reinstalling the gcc to match
     your operating system release.
 
 EOM
