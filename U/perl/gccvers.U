@@ -23,7 +23,7 @@
 ?S:.
 ?T:gccshortvers
 ?T:incdir
-?T:d
+?T:warn
 ?D:gccversion=''
 ?LINT:change cpp
 ?LINT:extern ccflags

@@ -57,6 +57,9 @@
 ?H:?%<:#endif
 ?H:.
 ?W:%<:void
+?INIT:: full support for void wanted by default
+?INIT:defvoidused=15
+?INIT:
 ?LINT:describe defvoidused
 ?LINT:known void M_VOID VOIDUSED
 : check for void type

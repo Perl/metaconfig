@@ -62,6 +62,7 @@
 ?S:.
 ?T:thislib try libnames xxx xscan xrun thisname com tans file
 ?F:!libnames
+?LINT:extern PASE
 ?LINT:extern libnames
 ?LINT:change libnames
 ?LINT:change nm_opt

@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_modfl d_modflproto d_modfl_pow32_bug: Inlibc Compile Hasproto cat \
-	rm sPRIfldbl d_longdbl osname gccversion ccflags run
+	rm test sPRIfldbl d_longdbl osname gccversion ccflags run
 ?MAKE:	-pick add $@ %<
 ?S:d_modfl:
 ?S:	This variable conditionally defines the HAS_MODFL symbol, which
@@ -48,6 +48,7 @@
 ?H:.
 ?T:foo saveccflags
 ?LINT:set d_modfl
+?LINT:set d_modflproto
 ?LINT:set d_modfl_pow32_bug
 ?LINT:change ccflags
 : see if modfl exists
