@@ -33,6 +33,7 @@ int main() {
     printf("%d\n", sizeof($pidtype));
 }
 EOCP
+set try
 if eval $compile_ok; then
 	yyy=`./try`
 	case "$yyy" in

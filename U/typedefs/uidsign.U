@@ -39,6 +39,7 @@ int main() {
 		printf("1\n");
 }
 EOCP
+set try
 if eval $compile; then
 	yyy=`./try`
 	case "$yyy" in

@@ -36,7 +36,7 @@
 ?F:!try
 : check for long long
 echo " "
-echo $n "Checking to see if your system supports long long...$c" >&4
+$echo $n "Checking to see if your system supports long long...$c" >&4
 echo 'long long foo() { long long x; x = 7; return x; }' > try.c
 if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
 	val="$define"

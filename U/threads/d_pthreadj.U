@@ -24,7 +24,7 @@
 ?LINT: set d_pthreads_created_joinable
 : test whether pthreads are created in joinable -- aka undetached -- state
 if test "X$usethreads" = "X$define" -a "X$i_pthread" = "X$define"; then
-	echo $n "Checking whether pthreads are created joinable. $c" >&4 
+	$echo $n "Checking whether pthreads are created joinable. $c" >&4 
 	$cat >try.c <<'EOCP'
 #include <pthread.h>
 #ifdef PTHREAD_CREATE_UNDETACHED

@@ -58,7 +58,7 @@ eval $setvar
 case "$use64bits" in
 "$define" )
 	echo " "
-	echo $n "Checking to see if your system supports int64_t...$c" >&4
+	$echo $n "Checking to see if your system supports int64_t...$c" >&4
 	$cat >try.c <<EOCP
 #include <sys/types.h>
 #$i_inttypes I_INTTYPES
