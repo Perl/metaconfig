@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_unordered: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_unordered:
+?S:	This variable conditionally defines the HAS_UNORDERED symbol, which
+?S:	indicates to the C program that the unordered() routine is available.
+?S:.
+?C:HAS_UNORDERED:
+?C:	This symbol, if defined, indicates that the unordered routine is
+?C:	available to check whether two doubles are unordered
+?C:	(effectively: whether either of them is NaN)
+?C:.
+?H:#$d_unordered HAS_UNORDERED		/**/
+?H:.
+?LINT:set d_unordered
+: see if unordered exists
+set unordered d_unordered
+eval $inlibc
+

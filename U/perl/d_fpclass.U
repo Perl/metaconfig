@@ -13,7 +13,7 @@
 ?S:.
 ?C:HAS_FPCLASS:
 ?C:	This symbol, if defined, indicates that the fpclass routine is
-?C:	available to classify doubles.  Available for example in Solaris.
+?C:	available to classify doubles.  Available for example in Solaris/SVR4.
 ?C:	The returned values are defined in <ieeefp.h> and are:
 ?C:
 ?C:	FP_SNAN		signaling NaN
