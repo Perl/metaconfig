@@ -63,7 +63,7 @@ elif test -n "$DJGPP"; then
 : DOS DJGPP
     _exe=".exe"
 elif test -d c:/. ; then
-: OS/2
+: OS/2 or cygwin
     _exe=".exe"
 fi
 
