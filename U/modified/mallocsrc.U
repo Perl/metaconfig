@@ -75,7 +75,7 @@
 ?C:PERL_MALLOC_WRAP:
 ?C:	This symbol, if defined, indicates that we'd like malloc wrap checks.
 ?C:.
-?H:#$usemallocwrap PERL_MALLOC_WRAP
+?H:#$usemallocwrap PERL_MALLOC_WRAP		/**/
 ?H:.
 ?C:MYMALLOC:
 ?C:	This symbol, if defined, indicates that we're using our own malloc.
