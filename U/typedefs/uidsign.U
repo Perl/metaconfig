@@ -13,11 +13,11 @@
 ?S:	This variable contains the signedness of a uidtype.
 ?S:	1 for unsigned, -1 for signed.
 ?S:.
-?C:Uid_t_SIGN:
+?C:Uid_t_sign:
 ?C:	This symbol holds the signedess of a Uid_t.
 ?C:	1 for unsigned, -1 for signed.
 ?C:.
-?H:#define Uid_t_SIGN	$uidsign		/* UID sign */
+?H:#define Uid_t_sign	$uidsign		/* UID sign */
 ?H:.
 ?F:!try
 ?T:yyy zzz
