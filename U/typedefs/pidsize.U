@@ -26,7 +26,7 @@ cat > try.c <<'EOCP'
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
-    printf("%d\n", sizeof(pid_t));
+    printf("%d\n", sizeof($pidtype));
 }
 EOCP
 if eval $compile_ok; then
