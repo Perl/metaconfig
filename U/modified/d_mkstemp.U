@@ -14,11 +14,12 @@
 ?S:d_mkstemp:
 ?S:	This variable conditionally defines the HAS_MKSTEMP symbol, which
 ?S:	indicates to the C program that the mkstemp() routine is available
-?S:	to create and open a unique tempporary file.
+?S:	to exclusively create and open a uniquely named temporary file.
 ?S:.
 ?C:HAS_MKSTEMP :
 ?C:	This symbol, if defined, indicates that the mkstemp routine is
-?C:	available to create and open a unique temporary file.
+?C:	available to exclusively create and open a uniquely named
+?C:	temporary file.
 ?C:.
 ?H:#$d_mkstemp HAS_MKSTEMP		/**/
 ?H:.

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_mkdtemp: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mkdtemp:
+?S:	This variable conditionally defines the HAS_MKDTEMP symbol, which
+?S:	indicates to the C program that the mkdtemp() routine is available
+?S:	to exclusively create a uniquely named temporary directory.
+?S:.
+?C:HAS_MKDTEMP :
+?C:	This symbol, if defined, indicates that the mkdtemp routine is
+?C:	available to exclusively create a uniquely named temporary directory.
+?C:.
+?H:#$d_mkdtemp HAS_MKDTEMP		/**/
+?H:.
+?LINT:set d_mkdtemp
+: see if mkdtemp exists
+set mkdtemp d_mkdtemp
+eval $inlibc
+
