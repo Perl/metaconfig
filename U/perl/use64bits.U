@@ -5,8 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:use64bits archname64: Myread Oldconfig Setvar test gccversion cat \
-	uselargefiles usemorebits longsize intsize ccflags
+?MAKE:use64bits archname64: Myread Oldconfig Setvar test \
+	uselargefiles usemorebits longsize ccflags
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bits:
@@ -27,31 +27,43 @@
 ?H:?%<:#endif
 ?H:.
 ?LINT:set use64bits
-?LINT:set archname64
 ?LINT:extern ccflags
 ?LINT:change ccflags
 ?LINT:use uselargefiles
 ?LINT:use usemorebits
 ?LINT:extern uselonglong
 ?LINT:use uselonglong
+?LINT:extern usefull64bits
+?LINT:change usefull64bits
 ?F:!use64bits.cbu
 
-case "$intsize:$longsize" in
-8:*|*:8) cat <<EOM
+# Backward compatibility (uselonglong is deprecated).
+case "$uselonglong" in
+"$define"|true|[yY]*)
+	cat <<EOM >&4
 
-You have natively 64-bit integers.
+*** Configure -Duselonglong is deprecated, using the -Duse64bits instead.
+
+EOM
+	use64bits="$define"
+	;;
+esac                          
+case "$ccflags" in
+*-DUSE_LONG_LONG*|*-DUSE_64_BITS*|*-DUSE_FULL_64_BITS*) use64bits="$define";;
+esac
+case "$usefull64bits" in
+"$define"|true|[yY]*) use64bits="$define" ;;
+esac
+
+case "$longsize" in
+8) cat <<EOM
+
+You have natively 64-bit long integers.
 EOM
    val="$define"
    ;;
-*) case "$ccflags" in
-   *-DUSE_64_BITS*|*-DUSE_LONG_LONG*) use64bits="$define";;
-   *) case "$uselonglong" in
-      $define|true|[yY]*) use64bits="$define";;
-      esac
-      ;;
-   esac
-   case "$use64bits" in
-   $define|true|[yY]*) dflt='y';;
+*) case "$use64bits" in
+   "$define"|true|[yY]*) dflt='y';;
    *) dflt='n';;
    esac
 cat <<EOM
@@ -72,10 +84,6 @@ esac
 set use64bits
 eval $setvar
 
-case "$archname64" in
-'') archname64='' ;;	# not a typo
-esac
-
 case "$use64bits" in
 "$define"|true|[yY]*)
 : Look for a hint-file generated 'call-back-unit'.  If the
@@ -84,30 +92,29 @@ case "$use64bits" in
 	if $test -f use64bits.cbu; then
 		echo "Your platform has some specific hints for 64-bit builds, using them..."
 		. ./use64bits.cbu
-	else
-		$cat <<EOM
-(Your platform doesn't have any specific hints for 64-bit builds.)
-EOM
-                case "$intsize:$longsize" in
-8:*|*:8) cat <<EOM
-(This is probably okay, as your system is a natively 64-bit system.)
-EOM
-                  ;;
-                esac
-		case "$gccversion" in
-		'')	;;
-		*)	case "$ccflags" in
-			*-DUSE_64_BITS*) ;;
-			*) $cat <<EOM
-But since you seem to be using gcc, I will now add -DUSE_64_BITS
-to the compilation flags to get long longs.
-EOM
-			   ccflags="$ccflags -DUSE_64_BITS"
-			   ;;
-			esac
-			;;
-		esac
 	fi
+	case "$ccflags" in
+	*-DUSE_64_BITS*) ;;
+	*) ccflags="$ccflags -DUSE_64_BITS";;
+	esac
+	case "$usefull64bits" in
+	"$define"|true|[yY]*)
+		case "$ccflags" in
+		*-DUSE_FULL_64_BITS*) ;;
+		*) ccflags="$ccflags -DUSE_FULL_64_BITS";;
+		esac
+		;;
+	esac
+	archname64=64
 	;;
+esac
+
+case "$use64bits" in
+"$define"|true|[yY]*) use64bits="$define" ;;
+*) use64bits="$undef" ;;
+esac
+case "$usefull64bits" in
+"$define"|true|[yY]*) usefull64bits="$define" ;;
+*) usefull64bits="$undef" ;;
 esac
 
