@@ -10,7 +10,7 @@
 	nveformat nvfformat nvgformat: \
 	ivsize longsize intsize shortsize \
 	sPRId64 sPRIu64 sPRIo64 sPRIx64 sPRIX64 \
-	nvsize doublesize longdblsize \
+	uselongdouble d_longdbl d_PRIgldbl \
 	sPRIEldbl sPRIFldbl sPRIGldbl sPRIeldbl sPRIfldbl sPRIgldbl \
 	test echo
 ?MAKE:	-pick add $@ %<
@@ -151,7 +151,7 @@ else
 	fi
 fi
 
-if $test X"$nvsize" = X"$longdblsize" -a "$longdblsize" -gt "$doublesize"; then
+if $test X"$uselongdouble" = X"$define" -a X"$d_longdbl" = X"$define" -a X"$d_PRIgldbl" = X"$define"; then
 	nveformat="$sPRIeldbl"
 	nvfformat="$sPRIfldbl"
 	nvgformat="$sPRIgldbl"
