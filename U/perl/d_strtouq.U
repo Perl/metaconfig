@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_strtouq: Inlibc
+?MAKE:d_strtouq: Inlibc cat Compile
 ?MAKE:	-pick add $@ %<
 ?S:d_strtouq:
 ?S:	This variable conditionally defines the HAS_STRTOUQ symbol, which
@@ -17,8 +17,55 @@
 ?C:.
 ?H:#$d_strtouq HAS_STRTOUQ		/**/
 ?H:.
+?F:!try
 ?LINT:set d_strtouq
 : see if strtouq exists
 set strtouq d_strtouq
 eval $inlibc
+
+case "$d_strtouq" in
+"$define")
+	$cat <<EOM
+Checking whether your strtouq() works okay...
+EOM
+	$cat >try.c <<'EOCP'
+#include <errno.h>
+#include <stdio.h>
+extern unsigned long long int strtouq(char *s, char **, int); 
+static int bad = 0;
+void check(char *s, unsigned long long eull, int een) {
+	unsigned long long gull;
+	errno = 0;
+	gull = strtouq(s, 0, 10);
+	if (!((gull == eull) && (errno == een)))
+		bad++;
+}
+int main() {
+	check(" 1",                                        1LL, 0);
+	check(" 0",                                        0LL, 0);
+	check("18446744073709551615",  18446744073709551615ULL, 0);
+	check("18446744073709551616",  18446744073709551615ULL, ERANGE);
+	check("-1",                    18446744073709551615ULL, 0);
+	check("-18446744073709551614",                     2LL, 0);
+	check("-18446744073709551615",                     1LL, 0);
+       	check("-18446744073709551616", 18446744073709551615ULL, ERANGE);
+	check("-18446744073709551617", 18446744073709551615ULL, ERANGE);
+	if (!bad)
+		printf("ok\n");
+	return 0;
+}
+EOCP
+	set try
+	if eval $compile; then
+		case "`./try`" in
+		ok) echo "Your strtouq() seems to be working okay." ;;
+		*) cat <<EOM >&4
+Your strtouq() doesn't seem to be working okay.
+EOM
+		   d_strtouq="$undef"
+		   ;;
+		esac
+	fi
+	;;
+esac
 
