@@ -250,3 +250,16 @@ case "$use64bitall" in
 	;;
 esac
 
+case "$d_quad:$use64bitint" in
+$undef:$define)
+	cat >&4 <<EOF
+
+*** You have chosen to use 64-bit integers,
+*** but none cannot be found.
+*** Cannot continue, aborting.
+
+EOF
+	exit 1
+	;;
+esac
+

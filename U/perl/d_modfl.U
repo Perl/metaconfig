@@ -153,11 +153,12 @@ if $test "$uselongdouble" = "$define"; then
 *** You requested the use of long doubles but you do not seem to have
 *** the mathematic functions for long doubles.
 *** ($message)
-*** I'm disabling the use of long doubles.
+*** Please rerun Configure without -Duselongdouble and/or -Dusemorebits.
+*** Cannot continue, aborting.
 
 EOM
 
-	uselongdouble=$undef
+	exit 1
     fi
 fi
 

@@ -73,21 +73,12 @@ case "$use64bitall" in
 	case "$ptrsize" in
 	4)	cat <<EOM >&4
 
-*** You have chosen a maximally 64-bit build, but your pointers
-*** are only 4 bytes wide, disabling maximal 64-bitness.
+*** You have chosen a maximally 64-bit build,
+*** but your pointers are only 4 bytes wide.
+*** Cannot continue, aborting.
 
 EOM
-		use64bitall="$undef"
-		case "$use64bitint" in
-		"$define"|true|[yY]*) ;;
-		*)	cat <<EOM >&4
-
-*** Downgrading from maximal 64-bitness to using 64-bit integers.
-
-EOM
-			use64bitint="$define"
-			;;
-		esac
+		exit 1
 		;;
 	esac
 	;;
