@@ -44,7 +44,7 @@ true)
 ?X: extract has to be run from the top directory, not within UU.
 	. UU/extract
 	rm -rf UU
-	echo "Done."
+	echo "Extraction done."
 	exit 0
 	;;
 esac

@@ -43,7 +43,7 @@
 case "$alldone" in
 exit)
 	$rm -rf UU
-	echo "Done."
+	echo "Extraction done."
 	exit 0
 	;;
 cont)
@@ -108,7 +108,7 @@ elif test -f [Mm]akefile; then
 	echo " "
 	echo "Now you must run a $make."
 else
-	echo "Done."
+	echo "Configure done."
 fi
 
 if $test -f Policy.sh; then
