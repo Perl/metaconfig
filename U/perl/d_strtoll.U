@@ -71,10 +71,10 @@ Your strtoll() doesn't seem to be working okay.
 EOM
 		   d_strtoll="$undef"
 		   ;;
+		esac
 	else
 		echo "(I can't seem to compile the test program--assuming it doesn't)"
 		d_strtoll="$undef"
-		esac
 	fi
 	;;
 esac
