@@ -61,4 +61,8 @@ fi
 if test -n "$DJGPP"; then
     _exe=".exe"
 fi
+: maybe os/2
+if test -d c:/. ; then
+    _exe=".exe"
+fi
 
