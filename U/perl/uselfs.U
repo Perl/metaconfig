@@ -5,7 +5,11 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:uselargefiles: Myread Oldconfig Setvar test lseeksize fpossize \
+?MAKE:uselargefiles \
+	ccflags_uselargefiles \
+	ldflags_uselargefiles \
+	libswanted_uselargefiles: \
+	Myread Oldconfig Setvar test lseeksize fpossize \
 	fpostype Compile echo n c cat lseektype rm
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -13,6 +17,20 @@
 ?S:	This variable conditionally defines the USE_LARGE_FILES symbol,
 ?S:	and indicates that large file interfaces should be used when
 ?S:	available.
+?S:.
+?S:ccflags_uselargefiles:
+?S:	This variable contains the compiler flags needed by large file builds
+?S:	and added to ccflags by hints files.
+?S:.
+?S:ldflags_uselargefiles:
+?S:	This variable contains the loader flags needed by large file builds
+?S:	and added to ldflags by hints files.
+?S:.
+?S:libswanted_uselargefiles:
+?S:	This variable contains the libraries needed by large file builds
+?S:	and added to ldflags by hints files.  It is a space separated list
+?S:	of the library names without the "lib" prefix or any suffix, just
+?S:	like libswanted..
 ?S:.
 ?C:USE_LARGE_FILES:
 ?C:	This symbol, if defined, indicates that large file support
@@ -23,6 +41,9 @@
 ?H:?%<:#endif
 ?H:.
 ?F:!uselargefiles.cbu !try
+?INIT:ccflags_uselargefiles=''
+?INIT:ldflags_uselargefiles=''
+?INIT:libswanted_uselargefiles=''
 ?T:yyy zzz
 ?LINT:set uselargefiles
 ?LINT:extern use64bits

@@ -66,7 +66,7 @@ case "$gccversion" in
 esac
 case "$gccversion" in
 '') gccosandvers='' ;;
-*) gccosandvers=`$cc -v 2>&1|grep '/specs$'|sed 's!.*/[^-]*-[^-]*-\([^/]*\)/'$gccversion'/specs$!\1!'`
+*) gccosandvers=`$cc -v 2>&1|grep '/specs$'|sed 's!.*/[^-]*-[^-]*-\([^/]*\)/'$gccversion'/specs'$!\1!'`
    case "$gccosandvers" in
    $osname) gccosandvers='' ;; # linux gccs seem to have no linux osvers, grr
    $osname$osvers) ;; # looking good
