@@ -382,7 +382,12 @@ EOM
 ?X: DEC OSF/1 myuname -a output looks like:  osf1 xxxx t3.2 123.4 alpha
 ?X: where the version number can be something like [xvt]n.n
 					osname=dec_osf
-					osvers=`echo "$3" | sed 's/^[xvt]//'`
+?X: sizer knows the minor minor version: the letter
+					osvers=`sizer -v | awk '{print $3}' |  tr '[A-Z]' '[a-z]' | sed 's/^[xvt]//'`
+					case "$osvers" in
+					[1-9].[0-9]*) ;;
+					*) osvers=`echo "$3" | sed 's/^[xvt]//'` ;;
+					esac
 					;;
 			hp*)	osname=hp_osf1	;;
 			mips)	osname=mips_osf1 ;;
