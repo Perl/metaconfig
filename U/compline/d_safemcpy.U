@@ -29,30 +29,34 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:58  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_safemcpy: Compile cat d_memcpy rm run \
+?MAKE:d_safemcpy: Compile cat d_memcpy rm \
 	d_memmove i_memory i_stdlib i_string i_unistd Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_safemcpy:
 ?S:	This variable conditionally defines the HAS_SAFE_MEMCPY symbol if
 ?S:	the memcpy() routine can do overlapping copies.
+?S:	For overlapping copies, memmove() should be used, if available.
 ?S:.
 ?C:HAS_SAFE_MEMCPY (SAFE_MEMCPY):
 ?C:	This symbol, if defined, indicates that the memcpy routine is available
-?C:	to copy potentially overlapping memory blocks. Otherwise you should
-?C:	probably use memmove() or memcpy(). If neither is defined, roll your
-?C:	own version.
+?C:	to copy potentially overlapping memory blocks.  If you need to
+?C:	copy overlapping memory blocks, you should check HAS_MEMMOVE and
+?C:	use memmove() instead, if available.
 ?C:.
 ?H:#$d_safemcpy HAS_SAFE_MEMCPY	/**/
 ?H:.
+?F:!try
 ?LINT: set d_safemcpy
 : can memcpy handle overlapping blocks?
+echo " "
 ?X: assume the worst
 val="$undef"
-case "$d_memcpy" in
-"$define")
-	echo " "
-	echo "Checking to see if your memcpy() can do overlapping copies..." >&4
-	$cat >try.c <<EOCP
+case "$d_memmove" in
+"$define") echo "I'll use memmove() instead of memcpy() for overlapping copies." ;;
+*)	case "$d_memcpy" in
+	"$define")
+		echo "Checking to see if memcpy() can do overlapping copies..." >&4
+		$cat >try.c <<EOCP
 #$i_memory I_MEMORY
 #$i_stdlib I_STDLIB
 #$i_string I_STRING
@@ -101,26 +105,22 @@ for (align = 7; align >= 0; align--) {
 exit(0);
 }
 EOCP
-	set try
-	if eval $compile_ok; then
-		if $run ./try 2>/dev/null; then
-			echo "Yes, it can."
-			val="$define"
+		set try
+		if eval $compile_ok; then
+			if ./try 2>/dev/null; then
+				echo "Yes, it can."
+				val="$define"
+			else
+				echo "It can't, sorry."
+			fi
 		else
-			echo "It can't, sorry."
-			case "$d_memmove" in
-			"$define") echo "But that's Ok since you have memmove()." ;;
-			esac
+			echo "(I can't compile the test program, so we'll assume not...)"
 		fi
-	else
-		echo "(I can't compile the test program, so we'll assume not...)"
-		case "$d_memmove" in
-		"$define") echo "But that's Ok since you have memmove()." ;;
-		esac
-	fi
+		;;
+	esac
+	$rm -f try.* try core
 	;;
 esac
-$rm -f try.* try core
 set d_safemcpy
 eval $setvar
 
