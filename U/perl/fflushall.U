@@ -116,7 +116,6 @@ if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
     output=''
     set try -DTRY_FPUTC
     if eval $compile; then
-	    $rm -f try.out
  	    $run ./try 2>/dev/null
 	    code="$?"
 	    $from try.out
@@ -128,7 +127,6 @@ if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
     '')
 	    set try -DTRY_FPRINTF
 	    if eval $compile; then
-		    $rm -f try.out
  		    $run ./try 2>/dev/null
 		    code="$?"
 		    $from try.out
@@ -143,7 +141,6 @@ fi
 case "$fflushNULL" in
 '') 	set try -DTRY_FFLUSH_NULL $output
 	if eval $compile; then
-	        $rm -f try.out
 	    	$run ./try 2>/dev/null
 		code="$?"
 		$from try.out
@@ -268,7 +265,6 @@ EOM
 				$cat >&4 <<EOM
 (Now testing the other method--but note that this also may fail.)
 EOM
-				$rm -f try.out
 				$run ./try 2>/dev/null
 				code=$?
 				$from try.out
