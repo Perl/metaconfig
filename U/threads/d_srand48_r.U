@@ -1,25 +1,41 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_srand48_r: Inlibc
-?MAKE:	-pick add $@ %<
+?MAKE:d_srand48_r srand48_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_srand48_r:
-?S:	This variable conditionally defines the HAS_SRAND48_R symbol,
-?S:	which indicates to the C program that the srand48_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_SRAND48_R symbol,
+?S:     which indicates to the C program that the srand48_r()
+?S:     routine is available.
+?S:.
+?S:srand48_r_proto:
+?S:     This variable encodes the prototype of srand48_r.
 ?S:.
 ?C:HAS_SRAND48_R:
-?C:	This symbol, if defined, indicates that the srand48_r routine
-?C:	is available to srand48 re-entrantly.
+?C:     This symbol, if defined, indicates that the srand48_r routine
+?C:     is available to srand48 re-entrantly.
 ?C:.
-?H:#$d_srand48_r HAS_SRAND48_R		/**/
+?C:SRAND48_R_PROTO:
+?C:     This symbol encodes the prototype of srand48_r.
+?C:.
+?H:#$d_srand48_r HAS_SRAND48_R          /**/
+?H:#define SRAND48_R_PROTO $srand48_r_proto     /**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_srand48_r
+?LINT:set srand48_r_proto
 : see if srand48_r exists
 set srand48_r d_srand48_r
 eval $inlibc
+case "$d_srand48_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_stdlib stdlib.h"
+	case "$srand48_r_proto" in
+	'')	try='extern int srand48_r(long, struct drand48_data*);'
+		./protochk "$try" $hdrs && srand48_r_proto=I_LS;
+	;;
+	esac
+	case "$srand48_r_proto" in
+	'') d_srand48_r=undef ; echo "Disabling srand48_r, cannot find prototype." ;;
+	* ) srand48_r_proto="REENTRANT_$srand48_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
 

@@ -1,0 +1,51 @@
+?MAKE:d_getservbyname_r getservbyname_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
+?S:d_getservbyname_r:
+?S:     This variable conditionally defines the HAS_GETSERVBYNAME_R symbol,
+?S:     which indicates to the C program that the getservbyname_r()
+?S:     routine is available.
+?S:.
+?S:getservbyname_r_proto:
+?S:     This variable encodes the prototype of getservbyname_r.
+?S:.
+?C:HAS_GETSERVBYNAME_R:
+?C:     This symbol, if defined, indicates that the getservbyname_r routine
+?C:     is available to getservbyname re-entrantly.
+?C:.
+?C:GETSERVBYNAME_R_PROTO:
+?C:     This symbol encodes the prototype of getservbyname_r.
+?C:.
+?H:#$d_getservbyname_r HAS_GETSERVBYNAME_R          /**/
+?H:#define GETSERVBYNAME_R_PROTO $getservbyname_r_proto     /**/
+?H:.
+?T:try hdrs
+?LINT:set d_getservbyname_r
+?LINT:set getservbyname_r_proto
+: see if getservbyname_r exists
+set getservbyname_r d_getservbyname_r
+eval $inlibc
+case "$d_getservbyname_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	case "$getservbyname_r_proto" in
+	'')	try='extern int getservbyname_r(const char*, const char*, struct servent*, char*, size_t, struct servent**);'
+		./protochk "$try" $hdrs && getservbyname_r_proto=I_CCSBWR;
+	;;
+	esac
+	case "$getservbyname_r_proto" in
+	'')	try='extern struct servent* getservbyname_r(const char*, const char*, struct servent*, char*, int);'
+		./protochk "$try" $hdrs && getservbyname_r_proto=S_CCSBI;
+	;;
+	esac
+	case "$getservbyname_r_proto" in
+	'')	try='extern int getservbyname_r(const char*, const char*, struct servent*, struct servent_data*);'
+		./protochk "$try" $hdrs && getservbyname_r_proto=I_CCSD;
+	;;
+	esac
+	case "$getservbyname_r_proto" in
+	'') d_getservbyname_r=undef ; echo "Disabling getservbyname_r, cannot find prototype." ;;
+	* ) getservbyname_r_proto="REENTRANT_$getservbyname_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
+

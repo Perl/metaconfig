@@ -1,25 +1,41 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_crypt_r: Inlibc
-?MAKE:	-pick add $@ %<
+?MAKE:d_crypt_r crypt_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_crypt_r:
-?S:	This variable conditionally defines the HAS_CRYPT_R symbol,
-?S:	which indicates to the C prospam that the crypt_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_CRYPT_R symbol,
+?S:     which indicates to the C program that the crypt_r()
+?S:     routine is available.
+?S:.
+?S:crypt_r_proto:
+?S:     This variable encodes the prototype of crypt_r.
 ?S:.
 ?C:HAS_CRYPT_R:
-?C:	This symbol, if defined, indicates that the crypt_r routine
-?C:	is available to crypt re-entrantly.
+?C:     This symbol, if defined, indicates that the crypt_r routine
+?C:     is available to crypt re-entrantly.
 ?C:.
-?H:#$d_crypt_r HAS_CRYPT_R		/**/
+?C:CRYPT_R_PROTO:
+?C:     This symbol encodes the prototype of crypt_r.
+?C:.
+?H:#$d_crypt_r HAS_CRYPT_R          /**/
+?H:#define CRYPT_R_PROTO $crypt_r_proto     /**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_crypt_r
+?LINT:set crypt_r_proto
 : see if crypt_r exists
 set crypt_r d_crypt_r
 eval $inlibc
+case "$d_crypt_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_unistd unistd.h"
+	case "$crypt_r_proto" in
+	'')	try='extern char* crypt_r(char*, char*, struct crypt_data*);'
+		./protochk "$try" $hdrs && crypt_r_proto=B_AAS;
+	;;
+	esac
+	case "$crypt_r_proto" in
+	'') d_crypt_r=undef ; echo "Disabling crypt_r, cannot find prototype." ;;
+	* ) crypt_r_proto="REENTRANT_$crypt_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
 

@@ -1,57 +1,46 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_endgrent_r endgrent_r_proto: Inlibc Protochk i_systypes i_grp
-?MAKE:	-pick add $@ %<
+?MAKE:d_endgrent_r endgrent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_endgrent_r:
-?S:	This variable conditionally defines the HAS_ENDGRENT_R symbol,
-?S:	which indicates to the C program that the endgrent_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_ENDGRENT_R symbol,
+?S:     which indicates to the C program that the endgrent_r()
+?S:     routine is available.
 ?S:.
 ?S:endgrent_r_proto:
-?S:	This variable encodes the prototype of endgrent_r.
+?S:     This variable encodes the prototype of endgrent_r.
 ?S:.
 ?C:HAS_ENDGRENT_R:
-?C:	This symbol, if defined, indicates that the endgrent_r routine
-?C:	is available to endgrent re-entrantly.
+?C:     This symbol, if defined, indicates that the endgrent_r routine
+?C:     is available to endgrent re-entrantly.
 ?C:.
 ?C:ENDGRENT_R_PROTO:
-?C:	This symbol encodes the prototype of endgrent_r.
-?C:	  65	int  endgrent_r(FILE**)
-?C:	  64	void endgrent_r(FILE**)
-?C:	The 65 is preferred since it returns success/failure.
+?C:     This symbol encodes the prototype of endgrent_r.
 ?C:.
-?H:#$d_endgrent_r HAS_ENDGRENT_R		/**/
-?H:#define ENDGRENT_R_PROTO $endgrent_r_proto	/**/
+?H:#$d_endgrent_r HAS_ENDGRENT_R          /**/
+?H:#define ENDGRENT_R_PROTO $endgrent_r_proto     /**/
 ?H:.
 ?T:try hdrs
-?LINT:end d_endgrent_r
+?LINT:set d_endgrent_r
+?LINT:set endgrent_r_proto
 : see if endgrent_r exists
 set endgrent_r d_endgrent_r
 eval $inlibc
 case "$d_endgrent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_grp grp.h"
-	try='extern int endgrent_r(FILE **);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		endgrent_r_proto=65
-	else
-		try='extern void endgrent_r(FILE **);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			endgrent_r_proto=64
-		else
-			echo "I do not recognize the prototype of your endgrent_r, not using it." >&4
-			d_endgrent_r="$undef"
-			endgrent_r_proto=0
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_grp grp.h"
+	case "$endgrent_r_proto" in
+	'')	try='extern int endgrent_r(FILE**);'
+		./protochk "$try" $hdrs && endgrent_r_proto=I_H;
 	;;
-*)	endgrent_r_proto=0 ;;
+	esac
+	case "$endgrent_r_proto" in
+	'')	try='extern void endgrent_r(FILE**);'
+		./protochk "$try" $hdrs && endgrent_r_proto=V_H;
+	;;
+	esac
+	case "$endgrent_r_proto" in
+	'') d_endgrent_r=undef ; echo "Disabling endgrent_r, cannot find prototype." ;;
+	* ) endgrent_r_proto="REENTRANT_$endgrent_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
 

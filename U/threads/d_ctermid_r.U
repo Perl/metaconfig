@@ -1,25 +1,41 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_ctermid_r: Inlibc
-?MAKE:	-pick add $@ %<
+?MAKE:d_ctermid_r ctermid_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_ctermid_r:
-?S:	This variable conditionally defines the HAS_CTERMID_R symbol,
-?S:	which indicates to the C prospam that the ctermid_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_CTERMID_R symbol,
+?S:     which indicates to the C program that the ctermid_r()
+?S:     routine is available.
+?S:.
+?S:ctermid_r_proto:
+?S:     This variable encodes the prototype of ctermid_r.
 ?S:.
 ?C:HAS_CTERMID_R:
-?C:	This symbol, if defined, indicates that the ctermid_r routine
-?C:	is available to ctermid re-entrantly.
+?C:     This symbol, if defined, indicates that the ctermid_r routine
+?C:     is available to ctermid re-entrantly.
 ?C:.
-?H:#$d_ctermid_r HAS_CTERMID_R		/**/
+?C:CTERMID_R_PROTO:
+?C:     This symbol encodes the prototype of ctermid_r.
+?C:.
+?H:#$d_ctermid_r HAS_CTERMID_R          /**/
+?H:#define CTERMID_R_PROTO $ctermid_r_proto     /**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_ctermid_r
+?LINT:set ctermid_r_proto
 : see if ctermid_r exists
 set ctermid_r d_ctermid_r
 eval $inlibc
+case "$d_ctermid_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_stdio stdio.h"
+	case "$ctermid_r_proto" in
+	'')	try='extern char* ctermid_r(char*);'
+		./protochk "$try" $hdrs && ctermid_r_proto=B_A;
+	;;
+	esac
+	case "$ctermid_r_proto" in
+	'') d_ctermid_r=undef ; echo "Disabling ctermid_r, cannot find prototype." ;;
+	* ) ctermid_r_proto="REENTRANT_$ctermid_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
 

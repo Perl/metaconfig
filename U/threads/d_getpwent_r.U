@@ -1,72 +1,56 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_getpwent_r getpwent_r_proto: Inlibc Protochk i_systypes i_pwd
-?MAKE:	-pick add $@ %<
+?MAKE:d_getpwent_r getpwent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_getpwent_r:
-?S:	This variable conditionally defines the HAS_GETPWENT_R symbol,
-?S:	which indicates to the C program that the getpwent_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_GETPWENT_R symbol,
+?S:     which indicates to the C program that the getpwent_r()
+?S:     routine is available.
 ?S:.
 ?S:getpwent_r_proto:
-?S:	This variable encodes the prototype of getpwent_r.
+?S:     This variable encodes the prototype of getpwent_r.
 ?S:.
 ?C:HAS_GETPWENT_R:
-?C:	This symbol, if defined, indicates that the getpwent_r routine
-?C:	is available to getpwent re-entrantly.
+?C:     This symbol, if defined, indicates that the getpwent_r routine
+?C:     is available to getpwent re-entrantly.
 ?C:.
 ?C:GETPWENT_R_PROTO:
-?C:	This symbol encodes the prototype of getpwent_r.
-?C:	  53	int getpwent_r(struct passwd*, char*, size_t, struct passwd**)
-?C:	  45	int getpwent_r(struct passwd*, char*, int, struct passwd**)
-?C:	  13	int getpwent_r(struct passwd*, char*, int)
-?C:	  77	int getpwent_r(struct passwd*, char*, int, FILE**)
-?C:	Ordering based mainly on popularity.
+?C:     This symbol encodes the prototype of getpwent_r.
 ?C:.
-?H:#$d_getpwent_r HAS_GETPWENT_R		/**/
-?H:#define GETPWENT_R_PROTO $getpwent_r_proto	/**/
+?H:#$d_getpwent_r HAS_GETPWENT_R          /**/
+?H:#define GETPWENT_R_PROTO $getpwent_r_proto     /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_getpwent_r
+?LINT:set getpwent_r_proto
 : see if getpwent_r exists
 set getpwent_r d_getpwent_r
 eval $inlibc
 case "$d_getpwent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
-	try='extern int getpwent_r(struct passwd*, char*, size_t, struct passwd**);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		getpwent_r_proto=53
-	else
-		try='extern int getpwent_r(struct passwd*, char*, int, struct passwd**);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			getpwent_r_proto=45
-		else
-			try='extern int getpwent_r(struct passwd*, char*, int);'
-			if ./protochk "$try" $hdrs; then
-				echo "Your system has $try"
-				getpwent_r_proto=13
-			else
-				try='extern int getpwent_r(struct passwd*, char *, int, FILE**);'
-				if ./protochk "$try" $hdrs; then
-					echo "Your system has $try"
-					getpwent_r_proto=77
-				else
-					echo "I do not recognize the prototype of your getpwent_r, not using it." >&4
-					d_getpwent_r="$undef"
-					getpwent_r_proto=0
-				fi
-			fi
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_pwd pwd.h"
+	case "$getpwent_r_proto" in
+	'')	try='extern int getpwent_r(struct passwd*, char*, size_t, struct passwd**);'
+		./protochk "$try" $hdrs && getpwent_r_proto=I_SBWR;
 	;;
-*)	getpwent_r_proto=0 ;;
+	esac
+	case "$getpwent_r_proto" in
+	'')	try='extern int getpwent_r(struct passwd*, char*, int, struct passwd**);'
+		./protochk "$try" $hdrs && getpwent_r_proto=I_SBIR;
+	;;
+	esac
+	case "$getpwent_r_proto" in
+	'')	try='extern int getpwent_r(struct passwd*, char*, int);'
+		./protochk "$try" $hdrs && getpwent_r_proto=I_SBI;
+	;;
+	esac
+	case "$getpwent_r_proto" in
+	'')	try='extern int getpwent_r(struct passwd*, char*, int, FILE**);'
+		./protochk "$try" $hdrs && getpwent_r_proto=I_SBIH;
+	;;
+	esac
+	case "$getpwent_r_proto" in
+	'') d_getpwent_r=undef ; echo "Disabling getpwent_r, cannot find prototype." ;;
+	* ) getpwent_r_proto="REENTRANT_$getpwent_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
-
 

@@ -1,57 +1,46 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_setgrent_r setgrent_r_proto: Inlibc Protochk i_systypes i_grp
-?MAKE:	-pick add $@ %<
+?MAKE:d_setgrent_r setgrent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_setgrent_r:
-?S:	This variable conditionally defines the HAS_SETGRENT_R symbol,
-?S:	which indicates to the C program that the setgrent_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_SETGRENT_R symbol,
+?S:     which indicates to the C program that the setgrent_r()
+?S:     routine is available.
 ?S:.
 ?S:setgrent_r_proto:
-?S:	This variable encodes the prototype of setgrent_r.
+?S:     This variable encodes the prototype of setgrent_r.
 ?S:.
 ?C:HAS_SETGRENT_R:
-?C:	This symbol, if defined, indicates that the setgrent_r routine
-?C:	is available to setgrent re-entrantly.
+?C:     This symbol, if defined, indicates that the setgrent_r routine
+?C:     is available to setgrent re-entrantly.
 ?C:.
 ?C:SETGRENT_R_PROTO:
-?C:	This symbol encodes the prototype of setgrent_r.
-?C:	  65	int  setgrent_r(FILE**)
-?C:	  64	void setgrent_r(FILE**)
-?C:	The 65 is preferred since it returns success/failure.
+?C:     This symbol encodes the prototype of setgrent_r.
 ?C:.
-?H:#$d_setgrent_r HAS_SETGRENT_R		/**/
-?H:#define SETGRENT_R_PROTO $setgrent_r_proto	/**/
+?H:#$d_setgrent_r HAS_SETGRENT_R          /**/
+?H:#define SETGRENT_R_PROTO $setgrent_r_proto     /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_setgrent_r
+?LINT:set setgrent_r_proto
 : see if setgrent_r exists
 set setgrent_r d_setgrent_r
 eval $inlibc
 case "$d_setgrent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_grp grp.h"
-	try='extern int setgrent_r(FILE **);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		setgrent_r_proto=65
-	else
-		try='extern void setgrent_r(FILE **);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			setgrent_r_proto=64
-		else
-			echo "I do not recognize the prototype of your setgrent_r, not using it." >&4
-			d_setgrent_r="$undef"
-			setgrent_r_proto=0
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_grp grp.h"
+	case "$setgrent_r_proto" in
+	'')	try='extern int setgrent_r(FILE**);'
+		./protochk "$try" $hdrs && setgrent_r_proto=I_H;
 	;;
-*)	setgrent_r_proto=0 ;;
+	esac
+	case "$setgrent_r_proto" in
+	'')	try='extern void setgrent_r(FILE**);'
+		./protochk "$try" $hdrs && setgrent_r_proto=V_H;
+	;;
+	esac
+	case "$setgrent_r_proto" in
+	'') d_setgrent_r=undef ; echo "Disabling setgrent_r, cannot find prototype." ;;
+	* ) setgrent_r_proto="REENTRANT_$setgrent_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
 

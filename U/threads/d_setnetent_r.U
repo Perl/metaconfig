@@ -1,0 +1,41 @@
+?MAKE:d_setnetent_r setnetent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
+?S:d_setnetent_r:
+?S:     This variable conditionally defines the HAS_SETNETENT_R symbol,
+?S:     which indicates to the C program that the setnetent_r()
+?S:     routine is available.
+?S:.
+?S:setnetent_r_proto:
+?S:     This variable encodes the prototype of setnetent_r.
+?S:.
+?C:HAS_SETNETENT_R:
+?C:     This symbol, if defined, indicates that the setnetent_r routine
+?C:     is available to setnetent re-entrantly.
+?C:.
+?C:SETNETENT_R_PROTO:
+?C:     This symbol encodes the prototype of setnetent_r.
+?C:.
+?H:#$d_setnetent_r HAS_SETNETENT_R          /**/
+?H:#define SETNETENT_R_PROTO $setnetent_r_proto     /**/
+?H:.
+?T:try hdrs
+?LINT:set d_setnetent_r
+?LINT:set setnetent_r_proto
+: see if setnetent_r exists
+set setnetent_r d_setnetent_r
+eval $inlibc
+case "$d_setnetent_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	case "$setnetent_r_proto" in
+	'')	try='extern int setnetent_r(int, struct netent_data*);'
+		./protochk "$try" $hdrs && setnetent_r_proto=I_IS;
+	;;
+	esac
+	case "$setnetent_r_proto" in
+	'') d_setnetent_r=undef ; echo "Disabling setnetent_r, cannot find prototype." ;;
+	* ) setnetent_r_proto="REENTRANT_$setnetent_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
+

@@ -1,25 +1,41 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_srandom_r: Inlibc
-?MAKE:	-pick add $@ %<
+?MAKE:d_srandom_r srandom_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_srandom_r:
-?S:	This variable conditionally defines the HAS_SRANDOM_R symbol,
-?S:	which indicates to the C program that the srandom_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_SRANDOM_R symbol,
+?S:     which indicates to the C program that the srandom_r()
+?S:     routine is available.
+?S:.
+?S:srandom_r_proto:
+?S:     This variable encodes the prototype of srandom_r.
 ?S:.
 ?C:HAS_SRANDOM_R:
-?C:	This symbol, if defined, indicates that the srandom_r routine
-?C:	is available to srandom re-entrantly.
+?C:     This symbol, if defined, indicates that the srandom_r routine
+?C:     is available to srandom re-entrantly.
 ?C:.
-?H:#$d_srandom_r HAS_SRANDOM_R		/**/
+?C:SRANDOM_R_PROTO:
+?C:     This symbol encodes the prototype of srandom_r.
+?C:.
+?H:#$d_srandom_r HAS_SRANDOM_R          /**/
+?H:#define SRANDOM_R_PROTO $srandom_r_proto     /**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_srandom_r
+?LINT:set srandom_r_proto
 : see if srandom_r exists
 set srandom_r d_srandom_r
 eval $inlibc
+case "$d_srandom_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_stdlib stdlib.h"
+	case "$srandom_r_proto" in
+	'')	try='extern int srandom_r(unsigned int, struct random_data*);'
+		./protochk "$try" $hdrs && srandom_r_proto=I_TS;
+	;;
+	esac
+	case "$srandom_r_proto" in
+	'') d_srandom_r=undef ; echo "Disabling srandom_r, cannot find prototype." ;;
+	* ) srandom_r_proto="REENTRANT_$srandom_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
 

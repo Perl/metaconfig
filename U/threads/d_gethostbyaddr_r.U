@@ -1,0 +1,66 @@
+?MAKE:d_gethostbyaddr_r gethostbyaddr_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
+?S:d_gethostbyaddr_r:
+?S:     This variable conditionally defines the HAS_GETHOSTBYADDR_R symbol,
+?S:     which indicates to the C program that the gethostbyaddr_r()
+?S:     routine is available.
+?S:.
+?S:gethostbyaddr_r_proto:
+?S:     This variable encodes the prototype of gethostbyaddr_r.
+?S:.
+?C:HAS_GETHOSTBYADDR_R:
+?C:     This symbol, if defined, indicates that the gethostbyaddr_r routine
+?C:     is available to gethostbyaddr re-entrantly.
+?C:.
+?C:GETHOSTBYADDR_R_PROTO:
+?C:     This symbol encodes the prototype of gethostbyaddr_r.
+?C:.
+?H:#$d_gethostbyaddr_r HAS_GETHOSTBYADDR_R          /**/
+?H:#define GETHOSTBYADDR_R_PROTO $gethostbyaddr_r_proto     /**/
+?H:.
+?T:try hdrs
+?LINT:set d_gethostbyaddr_r
+?LINT:set gethostbyaddr_r_proto
+: see if gethostbyaddr_r exists
+set gethostbyaddr_r d_gethostbyaddr_r
+eval $inlibc
+case "$d_gethostbyaddr_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	case "$gethostbyaddr_r_proto" in
+	'')	try='extern int gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, struct hostent**, int*);'
+		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CWISBRE;
+	;;
+	esac
+	case "$gethostbyaddr_r_proto" in
+	'')	try='extern struct hostent* gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, int, int*);'
+		./protochk "$try" $hdrs && gethostbyaddr_r_proto=S_CWISBIE;
+	;;
+	esac
+	case "$gethostbyaddr_r_proto" in
+	'')	try='extern struct hostent* gethostbyaddr_r(const char*, int, int, struct hostent*, char*, int, int*);'
+		./protochk "$try" $hdrs && gethostbyaddr_r_proto=S_CIISBIE;
+	;;
+	esac
+	case "$gethostbyaddr_r_proto" in
+	'')	try='extern int gethostbyaddr_r(const char*, size_t, int, struct hostent*, struct hostent);'
+		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CWISD;
+	;;
+	esac
+	case "$gethostbyaddr_r_proto" in
+	'')	try='extern int gethostbyaddr_r(const char*, int, int, struct hostent*, struct hostent);'
+		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CIISD;
+	;;
+	esac
+	case "$gethostbyaddr_r_proto" in
+	'')	try='extern int gethostbyaddr_r(const char*, int, int);'
+		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CII;
+	;;
+	esac
+	case "$gethostbyaddr_r_proto" in
+	'') d_gethostbyaddr_r=undef ; echo "Disabling gethostbyaddr_r, cannot find prototype." ;;
+	* ) gethostbyaddr_r_proto="REENTRANT_$gethostbyaddr_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
+

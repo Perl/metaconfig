@@ -1,25 +1,46 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_getspnam_r: Inlibc
-?MAKE:	-pick add $@ %<
+?MAKE:d_getspnam_r getspnam_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_getspnam_r:
-?S:	This variable conditionally defines the HAS_GETSPNAM_R symbol,
-?S:	which indicates to the C prospam that the getspnam_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_GETSPNAM_R symbol,
+?S:     which indicates to the C program that the getspnam_r()
+?S:     routine is available.
+?S:.
+?S:getspnam_r_proto:
+?S:     This variable encodes the prototype of getspnam_r.
 ?S:.
 ?C:HAS_GETSPNAM_R:
-?C:	This symbol, if defined, indicates that the getspnam_r routine
-?C:	is available to getspnam re-entrantly.
+?C:     This symbol, if defined, indicates that the getspnam_r routine
+?C:     is available to getspnam re-entrantly.
 ?C:.
-?H:#$d_getspnam_r HAS_GETSPNAM_R		/**/
+?C:GETSPNAM_R_PROTO:
+?C:     This symbol encodes the prototype of getspnam_r.
+?C:.
+?H:#$d_getspnam_r HAS_GETSPNAM_R          /**/
+?H:#define GETSPNAM_R_PROTO $getspnam_r_proto     /**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_getspnam_r
+?LINT:set getspnam_r_proto
 : see if getspnam_r exists
 set getspnam_r d_getspnam_r
 eval $inlibc
+case "$d_getspnam_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_shadow shadow.h"
+	case "$getspnam_r_proto" in
+	'')	try='extern int getspnam_r(const char*, struct spwd*, char*, size_t, struct spwd**);'
+		./protochk "$try" $hdrs && getspnam_r_proto=I_CSBWR;
+	;;
+	esac
+	case "$getspnam_r_proto" in
+	'')	try='extern struct spwd* getspnam_r(const char*, struct spwd*, char*, int);'
+		./protochk "$try" $hdrs && getspnam_r_proto=S_CSBI;
+	;;
+	esac
+	case "$getspnam_r_proto" in
+	'') d_getspnam_r=undef ; echo "Disabling getspnam_r, cannot find prototype." ;;
+	* ) getspnam_r_proto="REENTRANT_$getspnam_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
 

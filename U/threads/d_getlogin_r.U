@@ -1,25 +1,46 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_getlogin_r: Inlibc
-?MAKE:	-pick add $@ %<
+?MAKE:d_getlogin_r getlogin_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_getlogin_r:
-?S:	This variable conditionally defines the HAS_GETLOGIN_R symbol,
-?S:	which indicates to the C program that the getlogin_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_GETLOGIN_R symbol,
+?S:     which indicates to the C program that the getlogin_r()
+?S:     routine is available.
+?S:.
+?S:getlogin_r_proto:
+?S:     This variable encodes the prototype of getlogin_r.
 ?S:.
 ?C:HAS_GETLOGIN_R:
-?C:	This symbol, if defined, indicates that the getlogin_r routine
-?C:	is available to getlogin re-entrantly.
+?C:     This symbol, if defined, indicates that the getlogin_r routine
+?C:     is available to getlogin re-entrantly.
 ?C:.
-?H:#$d_getlogin_r HAS_GETLOGIN_R		/**/
+?C:GETLOGIN_R_PROTO:
+?C:     This symbol encodes the prototype of getlogin_r.
+?C:.
+?H:#$d_getlogin_r HAS_GETLOGIN_R          /**/
+?H:#define GETLOGIN_R_PROTO $getlogin_r_proto     /**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_getlogin_r
+?LINT:set getlogin_r_proto
 : see if getlogin_r exists
 set getlogin_r d_getlogin_r
 eval $inlibc
+case "$d_getlogin_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_unistd unistd.h"
+	case "$getlogin_r_proto" in
+	'')	try='extern int getlogin_r(char*, size_t);'
+		./protochk "$try" $hdrs && getlogin_r_proto=I_AW;
+	;;
+	esac
+	case "$getlogin_r_proto" in
+	'')	try='extern int getlogin_r(char*, int);'
+		./protochk "$try" $hdrs && getlogin_r_proto=I_AI;
+	;;
+	esac
+	case "$getlogin_r_proto" in
+	'') d_getlogin_r=undef ; echo "Disabling getlogin_r, cannot find prototype." ;;
+	* ) getlogin_r_proto="REENTRANT_$getlogin_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
 

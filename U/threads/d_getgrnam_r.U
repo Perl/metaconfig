@@ -1,71 +1,56 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_getgrnam_r getgrnam_r_proto: Inlibc Protochk i_systypes i_grp
-?MAKE:	-pick add $@ %<
+?MAKE:d_getgrnam_r getgrnam_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_getgrnam_r:
-?S:	This variable conditionally defines the HAS_GETGRNAM_R symbol,
-?S:	which indicates to the C propwam that the getgrnam_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_GETGRNAM_R symbol,
+?S:     which indicates to the C program that the getgrnam_r()
+?S:     routine is available.
 ?S:.
 ?S:getgrnam_r_proto:
-?S:	This variable encodes the prototype of getgrnam_r.
+?S:     This variable encodes the prototype of getgrnam_r.
 ?S:.
 ?C:HAS_GETGRNAM_R:
-?C:	This symbol, if defined, indicates that the getgrnam_r routine
-?C:	is available to getgrnam re-entrantly.
+?C:     This symbol, if defined, indicates that the getgrnam_r routine
+?C:     is available to getgrnam re-entrantly.
 ?C:.
 ?C:GETGRNAM_R_PROTO:
-?C:	This symbol encodes the prototype of getgrnam_r.
-?C:	 13	int   getgrnam_r(char*, struct group*, char*, int)
-?C:	 15	struct group* getgrnam_r(char*, struct group*, char*, int)
-?C:	 45	int   getgrnam_r(char*, struct group*, char*, int, struct group**)
-?C:	 53	int   getgrnam_r(char*, struct group*, char*, size_t, struct group**)
-?C:	The 53 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:     This symbol encodes the prototype of getgrnam_r.
 ?C:.
-?H:#$d_getgrnam_r HAS_GETGRNAM_R		/**/
-?H:#define GETGRNAM_R_PROTO $getgrnam_r_proto	/**/
+?H:#$d_getgrnam_r HAS_GETGRNAM_R          /**/
+?H:#define GETGRNAM_R_PROTO $getgrnam_r_proto     /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_getgrnam_r
+?LINT:set getgrnam_r_proto
 : see if getgrnam_r exists
 set getgrnam_r d_getgrnam_r
 eval $inlibc
 case "$d_getgrnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_grp grp.h"
-	try='extern int getgrnam_r(const char*, struct group*, char*, size_t, struct group**);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		getgrnam_r_proto=53
-	else
-		try='extern int getgrnam_r(const char*, struct group*, char*, int, struct group**);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			getgrnam_r_proto=45
-		else
-			try='extern int getgrnam_r(const char*, struct group*, char*, int);'
-			if ./protochk "$try" $hdrs; then
-				echo "Your system has $try"
-				getgrnam_r_proto=13
-			else
-				try='extern struct group* getgrnam_r(const char*, struct group*, char*, int);'
-				if ./protochk "$try" $hdrs; then
-					echo "Your system has $try"
-					getgrnam_r_proto=15
-				else
-					echo "I do not recognize the prototype of your getgrnam_r, not using it." >&4
-					d_getgrnam_r="$undef"
-					getgrnam_r_proto=0
-				fi
-			fi
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_grp grp.h"
+	case "$getgrnam_r_proto" in
+	'')	try='extern int getgrnam_r(const char*, struct group*, char*, size_t, struct group**);'
+		./protochk "$try" $hdrs && getgrnam_r_proto=I_CSBWR;
 	;;
-*)	getgrnam_r_proto=0 ;;
+	esac
+	case "$getgrnam_r_proto" in
+	'')	try='extern int getgrnam_r(const char*, struct group*, char*, int, struct group**);'
+		./protochk "$try" $hdrs && getgrnam_r_proto=I_CSBIR;
+	;;
+	esac
+	case "$getgrnam_r_proto" in
+	'')	try='extern int getgrnam_r(const char*, struct group*, char*, int);'
+		./protochk "$try" $hdrs && getgrnam_r_proto=I_CSBI;
+	;;
+	esac
+	case "$getgrnam_r_proto" in
+	'')	try='extern struct group* getgrnam_r(const char*, struct group*, char*, int);'
+		./protochk "$try" $hdrs && getgrnam_r_proto=S_CSBI;
+	;;
+	esac
+	case "$getgrnam_r_proto" in
+	'') d_getgrnam_r=undef ; echo "Disabling getgrnam_r, cannot find prototype." ;;
+	* ) getgrnam_r_proto="REENTRANT_$getgrnam_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
 

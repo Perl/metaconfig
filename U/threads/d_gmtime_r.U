@@ -1,57 +1,46 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_time
-?MAKE:	-pick add $@ %<
+?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_gmtime_r:
-?S:	This variable conditionally defines the HAS_GMTIME_R symbol,
-?S:	which indicates to the C program that the gmtime_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_GMTIME_R symbol,
+?S:     which indicates to the C program that the gmtime_r()
+?S:     routine is available.
 ?S:.
 ?S:gmtime_r_proto:
-?S:	This variable encodes the prototype of gmtime_r.
+?S:     This variable encodes the prototype of gmtime_r.
 ?S:.
 ?C:HAS_GMTIME_R:
-?C:	This symbol, if defined, indicates that the gmtime_r routine
-?C:	is available to gmtime re-entrantly.
+?C:     This symbol, if defined, indicates that the gmtime_r routine
+?C:     is available to gmtime re-entrantly.
 ?C:.
 ?C:GMTIME_R_PROTO:
-?C:	This symbol encodes the prototype of gmtime_r.
-?C:	  1	int        gmtime_r(time_t *, struct tm*)
-?C:	  2	struct tm* gmtime_r(time_t *, struct tm*)
-?C:	The 2 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:     This symbol encodes the prototype of gmtime_r.
 ?C:.
-?H:#$d_gmtime_r HAS_GMTIME_R		/**/
-?H:#define GMTIME_R_PROTO $gmtime_r_proto	/**/
+?H:#$d_gmtime_r HAS_GMTIME_R          /**/
+?H:#define GMTIME_R_PROTO $gmtime_r_proto     /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_gmtime_r
+?LINT:set gmtime_r_proto
 : see if gmtime_r exists
 set gmtime_r d_gmtime_r
 eval $inlibc
 case "$d_gmtime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_time time.h"
-	try='extern struct tm* gmtime_r(time_t *, struct tm*);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		gmtime_r_proto=2
-	else
-		try='extern int gmtime_r(time_t *, struct tm*);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			gmtime_r_proto=1
-		else
-			echo "I do not recognize the prototype of your gmtime_r, not using it." >&4
-			d_gmtime_r="$undef"
-			gmtime_r_proto=0
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_time time.h"
+	case "$gmtime_r_proto" in
+	'')	try='extern struct tm* gmtime_r(const time_t*, struct tm*);'
+		./protochk "$try" $hdrs && gmtime_r_proto=S_TS;
 	;;
-*)	gmtime_r_proto=0 ;;
+	esac
+	case "$gmtime_r_proto" in
+	'')	try='extern int gmtime_r(const time_t*, struct tm*);'
+		./protochk "$try" $hdrs && gmtime_r_proto=I_TS;
+	;;
+	esac
+	case "$gmtime_r_proto" in
+	'') d_gmtime_r=undef ; echo "Disabling gmtime_r, cannot find prototype." ;;
+	* ) gmtime_r_proto="REENTRANT_$gmtime_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
 

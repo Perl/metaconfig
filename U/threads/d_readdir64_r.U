@@ -1,57 +1,46 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
 ?MAKE:d_readdir64_r readdir64_r_proto: Inlibc Protochk i_systypes i_dirent
-?MAKE:	-pick add $@ %<
+?MAKE:  -pick add $@ %<
 ?S:d_readdir64_r:
-?S:	This variable conditionally defines the HAS_READDIR64_R symbol,
-?S:	which indicates to the C program that the readdir64_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_READDIR64_R symbol,
+?S:     which indicates to the C program that the readdir64_r()
+?S:     routine is available.
 ?S:.
 ?S:readdir64_r_proto:
-?S:	This variable encodes the prototype of readdir64_r.
+?S:     This variable encodes the prototype of readdir64_r.
 ?S:.
 ?C:HAS_READDIR64_R:
-?C:	This symbol, if defined, indicates that the readdir64_r routine
-?C:	is available to readdir64 re-entrantly.
+?C:     This symbol, if defined, indicates that the readdir64_r routine
+?C:     is available to readdir64 re-entrantly.
 ?C:.
 ?C:READDIR64_R_PROTO:
-?C:	This symbol encodes the prototype of readdir64_r.
-?C:	  1	int readdir64_r(DIR*, struct dirent*)
-?C:	 33	int readdir64_r(DIR*, struct dirent*, struct dirent**)
-?C:	The 33 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:     This symbol encodes the prototype of readdir64_r.
 ?C:.
-?H:#$d_readdir64_r HAS_READDIR64_R		/**/
-?H:#define READDIR64_R_PROTO $readdir64_r_proto	/**/
+?H:#$d_readdir64_r HAS_READDIR64_R          /**/
+?H:#define READDIR64_R_PROTO $readdir64_r_proto     /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_readdir64_r
+?LINT:set readdir64_r_proto
 : see if readdir64_r exists
 set readdir64_r d_readdir64_r
 eval $inlibc
 case "$d_readdir64_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_dirent dirent.h"
-	try='extern int readdir64_r(DIR*, struct dirent*, struct dirent**);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		readdir64_r_proto=33
-	else
-		try='extern int readdir64_r(DIR*, struct dirent*);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			readdir64_r_proto=1
-		else
-			echo "I do not recognize the prototype of your readdir64_r, not using it." >&4
-			d_readdir64_r="$undef"
-			readdir64_r_proto=0
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_dirent dirent.h"
+	case "$readdir64_r_proto" in
+	'')	try='extern int readdir64_r(DIR*, struct dirent64*, struct dirent64**);'
+		./protochk "$try" $hdrs && readdir64_r_proto=I_TSR;
 	;;
-*)	readdir64_r_proto=0 ;;
+	esac
+	case "$readdir64_r_proto" in
+	'')	try='extern int readdir64_r(DIR*, struct dirent64*);'
+		./protochk "$try" $hdrs && readdir64_r_proto=I_TS;
+	;;
+	esac
+	case "$readdir64_r_proto" in
+	'') d_readdir64_r=undef ; echo "Disabling readdir64_r, cannot find prototype." ;;
+	* ) readdir64_r_proto="REENTRANT_$readdir64_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
 

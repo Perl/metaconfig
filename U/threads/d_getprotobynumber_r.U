@@ -1,0 +1,51 @@
+?MAKE:d_getprotobynumber_r getprotobynumber_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
+?S:d_getprotobynumber_r:
+?S:     This variable conditionally defines the HAS_GETPROTOBYNUMBER_R symbol,
+?S:     which indicates to the C program that the getprotobynumber_r()
+?S:     routine is available.
+?S:.
+?S:getprotobynumber_r_proto:
+?S:     This variable encodes the prototype of getprotobynumber_r.
+?S:.
+?C:HAS_GETPROTOBYNUMBER_R:
+?C:     This symbol, if defined, indicates that the getprotobynumber_r routine
+?C:     is available to getprotobynumber re-entrantly.
+?C:.
+?C:GETPROTOBYNUMBER_R_PROTO:
+?C:     This symbol encodes the prototype of getprotobynumber_r.
+?C:.
+?H:#$d_getprotobynumber_r HAS_GETPROTOBYNUMBER_R          /**/
+?H:#define GETPROTOBYNUMBER_R_PROTO $getprotobynumber_r_proto     /**/
+?H:.
+?T:try hdrs
+?LINT:set d_getprotobynumber_r
+?LINT:set getprotobynumber_r_proto
+: see if getprotobynumber_r exists
+set getprotobynumber_r d_getprotobynumber_r
+eval $inlibc
+case "$d_getprotobynumber_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	case "$getprotobynumber_r_proto" in
+	'')	try='extern int getprotobynumber_r(int, char*, struct protoent*, size_t, struct protoent**);'
+		./protochk "$try" $hdrs && getprotobynumber_r_proto=I_IBSWR;
+	;;
+	esac
+	case "$getprotobynumber_r_proto" in
+	'')	try='extern struct protoent* getprotobynumber_r(int, struct protoent*, char*, int);'
+		./protochk "$try" $hdrs && getprotobynumber_r_proto=S_ISBI;
+	;;
+	esac
+	case "$getprotobynumber_r_proto" in
+	'')	try='extern int getprotobynumber_r(int, struct protoent*, struct protoent_data*);'
+		./protochk "$try" $hdrs && getprotobynumber_r_proto=I_ISD;
+	;;
+	esac
+	case "$getprotobynumber_r_proto" in
+	'') d_getprotobynumber_r=undef ; echo "Disabling getprotobynumber_r, cannot find prototype." ;;
+	* ) getprotobynumber_r_proto="REENTRANT_$getprotobynumber_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
+

@@ -1,72 +1,46 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_strerror_r strerror_r_proto: Inlibc Protochk i_systypes i_string
-?MAKE:	-pick add $@ %<
+?MAKE:d_strerror_r strerror_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_strerror_r:
-?S:	This variable conditionally defines the HAS_STRERROR_R symbol,
-?S:	which indicates to the C program that the strerror_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_STRERROR_R symbol,
+?S:     which indicates to the C program that the strerror_r()
+?S:     routine is available.
 ?S:.
 ?S:strerror_r_proto:
-?S:	This variable encodes the prototype of strerror_r.
+?S:     This variable encodes the prototype of strerror_r.
 ?S:.
 ?C:HAS_STRERROR_R:
-?C:	This symbol, if defined, indicates that the strerror_r routine
-?C:	is available to strerror re-entrantly.
+?C:     This symbol, if defined, indicates that the strerror_r routine
+?C:     is available to strerror re-entrantly.
 ?C:.
 ?C:STRERROR_R_PROTO:
-?C:	This symbol encodes the prototype of strerror_r.
-?C:	 13	int   strerror_r(int, char *, int)
-?C:	 14	char* strerror_r(int, char *, int)
-?C:	 21	int   strerror_r(int, char *, size_t)
-?C:	 22	char* strerror_r(int, char *, size_t)
-?C:	The 21 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:     This symbol encodes the prototype of strerror_r.
 ?C:.
-?H:#$d_strerror_r HAS_STRERROR_R		/**/
-?H:#define STRERROR_R_PROTO $strerror_r_proto	/**/
+?H:#$d_strerror_r HAS_STRERROR_R          /**/
+?H:#define STRERROR_R_PROTO $strerror_r_proto     /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_strerror_r
+?LINT:set strerror_r_proto
 : see if strerror_r exists
 set strerror_r d_strerror_r
 eval $inlibc
 case "$d_strerror_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_string string.h"
-	try='extern int strerror_r(int, char*, size_t);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		strerror_r_proto=21
-	else
-		try='extern int strerror_r(int, char*, int);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			strerror_r_proto=13
-		else
-			try='extern char* strerror_r(int, char*, size_t);'
-			if ./protochk "$try" $hdrs; then
-				echo "Your system has $try"
-				strerror_r_proto=22
-			else
-				try='extern char* strerror_r(int, char*, int);'
-				if ./protochk "$try" $hdrs; then
-					echo "Your system has $try"
-					strerror_r_proto=24
-				else
-					echo "I do not recognize the prototype of your strerror_r, not using it." >&4
-					d_strerror_r="$undef"
-					strerror_r_proto=0
-				fi
-			fi
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_string string.h"
+	case "$strerror_r_proto" in
+	'')	try='extern int strerror_r(int, char*, size_t);'
+		./protochk "$try" $hdrs && strerror_r_proto=I_IBW;
 	;;
-*)	strerror_r_proto=0 ;;
+	esac
+	case "$strerror_r_proto" in
+	'')	try='extern char* strerror_r(int, char*, size_t);'
+		./protochk "$try" $hdrs && strerror_r_proto=B_IBW;
+	;;
+	esac
+	case "$strerror_r_proto" in
+	'') d_strerror_r=undef ; echo "Disabling strerror_r, cannot find prototype." ;;
+	* ) strerror_r_proto="REENTRANT_$strerror_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
-
 

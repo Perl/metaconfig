@@ -1,0 +1,51 @@
+?MAKE:d_getservent_r getservent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
+?S:d_getservent_r:
+?S:     This variable conditionally defines the HAS_GETSERVENT_R symbol,
+?S:     which indicates to the C program that the getservent_r()
+?S:     routine is available.
+?S:.
+?S:getservent_r_proto:
+?S:     This variable encodes the prototype of getservent_r.
+?S:.
+?C:HAS_GETSERVENT_R:
+?C:     This symbol, if defined, indicates that the getservent_r routine
+?C:     is available to getservent re-entrantly.
+?C:.
+?C:GETSERVENT_R_PROTO:
+?C:     This symbol encodes the prototype of getservent_r.
+?C:.
+?H:#$d_getservent_r HAS_GETSERVENT_R          /**/
+?H:#define GETSERVENT_R_PROTO $getservent_r_proto     /**/
+?H:.
+?T:try hdrs
+?LINT:set d_getservent_r
+?LINT:set getservent_r_proto
+: see if getservent_r exists
+set getservent_r d_getservent_r
+eval $inlibc
+case "$d_getservent_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	case "$getservent_r_proto" in
+	'')	try='extern int getservent_r(struct servent*, char*, size_t, struct servent**);'
+		./protochk "$try" $hdrs && getservent_r_proto=I_SBWR;
+	;;
+	esac
+	case "$getservent_r_proto" in
+	'')	try='extern int getservent_r(struct servent*, char*, int);'
+		./protochk "$try" $hdrs && getservent_r_proto=I_SBI;
+	;;
+	esac
+	case "$getservent_r_proto" in
+	'')	try='extern int getservent_r(struct servent*, struct servent_data*);'
+		./protochk "$try" $hdrs && getservent_r_proto=I_SD;
+	;;
+	esac
+	case "$getservent_r_proto" in
+	'') d_getservent_r=undef ; echo "Disabling getservent_r, cannot find prototype." ;;
+	* ) getservent_r_proto="REENTRANT_$getservent_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
+

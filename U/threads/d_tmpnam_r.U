@@ -1,25 +1,41 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_tmpnam_r: Inlibc
-?MAKE:	-pick add $@ %<
+?MAKE:d_tmpnam_r tmpnam_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_tmpnam_r:
-?S:	This variable conditionally defines the HAS_TMPNAM_R symbol,
-?S:	which indicates to the C prospam that the tmpnam_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_TMPNAM_R symbol,
+?S:     which indicates to the C program that the tmpnam_r()
+?S:     routine is available.
+?S:.
+?S:tmpnam_r_proto:
+?S:     This variable encodes the prototype of tmpnam_r.
 ?S:.
 ?C:HAS_TMPNAM_R:
-?C:	This symbol, if defined, indicates that the tmpnam_r routine
-?C:	is available to tmpnam re-entrantly.
+?C:     This symbol, if defined, indicates that the tmpnam_r routine
+?C:     is available to tmpnam re-entrantly.
 ?C:.
-?H:#$d_tmpnam_r HAS_TMPNAM_R		/**/
+?C:TMPNAM_R_PROTO:
+?C:     This symbol encodes the prototype of tmpnam_r.
+?C:.
+?H:#$d_tmpnam_r HAS_TMPNAM_R          /**/
+?H:#define TMPNAM_R_PROTO $tmpnam_r_proto     /**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_tmpnam_r
+?LINT:set tmpnam_r_proto
 : see if tmpnam_r exists
 set tmpnam_r d_tmpnam_r
 eval $inlibc
+case "$d_tmpnam_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_stdio stdio.h"
+	case "$tmpnam_r_proto" in
+	'')	try='extern char* tmpnam_r(char*);'
+		./protochk "$try" $hdrs && tmpnam_r_proto=B_A;
+	;;
+	esac
+	case "$tmpnam_r_proto" in
+	'') d_tmpnam_r=undef ; echo "Disabling tmpnam_r, cannot find prototype." ;;
+	* ) tmpnam_r_proto="REENTRANT_$tmpnam_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
 

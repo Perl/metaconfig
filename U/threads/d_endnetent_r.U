@@ -1,0 +1,46 @@
+?MAKE:d_endnetent_r endnetent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
+?S:d_endnetent_r:
+?S:     This variable conditionally defines the HAS_ENDNETENT_R symbol,
+?S:     which indicates to the C program that the endnetent_r()
+?S:     routine is available.
+?S:.
+?S:endnetent_r_proto:
+?S:     This variable encodes the prototype of endnetent_r.
+?S:.
+?C:HAS_ENDNETENT_R:
+?C:     This symbol, if defined, indicates that the endnetent_r routine
+?C:     is available to endnetent re-entrantly.
+?C:.
+?C:ENDNETENT_R_PROTO:
+?C:     This symbol encodes the prototype of endnetent_r.
+?C:.
+?H:#$d_endnetent_r HAS_ENDNETENT_R          /**/
+?H:#define ENDNETENT_R_PROTO $endnetent_r_proto     /**/
+?H:.
+?T:try hdrs
+?LINT:set d_endnetent_r
+?LINT:set endnetent_r_proto
+: see if endnetent_r exists
+set endnetent_r d_endnetent_r
+eval $inlibc
+case "$d_endnetent_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	case "$endnetent_r_proto" in
+	'')	try='extern int endnetent_r(struct netent_data*);'
+		./protochk "$try" $hdrs && endnetent_r_proto=I_S;
+	;;
+	esac
+	case "$endnetent_r_proto" in
+	'')	try='extern void endnetent_r(struct netent_data*);'
+		./protochk "$try" $hdrs && endnetent_r_proto=V_S;
+	;;
+	esac
+	case "$endnetent_r_proto" in
+	'') d_endnetent_r=undef ; echo "Disabling endnetent_r, cannot find prototype." ;;
+	* ) endnetent_r_proto="REENTRANT_$endnetent_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
+

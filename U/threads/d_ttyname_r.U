@@ -1,65 +1,51 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:d_ttyname_r ttyname_r_proto: Inlibc Protochk i_systypes i_unistd
-?MAKE:	-pick add $@ %<
+?MAKE:d_ttyname_r ttyname_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
 ?S:d_ttyname_r:
-?S:	This variable conditionally defines the HAS_TTYNAME_R symbol,
-?S:	which indicates to the C prospam that the ttyname_r()
-?S:	routine is available.
+?S:     This variable conditionally defines the HAS_TTYNAME_R symbol,
+?S:     which indicates to the C program that the ttyname_r()
+?S:     routine is available.
 ?S:.
 ?S:ttyname_r_proto:
-?S:	This variable encodes the prototype of ttyname_r.
+?S:     This variable encodes the prototype of ttyname_r.
 ?S:.
 ?C:HAS_TTYNAME_R:
-?C:	This symbol, if defined, indicates that the ttyname_r routine
-?C:	is available to ttyname re-entrantly.
+?C:     This symbol, if defined, indicates that the ttyname_r routine
+?C:     is available to ttyname re-entrantly.
 ?C:.
 ?C:TTYNAME_R_PROTO:
-?C:	This symbol encodes the prototype of ttyname_r.
-?C:	 13	int   ttyname_r(int, char *, int)
-?C:	 14	char* ttyname_r(int, char *, int)
-?C:	 21	int   ttyname_r(int, char *, size_t)
-?C:	The 21 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:     This symbol encodes the prototype of ttyname_r.
 ?C:.
-?H:#$d_ttyname_r HAS_TTYNAME_R		/**/
-?H:#define TTYNAME_R_PROTO $ttyname_r_proto	/**/
+?H:#$d_ttyname_r HAS_TTYNAME_R          /**/
+?H:#define TTYNAME_R_PROTO $ttyname_r_proto     /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_ttyname_r
+?LINT:set ttyname_r_proto
 : see if ttyname_r exists
 set ttyname_r d_ttyname_r
 eval $inlibc
 case "$d_ttyname_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
-	try='extern int ttyname_r(int, char *, size_t);'
-	if ./protochk "$try" $hdrs; then
-		echo "Your system has $try"
-		ttyname_r_proto=21
-	else
-		try='extern int ttyname_r(int, char *, int);'
-		if ./protochk "$try" $hdrs; then
-			echo "Your system has $try"
-			ttyname_r_proto=13
-		else
-			try='extern char* ttyname_r(int, char *, int);'
-			if ./protochk "$try" $hdrs; then
-				echo "Your system has $try"
-				ttyname_r_proto=14
-			else
-				echo "I do not recognize the prototype of your ttyname_r, not using it." >&4
-				d_ttyname_r="$undef"
-				ttyname_r_proto=0
-
-			fi
-		fi
-	fi
+	hdrs="$i_systypes sys/types.h ${i}_unistd unistd.h"
+	case "$ttyname_r_proto" in
+	'')	try='extern int ttyname_r(int, char*, size_t);'
+		./protochk "$try" $hdrs && ttyname_r_proto=I_IBW;
 	;;
-*)	ttyname_r_proto=0 ;;
+	esac
+	case "$ttyname_r_proto" in
+	'')	try='extern int ttyname_r(int, char*, int);'
+		./protochk "$try" $hdrs && ttyname_r_proto=I_IBI;
+	;;
+	esac
+	case "$ttyname_r_proto" in
+	'')	try='extern char* ttyname_r(int, char*, int);'
+		./protochk "$try" $hdrs && ttyname_r_proto=B_IBI;
+	;;
+	esac
+	case "$ttyname_r_proto" in
+	'') d_ttyname_r=undef ; echo "Disabling ttyname_r, cannot find prototype." ;;
+	* ) ttyname_r_proto="REENTRANT_$ttyname_r_proto" ; echo "$try" ;;
+	esac
+	;;
 esac
 
