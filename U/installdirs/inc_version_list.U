@@ -11,7 +11,7 @@
 ?RCS: $Log: inc_version_list.U,v $
 ?RCS:
 ?MAKE:inc_version_list inc_version_list_init: cat sed Getfile perl5 \
-	version api_versionstring rm Myread archname prefix sitelib
+	version api_versionstring rm Myread archname prefix sitelib_stem
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:inc_version_list:
