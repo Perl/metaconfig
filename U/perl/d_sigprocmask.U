@@ -1,0 +1,29 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_sigprocmask: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sigprocmask:
+?S:	This variable conditionally defines HAS_SIGPROCMASK
+?S:	if sigprocmask() is available to examine or change the signal mask
+?S:	of the calling process.
+?S:.
+?C:HAS_SIGPROCMASK:
+?C:	This symbol, if defined, indicates that the sigprocmask
+?C:	system call is available to examine or change the signal mask
+?C:	of the calling process.
+?C:.
+?H:#$d_sigprocmask HAS_SIGPROCMASK		/**/
+?H:.
+?LINT:set d_sigprocmask
+: see if sigprocmask exists
+set sigprocmask d_sigprocmask
+eval $inlibc
+
