@@ -43,32 +43,32 @@
 ?C:	so the default case (for NeXT) is big endian to catch them. 
 ?C:	This might matter for NeXT 3.0.
 ?C:.
-?H:?%<:#if defined(CROSSCOMPILE) || defined(MULTIARCH)
-?H:?%<:#  ifdef __LITTLE_ENDIAN__
-?H:?%<:#    if LONGSIZE == 4
-?H:?%<:#      define BYTEORDER 0x1234
-?H:?%<:#    else
-?H:?%<:#      if LONGSIZE == 8
-?H:?%<:#        define BYTEORDER 0x12345678
-?H:?%<:#      endif
-?H:?%<:#    endif
-?H:?%<:#  else
-?H:?%<:#    ifdef __BIG_ENDIAN__
-?H:?%<:#      if LONGSIZE == 4
-?H:?%<:#        define BYTEORDER 0x4321
-?H:?%<:#      else
-?H:?%<:#        if LONGSIZE == 8
-?H:?%<:#          define BYTEORDER 0x87654321
-?H:?%<:#        endif
-?H:?%<:#      endif
-?H:?%<:#    endif
-?H:?%<:#  endif
-?H:?%<:#  if !defined(BYTEORDER) && (defined(NeXT) || defined(__NeXT__))
-?H:?%<:#    define BYTEORDER 0x4321
-?H:?%<:#  endif
-?H:?%<:#else
-?H:?%<:#define BYTEORDER 0x$byteorder	/* large digits for MSB */
-?H:?%<:#endif /* NeXT */
+?H:#if defined(CROSSCOMPILE) || defined(MULTIARCH)
+?H:#  ifdef __LITTLE_ENDIAN__
+?H:#    if LONGSIZE == 4
+?H:#      define BYTEORDER 0x1234
+?H:#    else
+?H:#      if LONGSIZE == 8
+?H:#        define BYTEORDER 0x12345678
+?H:#      endif
+?H:#    endif
+?H:#  else
+?H:#    ifdef __BIG_ENDIAN__
+?H:#      if LONGSIZE == 4
+?H:#        define BYTEORDER 0x4321
+?H:#      else
+?H:#        if LONGSIZE == 8
+?H:#          define BYTEORDER 0x87654321
+?H:#        endif
+?H:#      endif
+?H:#    endif
+?H:#  endif
+?H:#  if !defined(BYTEORDER) && (defined(NeXT) || defined(__NeXT__))
+?H:#    define BYTEORDER 0x4321
+?H:#  endif
+?H:#else
+?H:#define BYTEORDER 0x$byteorder	/* large digits for MSB */
+?H:#endif /* NeXT */
 ?H:.
 ?F:!try
 ?T:xxx_prompt
@@ -82,7 +82,7 @@ You seem to be either cross-compiling or doing a multiarchitecture build,
 skipping the byteorder check.
 
 EOM
-	byteorder=''
+	byteorder='0xffff'
 	;;
 *)
 	case "$byteorder" in
@@ -91,8 +91,9 @@ EOM
 In the following, larger digits indicate more significance.  A big-endian
 machine like a Pyramid or a Motorola 680?0 chip will come out to 4321. A
 little-endian machine like a Vax or an Intel 80?86 chip would be 1234. Other
-machines may have weird orders like 3412.  A Cray will report 87654321. If
-the test program works the default is probably right.
+machines may have weird orders like 3412.  A Cray will report 87654321,
+an Alpha will report 12345678. If the test program works the default is
+probably right.
 I'm now running the test program...
 EOM
 		$cat >try.c <<'EOCP'

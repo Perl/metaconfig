@@ -5,340 +5,76 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_fstat64 d_ftruncate64 \
-	d_lockf64 d_lseek64 d_lstat64 d_open64 \
-	d_opendir64 d_readdir64 d_seekdir64 \
-	d_stat64 d_telldir64 d_truncate64 \
-	d_llseek \
-	d_off64_t d_offset_t d_ino64_t d_flock64_s d_dirent64_s: \
-	Inlibc use64bits Setvar test n c cc optimize ccflags rm cat \
-	i_sysstat h_fcntl i_dirent Hasfield
+?MAKE:d_llseek d_fpos64_t d_off64_t: \
+	Inlibc Setvar n c cc optimize ccflags rm cat
 ?MAKE:	-pick add $@ %<
-?S:d_fstat64:
-?S:	This variable conditionally defines the HAS_FSTAT64 symbol, which
-?S:	indicates to the C program that the fstat64() routine is available.
-?S:.
-?S:d_ftruncate64:
-?S:	This variable conditionally defines the HAS_FTRUNCATE64 symbol, which
-?S:	indicates to the C program that the ftruncate64() routine is available.
-?S:.
 ?S:d_llseek:
 ?S:	This variable conditionally defines the HAS_LLSEEK symbol, which
 ?S:	indicates to the C program that the llseek() routine is available.
 ?S:.
-?S:d_lockf64:
-?S:	This variable conditionally defines the HAS_LOCKF64 symbol, which
-?S:	indicates to the C program that the lockf64() routine is available.
-?S:.
-?S:d_lseek64:
-?S:	This variable conditionally defines the HAS_LSEEK64 symbol, which
-?S:	indicates to the C program that the lseek64() routine is available.
-?S:.
-?S:d_readdir64:
-?S:	This variable conditionally defines the HAS_READDIR64 symbol, which
-?S:	indicates to the C program that the readdir64() routine is available.
-?S:.
-?S:d_lstat64:
-?S:	This variable conditionally defines the HAS_LSTAT64 symbol, which
-?S:	indicates to the C program that the lstat64() routine is available.
-?S:.
-?S:d_open64:
-?S:	This variable conditionally defines the HAS_OPEN64 symbol, which
-?S:	indicates to the C program that the open64() routine is available.
-?S:.
-?S:d_opendir64:
-?S:	This variable conditionally defines the HAS_OPENDIR64 symbol, which
-?S:	indicates to the C program that the opendir64() routine is available.
-?S:.
-?S:d_seekdir64:
-?S:	This variable conditionally defines the HAS_SEEKDIR64 symbol, which
-?S:	indicates to the C program that the seekdir64() routine is available.
-?S:.
-?S:d_stat64:
-?S:	This variable conditionally defines the HAS_STAT64 symbol, which
-?S:	indicates to the C program that the stat64() routine is available.
-?S:.
-?S:d_telldir64:
-?S:	This variable conditionally defines the HAS_TELLDIR64 symbol, which
-?S:	indicates to the C program that the telldir64() routine is available.
-?S:.
-?S:d_truncate64:
-?S:	This variable conditionally defines the HAS_TRUNCATE64 symbol, which
-?S:	indicates to the C program that the truncate64() routine is available.
-?S:.
 ?S:d_off64_t:
 ?S:	This symbol will be defined if the C compiler supports off64_t.
 ?S:.
-?S:d_offset_t:
-?S:	This symbol will be defined if the C compiler supports offset_t.
+?S:d_fpos64_t:
+?S:	This symbol will be defined if the C compiler supports fpos64_t.
 ?S:.
-?S:d_ino64_t:
-?S:	This symbol will be defined if the C compiler supports ino64_t.
-?S:.
-?S:d_flock64_s:
-?S:	This symbol will be defined if the C compiler supports struct flock64.
-?S:.
-?S:d_dirent64_s:
-?S:	This symbol will be defined if the C compiler supports struct dirent64.
-?S:.
-?C:HAS_FSTAT64:
-?C:	This symbol, if defined, indicates that the fstat64 routine is
-?C:	available to stat files (fds) larger than 2 gigabytes.
-?C:.
-?C:HAS_FTRUNCATE64:
-?C:	This symbol, if defined, indicates that the ftruncate64 routine is
-?C:	available to tell files larger than 2 gigabytes.
-?C:.
 ?C:HAS_LLSEEK:
 ?C:	This symbol, if defined, indicates that the llseek routine is
 ?C:	available to seek files larger than 2 gigabytes.
 ?C:.
-?C:HAS_LOCKF64:
-?C:	This symbol, if defined, indicates that the lockf64 routine is
-?C:	available to lockf files larger than 2 gigabytes.
-?C:.
-?C:HAS_LSEEK64:
-?C:	This symbol, if defined, indicates that the lseek64 routine is
-?C:	available to seek files larger than 2 gigabytes.
-?C:.
-?C:HAS_LSTAT64:
-?C:	This symbol, if defined, indicates that the lstat64 routine is
-?C:	available to stat files (symlinks) larger than 2 gigabytes.
-?C:.
-?C:HAS_OPEN64:
-?C:	This symbol, if defined, indicates that the open64 routine is
-?C:	available to open files larger than 2 gigabytes.
-?C:.
-?C:HAS_OPENDIR64:
-?C:	This symbol, if defined, indicates that the opendir64 routine is
-?C:	available to opendir files larger than 2 gigabytes.
-?C:.
-?C:HAS_READDIR64:
-?C:	This symbol, if defined, indicates that the readdir64 routine is
-?C:	available to readdir files larger than 2 gigabytes.
-?C:.
-?C:HAS_SEEKDIR64:
-?C:	This symbol, if defined, indicates that the seekdir64 routine is
-?C:	available to seekdir files larger than 2 gigabytes.
-?C:.
-?C:HAS_STAT64:
-?C:	This symbol, if defined, indicates that the stat64 routine is
-?C:	available to stat files larger than 2 gigabytes.
-?C:.
-?C:HAS_TELLDIR64:
-?C:	This symbol, if defined, indicates that the telldir64 routine is
-?C:	available to telldir files larger than 2 gigabytes.
-?C:.
-?C:HAS_TRUNCATE64:
-?C:	This symbol, if defined, indicates that the truncate64 routine is
-?C:	available to truncate files larger than 2 gigabytes.
-?C:.
 ?C:HAS_OFF64_T:
 ?C:	This symbol will be defined if the C compiler supports off64_t.
 ?C:.
-?C:HAS_OFFSET_T:
-?C:	This symbol will be defined if the C compiler supports offset_t.
+?C:HAS_FPOS64_T:
+?C:	This symbol will be defined if the C compiler supports fpos64_t.
 ?C:.
-?C:HAS_INO64_T:
-?C:	This symbol will be defined if the C compiler supports ino64_t.
-?C:.
-?C:HAS_STRUCT_FLOCK64:
-?C:	This symbol will be defined if the C compiler supports struct flock64.
-?C:.
-?C:HAS_STRUCT_DIRENT64:
-?C:	This symbol will be defined if the C compiler supports struct dirent64.
-?C:.
-?H:#$d_fstat64     HAS_FSTAT64		/**/
-?H:#$d_ftruncate64 HAS_FTRUNCATE64	/**/
-?H:#$d_llseek      HAS_LLSEEK		/**/
-?H:#$d_lockf64     HAS_LOCKF64		/**/
-?H:#$d_lseek64     HAS_LSEEK64		/**/
-?H:#$d_lstat64     HAS_LSTAT64		/**/
-?H:#$d_open64      HAS_OPEN64		/**/
-?H:#$d_opendir64   HAS_OPENDIR64	/**/
-?H:#$d_readdir64   HAS_READDIR64	/**/
-?H:#$d_seekdir64   HAS_SEEKDIR64	/**/
-?H:#$d_stat64      HAS_STAT64		/**/
-?H:#$d_telldir64   HAS_TELLDIR64	/**/
-?H:#$d_truncate64  HAS_TRUNCATE64	/**/
-?H:#$d_off64_t      HAS_OFF64_T    	/**/
-?H:#$d_offset_t     HAS_OFFSET_T    	/**/
-?H:#$d_ino64_t      HAS_INO64_T    	/**/
-?H:#$d_flock64_s    HAS_STRUCT_FLOCK64  	/**/
-?H:#$d_dirent64_s   HAS_STRUCT_DIRENT64 	/**/
+?H:#$d_llseek	HAS_LLSEEK		/**/
+?H:#$d_off64_t	HAS_OFF64_T    		/**/
+?H:#$d_fpos64_t	HAS_FPOS64_T    	/**/
 ?H:.
-?T:xxx
-?LINT:set d_fstat64
-?LINT:set d_ftruncate64
 ?LINT:set d_llseek
-?LINT:set d_lockf64
-?LINT:set d_lseek64
-?LINT:set d_lstat64
-?LINT:set d_open64
-?LINT:set d_opendir64
-?LINT:set d_readdir64
-?LINT:set d_seekdir64
-?LINT:set d_stat64
-?LINT:set d_telldir64
-?LINT:set d_truncate64
 ?LINT:set d_off64_t
-?LINT:set d_offset_t
+?LINT:set d_fpos64_t
 ?LINT:set d_ino64_t
-?LINT:set d_flock64_s
-?LINT:set d_dirent64_s
 
-if $test X"$use64bits" = X"$define"; then
-	: see if fstat64 exists
-	set fstat64 d_fstat64
-	eval $inlibc
+: see if llseek exists
+set llseek d_llseek
+eval $inlibc
 
-	: see if ftruncate64 exists
-	set ftruncate64 d_ftruncate64
-	eval $inlibc
-
-	: see if lockf64 exists
-	set lockf64 d_lockf64
-	eval $inlibc
-
-	: see if llseek exists
-	set llseek d_llseek
-	eval $inlibc
-
-	: see if lseek64 exists
-	set lseek64 d_lseek64
-	eval $inlibc
-
-	: see if lstat64 exists
-	set lstat64 d_lstat64
-	eval $inlibc
-
-	: see if open64 exists
-	set open64 d_open64
-	eval $inlibc
-
-	: see if opendir64 exists
-	set opendir64 d_opendir64
-	eval $inlibc
-
-	: see if readdir64 exists
-	set readdir64 d_readdir64
-	eval $inlibc
-
-	: see if seekdir64 exists
-	set seekdir64 d_seekdir64
-	eval $inlibc
-
-	: see if stat64 exists
-	set stat64 d_stat64
-	eval $inlibc
-
-	: see if telldir64 exists
-	set telldir64 d_telldir64
-	eval $inlibc
-
-	: see if truncate64 exists
-	set truncate64 d_truncate64
-	eval $inlibc
-
-	: check for off64_t
-	echo " "
-	echo $n "Checking to see if your system supports off64_t...$c" >&4
-	$cat >try.c <<EOCP
+: check for off64_t
+echo " "
+echo $n "Checking to see if your system supports off64_t...$c" >&4
+$cat >try.c <<EOCP
 #include <sys/types.h>
 #include <unistd.h>
 off64_t foo() { off64_t x; x = 7; return x; }'
 EOCP
-	if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
-		val="$define"
-		echo " Yup, it does." >&4
-	else
-		val="$undef"
-		echo " Nope, it doesn't." >&4
-	fi
-	$rm -f try.*
-	set d_off64_t
-	eval $setvar
-
-	: check for offset_t
-	echo " "
-	echo $n "Checking to see if your system supports offset_t...$c" >&4
-	$cat >try.c <<EOCP
-#include <sys/types.h>
-#include <unistd.h>
-offset_t foo() { offset_t x; x = 7; return x; }'
-EOCP
-	if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
-		val="$define"
-		echo " Yup, it does." >&4
-	else
-		val="$undef"
-		echo " Nope, it doesn't." >&4
-	fi
-	$rm -f try.*
-	set d_offset_t
-	eval $setvar
-
-	: check for ino64_t
-	echo " "
-	echo $n "Checking to see if your system supports ino64_t...$c" >&4
-	val="$undef"
-	case "$i_sysstat" in
-	"$define" )
-		$cat >try.c <<EOCP
-#include <sys/types.h>
-#include <sys/stat.h>
-ino64_t foo() { ino64_t x; x = 7; return x; }'
-EOCP
-		if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
-			val="$define"
-		fi
-		$rm -f try.*
-		;;
-	esac
-	if $test "X$val" = X"$define"; then
-		echo " Yup, it does." >&4
-	else
-		echo " Nope, it doesn't." >&4
-	fi
-	set d_ino64_t
-	eval $setvar
-
-	: check for struct flock64
-	echo " "
-	echo "Checking to see if your system supports struct flock64..." >&4
-	if $h_fcntl; then
-		set d_flock64_s flock64 l_len define fcntl.h
-		eval $hasfield
-	else
-		val="$undef"
-		set d_flock64_s
-		eval $setvar
-	fi
-	case "$d_flock64_s" in
-	"$define")	echo "Yup, it does." >&4
-			;;
-	*)		echo "Nope, it doesn't." >&4
-			;;
-	esac
-
-	: check for struct dirent64
-	echo " "
-	echo "Checking to see if your system supports struct dirent64..." >&4
-	set d_dirent64_s dirent64 d_off $i_dirent dirent.h
-	eval $hasfield
-	case "$d_dirent64_s" in
-	"$define")	echo "Yup, it does." >&4
-			;;
-	*)		echo "Nope, it doesn't." >&4
-			;;
-	esac
-
+if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
+	val="$define"
+	echo " Yup, it does." >&4
 else
 	val="$undef"
-	for xxx in d_fstat64 d_ftruncate64 d_lockf64 d_lseek64 d_lstat64 d_open64 d_opendir64 d_readdir64 d_seekdir64 d_stat64 d_telldir64 d_truncate64 d_off64_t d_offset_t d_ino64_t d_flock64_s d_dirent64_s
-	do
-		set $xxx
-		eval $setvar
-	done
+	echo " Nope, it doesn't." >&4
 fi
+$rm -f try.*
+set d_off64_t
+eval $setvar
+
+: check for fpos64_t
+echo " "
+echo $n "Checking to see if your system supports fpos64_t...$c" >&4
+$cat >try.c <<EOCP
+#include <sys/stdio.h>
+fpos64_t foo() { fpos64_t x; x = 7; return x; }'
+EOCP
+if $cc $optimize $ccflags -c try.c >/dev/null 2>&1; then
+	val="$define"
+	echo " Yup, it does." >&4
+else
+	val="$undef"
+	echo " Nope, it doesn't." >&4
+fi
+$rm -f try.*
+set d_fpos64_t
+eval $setvar
 

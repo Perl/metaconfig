@@ -102,6 +102,7 @@ EOM
 		esac
 	else
 		echo "I can't compile and run the test program." >&4
+                echo "I'm guessing that dlsym doesn't need a leading underscore." >&4
 	fi
 	;;
 esac
