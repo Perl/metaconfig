@@ -16,7 +16,8 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:31  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:patchlevel revision version subversion perl_patchlevel \
+?MAKE:patchlevel revision version subversion \
+	perl_patchlevel version_patchlevel_string \
 	api_revision api_version api_subversion api_versionstring: \
 	package test rsrc echo awk osname
 ?MAKE:	-pick add $@ %<
@@ -99,7 +100,15 @@
 ?S:	the maintenance versus development dichotomy except
 ?S:	by also being increasing.
 ?S:.
-
+?S:version_patchlevel_string:
+?S:	This is a string combining version, subversion and
+?S:	perl_patchlevel (if perl_patchlevel is non-zero).  
+?S:	It is typically something like 
+?S:	'version 7 subversion 1'  or
+?S:	'version 7 subversion 1 patchlevel 11224'
+?S:	It is computed here to avoid duplication of code in myconfig.SH
+?S:	and lib/Config.pm. 
+?S:.
 ?LINT:extern LC_ALL
 ?LINT:change LC_ALL
 ?LINT:extern LANGUAGE
@@ -130,11 +139,15 @@ if $test -r $rsrc/.patch ; then
 		perl_patchlevel=`cat $rsrc/.patch`
 	fi
 fi
+: Define a handy string here to avoid duplication in myconfig.SH and configpm.
+version_patchlevel_string="version $patchlevel subversion $subversion"
 case "$perl_patchlevel" in
-0)  ;;
-'') $echo "(You have $package version $patchlevel subversion $subversion.)" ;;
-*)  $echo "(You have $package version $patchlevel subversion $subversion patchlevel $perl_patchlevel.)" ;;
+0|'') ;;
+*) version_patchlevel_string="$version_patchlevel_string patch $perl_patchlevel" ;;
 esac
+
+$echo "(You have $package $version_patchlevel_string.)"
+
 case "$osname" in
 dos|vms)
 	: XXX Should be a Configure test for double-dots in filenames.
