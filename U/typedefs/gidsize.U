@@ -12,10 +12,10 @@
 ?S:gidsize:
 ?S:	This variable contains the size of a gidtype in bytes.
 ?S:.
-?C:Gid_t_SIZE:
+?C:Gid_t_size:
 ?C:	This symbol holds the size of a Gid_t in bytes.
 ?C:.
-?H:#define Gid_t_SIZE $gidsize		/* GID size */
+?H:#define Gid_t_size $gidsize		/* GID size */
 ?H:.
 ?F:!try
 ?T:yyy zzz

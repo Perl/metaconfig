@@ -12,10 +12,10 @@
 ?S:uidsize:
 ?S:	This variable contains the size of a uidtype in bytes.
 ?S:.
-?C:Uid_t_SIZE:
+?C:Uid_t_size:
 ?C:	This symbol holds the size of a Uid_t in bytes.
 ?C:.
-?H:#define Uid_t_SIZE $uidsize		/* UID size */
+?H:#define Uid_t_size $uidsize		/* UID size */
 ?H:.
 ?F:!try
 ?T:yyy zzz

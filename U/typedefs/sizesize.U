@@ -7,30 +7,30 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:pidsize: Myread Typedef pidtype Compile
+?MAKE:sizesize: Myread Typedef sizetype Compile
 ?MAKE:	-pick add $@ %<
-?S:pidsize:
-?S:	This variable contains the size of a pidtype in bytes.
+?S:sizesize:
+?S:	This variable contains the size of a sizetype in bytes.
 ?S:.
-?C:Pid_t_size:
-?C:	This symbol holds the size of a Pid_t in bytes.
+?C:Size_t_size:
+?C:	This symbol holds the size of a Size_t in bytes.
 ?C:.
-?H:#define Pid_t_size $pidsize		/* PID size */
+?H:#define Size_t_size $sizesize		/* */
 ?H:.
 ?F:!try
 ?T:yyy zzz
-?LINT: set pidsize
+?LINT: set sizesize
 echo " "
-case "$pidtype" in
-*_t) zzz="$pidtype"	;;
-*)   zzz="pid"		;;
+case "$sizetype" in
+*_t) zzz="$sizetype"	;;
+*)   zzz="filesize"	;;
 esac
 echo "Checking the size of $zzz..." >&4 
 cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
-    printf("%d\n", (int)sizeof($pidtype));
+    printf("%d\n", (int)sizeof($sizetype));
     exit(0);
 }
 EOCP
@@ -38,15 +38,16 @@ set try
 if eval $compile_ok; then
 	yyy=`./try`
 	case "$yyy" in
-	'')	pidsize=4
-		echo "(I can't execute the test program--guessing $pidsize.)" >&4
+	'')	sizesize=4
+		echo "(I can't execute the test program--guessing $sizesize.)" >&4
 		;;
-	*)	pidsize=$yyy
-		echo "Your $zzz size is $pidsize bytes."
+	*)	sizesize=$yyy
+		echo "Your $zzz size is $sizesize bytes."
 		;;
 	esac
 else
-	pidsize=4
-	echo "(I can't compile the test program--guessing $pidsize.)" >&4
+	sizesize=4
+	echo "(I can't compile the test program--guessing $sizesize.)" >&4
 fi
+
 
