@@ -322,8 +322,8 @@ $cat >try.c <<EOP
 /* Can we scream? */
 /* Eat dust sed :-) */
 /* In the buffer space, no one can hear you scream. */
-#define FILE_ptr(fp)	((fp)->_ptr)
-#define FILE_cnt(fp)	((fp)->_cnt)
+#define FILE_ptr(fp)	$stdio_ptr
+#define FILE_cnt(fp)	$stdio_cnt
 #include <sys/types.h>
 int main() {
 	FILE *fp = fopen("try.c", "r");
