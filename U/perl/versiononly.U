@@ -24,6 +24,8 @@
 ?S:	pages installed.
 ?S:	Usually, this is undef.
 ?S:.
+?LINT:extern inc_version_list
+?LINT:change inc_version_list
 : determine whether to only install version-specific parts.
 echo " "
 $cat <<EOM
@@ -42,4 +44,10 @@ case "$ans" in
 esac
 set versiononly
 eval $setvar
+
+case "$versiononly" in
+"$define") inc_version_list=''
+           inc_version_list_init=0
+           ;;
+esac
 
