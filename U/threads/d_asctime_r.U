@@ -38,23 +38,23 @@ eval $inlibc
 case "$d_asctime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_time time.h"
-	try='extern char* asctime_r(struct *tm, char *);'
-	if ./protochk $try $hdrs; then
+	try='extern char* asctime_r(const struct *tm, char *);'
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		asctime_r_proto=2
 	else
-		try='extern char* asctime_r(struct tm*, char*, int);'
-		if ./protochk $try $hdrs; then
+		try='extern char* asctime_r(const struct tm*, char*, int);'
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			asctime_r_proto=14
 		else
-			try='extern int asctime_r(struct tm*, char*, int);'
-			if ./protochk $try $hdrs; then
+			try='extern int asctime_r(const struct tm*, char*, int);'
+			if ./protochk "$try" $hdrs; then
 				echo "Your system has $try"
 				asctime_r_proto=13
 			else
-				try='extern int asctime_r(struct tm*, char*);'
-				if ./protochk $try $hdrs; then
+				try='extern int asctime_r(const struct tm*, char*);'
+				if ./protochk "$try" $hdrs; then
 					echo "Your system has $try"
 					asctime_r_proto=1
 				else

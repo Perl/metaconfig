@@ -37,12 +37,12 @@ case "$d_endpwent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
 	try='extern int endpwent_r(FILE **);'
-	if ./protochk $try $hdrs; then
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		endpwent_r_proto=65
 	else
 		try='extern void endpwent_r(FILE **);'
-		if ./protochk $try $hdrs; then
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			endpwent_r_proto=64
 		else

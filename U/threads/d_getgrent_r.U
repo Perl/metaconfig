@@ -39,22 +39,22 @@ case "$d_getgrent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_grp grp.h"
 	try='extern int getgrent_r(struct group*, char*, size_t, struct group**);'
-	if ./protochk $try $hdrs; then
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		getgrent_r_proto=53
 	else
 		try='extern int getgrent_r(struct group*, char*, int, struct group**);'
-		if ./protochk $try $hdrs; then
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			getgrent_r_proto=45
 		else
 			try='extern int getgrent_r(struct group*, char*, int);'
-			if ./protochk $try $hdrs; then
+			if ./protochk "$try" $hdrs; then
 				echo "Your system has $try"
 				getgrent_r_proto=13
 			else
-				try='extern struct group* getgrent_r(struct group*, int, FILE**);'
-				if ./protochk $try $hdrs; then
+				try='extern int getgrent_r(struct group*, char *, int, FILE**);'
+				if ./protochk "$try" $hdrs; then
 					echo "Your system has $try"
 					getgrent_r_proto=77
 				else

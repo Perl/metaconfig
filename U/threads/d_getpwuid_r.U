@@ -38,23 +38,23 @@ eval $inlibc
 case "$d_getpwuid_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
-	try="extern char* getpwuid_r($uidtype, struct passwd*, char*, size_t, struct passwd**);"
-	if ./protochk $try $hdrs; then
+	try="extern int getpwuid_r($uidtype, struct passwd*, char*, size_t, struct passwd**);"
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		getpwuid_r_proto=53
 	else
-		try="extern char* getpwuid_r($uidtype, struct passwd*, char*, size_t, struct passwd**);"
-		if ./protochk $try $hdrs; then
+		try="extern int getpwuid_r($uidtype, struct passwd*, char*, size_t, struct passwd**);"
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			getpwuid_r_proto=45
 		else
 			try="extern int getpwuid_r($uidtype, struct passwd*, char*, size_t);"
-			if ./protochk $try $hdrs; then
+			if ./protochk "$try" $hdrs; then
 				echo "Your system has $try"
 				getpwuid_r_proto=13
 			else
 				try="extern struct passwd* getpwuid_r($uidtype, struct passwd*, char*, size_t);"
-				if ./protochk $try $hdrs; then
+				if ./protochk "$try" $hdrs; then
 					echo "Your system has $try"
 					getpwuid_r_proto=15
 				else

@@ -37,12 +37,12 @@ case "$d_readdir_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_dirent dirent.h"
 	try='extern int readdir_r(DIR*, struct dirent*, struct dirent**);'
-	if ./protochk $try $hdrs; then
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		readdir_r_proto=33
 	else
 		try='extern int readdir_r(DIR*, struct dirent*);'
-		if ./protochk $try $hdrs; then
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			readdir_r_proto=1
 		else

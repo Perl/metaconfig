@@ -38,23 +38,23 @@ eval $inlibc
 case "$d_getgrgid_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_grp grp.h"
-	try="extern char* getgrgid_r($gidtype, struct group*, char*, size_t, struct group**);"
-	if ./protochk $try $hdrs; then
+	try="extern int getgrgid_r($gidtype, struct group*, char*, size_t, struct group**);"
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		getgrgid_r_proto=53
 	else
-		try="extern char* getgrgid_r($gidtype, struct group*, char*, size_t, struct group**);"
-		if ./protochk $try $hdrs; then
+		try="extern int getgrgid_r($gidtype, struct group*, char*, size_t, struct group**);"
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			getgrgid_r_proto=45
 		else
 			try="extern int getgrgid_r($gidtype, struct group*, char*, size_t);"
-			if ./protochk $try $hdrs; then
+			if ./protochk "$try" $hdrs; then
 				echo "Your system has $try"
 				getgrgid_r_proto=13
 			else
 				try="extern struct group* getgrgid_r($gidtype, struct group*, char*, size_t);"
-				if ./protochk $try $hdrs; then
+				if ./protochk "$try" $hdrs; then
 					echo "Your system has $try"
 					getgrgid_r_proto=15
 				else

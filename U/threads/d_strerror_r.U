@@ -39,22 +39,22 @@ case "$d_strerror_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_string string.h"
 	try='extern int strerror_r(int, char*, size_t);'
-	if ./protochk $try $hdrs; then
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		strerror_r_proto=21
 	else
 		try='extern int strerror_r(int, char*, int);'
-		if ./protochk $try $hdrs; then
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			strerror_r_proto=13
 		else
 			try='extern char* strerror_r(int, char*, size_t);'
-			if ./protochk $try $hdrs; then
+			if ./protochk "$try" $hdrs; then
 				echo "Your system has $try"
 				strerror_r_proto=22
 			else
 				try='extern char* strerror_r(int, char*, int);'
-				if ./protochk $try $hdrs; then
+				if ./protochk "$try" $hdrs; then
 					echo "Your system has $try"
 					strerror_r_proto=24
 				else

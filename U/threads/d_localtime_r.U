@@ -37,12 +37,12 @@ case "$d_localtime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_time time.h"
 	try='extern struct tm* localtime_r(time_t *, struct tm*);'
-	if ./protochk $try $hdrs; then
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		localtime_r_proto=2
 	else
 		try='extern int localtime_r(time_t *, struct tm*);'
-		if ./protochk $try $hdrs; then
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			localtime_r_proto=1
 		else

@@ -38,23 +38,23 @@ eval $inlibc
 case "$d_getpwnam_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
-	try='extern char* getpwnam_r(char*, struct passwd*, char*, size_t, struct passwd**);'
-	if ./protochk $try $hdrs; then
+	try='extern int getpwnam_r(const char*, struct passwd*, char*, size_t, struct passwd**);'
+	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		getpwnam_r_proto=53
 	else
-		try='extern char* getpwnam_r(char*, struct passwd*, char*, size_t, struct passwd**);'
-		if ./protochk $try $hdrs; then
+		try='extern int getpwnam_r(const char*, struct passwd*, char*, int, struct passwd**);'
+		if ./protochk "$try" $hdrs; then
 			echo "Your system has $try"
 			getpwnam_r_proto=45
 		else
-			try='extern int getpwnam_r(char*, struct passwd*, char*, size_t);'
-			if ./protochk $try $hdrs; then
+			try='extern int getpwnam_r(const char*, struct passwd*, char*, int);'
+			if ./protochk "$try" $hdrs; then
 				echo "Your system has $try"
 				getpwnam_r_proto=13
 			else
-				try='extern struct passwd* getpwnam_r(char*, struct passwd*, char*, size_t);'
-				if ./protochk $try $hdrs; then
+				try='extern struct passwd* getpwnam_r(const char*, struct passwd*, char*, int);'
+				if ./protochk "$try" $hdrs; then
 					echo "Your system has $try"
 					getpwnam_r_proto=15
 				else
