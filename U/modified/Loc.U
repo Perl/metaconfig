@@ -304,7 +304,7 @@ case "$ln" in
 	ln=$cp
 	;;
 esac
-case "$make" in
+case "$make$gmake" in
 *make*)
 	;;
 *)
