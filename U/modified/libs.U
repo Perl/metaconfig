@@ -82,7 +82,7 @@
 ?X:: default ordered library list
 ?X:libswanted='net socket inet bind nsl nm sdbm gdbm ndbm dbm malloc dl'
 ?X:libswanted="$libswanted dld sun m c_s c posix cposix ndir dir ucb"
-?X:libswanted="$libswanted bsd BSD PW x iconv"
+?X:libswanted="$libswanted bsd BSD PW x"
 ?X:
 ?INIT:: default library list
 ?INIT:libswanted=''
