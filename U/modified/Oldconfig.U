@@ -342,6 +342,7 @@ EOM
 			esac
 			;;
 		next*) osname=next ;;
+		NonStop-UX) osname=nonstopux ;;
 		POSIX-BC | posix-bc ) osname=posix-bc
 			osvers="$3"
 			;;

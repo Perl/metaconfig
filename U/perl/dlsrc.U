@@ -129,13 +129,13 @@ EOM
 			hpux)	dflt='+z' ;;
 			next)	dflt='none' ;;
 			irix*)	dflt='-KPIC' ;;
-			svr4*|esix*|solaris) dflt='-KPIC' ;;
+			svr4*|esix*|solaris|nonstopux) dflt='-KPIC' ;;
 			sunos)	dflt='-pic' ;;
 			*)	dflt='none' ;;
 		    esac
 			;;
 		*)  case "$osname" in
-			svr4*|esix*|solaris) dflt='-fPIC' ;;
+			svr4*|esix*|solaris|nonstopux) dflt='-fPIC' ;;
 			*)	dflt='-fpic' ;;
 		    esac ;;
 	    esac ;;
@@ -212,7 +212,7 @@ EOM
 			next)  dflt='none' ;;
 			solaris) dflt='-G' ;;
 			sunos) dflt='-assert nodefinitions' ;;
-			svr4*|esix*) dflt="-G $ldflags" ;;
+			svr4*|esix*|nonstopux) dflt="-G $ldflags" ;;
 	        *)     dflt='none' ;;
 			esac
 			;;
