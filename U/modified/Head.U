@@ -51,8 +51,8 @@
 ?V:PATH p_ me
 ?T:argv Id p paths OS2_SHELL DJGPP
 ?T:inksh needksh avoidksh newsh changesh reason
-?LINT:extern ENV CDPATH SHELL MACHTYPE
-?LINT:change ENV CDPATH
+?LINT:extern ENV CDPATH SHELL MACHTYPE _exe
+?LINT:change ENV CDPATH _exe
 #! /bin/sh
 #
 # If these # comments don't work, trim them. Don't worry about any other
@@ -278,4 +278,11 @@ esac
 test -d UU || mkdir UU
 ?X: Use ./* to avoid any confirmation prompts from enhanced shells -- WED
 cd UU && rm -f ./*
+
+?X: are we running on the Stratus VOS operating system?
+if test -f "/system/gnu_library/bin/ar.pm"; then
+     _exe=".pm"
+else
+     _exe=""
+fi
 

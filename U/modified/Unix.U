@@ -70,7 +70,6 @@
 ?S:.
 ?LINT: change _a _exe _o p_
 ?INIT:: Trailing extension.  Override this in a hint file, if needed.
-?INIT:_exe=''
 ?INIT:: Extra object files, if any, needed on this platform.
 ?INIT:archobjs=''
 : Define several unixisms.
@@ -79,7 +78,7 @@
 : or the new name.
 case "$_exe" in
 '')	case "$exe_ext" in
-    '')	;;
+	'')	;;
 	*)	_exe="$exe_ext" ;;
 	esac
 	;;

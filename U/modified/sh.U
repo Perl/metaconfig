@@ -41,8 +41,6 @@
 ?X: loaded up even before options are processed.
 ?X:	Can't use ./loc because that depends on startsh, which, in turn
 ?X:	depends on this unit.
-?X: If you need to use _exe (different from .exe)
-?X: you need to set it on comand line: -D_exe=...
 ?X:
 : Find the basic shell for Bourne shell scripts
 case "$sh" in

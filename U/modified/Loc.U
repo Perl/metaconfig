@@ -75,11 +75,11 @@
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip
-?LINT:extern _exe
 ?V::pth loclist trylist
 ?F:./loc test_h
 ?T:thisthing thing xxx dir file say _test DJGPP
 ?LINT:change PATH
+?LINT:extern _exe
 : find out where common programs are
 echo " "
 echo "Locating common programs..." >&4
@@ -292,21 +292,30 @@ for file in $trylist; do
 	esac
 done
 case "$egrep" in
-egrep$_exe)
+egrep)
 	echo "Substituting grep for egrep."
 	egrep=$grep
 	;;
 esac
 @if ln
 case "$ln" in
-ln$_exe)
+ln)
 	echo "Substituting cp for ln."
 	ln=$cp
 	;;
 esac
 @end
 case "$make$gmake" in
-*make$_exe)
+*/gmake|?:[\\/]gmake)
+	# We can't have osname yet.
+	if test -f "/system/gnu_library/bin/ar.pm"; then # Stratus VOS
+		# Assume that gmake, if found, is definitely GNU make
+		# and prefer it over the system make.
+		echo "Substituting gmake for make."
+		make=$gmake
+	fi
+	;;
+*/make|?:[\\/]make)
 	;;
 *)
 	echo "I can't find make or gmake, and my life depends on it." >&4
