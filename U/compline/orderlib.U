@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:26  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:orderlib ranlib: Loc ar cat test rm +cc +ccflags +ldflags +libs _a _o
+?MAKE:orderlib ranlib: Loc ar cat test rm +cc +ccflags +ldflags +libs _a _o run
 ?MAKE:	-pick add $@ %<
 ?S:orderlib:
 ?S:	This variable is "true" if the components of libraries must be ordered
@@ -57,13 +57,13 @@ $cc $ccflags -c bar2.c >/dev/null 2>&1
 $cc $ccflags -c foo.c >/dev/null 2>&1
 $ar rc bar$_a bar2$_o bar1$_o >/dev/null 2>&1
 if $cc -o foobar $ccflags $ldflags foo$_o bar$_a $libs > /dev/null 2>&1 &&
-	./foobar >/dev/null 2>&1; then
+	$run ./foobar >/dev/null 2>&1; then
 	echo "$ar appears to generate random libraries itself."
 	orderlib=false
 	ranlib=":"
 elif $ar ts bar$_a >/dev/null 2>&1 &&
 	$cc -o foobar $ccflags $ldflags foo$_o bar$_a $libs > /dev/null 2>&1 &&
-	./foobar >/dev/null 2>&1; then
+	$run ./foobar >/dev/null 2>&1; then
 		echo "a table of contents needs to be added with '$ar ts'."
 		orderlib=false
 		ranlib="$ar ts"

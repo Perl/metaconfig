@@ -37,7 +37,7 @@
 ?X: This unit is then used by sig_name.U.
 ?X:
 ?MAKE:Signal: test tr rm awk cat grep startsh eunicefix sed sort uniq \
-	Findhdr cppstdin +cppflags cppminus Compile _o _exe trnl
+	Findhdr cppstdin +cppflags cppminus Compile _o _exe trnl run
 ?MAKE:	-pick add $@ %<
 ?X:all files declared as "public" since they're used from other units
 ?F:signal.c signal_cmd signal.lst signal signal.awk
@@ -205,13 +205,13 @@ $cat >>signal_cmd <<'EOS'
 
 set signal
 if eval $compile_ok; then
-	./signal$_exe | $sort -n +1 | $uniq | $awk -f signal.awk >signal.lst
+	$run ./signal$_exe | $sort -n +1 | $uniq | $awk -f signal.awk >signal.lst
 else
 	echo "(I can't seem be able to compile the whole test program)" >&4
 	echo "(I'll try it in little pieces.)" >&4
 	set signal -DJUST_NSIG
 	if eval $compile_ok; then
-		./signal$_exe > signal.nsg
+		$run ./signal$_exe > signal.nsg
 		$cat signal.nsg
 	else
 		echo "I can't seem to figure out how many signals you have." >&4
@@ -232,7 +232,7 @@ EOCP
 		set signal
 		if eval $compile; then
 			echo "SIG${xx} found."
-			./signal$_exe  >> signal.ls1
+			$run ./signal$_exe  >> signal.ls1
 		else
 			echo "SIG${xx} NOT found."
 		fi

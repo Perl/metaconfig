@@ -23,7 +23,7 @@
 ?MAKE:i_db db_hashtype db_prefixtype \
 	db_version_major db_version_minor db_version_patch : \
 	Inhdr +cc +ccflags rm contains cat \
-	Compile d_const libs sed
+	Compile d_const libs sed run
 ?MAKE:	-pick add $@ %<
 ?S:i_db:
 ?S:	This variable conditionally defines the I_DB symbol, and indicates
@@ -88,7 +88,6 @@
 ?H:#define DB_VERSION_MINOR_CFG	$db_version_minor  	/**/
 ?H:#define DB_VERSION_PATCH_CFG	$db_version_patch  	/**/
 ?H:.
-?F:!try
 ?LINT:set i_db
 ?LINT:change libs
 : see if this is a db.h system
@@ -161,9 +160,9 @@ int main(int argc, char *argv[])
 }
 EOCP
 	set try
-	if eval $compile_ok && ./try; then
+	if eval $compile_ok && $run ./try; then
 		echo 'Looks OK.' >&4
-		set `./try 1`
+		set `$run ./try 1`
 		db_version_major=$1
 		db_version_minor=$2
 		db_version_patch=$3

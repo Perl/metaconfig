@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:06  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:doublesize: cat rm Myread Compile
+?MAKE:doublesize: cat rm Myread Compile run
 ?MAKE:	-pick add $@ %<
 ?S:doublesize:
 ?S:	This variable contains the value of the DOUBLESIZE symbol, which
@@ -27,7 +27,6 @@
 ?C:.
 ?H:#define DOUBLESIZE $doublesize		/**/
 ?H:.
-?F:!try
 : check for length of double
 echo " "
 case "$doublesize" in
@@ -43,7 +42,7 @@ int main()
 EOCP
 	set try
 	if eval $compile_ok; then
-		doublesize=`./try`
+		doublesize=`$run ./try`
 		echo "Your double is $doublesize bytes long."
 	else
 		dflt='8'

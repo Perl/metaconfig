@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:gccversion gccosandvers: cat cpp rm +cc \
-	Mcc Myread Guess Options Oldconfig Loc osname osvers
+	Mcc Myread Guess Options Oldconfig Loc osname osvers run
 ?MAKE:	-pick add $@ %<
 ?S:gccversion:
 ?S:	If GNU cc (gcc) is used, this variable holds '1' or '2' to 
@@ -22,7 +22,6 @@
 ?S:	or if nothing useful can be parsed as the os version.
 ?S:.
 ?T:gccshortvers
-?F:!gccvers
 ?D:gccversion=''
 ?LINT:change cpp
 ?LINT:extern ccflags
@@ -33,7 +32,7 @@
 ?X: Check if they have gcc in any guise.  
 echo " "
 echo "Checking for GNU cc in disguise and/or its version number..." >&4
-$cat >gccvers.c <<EOM
+$cat >try.c <<EOM
 #include <stdio.h>
 int main() {
 #ifdef __GNUC__
@@ -46,8 +45,8 @@ int main() {
 	exit(0);
 }
 EOM
-if $cc -o gccvers $ccflags $ldflags gccvers.c; then
-	gccversion=`./gccvers`
+if $cc -o try $ccflags $ldflags try.c; then
+	gccversion=`$run ./try`
 	case "$gccversion" in
 	'') echo "You are not using GNU cc." ;;
 	*)  echo "You are using GNU cc $gccversion."
@@ -66,7 +65,7 @@ else
 		;;
 	esac
 fi
-$rm -f gccvers*
+$rm -f try try.*
 case "$gccversion" in
 1*) cpp=`./loc gcc-cpp $cpp $pth` ;;
 esac

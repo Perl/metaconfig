@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:34  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:charsize: cat rm Myread Compile
+?MAKE:charsize: cat rm Myread Compile run
 ?MAKE:	-pick add $@ %<
 ?S:charsize:
 ?S:	This variable contains the value of the CHARSIZE symbol, which
@@ -27,7 +27,6 @@
 ?C:.
 ?H:#define CHARSIZE $charsize		/**/
 ?H:.
-?F:!try
 : check for length of character
 echo " "
 case "$charsize" in
@@ -43,7 +42,7 @@ int main()
 EOCP
 	set try
 	if eval $compile_ok; then
-		dflt=`./try`
+		dflt=`$run ./try`
 	else
 		dflt='1'
 		echo "(I can't seem to compile the test program.  Guessing...)"

@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:37  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:ptrsize: cat rm Myread Compile voidflags
+?MAKE:ptrsize: cat rm Myread Compile voidflags run
 ?MAKE:	-pick add $@ %<
 ?S:ptrsize:
 ?S:	This variable contains the value of the PTRSIZE symbol, which
@@ -29,7 +29,6 @@
 ?C:.
 ?H:#define PTRSIZE $ptrsize		/**/
 ?H:.
-?F:!try
 : check for length of pointer
 echo " "
 case "$ptrsize" in
@@ -50,7 +49,7 @@ int main()
 EOCP
 	set try
 	if eval $compile_ok; then
-		ptrsize=`./try`
+		ptrsize=`$run ./try`
 		echo "Your pointers are $ptrsize bytes long."
 	else
 		dflt='4'

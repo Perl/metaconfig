@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:sizesize: Myread Typedef sizetype Compile
+?MAKE:sizesize: Myread Typedef sizetype Compile run
 ?MAKE:	-pick add $@ %<
 ?S:sizesize:
 ?S:	This variable contains the size of a sizetype in bytes.
@@ -17,7 +17,6 @@
 ?C:.
 ?H:#define Size_t_size $sizesize		/* */
 ?H:.
-?F:!try
 ?T:yyy zzz
 ?LINT: set sizesize
 echo " "
@@ -36,7 +35,7 @@ int main() {
 EOCP
 set try
 if eval $compile_ok; then
-	yyy=`./try`
+	yyy=`$run ./try`
 	case "$yyy" in
 	'')	sizesize=4
 		echo "(I can't execute the test program--guessing $sizesize.)" >&4

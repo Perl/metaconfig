@@ -7,7 +7,7 @@
 ?RCS:
 ?RCS: $Log: d_union_semun.U,v $
 ?RCS:
-?MAKE:d_union_semun d_semctl_semun d_semctl_semid_ds: Compile Setvar Myread \
+?MAKE:d_union_semun d_semctl_semun d_semctl_semid_ds: Compile Setvar Myread run \
 	cat rm d_sem
 ?MAKE:	-pick add $@ %<
 ?S:d_union_semun:
@@ -45,7 +45,6 @@
 ?H:#$d_semctl_semid_ds USE_SEMCTL_SEMID_DS	/**/
 ?H:.
 ?T:xxx also
-?F:!try
 ?LINT: set d_union_semun d_semctl_semun d_semctl_semid_ds
 : see whether sys/sem.h defines union semun
 echo " "
@@ -146,7 +145,7 @@ END
     val="$undef"
     set try
     if eval $compile; then
-	xxx=`./try`
+	xxx=`$run ./try`
         case "$xxx" in
         semun) val="$define" ;;
         esac
@@ -204,7 +203,7 @@ END
     val="$undef"
     set try
     if eval $compile; then
-        xxx=`./try`
+        xxx=`$run ./try`
         case "$xxx" in
         semid_ds) val="$define" ;;
         esac

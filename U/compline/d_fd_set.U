@@ -22,7 +22,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:d_fd_set d_fd_macros d_fds_bits: Compile cat rm Oldconfig \
-	d_socket i_systime i_sysselct
+	d_socket i_systime i_sysselct run
 ?MAKE:	-pick add $@ %<
 ?S:d_fd_set:
 ?S:	This variable contains the eventual value of the HAS_FD_SET symbol,
@@ -57,7 +57,6 @@
 ?H:#$d_fd_macros HAS_FD_MACROS	/**/
 ?H:#$d_fds_bits HAS_FDS_BITS	/**/
 ?H:.
-?F:!fd_set
 : check for fd_set items
 $cat <<EOM
 
@@ -68,7 +67,7 @@ EOM
 ?X: by <sys/socket.h>.  We won't force people to include
 ?X: <sys/bsdtypes.h> because it might introduce other
 ?X: incompatibilities.
-$cat >fd_set.c <<EOCP
+$cat >try.c <<EOCP
 #$i_systime I_SYS_TIME
 #$i_sysselct I_SYS_SELECT
 #$d_socket HAS_SOCKET
@@ -96,12 +95,12 @@ int main() {
 #endif
 }
 EOCP
-set fd_set -DTRYBITS
+set try -DTRYBITS
 if eval $compile; then
 	d_fds_bits="$define"
 	d_fd_set="$define"
 	echo "Well, your system knows about the normal fd_set typedef..." >&4
-	if ./fd_set; then
+	if $run ./try; then
 		echo "and you have the normal fd_set macros (just as I'd expect)." >&4
 		d_fd_macros="$define"
 	else
@@ -114,12 +113,12 @@ else
 	$cat <<'EOM'
 Hmm, your compiler has some difficulty with fd_set.  Checking further...
 EOM
-	set fd_set
+	set try
 	if eval $compile; then
 		d_fds_bits="$undef"
 		d_fd_set="$define"
 		echo "Well, your system has some sort of fd_set available..." >&4
-		if ./fd_set; then
+		if $run ./try; then
 			echo "and you have the normal fd_set macros." >&4
 			d_fd_macros="$define"
 		else
@@ -135,5 +134,5 @@ EOM
 		d_fd_macros="$undef"
 	fi
 fi
-$rm -f fd_set*
+$rm -f try try.*
 

@@ -7,7 +7,7 @@
 ?RCS:
 ?RCS: $Log: d_fcntl_can_lock.U,v $
 ?RCS:
-?MAKE:d_fcntl_can_lock: d_fcntl Compile Setvar cat rm
+?MAKE:d_fcntl_can_lock: d_fcntl Compile Setvar cat rm run
 ?MAKE:	-pick add $@ %<
 ?S:d_fcntl_can_lock:
 ?S:	This variable conditionally defines the FCNTL_CAN_LOCK symbol
@@ -21,7 +21,6 @@
 ?H:#$d_fcntl_can_lock FCNTL_CAN_LOCK		/**/
 ?H:.
 ?LINT: set d_fcntl_can_lock
-?F: !try
 ?X: fcntl may not be fully functional.  As of November 2000, on VMS and
 ?X: DOS/DJGPP, fctnl-based locking doesn't work.
 ?X: Thanks to Craig A. Berry <craig.berry@psinetcs.com> for this test.
@@ -52,7 +51,7 @@ case "$d_fcntl" in
 "$define")
 	set try
 	if eval $compile_ok; then
-		if ./try; then
+		if $run ./try; then
 			echo "Yes, it seems to work."
 			val="$define"
 		else

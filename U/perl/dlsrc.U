@@ -18,7 +18,7 @@
 ?X:
 ?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags: \
 	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar \
-	cc ccflags ldflags ls gccversion cat rsrc src
+	cc ccflags ldflags ls gccversion cat rsrc src run
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:usedl:
@@ -172,7 +172,7 @@ int main() {
 		exit(1); /* fail */
 }
 EOM
-		if $cc $ccflags $ldflags try.c >/dev/null 2>&1 && ./a.out; then
+		if $cc $ccflags $ldflags try.c >/dev/null 2>&1 && $run ./a.out; then
 			cat <<EOM
 You appear to have ELF support.  I'll use $cc to build dynamic libraries.
 EOM

@@ -18,8 +18,8 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:28  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:byteorder: cat Myread Oldconfig Loc Compile rm \
-	longsize crosscompile multiarch
+?MAKE:byteorder: cat Myread Oldconfig Loc Compile rm run \
+	usecrosscompile multiarch
 ?MAKE:	-pick add $@ %<
 ?S:byteorder:
 ?S:	This variable holds the byte order. In the following, larger digits
@@ -43,7 +43,7 @@
 ?C:	so the default case (for NeXT) is big endian to catch them. 
 ?C:	This might matter for NeXT 3.0.
 ?C:.
-?H:?%<:#if defined(CROSSCOMPILE) || defined(MULTIARCH)
+?H:?%<:#if defined(USE_CROSS_COMPILE) || defined(MULTIARCH)
 ?H:?%<:#  ifdef __LITTLE_ENDIAN__
 ?H:?%<:#    if LONGSIZE == 4
 ?H:?%<:#      define BYTEORDER 0x1234
@@ -70,19 +70,17 @@
 ?H:?%<:#define BYTEORDER 0x$byteorder	/* large digits for MSB */
 ?H:?%<:#endif /* NeXT */
 ?H:.
-?F:!try
 ?T:xxx_prompt
-?LINT:use longsize
 : check for ordering of bytes in a long
 echo " "
-case "$crosscompile$multiarch" in
+case "$usecrosscompile$multiarch" in
 *$define*)
 	$cat <<EOM
 You seem to be either cross-compiling or doing a multiarchitecture build,
 skipping the byteorder check.
 
 EOM
-	byteorder='0xffff'
+	byteorder='ffff'
 	;;
 *)
 	case "$byteorder" in
@@ -119,7 +117,7 @@ EOCP
 		xxx_prompt=y
 		set try
 		if eval $compile && ./try > /dev/null; then
-			dflt=`./try`
+			dflt=`$run ./try`
 			case "$dflt" in
 			[1-4][1-4][1-4][1-4]|12345678|87654321)
 				echo "(The test program ran ok.)"

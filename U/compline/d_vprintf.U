@@ -12,7 +12,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:59  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_vprintf d_charvspr: Compile Guess cat Csym Setvar
+?MAKE:d_vprintf d_charvspr: Compile Guess cat Csym Setvar run rm
 ?MAKE:	-pick add $@ %<
 ?S:d_vprintf:
 ?S:	This variable conditionally defines the HAS_VPRINTF symbol, which
@@ -45,7 +45,7 @@ echo " "
 if set vprintf val -f d_vprintf; eval $csym; $val; then
 	echo 'vprintf() found.' >&4
 	val="$define"
-	$cat >vprintf.c <<'EOF'
+	$cat >try.c <<'EOF'
 #include <varargs.h>
 
 int main() { xxx("foo"); }
@@ -60,8 +60,8 @@ va_dcl
 	exit((unsigned long)vsprintf(buf,"%s",args) > 10L);
 }
 EOF
-	set vprintf
-	if eval $compile && ./vprintf; then
+	set try
+	if eval $compile && $run ./try; then
 		echo "Your vsprintf() returns (int)." >&4
 		val2="$undef"
 	else
@@ -73,6 +73,7 @@ else
 		val="$undef"
 		val2="$undef"
 fi
+$rm -f try try.*
 set d_vprintf
 eval $setvar
 val=$val2

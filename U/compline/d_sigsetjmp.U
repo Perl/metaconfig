@@ -16,7 +16,7 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  15:44:33  ram
 ?RCS: patch61: created
 ?RCS:
-?MAKE:d_sigsetjmp: Compile Setvar cat rm
+?MAKE:d_sigsetjmp: Compile Setvar cat rm run
 ?MAKE:	-pick add $@ %<
 ?S:d_sigsetjmp:
 ?S:	This variable conditionally defines the HAS_SIGSETJMP symbol,
@@ -55,7 +55,6 @@
 ?H:?%<:#endif
 ?H:.
 ?W:%<:Sigjmp_buf Sigsetjmp Siglongjmp
-?F:!try
 ?LINT:set d_sigsetjmp
 : see if sigsetjmp exists
 ?X: We can't check for these symbols with Inlibc because sigsetjmp
@@ -78,7 +77,7 @@ int main()
 EOP
 	set try
 	if eval $compile; then
-		if ./try >/dev/null 2>&1; then
+		if $run ./try >/dev/null 2>&1; then
 			echo "POSIX sigsetjmp found." >&4
 			val="$define"
 		else

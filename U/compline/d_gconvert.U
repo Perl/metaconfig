@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0.1.1	1994/10/29  16:12:51  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_Gconvert: Compile cat Inlibc rm _o i_stdlib d_qgcvt \
+?MAKE:d_Gconvert: Compile cat Inlibc rm _o i_stdlib d_qgcvt run \
 	uselongdouble d_longdbl d_PRIgldbl sPRIgldbl
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
@@ -51,7 +51,6 @@
 ?H:#define Gconvert(x,n,t,b) $d_Gconvert
 ?H:.
 ?T: xxx_list xxx_convert
-?F:!try
 ?X: 
 : Check how to convert floats to strings.
 echo " "
@@ -198,7 +197,7 @@ for xxx_convert in $xxx_list; do
 	set try -DTRY_$xxx_convert
 	if eval $compile; then
 		echo "$xxx_convert() found." >&4
-		if ./try; then
+		if $run ./try; then
 			echo "I'll use $xxx_convert to convert floats into a string." >&4
 			break;
 		else

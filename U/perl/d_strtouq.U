@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_strtouq: Inlibc cat Compile
+?MAKE:d_strtouq: Inlibc cat Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_strtouq:
 ?S:	This variable conditionally defines the HAS_STRTOUQ symbol, which
@@ -17,7 +17,6 @@
 ?C:.
 ?H:#$d_strtouq HAS_STRTOUQ		/**/
 ?H:.
-?F:!try
 ?LINT:set d_strtouq
 : see if strtouq exists
 set strtouq d_strtouq
@@ -59,7 +58,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		case "`./try`" in
+		case "`$run ./try`" in
 		ok) echo "Your strtouq() seems to be working okay." ;;
 		*) cat <<EOM >&4
 Your strtouq() doesn't seem to be working okay.

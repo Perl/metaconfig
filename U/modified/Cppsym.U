@@ -38,8 +38,8 @@
 ?X: are more easily determined.  If you want to add to $al you can do
 ?X: it in Myinit.U.
 ?X: 
-?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: \
-	eunicefix Guess awk cat tr sed sort rm startsh osname exe_ext \
+?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: run \
+	eunicefix Guess awk cat tr sed sort rm startsh osname \
 	+cc +gccversion test comm uniq echo Options trnl \
 	optimize ccflags ldflags libs
 ?MAKE:	-pick add $@ %<
@@ -75,7 +75,6 @@
 ?F:!ccsym.own
 ?X: fake LINT hints
 ?LINT:change cc
-?LINT:change exe_ext
 ?LINT:change optimize
 ?LINT:change ccflags
 ?LINT:change ldflags
@@ -204,7 +203,7 @@ case "$osname-$gccversion" in
 irix-) ccflags="\$ccflags -woff 1178" ;;
 os2-*) ccflags="\$ccflags -Zlinker /PM:VIO" ;;
 esac
-$cc -o try $optimize \$ccflags $ldflags try.c $libs && ./try$exe_ext
+$cc -o try $optimize \$ccflags $ldflags try.c $libs && $run ./try
 EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try

@@ -8,7 +8,7 @@
 ?RCS:	Original author Jarkko Hietaniemi <jhi@iki.fi>
 ?RCS:	Merged into dist by Andy Dougherty  July 13, 1998
 ?RCS:
-?MAKE:ebcdic: Compile Setvar cat rm
+?MAKE:ebcdic: Compile Setvar cat rm run
 ?MAKE:	-pick add $@ %<
 ?S:ebcdic:
 ?S:	This variable conditionally defines EBCDIC if this
@@ -23,10 +23,9 @@
 ?H:#$ebcdic	EBCDIC 		/**/
 ?H:.
 ?LINT:set ebcdic
-?F:!tebcdic tebcdic.c
 echo " "
 echo "Determining whether or not we are on an EBCDIC system..." >&4
-$cat >tebcdic.c <<'EOM'
+$cat >try.c <<'EOM'
 int main()
 {
   if ('M'==0xd4) return 0;
@@ -35,19 +34,19 @@ int main()
 EOM
 
 val=$undef
-set tebcdic
+set try
 if eval $compile_ok; then
-	if ./tebcdic; then
+	if $run ./try; then
 		echo "You seem to speak EBCDIC." >&4
 		val="$define"
 	else
-		echo "Nope, no EBCDIC, probably ASCII or some ISO Latin. Or UTF8." >&4
+		echo "Nope, no EBCDIC, probably ASCII or some ISO Latin. Or UTF-8." >&4
 	fi
 else
 	echo "I'm unable to compile the test program." >&4
 	echo "I'll assume ASCII or some ISO Latin. Or UTF8." >&4
 fi
-$rm -f tebcdic.c tebcdic
+$rm -f try try.*
 set ebcdic
 eval $setvar
 

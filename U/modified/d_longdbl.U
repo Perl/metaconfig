@@ -7,8 +7,8 @@
 ?RCS:
 ?RCS: $Log: d_longdbl.U,v $
 ?RCS:
-?MAKE:d_longdbl longdblsize: Compile Setvar Myread \
-	cat rm test doublesize exe_ext
+?MAKE:d_longdbl longdblsize: Compile Setvar Myread run \
+	cat rm test doublesize
 ?MAKE:	-pick add $@ %<
 ?S:d_longdbl:
 ?S:	This variable conditionally defines HAS_LONG_DOUBLE if 
@@ -34,7 +34,6 @@
 ?H:?LONG_DOUBLESIZE:#endif
 ?H:.
 ?LINT:set d_longdbl
-?F:!try
 : check for long doubles
 echo " "
 echo "Checking to see if you have long double..." >&4
@@ -70,7 +69,7 @@ EOCP
 ?X:	'long double' as just 'double'.
 	set try
 	if eval $compile; then
-		longdblsize=`./try$exe_ext`
+		longdblsize=`$run ./try`
 		echo "Your long doubles are $longdblsize bytes long."
 	else
 		dflt='8'

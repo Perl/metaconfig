@@ -21,7 +21,7 @@
 ?X: Simplify here document for shells that can't handle them well.
 ?X: (Problem reported on FreeBSD; it's unclear if this helps.)  --AD
 ?X:
-?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm Compile \
+?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm Compile run \
 	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar \
 	startsh i_unistd i_string
 ?MAKE:	-pick add $@ %<
@@ -73,7 +73,7 @@
 ?H:#define RD_NODATA $rd_nodata
 ?H:#$d_eofnblk EOF_NONBLOCK
 ?H:.
-?F:!try !try.out !try.ret !try.err
+?F:!try.out !try.ret !try.err
 ?T:status
 ?LINT:use d_open3
 : check for non-blocking I/O stuff
@@ -113,7 +113,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile_ok; then
-		o_nonblock=`./try`
+		o_nonblock=`$run ./try`
 		case "$o_nonblock" in
 		'') echo "I can't figure it out, assuming O_NONBLOCK will do.";;
 		*) echo "Seems like we can use $o_nonblock.";;
@@ -211,7 +211,7 @@ EOCP
 	if eval $compile_ok; then
 ?X: Use script to avoid the possible 'alarm call' message
 		echo "$startsh" >mtry
-		echo "./try >try.out 2>try.ret 3>try.err || exit 4" >>mtry
+		echo "$run ./try >try.out 2>try.ret 3>try.err || exit 4" >>mtry
 		chmod +x mtry
 		./mtry >/dev/null 2>&1
 		case $? in

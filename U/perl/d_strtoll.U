@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_strtoll: Inlibc d_longlong Compile cat
+?MAKE:d_strtoll: Inlibc d_longlong Compile cat run
 ?MAKE:	-pick add $@ %<
 ?S:d_strtoll:
 ?S:	This variable conditionally defines the HAS_STRTOLL symbol, which
@@ -18,7 +18,6 @@
 ?H:#$d_strtoll HAS_STRTOLL		/**/
 ?H:.
 ?T:yyy
-?F:!try
 ?LINT:set d_strtoll
 : see if strtoll exists
 set strtoll d_strtoll
@@ -63,7 +62,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try`
+		yyy=`$run ./try`
 		case "$yyy" in
 		ok) echo "Your strtoll() seems to be working okay." ;;
 		*) cat <<EOM >&4

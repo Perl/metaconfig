@@ -10,7 +10,7 @@
 ?RCS:
 ?MAKE:selectminbits: Compile cat rm Oldconfig d_select \
 	i_time i_systime i_systimek i_sysselct selecttype d_socket \
-	byteorder Myread Setvar
+	byteorder Myread Setvar run
 ?MAKE:	-pick add $@ %<
 ?S:selectminbits:
 ?S:	This variable holds the minimum number of bits operated by select.
@@ -28,7 +28,6 @@
 ?C:.
 ?H:#define SELECT_MIN_BITS 	$selectminbits	/**/
 ?H:.
-?F:!try
 ?T:bits
 : check for the select 'width'
 case "$selectminbits" in
@@ -96,7 +95,7 @@ int main() {
 EOCP
 		set try
 		if eval $compile_ok; then
-			selectminbits=`./try`
+			selectminbits=`$run ./try`
 			case "$selectminbits" in
 			'')	cat >&4 <<EOM
 Cannot figure out on how many bits at a time your select() operates.

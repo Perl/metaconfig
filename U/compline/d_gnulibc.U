@@ -15,7 +15,7 @@
 ?RCS: patch61: created
 ?RCS:
 ?MAKE:d_gnulibc: Myread Oldconfig Setvar rm \
-	Compile
+	Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_gnulibc:
 ?S:	Defined if we're dealing with the GNU C Library.
@@ -48,7 +48,7 @@
 ?X: 
 echo " "
 echo "Checking for GNU C Library..." >&4
-cat >gnulibc.c <<EOM
+cat >try.c <<EOM
 #include <stdio.h>
 int main()
 {
@@ -59,15 +59,15 @@ int main()
 #endif
 }
 EOM
-set gnulibc
-if eval $compile_ok && ./gnulibc; then
+set try
+if eval $compile_ok && $run ./try; then
 	val="$define"
 	echo "You are using the GNU C Library"
 else
 	val="$undef"
 	echo "You are not using the GNU C Library"
 fi
-$rm -f gnulibc*
+$rm -f try try.*
 set d_gnulibc
 eval $setvar
 

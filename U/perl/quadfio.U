@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_PRId64 d_PRIi64 d_PRIu64 d_PRIo64 d_PRIx64 d_PRIXU64 \
 	sPRId64 sPRIi64 sPRIu64 sPRIo64 sPRIx64 sPRIXU64: \
-	quadtype i_inttypes test cat rm Setvar Compile exe_ext
+	quadtype i_inttypes test cat rm Setvar Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_PRId64:
 ?S:	This variable conditionally defines the PERL_PRId64 symbol, which
@@ -93,7 +93,6 @@
 ?H:#$d_PRIx64 PERL_PRIx64	$sPRIx64	/**/
 ?H:#$d_PRIx64 PERL_PRIXU64	$sPRIXU64	/**/
 ?H:.
-?F:!try
 ?T:yyy
 echo " "
 
@@ -112,7 +111,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		12345678901)
 			sPRId64='"d"'; sPRIi64='"i"'; sPRIu64='"u"';
@@ -134,7 +133,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		12345678901)
 			sPRId64='"ld"'; sPRIi64='"li"'; sPRIu64='"lu"';
@@ -157,7 +156,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		12345678901)
 			sPRId64=PRId64; sPRIi64=PRIi64; sPRIu64=PRIu64;
@@ -179,7 +178,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		12345678901)
 			sPRId64='"Ld"'; sPRIi64='"Li"'; sPRIu64='"Lu"';
@@ -201,7 +200,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		12345678901)
 			sPRId64='"lld"'; sPRIi64='"lli"'; sPRIu64='"llu"';
@@ -223,7 +222,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		12345678901)
 			sPRId64='"qd"'; sPRIi64='"qi"'; sPRIu64='"qu"';

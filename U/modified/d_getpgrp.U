@@ -16,7 +16,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:d_getpgrp d_bsdgetpgrp: Guess Inlibc Setvar cat rm \
-	+cc +ccflags +ldflags +libs i_unistd
+	+cc +ccflags +ldflags +libs i_unistd run
 ?MAKE:	-pick add $@ %<
 ?S:d_getpgrp:
 ?S:	This variable conditionally defines HAS_GETPGRP if getpgrp() is
@@ -48,7 +48,7 @@ case "$d_getpgrp" in
 "$define")
 	echo " "
 	echo "Checking to see which flavor of getpgrp is in use..."
-	$cat >set.c <<EOP
+	$cat >try.c <<EOP
 #$i_unistd I_UNISTD
 #include <sys/types.h>
 #ifdef I_UNISTD
@@ -70,10 +70,10 @@ int main()
 	exit(1);
 }
 EOP
-	if $cc -o set -DTRY_BSD_PGRP $ccflags $ldflags set.c $libs >/dev/null 2>&1 && ./set; then
+	if $cc -o try -DTRY_BSD_PGRP $ccflags $ldflags try.c $libs >/dev/null 2>&1 && $run ./try; then
 		echo "You have to use getpgrp(pid) instead of getpgrp()." >&4
 		val="$define"
-	elif $cc -o set $ccflags $ldflags set.c $libs >/dev/null 2>&1 && ./set; then
+	elif $cc -o try $ccflags $ldflags try.c $libs >/dev/null 2>&1 && $run ./try; then
 		echo "You have to use getpgrp() instead of getpgrp(pid)." >&4
 		val="$undef"
 	else
@@ -100,6 +100,6 @@ EOP
 esac
 set d_bsdgetpgrp
 eval $setvar
-$rm -f set set.c
+$rm -f try try.*
 @end
 

@@ -28,8 +28,8 @@
 ?MAKE:d_stdstdio d_stdiobase stdio_ptr stdio_cnt \
 	d_stdio_ptr_lval_sets_cnt d_stdio_ptr_lval_nochange_cnt stdio_base \
 	stdio_bufsiz d_stdio_cnt_lval d_stdio_ptr_lval stdio_filbuf: cat \
-	Compile contains rm exe_ext \
-	Setvar Findhdr Oldconfig
+	Compile contains rm \
+	Setvar Findhdr Oldconfig run to
 ?MAKE:	-pick weed $@ %<
 ?S:d_stdstdio:
 ?S:	This variable conditionally defines USE_STDIO_PTR if this system
@@ -168,7 +168,6 @@
 ?W:d_stdiobase:FILE_base FILE_bufsiz
 ?LINT:set d_stdstdio d_stdiobase d_stdio_ptr_lval d_stdio_cnt_lval
 ?T:ptr_lval cnt_lval filbuf xxx
-?F:!try
 : see if _ptr and _cnt from stdio act std
 echo " "
 
@@ -252,8 +251,8 @@ int main() {
 EOP
 val="$undef"
 set try
-if eval $compile; then
-	if ./try; then
+if eval $compile && $to try.c; then
+	if $run ./try; then
 		echo "Your stdio acts pretty std."
 		val="$define"
 	else
@@ -311,7 +310,7 @@ int main() {
 }
 EOP
 		set try
-		if eval $compile && ./try; then
+		if eval $compile && $to try.c && $run ./try; then
 			echo "Your stdio appears to use $filbuf"
 			stdio_filbuf="$filbuf"
 			xxx='ok'
@@ -399,8 +398,8 @@ int main() {
 }
 EOP
 	set try
-	if eval $compile; then
- 		case `./try$exe_ext` in
+	if eval $compile && $to try.c; then
+ 		case `$run ./try` in
 		Pass_changed)
 			echo "Increasing ptr in your stdio decreases cnt by the same amount.  Good." >&4
 			d_stdio_ptr_lval_sets_cnt="$define" ;;
@@ -441,8 +440,8 @@ int main() {
 }
 EOP
 	set try
-	if eval $compile; then
-		if ./try; then
+	if eval $compile && $to try.c; then
+		if $run ./try; then
 			echo "And its _base field acts std."
 			val="$define"
 		else

@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_modfl d_modfl_pow32_bug: Inlibc Compile cat rm sPRIfldbl d_longdbl \
-	osname gccversion ccflags
+	osname gccversion ccflags run
 ?MAKE:	-pick add $@ %<
 ?S:d_modfl:
 ?S:	This variable conditionally defines the HAS_MODFL symbol, which
@@ -35,7 +35,6 @@
 ?H:#$d_modfl_pow32_bug HAS_MODFL_POW32_BUG		/**/
 ?H:.
 ?T:foo saveccflags
-?F:!try
 ?LINT:set d_modfl
 ?LINT:set d_modfl_pow32_bug
 ?LINT:change ccflags
@@ -70,7 +69,7 @@ EOCP
 	esac
 	set try
 	if eval $compile; then
-		foo=`./try`
+		foo=`$run ./try`
 		case "$foo" in
 		*" 4294967303.150000 1.150000 4294967302.000000")
 			echo >&4 "Your modfl() is broken for large values."

@@ -7,8 +7,8 @@
 ?RCS:
 ?RCS: $Log: d_longlong.U,v $
 ?RCS:
-?MAKE:d_longlong longlongsize: Compile Setvar Myread \
-	cat rm test longsize exe_ext
+?MAKE:d_longlong longlongsize: Compile Setvar Myread run \
+	cat rm test longsize
 ?MAKE:	-pick add $@ %<
 ?S:d_longlong:
 ?S:	This variable conditionally defines HAS_LONG_LONG if 
@@ -33,7 +33,6 @@
 ?H:?LONGLONGSIZE:#endif
 ?H:.
 ?LINT:set d_longlong
-?F:!try
 : check for long long
 echo " "
 echo "Checking to see if you have long long..." >&4
@@ -67,7 +66,7 @@ int main()
 EOCP
 	set try
 	if eval $compile_ok; then
-		longlongsize=`./try$exe_ext`
+		longlongsize=`$run ./try`
 		echo "Your long longs are $longlongsize bytes long."
 	else
 		dflt='8'

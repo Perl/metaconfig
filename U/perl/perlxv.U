@@ -12,7 +12,7 @@
 	echo rm use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
-	cat Compile i_inttypes exe_ext test d_volatile signal_t
+	cat Compile i_inttypes test d_volatile signal_t run
 ?MAKE:	-pick add $@ %<
 ?S:ivtype:
 ?S:	This variable contains the C type used for Perl's IV.
@@ -191,7 +191,6 @@
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
 ?H:#define	NV_PRESERVES_UV_BITS	$d_nv_preserves_uv_bits
 ?H:.
-?F:!try
 ?T:volatile
 
 echo " "
@@ -263,7 +262,7 @@ esac
 case "$i8type" in
 '')	set try -DINT8
 	if eval $compile; then
-		case "`./try$exe_ext`" in
+		case "`$run ./try`" in
 		int8_t)	i8type=int8_t
 			u8type=uint8_t
 			i8size=1
@@ -296,7 +295,7 @@ esac
 case "$i16type" in
 '')	set try -DINT16
 	if eval $compile; then
-		case "`./try$exe_ext`" in
+		case "`$run ./try`" in
 		int16_t)
 			i16type=int16_t
 			u16type=uint16_t
@@ -338,7 +337,7 @@ esac
 case "$i32type" in
 '')	set try -DINT32
 	if eval $compile; then
-		case "`./try$exe_ext`" in
+		case "`$run ./try`" in
 		int32_t)
 			i32type=int32_t
 			u32type=uint32_t
@@ -417,7 +416,7 @@ set try
 
 d_nv_preserves_uv="$undef"
 if eval $compile; then
-	d_nv_preserves_uv_bits="`./try$exe_ext`"
+	d_nv_preserves_uv_bits="`$run ./try`"
 fi
 case "$d_nv_preserves_uv_bits" in
 \-[1-9]*)	

@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_printf_exp_digits: Compile cat rm _exe
+?MAKE:d_printf_exp_digits: Compile cat rm run
 ?MAKE:	-pick add $@ %<
 ?S:d_printf_exp_digits:
 ?S:	This symbol's value is either 2 or 3, corresponding to the
@@ -31,7 +31,7 @@ int main() {
 EOSC
 set try
 if eval $compile; then
-	./try$_exe
+	$run ./try
 	case "$?" in
 	2|3)	d_printf_exp_digits=$? ;;
 	esac

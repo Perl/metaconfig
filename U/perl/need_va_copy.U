@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:need_va_copy: +ccflags rm cat Compile i_stdarg i_stdlib
+?MAKE:need_va_copy: +ccflags rm cat Compile i_stdarg i_stdlib run
 ?MAKE:	-pick add $@ %<
 ?S:need_va_copy:
 ?S:	This symbol, if defined, indicates that the system stores
@@ -31,7 +31,6 @@
 ?H:#$need_va_copy	NEED_VA_COPY		/**/
 ?H:.
 ?T:okay
-?F:!try
 ?LINT:set need_va_copy
 : see if we need va_copy
 echo " "
@@ -76,8 +75,8 @@ main(int ac, char **av)
 }
 EOCP
 	set try
-	if eval $compile && ./try 2>&1 >/dev/null; then
-		case "`./try`" in
+	if eval $compile && $run ./try 2>&1 >/dev/null; then
+		case "`$run ./try`" in
 		"that's all right, then")
 			okay=yes
 			;;

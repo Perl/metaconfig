@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:27  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:bitpbyte: cat rm Myread Compile
+?MAKE:bitpbyte: cat rm Myread Compile run
 ?MAKE:	-pick add $@ %<
 ?S:bitpbyte:
 ?S:	This variable contains the value of the BITS_PER_BYTE symbol, which
@@ -27,7 +27,6 @@
 ?C:.
 ?H:#define BITS_PER_BYTE $bitpbyte		/**/
 ?H:.
-?F:!try
 : check for length of byte
 echo " "
 case "$bitpbyte" in
@@ -58,7 +57,7 @@ int main()
 EOCP
 	set try
 	if eval $compile_ok; then
-		dflt=`./try`
+		dflt=`$run ./try`
 	else
 		dflt='8'
 		echo "(I can't seem to compile the test program.  Guessing...)"

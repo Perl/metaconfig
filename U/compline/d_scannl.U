@@ -22,7 +22,7 @@
 ?X:	Does the scanf routine read "\n" corretly ? This is was not
 ?X:	the case on AIX...
 ?X:
-?MAKE:d_scannl: cat rm Setvar Compile
+?MAKE:d_scannl: cat rm Setvar Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_scannl:
 ?S:	This variable conditionally defines SCAN_NL, which indicates
@@ -36,7 +36,6 @@
 ?C:.
 ?H:#$d_scannl SCAN_NL		/* scanf("%d\n") works */
 ?H:.
-?F:!try
 ?LINT:set d_scannl
 : does scanf handle "\n" correctly ?
 echo " "
@@ -56,7 +55,7 @@ int main()
 EOCP
 set try
 if eval $compile_ok; then
-	if ./try <<'EOD'
+	if $run ./try <<'EOD'
 2
 3
 EOD

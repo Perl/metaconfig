@@ -10,7 +10,7 @@
 	ldflags_uselargefiles \
 	libswanted_uselargefiles: \
 	Myread Oldconfig Setvar test lseeksize fpossize \
-	fpostype Compile echo n c cat lseektype rm
+	fpostype Compile echo n c cat lseektype rm run
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselargefiles:
@@ -40,7 +40,7 @@
 ?H:?%<:#$uselargefiles	USE_LARGE_FILES		/**/
 ?H:?%<:#endif
 ?H:.
-?F:!uselargefiles.cbu !try
+?F:!uselargefiles.cbu
 ?INIT:ccflags_uselargefiles=''
 ?INIT:ldflags_uselargefiles=''
 ?INIT:libswanted_uselargefiles=''
@@ -112,7 +112,7 @@ int main()
 EOCP
 		set try
 		if eval $compile_ok; then
-			lseeksize=`./try`
+			lseeksize=`$run ./try`
 			$echo "Your file offsets are now $lseeksize bytes long."
 		else
 			dflt="$lseeksize"
@@ -137,7 +137,7 @@ int main() {
 EOCP
 		set try
 		if eval $compile_ok; then
-			yyy=`./try`
+			yyy=`$run ./try`
 			dflt="$lseeksize"
 			case "$yyy" in
 			'')	echo " "

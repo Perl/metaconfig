@@ -25,7 +25,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:d_setpgrp d_bsdsetpgrp: cat rm +cc +libs +ccflags \
-	+ldflags Inlibc Guess Setvar i_unistd
+	+ldflags Inlibc Guess Setvar i_unistd run
 ?MAKE:	-pick add $@ %<
 ?S:d_setpgrp:
 ?S:	This variable conditionally defines HAS_SETPGRP if setpgrp() is
@@ -59,7 +59,7 @@ case "$d_setpgrp" in
 "$define")
 	echo " "
 	echo "Checking to see which flavor of setpgrp is in use..."
-	$cat >set.c <<EOP
+	$cat >try.c <<EOP
 #$i_unistd I_UNISTD
 #include <sys/types.h>
 #ifdef I_UNISTD
@@ -81,10 +81,10 @@ int main()
 	exit(1);
 }
 EOP
-	if $cc -o set -DTRY_BSD_PGRP $ccflags $ldflags set.c $libs >/dev/null 2>&1 && ./set; then
+	if $cc -o try -DTRY_BSD_PGRP $ccflags $ldflags try.c $libs >/dev/null 2>&1 && $run ./try; then
 		echo 'You have to use setpgrp(pid,pgrp) instead of setpgrp().' >&4
 		val="$define"
-	elif $cc -o set $ccflags $ldflags set.c $libs >/dev/null 2>&1 && ./set; then
+	elif $cc -o try $ccflags $ldflags try.c $libs >/dev/null 2>&1 && $run ./try; then
 		echo 'You have to use setpgrp() instead of setpgrp(pid,pgrp).' >&4
 		val="$undef"
 	else
@@ -111,5 +111,5 @@ EOP
 esac
 set d_bsdsetpgrp
 eval $setvar
-$rm -f set set.c
+$rm -f try try.*
 @end

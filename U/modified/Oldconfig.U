@@ -58,7 +58,7 @@
 ?X: for the sake of setting defaults.
 ?X:
 ?MAKE:Oldconfig hint myuname osname osvers: Instruct Myread uname \
-	Checkcc Mksymlinks \
+	Checkcc Mksymlinks run \
 	sh awk sed test cat rm lns tr n c contains Loc Options Tr src trnl ln
 ?MAKE:	-pick wipe $@ %<
 ?S:myuname:
@@ -105,6 +105,10 @@
 ?T:tans _ isesix INITPROG DJGPP
 ?D:osname=''
 ?LINT:change n c sh
+?LINT:extern targetarch
+?LINT:extern hostarch
+?LINT:change hostarch
+?LINT:use run
 : Try to determine whether config.sh was made on this system
 case "$config_sh" in
 '')
@@ -482,6 +486,14 @@ EOM
 		fi
 	fi
 	
+        case "$targetarch" in
+        '') ;;
+        *)  hostarch=$osname
+            osname=`echo $targetarch|sed 's,^[^-]*-,,'`
+            osvers=''
+            ;;
+        esac
+
 	: Now look for a hint file osname_osvers, unless one has been
 	: specified already.
 	case "$hintfile" in
@@ -556,7 +568,7 @@ EOM
 		elif $test -f $src/hints/$file.sh; then
 			. $src/hints/$file.sh
 			$cat $src/hints/$file.sh >> UU/config.sh
-		elif $test X$tans = X -o X$tans = Xnone ; then
+		elif $test X"$tans" = X -o X"$tans" = Xnone ; then
 			: nothing
 		else
 			: Give one chance to correct a possible typo.

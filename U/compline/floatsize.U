@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:09  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:floatsize: cat rm Myread Compile
+?MAKE:floatsize: cat rm Myread Compile run
 ?MAKE:	-pick add $@ %<
 ?S:floatsize:
 ?S:	This variable contains the value of the FLOATSIZE symbol, which
@@ -27,7 +27,6 @@
 ?C:.
 ?H:#define FLOATSIZE $floatsize		/**/
 ?H:.
-?F:!try
 : check for length of float
 echo " "
 case "$floatsize" in
@@ -43,7 +42,7 @@ int main()
 EOCP
 	set try
 	if eval $compile_ok; then
-		floatsize=`./try`
+		floatsize=`$run ./try`
 	else
 		dflt='4'
 		echo "(I can't seem to compile the test program.  Guessing...)"

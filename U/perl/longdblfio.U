@@ -9,7 +9,8 @@
 	sPRIgldbl d_PRIeldbl sPRIeldbl sPRIFUldbl d_PRIGUldbl sPRIEUldbl \
 	d_SCNfldbl \
 	sSCNfldbl: \
-	d_longdbl longdblsize doublesize test cat rm Setvar Compile exe_ext
+	d_longdbl longdblsize doublesize test cat rm \
+	Setvar Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_PRIfldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
@@ -115,7 +116,6 @@
 ?H:#$d_PRIEUldbl PERL_PRIEldbl	$sPRIEUldbl	/**/
 ?H:#$d_SCNfldbl PERL_SCNfldbl	$sSCNfldbl	/**/
 ?H:.
-?F:!try
 ?T:yyy
 echo " "
 
@@ -134,7 +134,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"f"'; sPRIgldbl='"g"'; sPRIeldbl='"e"';
@@ -156,7 +156,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"Lf"'; sPRIgldbl='"Lg"'; sPRIeldbl='"Le"';
@@ -178,7 +178,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"llf"'; sPRIgldbl='"llg"'; sPRIeldbl='"lle"';
@@ -200,7 +200,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try$exe_ext`
+		yyy=`$run ./try`
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"lf"'; sPRIgldbl='"lg"'; sPRIeldbl='"le"';

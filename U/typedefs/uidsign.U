@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:uidsign: Myread Typedef uidtype Compile
+?MAKE:uidsign: Myread Typedef uidtype Compile run
 ?MAKE:	-pick add $@ %<
 ?S:uidsign:
 ?S:	This variable contains the signedness of a uidtype.
@@ -19,7 +19,6 @@
 ?C:.
 ?H:#define Uid_t_sign	$uidsign		/* UID sign */
 ?H:.
-?F:!try
 ?T:yyy zzz
 ?LINT: set uidsign
 echo " "
@@ -41,7 +40,7 @@ int main() {
 EOCP
 set try
 if eval $compile; then
-	yyy=`./try`
+	yyy=`$run ./try`
 	case "$yyy" in
 	'')	uidsign=1
 		echo "(I can't execute the test program--guessing unsigned.)" >&4

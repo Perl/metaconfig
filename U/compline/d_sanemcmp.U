@@ -13,7 +13,7 @@
 ?RCS: patch61: created
 ?RCS:
 ?RCS:
-?MAKE:d_sanemcmp: Compile cat d_memcmp rm \
+?MAKE:d_sanemcmp: Compile cat d_memcmp rm run \
 	i_memory i_stdlib i_string i_unistd Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_sanemcmp:
@@ -28,7 +28,6 @@
 ?C:.
 ?H:#$d_sanemcmp HAS_SANE_MEMCMP	/**/
 ?H:.
-?F:!try
 ?LINT: set d_sanemcmp
 : can memcmp be trusted to compare relative magnitude?
 ?X: assume the worst
@@ -70,7 +69,7 @@ exit(0);
 EOCP
 	set try
 	if eval $compile_ok; then
-		if ./try 2>/dev/null; then
+		if $run ./try 2>/dev/null; then
 			echo "Yes, it can."
 			val="$define"
 		else

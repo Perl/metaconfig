@@ -20,7 +20,7 @@
 ?RCS:
 ?MAKE:archname myarchname: sed Loc Myread Oldconfig osname test rm \
 	usethreads usemultiplicity use64bitint use64bitall archname64 \
-	uselongdouble longdblsize doublesize useperlio
+	uselongdouble longdblsize doublesize useperlio targetarch
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current
@@ -67,6 +67,11 @@ case "$myarchname" in
 	echo "(Your architecture name used to be $myarchname.)"
 	archname=''
 	;;
+esac
+case "$targetarch" in
+'') ;;
+?X: Very GCCian.
+*)  archname=`echo $targetarch|sed 's,^[^-]*-,,'` ;;
 esac
 myarchname="$tarch"
 case "$archname" in

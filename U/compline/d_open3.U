@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:44  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_open3: Compile test cat h_fcntl h_sysfile rm Setvar Findhdr
+?MAKE:d_open3: Compile test cat h_fcntl h_sysfile rm Setvar Findhdr run
 ?MAKE:	-pick add $@ %<
 ?X:	It would be easy to separate the h_O_stuff from this.
 ?X:	Is there a reason to do so? -- HMS
@@ -35,12 +35,11 @@
 ?H:.
 ?W:%<:O_RDONLY O_WRONLY O_RDWR O_NDELAY O_APPEND O_SYNC O_CREAT O_TRUNC
 ?W:%<:O_EXCL O_NONBLOCK
-?F:!open3
 ?LINT:set d_open3
 ?LINT:change h_fcntl h_sysfile
 : Locate the flags for 'open()'
 echo " "
-$cat >open3.c <<'EOCP'
+$cat >try.c <<'EOCP'
 #include <sys/types.h>
 #ifdef I_FCNTL
 #include <fcntl.h>
@@ -59,10 +58,10 @@ int main() {
 EOCP
 : check sys/file.h first to get FREAD on Sun
 if $test `./findhdr sys/file.h` && \
-		set open3 -DI_SYS_FILE && eval $compile; then
+		set try -DI_SYS_FILE && eval $compile; then
 	h_sysfile=true;
 	echo "<sys/file.h> defines the O_* constants..." >&4
-	if ./open3; then
+	if $run ./try; then
 		echo "and you have the 3 argument form of open()." >&4
 		val="$define"
 	else
@@ -70,10 +69,10 @@ if $test `./findhdr sys/file.h` && \
 		val="$undef"
 	fi
 elif $test `./findhdr fcntl.h` && \
-		set open3 -DI_FCNTL && eval $compile; then
+		set try -DI_FCNTL && eval $compile; then
 	h_fcntl=true;
 	echo "<fcntl.h> defines the O_* constants..." >&4
-	if ./open3; then
+	if $run ./try; then
 		echo "and you have the 3 argument form of open()." >&4
 		val="$define"
 	else
@@ -86,5 +85,5 @@ else
 fi
 set d_open3
 eval $setvar
-$rm -f open3*
+$rm -f try try.*
 

@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:08  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:lseektype lseeksize: Myread Typedef cat Compile rm longsize
+?MAKE:lseektype lseeksize: Myread Typedef cat Compile rm longsize run
 ?MAKE:	-pick add $@ %<
 ?S:lseektype:
 ?S:	This variable defines lseektype to be something like off_t, long, 
@@ -42,7 +42,6 @@
 ?H:#define LSEEKSIZE $lseeksize		/* <offset> size */
 ?H:#define Off_t_size $lseeksize	/* <offset> size */
 ?H:.
-?F:!try
 ?LINT:set lseektype
 ?LINT:set lseeksize
 : see what type lseek is declared as in the kernel
@@ -63,7 +62,7 @@ int main()
 EOCP
 set try
 if eval $compile_ok; then
-	lseeksize=`./try`
+	lseeksize=`$run ./try`
 	echo "Your file offsets are $lseeksize bytes long."
 else
 	dflt=$longsize

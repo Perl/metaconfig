@@ -14,7 +14,7 @@
 ?RCS: patch61: created
 ?RCS:
 ?RCS:
-?MAKE:d_strtoul: Inlibc cat longsize Compile
+?MAKE:d_strtoul: Inlibc cat longsize Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_strtoul:
 ?S:	This variable conditionally defines the HAS_STRTOUL symbol, which
@@ -27,7 +27,6 @@
 ?C:.
 ?H:#$d_strtoul HAS_STRTOUL	/**/
 ?H:.
-?F:!try
 ?LINT:set d_strtoul
 : see if strtoul exists
 set strtoul d_strtoul
@@ -94,7 +93,7 @@ EOCP
 EOCP
 	set try
 	if eval $compile; then
-		case "`./try`" in
+		case "`$run ./try`" in
 		ok) echo "Your strtoul() seems to be working okay." ;;
 		*) cat <<EOM >&4
 Your strtoul() doesn't seem to be working okay.

@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:23  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:alignbytes: Myread Compile cat rm crosscompile multiarch \
+?MAKE:alignbytes: Myread Compile cat rm usecrosscompile multiarch run \
 	d_longdbl uselongdouble test 
 ?MAKE:	-pick add $@ %<
 ?S:alignbytes:
@@ -33,16 +33,15 @@
 ?C:	double, or a long double when applicable. Usual values are 2,
 ?C:	4 and 8. The default is eight, for safety.
 ?C:.
-?H:?%<:#if defined(CROSSCOMPILE) || defined(MULTIARCH)
+?H:?%<:#if defined(USE_CROSS_COMPILE) || defined(MULTIARCH)
 ?H:?%<:#  define MEM_ALIGNBYTES 8
 ?H:?%<:#else
 ?H:?%<:#define MEM_ALIGNBYTES $alignbytes
 ?H:?%<:#endif
 ?H:.
-?F:!try
 : check for alignment requirements
 echo " "
-case "$crosscompile$multiarch" in
+case "$usecrosscompile$multiarch" in
 *$define*)
 	$cat <<EOM
 You seem to be either cross-compiling or doing a multiarchitecture build,
@@ -79,7 +78,7 @@ int main()
 EOCP
 		set try
 		if eval $compile_ok; then
-			dflt=`./try`
+			dflt=`$run ./try`
 		else
 			dflt='8'
 			echo "(I can't seem to compile the test program...)"

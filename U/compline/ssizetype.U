@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0.1.1  1994/08/29  16:33:06  ram
 ?RCS: patch32: created by ADO
 ?RCS:
-?MAKE:ssizetype: Myread Typedef sizetype cat rm Compile
+?MAKE:ssizetype: Myread Typedef sizetype cat rm Compile run
 ?MAKE:	-pick add $@ %<
 ?S:ssizetype:
 ?S:	This variable defines ssizetype to be something like ssize_t, 
@@ -39,13 +39,12 @@
 ?C:.
 ?H:#define SSize_t $ssizetype	 /* signed count of bytes */
 ?H:.
-?F:!ssize
 : see what type is used for signed size_t
 set ssize_t ssizetype int stdio.h sys/types.h
 eval $typedef
 dflt="$ssizetype"
 ?X: Now check out whether sizeof(SSize_t) == sizeof(Size_t)
-$cat > ssize.c <<EOM
+$cat > try.c <<EOM
 #include <stdio.h>
 #include <sys/types.h>
 #define Size_t $sizetype
@@ -62,9 +61,9 @@ int main()
 }
 EOM
 echo " "
-set ssize
-if eval $compile_ok && ./ssize > /dev/null; then
-	ssizetype=`./ssize`
+set try
+if eval $compile_ok && $run ./try > /dev/null; then
+	ssizetype=`$run ./try`
 	echo "I'll be using $ssizetype for functions returning a byte count." >&4
 else
 	$cat >&4 <<EOM
@@ -80,5 +79,5 @@ EOM
 	. ./myread
 	ssizetype="$ans"
 fi
-$rm -f ssize ssize.*
+$rm -f try try.*
 

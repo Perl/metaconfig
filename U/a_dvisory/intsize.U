@@ -20,7 +20,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:52  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:intsize longsize shortsize: Compile Myread cat rm
+?MAKE:intsize longsize shortsize: Compile Myread cat rm run
 ?MAKE:	-pick add $@ %<
 ?S:intsize:
 ?S:	This variable contains the value of the INTSIZE symbol, which
@@ -50,13 +50,12 @@
 ?H:#define LONGSIZE $longsize		/**/
 ?H:#define SHORTSIZE $shortsize		/**/
 ?H:.
-?F:!intsize
 : check for lengths of integral types
 echo " "
 case "$intsize" in
 '')
 	echo "Checking to see how big your integers are..." >&4
-	$cat >intsize.c <<'EOCP'
+	$cat >try.c <<'EOCP'
 #include <stdio.h>
 int main()
 {
@@ -72,9 +71,9 @@ int main()
 	exit(0);
 }
 EOCP
-	set intsize
-	if eval $compile_ok && ./intsize > /dev/null; then
-		eval `./intsize`
+	set try
+	if eval $compile_ok && $run ./try > /dev/null; then
+		eval `$run ./try`
 @if INTSIZE || intsize
 		echo "Your integers are $intsize bytes long."
 @end
@@ -113,5 +112,5 @@ EOM
 	fi
 	;;
 esac
-$rm -f intsize intsize.*
+$rm -f try try.*
 

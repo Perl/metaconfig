@@ -53,18 +53,18 @@ if `$sh -c '#' >/dev/null 2>&1`; then
 ?X:	echo "Okay, let's see if #! works on this system..."
 	xcat=/bin/cat
 	test -f $xcat || xcat=/usr/bin/cat
-	echo "#!$xcat" >try
-	$eunicefix try
-	chmod +x try
-	./try > today
+	echo "#!$xcat" >sharp
+	$eunicefix sharp
+	chmod +x sharp
+	./sharp > today
 	if test -s today; then
 ?X:		echo "It does."
 		sharpbang='#!'
 	else
-		echo "#! $xcat" > try
-		$eunicefix try
-		chmod +x try
-		./try > today
+		echo "#! $xcat" > sharp
+		$eunicefix sharp
+		chmod +x sharp
+		./sharp > today
 		if test -s today; then
 ?X:			echo "It does."
 			sharpbang='#! '
@@ -88,5 +88,5 @@ else
 	echo "I presume that if # doesn't work, #! won't work either!"
 	sharpbang=': use '
 fi
-rm -f try today
+rm -f sharp today
 

@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:16  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_sgndchr: cat rm Compile Setvar
+?MAKE:d_sgndchr: cat rm Compile Setvar run
 ?MAKE:	-pick add $@ %<
 ?S:d_sgndchr:
 ?S:	This variable conditionally defines the SIGNEDCHAR symbol, which
@@ -31,7 +31,6 @@
 ?C:.
 ?H:#$d_sgndchr SIGNEDCHAR	/**/
 ?H:.
-?F:!try
 ?LINT:set d_sgndchr
 : check for signed chars
 echo " "
@@ -46,8 +45,8 @@ int main()
 }
 EOCP
 set try
-if eval $compile && ./try; then
-if ./try; then
+if eval $compile && $run ./try; then
+if $run ./try; then
 	val="$define"
 	echo "It certainly can."
 else

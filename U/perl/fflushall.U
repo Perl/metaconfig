@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:fflushNULL fflushall: Compile cat rm test osname \
+?MAKE:fflushNULL fflushall: Compile cat rm test osname run to from \
 	Oldconfig Myread Setvar exe_ext echo \
 	d_sysconf i_unistd d_stdio_stream_array stdio_stream_array
 ?MAKE:	-pick add $@ %<
@@ -60,7 +60,9 @@ $cat >>try.c <<EOCP
 # define STDIO_STREAM_ARRAY $stdio_stream_array
 #endif
 int main() {
-  FILE* p = fopen("try.out", "w");
+  FILE* p;
+  unlink("try.out");
+  p = fopen("try.out", "w");
 #ifdef TRY_FPUTC
   fputc('x', p);
 #else
@@ -109,12 +111,14 @@ int main() {
 }
 EOCP
 : first we have to find out how _not_ to flush
+$to try.c
 if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
     output=''
     set try -DTRY_FPUTC
     if eval $compile; then
+ 	    $run ./try 2>/dev/null
 	    $rm -f try.out
- 	    ./try$exe_ext 2>/dev/null
+	    $from try.out
 	    if $test ! -s try.out -a "X$?" = X42; then
 		output=-DTRY_FPUTC
 	    fi
@@ -122,10 +126,10 @@ if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
     case "$output" in
     '')
 	    set try -DTRY_FPRINTF
-	    $rm -f try.out
 	    if eval $compile; then
+ 		    $run ./try 2>/dev/null
 		    $rm -f try.out
- 		    ./try$exe_ext 2>/dev/null
+		    $from try.out
 		    if $test ! -s try.out -a "X$?" = X42; then
 			output=-DTRY_FPRINTF
 		    fi
@@ -137,9 +141,10 @@ fi
 case "$fflushNULL" in
 '') 	set try -DTRY_FFLUSH_NULL $output
 	if eval $compile; then
-	        $rm -f try.out
-	    	./try$exe_ext 2>/dev/null
+	    	$run ./try 2>/dev/null
 		code="$?"
+	        $rm -f try.out
+		$from try.out
 		if $test -s try.out -a "X$code" = X42; then
 			fflushNULL="`$cat try.out`"
 		else
@@ -185,7 +190,7 @@ EOCP
                 set tryp
                 if eval $compile; then
                     $rm -f tryp.out
-                    $cat tryp.c | ./tryp$exe_ext 2>/dev/null > tryp.out
+                    $cat tryp.c | $run ./tryp 2>/dev/null > tryp.out
                     if cmp tryp.c tryp.out >/dev/null 2>&1; then
                        $cat >&4 <<EOM
 fflush(NULL) seems to behave okay with input streams.
@@ -249,7 +254,7 @@ EOCP
 	set tryp
 	if eval $compile; then
 	    $rm -f tryp.out
-	    $cat tryp.c | ./tryp$exe_ext 2>/dev/null > tryp.out
+	    $cat tryp.c | $run ./tryp 2>/dev/null > tryp.out
 	    if cmp tryp.c tryp.out >/dev/null 2>&1; then
 	       $cat >&4 <<EOM
 Good, at least fflush(stdin) seems to behave okay when stdin is a pipe.
@@ -262,7 +267,7 @@ EOM
 (Now testing the other method--but note that this also may fail.)
 EOM
 				$rm -f try.out
-				./try$exe_ext 2>/dev/null
+				$run ./try 2>/dev/null
 				if $test -s try.out -a "X$?" = X42; then
 					fflushall="`$cat try.out`"
 				fi

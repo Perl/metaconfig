@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_u32align: Compile cat rm Oldconfig \
+?MAKE:d_u32align: Compile cat rm Oldconfig run \
 	byteorder u32type Myread Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_u32align:
@@ -74,8 +74,8 @@ int main() {
 EOCP
 set try
 if eval $compile_ok; then
-	echo "(Testign for character data alignment may dump core.)" >&4
-	./try 2>&1 >/dev/null
+	echo "(Testing for character data alignment may dump core.)" >&4
+	$run ./try 2>&1 >/dev/null
 	case "$?" in
 	0)	cat >&4 <<EOM
 You can access character data pretty unalignedly.

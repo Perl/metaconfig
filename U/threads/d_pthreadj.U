@@ -5,7 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_pthreads_created_joinable: cat Compile rm usethreads Setvar i_pthread
+?MAKE:d_pthreads_created_joinable: cat Compile rm usethreads Setvar \
+	i_pthread run
 ?MAKE:	-pick add $@ %<
 ?S:d_pthreads_created_joinable:
 ?S:	This variable conditionally defines the PTHREADS_CREATED_JOINABLE
@@ -18,7 +19,6 @@
 ?C:.
 ?H:#$d_pthreads_created_joinable PTHREADS_CREATED_JOINABLE /**/
 ?H:.
-?F:!try
 ?T:yyy
 ?LINT: set d_pthreads_created_joinable
 : test whether pthreads are created in joinable -- aka undetached -- state
@@ -51,7 +51,7 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		yyy=`./try`
+		yyy=`$run ./try`
 		case "$yyy" in
 			detached) echo "No, they aren't." ;;
 			*) echo "Yes, they are." ;;
@@ -59,7 +59,7 @@ EOCP
 	else
 		set try -DPTHREAD_ATTR_GETDETACHSTATE_INT
 		if eval $compile; then
-			yyy=`./try`
+			yyy=`$run ./try`
 			case "$yyy" in
 				detached) echo "No, they aren't." ;;
 				*) echo "Yes, they are." ;;
