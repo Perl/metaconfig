@@ -24,7 +24,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:26  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_keepsig: cat Compile rm Guess contains echo n c Setvar sh_c
+?MAKE:d_keepsig: cat Compile rm Guess contains echo n c Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_keepsig:
 ?S:	This variable contains the eventual value of the SIGNALS_KEPT symbol,
@@ -58,7 +58,7 @@ if eval $compile_ok; then
 ?X: On AIX a single ./try will not work (with ksh)
 ?X: Backquotes required on Linux and SGI (prevents "ambiguous output redirect")
 ?X: (reported by Xavier LeVourch <xavierl@eiffel.com>)
-	`$sh_c ./try >try.out 2>/dev/null`
+	`sh -c ./try >try.out 2>/dev/null`
 	if $contains abc try.out >/dev/null 2>&1; then
 		echo "Yes, they do."
 		val="$define";

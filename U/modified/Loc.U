@@ -67,7 +67,7 @@
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip:  eunicefix n c Instruct Myread \
-	startsh sh_c
+	startsh
 ?MAKE:	-pick weed $@ %<
 ?LINT:describe Loc Mcc awk ar bash bison byacc cat chgrp chmod chown \
 	comm compress cp cpio cpp csh date echo egrep emacs expr find flex \
@@ -303,7 +303,7 @@ test)
 	echo "Hopefully test is built into your sh."
 	;;
 *)
-	if `$sh_c "PATH= test true" >/dev/null 2>&1`; then
+	if `sh -c "PATH= test true" >/dev/null 2>&1`; then
 		echo "Using the test built into your sh."
 ?X:
 ?X: We need to set both test and _test, since Oldconfig.U will use the _test

@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:49  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:spitshell shsharp sharpbang: eunicefix sh sh_c
+?MAKE:spitshell shsharp sharpbang: eunicefix sh
 ?MAKE:	-pick add $@ %<
 ?S:spitshell:
 ?S:	This variable contains the command necessary to spit out a runnable
@@ -45,7 +45,7 @@
 ?X: This is loaded up early, so avoid being chatty.
 ?X: echo " "
 ?X: echo "Checking your $sh to see if it knows about # comments..." >&2
-if `$sh_c '#' >/dev/null 2>&1`; then
+if `$sh -c '#' >/dev/null 2>&1`; then
 ?X:	echo "Your $sh handles # comments correctly."
 	shsharp=true
 	spitshell=cat

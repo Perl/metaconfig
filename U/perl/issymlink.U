@@ -14,7 +14,7 @@
 ?RCS: Revision 3.0.1.1  1994/06/20  07:05:52  ram
 ?RCS: patch30: created by ADO
 ?RCS:
-?MAKE:issymlink: lns test rm sh_c
+?MAKE:issymlink: lns test rm
 ?MAKE:	-pick add $@ %<
 ?S:issymlink:
 ?S:	This variable holds the test command to test for a symbolic link
@@ -32,14 +32,13 @@ case "$lns" in
 ?X:
 ?X: In some AIX 4 versions the (ksh) builtin test (-h) is broken.
 ?X:
-		$sh_c "PATH= test -h sym" >/dev/null 2>&1
+		sh -c "PATH= test -h sym" >/dev/null 2>&1
 		if test $? = 0; then
 			issymlink="test -h"
 		fi		
 	fi
 	if $test "X$issymlink" = X; then
-		$sh_c "$test -h sym" >/dev/null 2>&1
-		if test $? = 0; then
+		if  $test -h >/dev/null 2>&1; then
 			issymlink="$test -h"
 			echo "Your builtin 'test -h' may be broken, I'm using external '$test -h'." >&4
 		fi		
