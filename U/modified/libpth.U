@@ -70,14 +70,14 @@
 ?INIT:loclibpth="$loclibpth /opt/gnu/lib /usr/GNU/lib /opt/GNU/lib"
 ?INIT:
 ?INIT:: general looking path for locating libraries
-?X:	/lib/pa1.1 is for HP-UX specially tuned PA-RISC libraries.
 ?X:	/shlib is for Digital Unix 4.0
 ?X:	/usr/shlib is for OSF/1 systems.
 ?X:	I don't know why the large & small libraries are in this order.
-?INIT:glibpth="/shlib /usr/shlib /lib/pa20_64 /lib/pa1.1 /usr/lib/large"
-?INIT:glibpth="$glibpth /lib /usr/lib $xlibpth"
+?INIT:glibpth="/usr/lib/large /lib/pa1.1 /lib /usr/lib $xlibpth"
 ?INIT:glibpth="$glibpth /lib/large /usr/lib/small /lib/small"
 ?INIT:glibpth="$glibpth /usr/ccs/lib /usr/ucblib /usr/local/lib"
+?INIT:test -f /usr/shlib/libc.so && glibpth="/usr/shlib $glibpth"
+?INIT:test -f /shlib/libc.so     && glibpth="/shlib $glibpth"
 ?INIT:
 ?INIT:: Private path used by Configure to find libraries.  Its value
 ?INIT:: is prepended to libpth. This variable takes care of special

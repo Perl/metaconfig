@@ -34,7 +34,7 @@
 ?RCS:
 ?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
-	use64bits usesocks ccflags
+	usesocks ccflags
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
@@ -102,39 +102,53 @@ $define)
 	;;
 esac
 for thislib in $libswanted; do
-	
 ?X:
 ?X: Comparisons via case statement use the string " $dflt " to ensure that
 ?X: each library is separated by a space. That way, by looking to something
 ?X: like *"-l$thislib "*, we ensure we find -lm and not -lmalloc (which was
 ?X: the case with the old looking pattern *-l$thislib*.
 ?X:
-	libname="$thislib"
-	if xxx=`./loc lib$thislib.$so.[0-9]'*' X $libpth`
-	   $test -f "$xxx" -a "X$ignore_versioned_solibs" = "X" ; then
-		libstyle=shared
-	elif xxx=`./loc lib$thislib.$so X $libpth` ; $test -f "$xxx"; then
-		libstyle=shared
-	elif xxx=`./loc lib$thislib$_a X $libpth`; $test -f "$xxx"; then
-		libstyle=static
-?X: Don't forget about OS/2 where -lmalloc is spelled out malloc.a
-	elif xxx=`./loc $thislib$_a X $libpth`; $test -f "$xxx"; then
-		libstyle=static
-	elif xxx=`./loc lib${thislib}_s$_a X $libpth`; $test -f "$xxx"; then
-		libstyle=static
-		libname=${thislib}_s
-	elif xxx=`./loc Slib$thislib$_a X $xlibpth`; $test -f "$xxx"; then
-		libstyle="static"
-	fi
-	if $test -f "$xxx"; then
+	for thisdir in $libpth; do
+	    xxx=''
+	    if $test ! -f "$xxx" -a "X$ignore_versioned_solibs" = "X"; then
+		xxx=`ls $thisdir/lib$thislib.$so.[0-9] 2>/dev/null|tail -1`
+	        $test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle=shared
+	    fi
+	    if test ! -f "$xxx"; then
+		xxx=$thisdir/lib$thislib.$so
+	        $test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle=shared
+	    fi	
+	    if test ! -f "$xxx"; then
+		xxx=$thisdir/lib$thislib$_a
+	        $test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle=static
+	    fi
+	    if test ! -f "$xxx"; then
+		xxx=$thisdir/$thislib$_a
+	        $test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle=static
+	    fi
+	    if test ! -f "$xxx"; then
+		xxx=$thisdir/lib${thislib}_s$_a
+	        $test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle=static
+	    fi
+	    if test ! -f "$xxx"; then
+		xxx=$thisdir/Slib$thislib$_a
+	        $test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle=static
+	    fi
+	    if $test -f "$xxx"; then
 		case "$libstyle" in
-		shared) echo "Found -l$libname (shared)." ;;
-		static) echo "Found -l$libname." ;;
-		*)      echo "Found -l$libname ($libstyle)." ;;
+		shared) echo "Found -l$thislib (shared)." ;;
+		static) echo "Found -l$thislib." ;;
+		*)      echo "Found -l$thislib ($libstyle)." ;;
 		esac
 		case " $dflt " in
 		*"-l$thislib "*);;
-		*) dflt="$dflt -l$libname"
+		*) dflt="$dflt -l$thislib"
                    libsfound="$libsfound $xxx"
                    yyy=`basename $xxx`
                    libsfiles="$libsfiles $yyy"
@@ -145,8 +159,11 @@ for thislib in $libswanted; do
                    esac
 		   ;;
 		esac
-	else
-		echo "No -l$thislib."
+		break
+	    fi	
+	done
+	if $test ! -f "$xxx"; then
+	    echo "No -l$thislib."
 	fi
 done
 set X $dflt

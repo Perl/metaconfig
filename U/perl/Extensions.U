@@ -119,12 +119,30 @@ for xxx in $known_extensions ; do
 		;;
 	NDBM_File|ndbm_fil)
 		case "$i_ndbm" in
-		$define) avail_ext="$avail_ext $xxx" ;;
+		$define)
+		    case "$osname-$use64bits" in
+		    hpux-define)
+			case "$libs" in
+			*-lndbm*) avail_ext="$avail_ext $xxx" ;;
+			esac
+			;;
+		    *) avail_ext="$avail_ext $xxx" ;;
+		    esac
+		    ;;
 		esac
 		;;
 	ODBM_File|odbm_fil) 
 		case "${i_dbm}${i_rpcsvcdbm}" in
-		*"${define}"*) avail_ext="$avail_ext $xxx" ;;
+		*"${define}"*)
+		    case "$osname-$use64bits" in
+		    hpux-define)
+			case "$libs" in
+			*-ldbm*) avail_ext="$avail_ext $xxx" ;;
+			esac
+			;;
+		    *) avail_ext="$avail_ext $xxx" ;;
+		    esac
+		    ;;
 		esac
 		;;
 	POSIX|posix)
