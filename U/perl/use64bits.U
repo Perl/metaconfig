@@ -255,7 +255,7 @@ $undef:$define)
 	cat >&4 <<EOF
 
 *** You have chosen to use 64-bit integers,
-*** but none cannot be found.
+*** but none can be found.
 *** Please rerun Configure without -Duse64bitint and/or -Dusemorebits.
 *** Cannot continue, aborting.
 
