@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:d_u32align: Compile cat rm Oldconfig run \
-	byteorder u32type Myread Setvar u8type
+	byteorder u32type Myread Setvar u8type signal_t
 ?MAKE:	-pick add $@ %<
 ?S:d_u32align:
 ?S:	This variable tells whether you must access character data
@@ -30,6 +30,10 @@ $cat >try.c <<EOCP
 #define U32 $u32type
 #define BYTEORDER 0x$byteorder
 #define U8 $u8type
+#include <signal.h>
+#ifdef SIGBUS
+$signal_t bletch(s) int s; { exit(4); }
+#endif
 int main() {
 #if BYTEORDER == 0x1234 || BYTEORDER == 0x4321
     U8 buf[] = "\0\0\0\1\0\0\0\0";
@@ -42,6 +46,10 @@ int main() {
     }
 
     fflush(stdout);
+
+#ifdef SIGBUS
+    signal(SIGBUS, bletch);
+#endif
 
     for (i = 0; i < 4; i++) {
 	up = (U32*)(buf + i);
