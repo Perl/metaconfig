@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS: $Log: xs_apiversion.U,v $
 ?RCS:
-?MAKE:xs_apiversion pm_apiversion: version bincompat5005
+?MAKE:xs_apiversion pm_apiversion: version
 ?MAKE:	-pick add $@ %<
 ?S:xs_apiversion:
 ?S:	This variable contains the version of the oldest perl binary
@@ -22,8 +22,8 @@
 ?S:	See INSTALL for how this works.
 ?S:	The versioned site_perl directory was introduced in 5.005,
 ?S:	so that is the lowest possible value.
-?S:	Since this can depend on compile time options (such as
-?S:	bincompat) it is set by Configure.  Other non-default sources
+?S:	Since this can depend on compile time options
+?S:	it is set by Configure.  Other non-default sources
 ?S:	of potential incompatibility, such as multiplicity, threads,
 ?S:	debugging, 64bits, sfio, etc., are not checked for currently,
 ?S:	though in principle we could go snooping around in old
@@ -54,8 +54,8 @@
 ?C:	See INSTALL for how this works.
 ?C:	The versioned site_perl directory was introduced in 5.005,
 ?C:	so that is the lowest possible value.
-?C:	Since this can depend on compile time options (such as
-?C:	bincompat) it is set by Configure.  Other non-default sources
+?C:	Since this can depend on compile time options
+?C:	it is set by Configure.  Other non-default sources
 ?C:	of potential incompatibility, such as multiplicity, threads,
 ?C:	debugging, 64bits, sfio, etc., are not checked for currently,
 ?C:	though in principle we could go snooping around in old
@@ -80,10 +80,7 @@
 ?H:#define PERL_PM_APIVERSION "$pm_apiversion"
 ?H:.
 : Find earliest binary compatible site_perl subdirectory perl can use.
-case "$bincompat5005" in
-"$define") xs_apiversion='5.005' ;;
-*) xs_apiversion=$version ;;   # The current site_perl version.
-esac
+xs_apiversion=$version # The current site_perl version.
 : Find earliest pure perl site_perl subdirectory perl can use.
 : The versioned directories started at 5.005.
 pm_apiversion='5.005'

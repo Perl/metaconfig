@@ -12,7 +12,7 @@
 ?RCS:
 ?MAKE:inc_version_list inc_version_list_init: cat sed Getfile perl5 \
 	version api_versionstring rm Myread archname prefix sitelib_stem \
-	bincompat5005 exe_ext
+	exe_ext
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:inc_version_list:
@@ -111,11 +111,7 @@ case "$dflt" in
 ''|' ') dflt=none ;;
 esac
 case "$dflt" in
-5.005) case "$bincompat5005" in
-       $define|true|[yY]*) ;;
-       *) dflt=none ;;
-       esac
-       ;;
+5.005) dflt=none ;;
 esac
 $cat <<'EOM'
 
