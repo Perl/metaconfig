@@ -97,7 +97,6 @@ EOM
 		d_u32align="$define"
 		;;
 	esac
-	$rm -f core core.try.* try.core
 else
 	rp='Can you access character data at unaligned addresses?'
 	dflt='n'
@@ -107,4 +106,5 @@ else
 	*)	d_u32align="$define" ;;
 	esac
 fi
+$rm -f core core.try.* try.core
 
