@@ -102,6 +102,9 @@ $define)
 	libswanted="$libswanted socks5 socks5_sh"
 	;;
 esac
+libsfound=''
+libsfiles=''
+libsdirs=''
 for thislib in $libswanted; do
 ?X:
 ?X: Comparisons via case statement use the string " $dflt " to ensure that

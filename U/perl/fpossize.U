@@ -39,16 +39,16 @@ if eval $compile_ok; then
 	yyy=`./try`
 	case "$yyy" in
 	'')	fpossize=4
-		echo " "
+		echo " " >&4
 		echo "(I can't execute the test program--guessing $fpossize.)" >&4
 		;;
 	*)	fpossize=$yyy
-		echo " $fpossize bytes."
+		echo " $fpossize bytes." >&4
 		;;
 	esac
 else
 	dflt="$longsize"
-	echo " "
+	echo " " >&4
 	echo "(I can't compile the test program.  Guessing...)" >&4
 	rp="What is the size of your file positions (in bytes)?"
 	. ./myread
