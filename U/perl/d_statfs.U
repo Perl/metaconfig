@@ -5,7 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_statfs d_fstatfs d_statfsflags: Inlibc Hasfield i_sysparam i_sysmount
+?MAKE:d_statfs d_fstatfs d_statfsflags: \
+	Inlibc Hasfield i_sysparam i_sysmount Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_statfs:
 ?S:	This variable conditionally defines the HAS_STATFS symbol, which
@@ -53,6 +54,13 @@ set fstatfs d_fstatfs
 eval $inlibc
 
 : see if statfs knows about mount flags
-set d_statfsflags statfs f_flags $i_sysparam sys/param.h $i_sysmount sys/mount.h
-eval $hasfield
+case "$d_statfs" in
+define)	set d_statfsflags statfs f_flags $i_sysparam sys/param.h $i_sysmount sys/mount.h
+	eval $hasfield
+	;;
+*)	val="$undef"
+	set d_statfsflags
+	eval $setvar
+	;;
+esac
 

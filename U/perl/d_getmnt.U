@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getmnt: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getmnt:
+?S:	This variable conditionally defines the HAS_GETMNT symbol, which
+?S:	indicates to the C program that the getmnt() routine is available
+?S:	to retrieve one or more mount info blocks by filename.
+?S:.
+?C:HAS_GETMNT:
+?C:	This symbol, if defined, indicates that the getmnt routine is
+?C:	available.
+?C:.
+?H:#$d_getmnt HAS_GETMNT		/**/
+?H:.
+?LINT:set d_getmnt
+: see if getmnt exists
+set getmnt d_getmnt
+eval $inlibc
+
