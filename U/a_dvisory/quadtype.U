@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_quad quadtype uquadtype quadkind: \
 	longsize intsize d_longlong longlongsize uselonglong d_int64t \
-	Inhdr Setvar
+	Inhdr Setvar use64bits
 ?MAKE:	-pick add $@ %<
 ?S:d_quad:
 ?S:	This variable, if defined, tells that there's a 64-bit integer type,
@@ -34,10 +34,6 @@
 ?C:	This symbol holds the type used for 64-bit integers.
 ?C:	It can be int, long, long long, int64_t etc...
 ?C:.
-?C:QUADKIND:
-?C:	This symbol, if defined, encodes the type of a quad:
-?C:	1 = int, 2 = long, 3 = long long, 4 = int64_t.
-?C:.
 ?C:Uquad_t:
 ?C:	This symbol holds the type used for unsigned 64-bit integers.
 ?C:	It can be unsigned int, unsigned long, unsigned long long,
@@ -54,6 +50,7 @@
 ?H:?%<:#   define QUAD_IS_INT64_T	4
 ?H:?%<:#endif
 ?H:.
+?T:verb
 ?LINT:set quadtype
 ?LINT:set uquadtype
 
@@ -114,7 +111,12 @@ case "$quadtype" in
 	esac
 	d_quad="$undef"
 	;;
-*)	echo "We could use '$quadtype' for 64-bit integers." >&4
+*)	if test X"$use64bits" = Xdefine -o X"$longsize" = X8; then
+	    verb="will"
+	else
+	    verb="could"
+	fi
+	echo "We $verb use '$quadtype' for 64-bit integers." >&4
 	d_quad="$define"
 	;;
 esac

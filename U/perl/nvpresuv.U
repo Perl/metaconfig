@@ -1,0 +1,60 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_nv_preserves_uv: uvtype nvtype uvsize nvsize \
+	Compile echo cat rm exe_ext
+?MAKE:	-pick add $@ %<
+?S:d_nv_preserves_uv:
+?S:	This variable conditionally defines the NV_PRESERVES_UV symbol, which
+?S:	indicates to an NV can preserve an UV.
+?S:.
+?C:NV_PRESERVES_UV:
+?C:	This symbol, if defined, indicates that an NV can preserve an UV.
+?C:.
+?H:#$d_nv_preserves_uv NV_PRESERVES_UV		/**/
+?H:.
+?T:yyy
+?F:!try
+?LINT:set d_nv_preserves_uv
+
+$echo "Checking whether your NV can preserve your UV..." >&4
+$cat >try.c <<EOCP
+#include <stdio.h>
+int main() {
+    printf("%s\n",
+           ($uvtype)($nvtype)($uvtype)~0 == ($uvtype)~0 ? "yes" : "no");
+    exit(0);
+}
+EOCP
+set try
+if eval $compile; then
+	yyy=`./try$exe_ext`
+	case "$yyy" in
+	'yes')	d_nv_preserves_uv="$define"
+		echo "Your NV can preserve your UV."
+		;;
+	'no')	d_nv_preserves_uv="$undef"
+		echo "Your NV cannot preserve your UV."
+		;;
+	'')	echo "(I can't execute the test program.)" >&4
+		;;
+	esac
+else
+	echo "(I can't compile the test program.)" >&4
+fi
+case "$d_nv_preserves_uv" in
+'')	: this is a crude test, actually we would want to test
+	: LDBL_MANT_DIG, DBL_MANT_DIG, IV_DIG, NV_DIG first.
+	if test X"$nvsize" = X"$uvsize"; then
+		d_nv_preserves_uv="$undef"
+	else
+		d_nv_preserves_uv="$define"
+	fi
+esac
+
+$rm -f try.* try
+

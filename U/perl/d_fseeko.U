@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_fseeko: Inlibc
+?MAKE:d_fseeko: Inlibc longsize
 ?MAKE:	-pick add $@ %<
 ?S:d_fseeko:
 ?S:	This variable conditionally defines the HAS_FSEEKO symbol, which
@@ -21,4 +21,7 @@
 : see if fseeko exists
 set fseeko d_fseeko
 eval $inlibc
+case "$longsize" in
+8) echo "(Your long is 64 bits, so in a pinch you could use fseek.)" ;;
+esac
 
