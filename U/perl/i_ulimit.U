@@ -1,0 +1,24 @@
+?RCS: $Id: i_ulimit.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_ulimit: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_ulimit:
+?S:	This variable conditionally defines the I_ULIMIT symbol, and indicates
+?S:	whether a C program should include <ulimit.h>.
+?S:.
+?C:I_ULIMIT:
+?C:	This symbol, if defined, indicates that <ulimit.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_ulimit	I_ULIMIT		/**/
+?H:.
+?LINT:set i_ulimit
+: see if this is a ulimit.h system
+set ulimit.h i_ulimit
+eval $inhdr
+

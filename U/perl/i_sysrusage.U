@@ -1,0 +1,25 @@
+?RCS: $Id: i_sysrusage.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_sysrusage: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_sysrusage:
+?S:	This variable conditionally defines the I_SYSRUSAGE symbol,
+?S:	and indicates whether a C program should include <sys/rusage.h>.
+?S:.
+?C:I_SYSRUSAGE:
+?C:	This symbol, if defined, indicates that <sys/rusage.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_sysrusage	I_SYSRUSAGE		/**/
+?H:.
+?LINT:set i_sysrusage
+
+: see if this is a sys/rusage.h system
+set sys/rusage.h i_sysrusage
+eval $inhdr
+

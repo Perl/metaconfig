@@ -1,0 +1,30 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:inotype: Myread Typedef
+?MAKE:	-pick add $@ %<
+?S:inotype:
+?S:	This variable defines Ino_t to be something like ino_t, long,
+?S:	int, or whatever type is used to declare inode numbers.
+?S:.
+?C:Ino_t:
+?C:	This symbol holds the type used to declare inode numbers.
+?C:	It can be int, long, ino_t, etc...
+?C:	It may be necessary to include <sys/types.h> to get any
+?C:	typedef'ed information.
+?C:.
+?H:#define Ino_t $inotype	/* <inode> type */
+?H:.
+?LINT: set inotype
+: see what type is used for inodes
+rp="What is the type used for inode numbers on this system?"
+set ino_t inotype long stdio.h sys/types.h
+eval $typedef_ask
+

@@ -1,0 +1,24 @@
+?RCS: $Id: i_iconv.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_iconv: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_iconv:
+?S:	This variable conditionally defines the I_ICONV symbol, and indicates
+?S:	whether a C program should include <iconv.h>.
+?S:.
+?C:I_ICONV:
+?C:	This symbol, if defined, indicates that <iconv.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_iconv	I_ICONV		/**/
+?H:.
+?LINT:set i_iconv
+: see if this is a iconv.h system
+set iconv.h i_iconv
+eval $inhdr
+

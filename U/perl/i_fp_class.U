@@ -1,0 +1,24 @@
+?RCS: $Id: i_fp_class.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_fp_class: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_fp_class:
+?S:	This variable conditionally defines the I_FP_CLASS symbol, and indicates
+?S:	whether a C program should include <fp_class.h>.
+?S:.
+?C:I_FP_CLASS:
+?C:	This symbol, if defined, indicates that <fp_class.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_fp_class	I_FP_CLASS		/**/
+?H:.
+?LINT:set i_fp_class
+: see if this is a fp_class.h system
+set fp_class.h i_fp_class
+eval $inhdr
+

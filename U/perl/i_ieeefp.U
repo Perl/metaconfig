@@ -1,0 +1,24 @@
+?RCS: $Id: i_ieeefp.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_ieeefp: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_ieeefp:
+?S:	This variable conditionally defines the I_IEEEFP symbol, and indicates
+?S:	whether a C program should include <ieeefp.h>.
+?S:.
+?C:I_IEEEFP:
+?C:	This symbol, if defined, indicates that <ieeefp.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_ieeefp	I_IEEEFP		/**/
+?H:.
+?LINT:set i_ieeefp
+: see if this is a ieeefp.h system
+set ieeefp.h i_ieeefp
+eval $inhdr
+

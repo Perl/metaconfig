@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getcwd: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getcwd:
+?S:	This variable conditionally defines the HAS_GETCWD symbol, which
+?S:	indicates to the C program that the getcwd() routine is available
+?S:	to get the current working directory.
+?S:.
+?C:HAS_GETCWD :
+?C:	This symbol, if defined, indicates that the getcwd routine is
+?C:	available to get the current working directory.
+?C:.
+?H:#$d_getcwd HAS_GETCWD		/**/
+?H:.
+?LINT:set d_getcwd
+: see if getcwd exists
+set getcwd d_getcwd
+eval $inlibc
+

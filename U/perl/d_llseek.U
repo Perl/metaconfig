@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_llseek: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_llseek:
+?S:	This variable conditionally defines the HAS_LLSEEK symbol, which
+?S:	indicates to the C program that the llseek() routine is available.
+?S:.
+?C:HAS_LLSEEK:
+?C:	This symbol, if defined, indicates that the llseek routine is
+?C:	available to seek files larger than 2 gigabytes.
+?C:.
+?H:#$d_llseek HAS_LLSEEK		/**/
+?H:.
+?LINT:set d_llseek
+: see if llseek exists
+set llseek d_llseek
+eval $inlibc
+
