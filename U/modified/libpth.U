@@ -84,7 +84,7 @@
 ?INIT:plibpth=''
 ?INIT:
 ?LINT:describe xlibpth glibpth
-?LINT:use use64bits
+?LINT:use use64bitint
 : Set private lib path
 case "$plibpth" in
 '') if ./mips; then

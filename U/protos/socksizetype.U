@@ -14,8 +14,8 @@
 ?S:	socklen_t, size_t, and int.
 ?S:.
 ?C:Sock_size_t:
-?C:	This symbol holds the type used for the size argument
-?C:	of various socket calls.
+?C:	This symbol holds the type used for the size argument of
+?C:	various socket calls (just the base type, not the pointer-to).
 ?C:.
 ?H:#define Sock_size_t		$socksizetype /**/
 ?H:.
@@ -39,7 +39,7 @@ EOM
 		'')	try="extern int accept(int, struct sockaddr *, $xxx *);"
 			if ./protochk "$try" $hdrs; then
 				echo "Your system accepts '$xxx *' for the last argument of accept()."
-				socksizetype="$xxx *"
+				socksizetype="$xxx"
 			fi
 			;;
 		esac
@@ -47,13 +47,13 @@ EOM
 : In case none of those worked, prompt the user.
 	case "$socksizetype" in
 	'')	rp='What is the type for the last argument to accept()?'
-		dflt='int *'
+		dflt='int'
 		. ./myread
 		socksizetype=$ans
 		;;
 	esac
 	;;
-*)	: no gethostbyaddr, so pick relatively harmless defaults
+*)	: no sockets, so pick relatively harmless defaults
 	socksizetype='char *'
 	;;
 esac

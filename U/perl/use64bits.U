@@ -5,32 +5,32 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:use64bits usefull64bits archname64: Myread Oldconfig Setvar test \
+?MAKE:use64bitint use64bitall archname64: Myread Oldconfig Setvar test \
 	uselargefiles usemorebits longsize ccflags
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
-?S:use64bits:
-?S:	This variable conditionally defines the USE_64_BITS symbol,
+?S:use64bitint:
+?S:	This variable conditionally defines the USE_64_BIT_INT symbol,
 ?S:	and indicates that 64-bit integer types should be used
 ?S:	when available.  The minimal possible 64-bitness
 ?S:	is employed, just enough to get 64-bit integers into Perl.
 ?S:	This may mean using for example "long longs", while your memory
 ?S:	may still be limited to 2 gigabytes.
 ?S:.
-?S:usefull64bits:
-?S:	This variable conditionally defines the USE_FULL_64_BITS symbol,
+?S:use64bitall:
+?S:	This variable conditionally defines the USE_64_BIT_ALL symbol,
 ?S:	and indicates that 64-bit integer types should be used
 ?S:	when available.  The maximal possible
 ?S:	64-bitness is employed: LP64 or ILP64, meaning that you will
 ?S:	be able to use more than 2 gigabytes of memory.  This mode is
-?S:	even more binary incompatible than USE_64_BITS. You may not
+?S:	even more binary incompatible than USE_64_BIT_INT. You may not
 ?S:	be able to run the resulting executable in a 32-bit CPU at all or
 ?S:	you may need at least to reboot your OS to 64-bit mode.
 ?S:.
 ?S:archname64:
 ?S:	This variable is used for the 64-bitness part of $archname.
 ?S:.
-?C:USE_64_BITS:
+?C:USE_64_BIT_INT:
 ?C:	This symbol, if defined, indicates that 64-bit integers should
 ?C:	be used when available.  If not defined, the native integers
 ?C:	will be employed (be they 32 or 64 bits).  The minimal possible
@@ -38,51 +38,74 @@
 ?C:	This may mean using for example "long longs", while your memory
 ?C:	may still be limited to 2 gigabytes.
 ?C:.
-?C:USE_FULL_64_BITS:
+?C:USE_64_BIT_ALL:
 ?C:	This symbol, if defined, indicates that 64-bit integers should
 ?C:	be used when available.  If not defined, the native integers
 ?C:	will be used (be they 32 or 64 bits).  The maximal possible
 ?C:	64-bitness is employed: LP64 or ILP64, meaning that you will
 ?C:	be able to use more than 2 gigabytes of memory.  This mode is
-?C:	even more binary incompatible than USE_64_BITS. You may not
+?C:	even more binary incompatible than USE_64_BIT_INT. You may not
 ?C:	be able to run the resulting executable in a 32-bit CPU at all or
 ?C:	you may need at least to reboot your OS to 64-bit mode.
 ?C:.
-?H:?%<:#ifndef USE_64_BITS
-?H:?%<:#$use64bits	USE_64_BITS		/**/
+?H:?%<:#ifndef USE_64_BIT_INT
+?H:?%<:#$use64bitint	USE_64_BIT_INT		/**/
 ?H:?%<:#endif
 ?H:.
-?H:?%<:#ifndef USE_FULL_64_BITS
-?H:?%<:#$usefull64bits	USE_FULL_64_BITS		/**/
+?H:?%<:#ifndef USE_64_BIT_ALL
+?H:?%<:#$use64bitall	USE_64_BIT_ALL		/**/
 ?H:?%<:#endif
 ?H:.
-?LINT:set use64bits
+?LINT:set use64bitint
 ?LINT:extern ccflags
 ?LINT:change ccflags
 ?LINT:use uselargefiles
 ?LINT:use usemorebits
 ?LINT:extern uselonglong
 ?LINT:use uselonglong
-?LINT:set usefull64bits
-?F:!use64bits.cbu
-?F:!usefull64bits.cbu
+?LINT:set use64bitall
+?F:!use64bitint.cbu
+?F:!use64bitall.cbu
 
 # Backward compatibility (uselonglong is deprecated).
 case "$uselonglong" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
 
-*** Configure -Duselonglong is deprecated, using the -Duse64bits instead.
+*** Configure -Duselonglong is deprecated, using -Duse64bitint instead.
 
 EOM
-	use64bits="$define"
+	use64bitint="$define"
 	;;
 esac                          
+# Backward compatibility (use64bits is deprecated).
+case "$use64bits" in
+"$define"|true|[yY]*)
+	cat <<EOM >&4
+
+*** Configure -Duse64bits is deprecated, using -Duse64bitint instead.
+
+EOM
+	use64bitint="$define"
+	;;
+esac                          
+# Thinko compatibility
+case "$use64bitints" in
+"$define"|true|[yY]*)
+	cat <<EOM >&4
+
+*** There is no Configure -Duse64bitints, using -Duse64bitint instead.
+
+EOM
+	use64bitint="$define"
+	;;
+esac                          
+
 case "$ccflags" in
-*-DUSE_LONG_LONG*|*-DUSE_64_BITS*|*-DUSE_FULL_64_BITS*) use64bits="$define";;
+*-DUSE_LONG_LONG*|*-DUSE_64_BIT_INT*|*-DUSE_64_BIT_ALL*) use64bitint="$define";;
 esac
-case "$usefull64bits" in
-"$define"|true|[yY]*) use64bits="$define" ;;
+case "$use64bitall" in
+"$define"|true|[yY]*) use64bitint="$define" ;;
 esac
 
 case "$longsize" in
@@ -92,14 +115,14 @@ You have natively 64-bit long integers.
 EOM
    val="$define"
    ;;
-*) case "$use64bits" in
+*) case "$use64bitint" in
    "$define"|true|[yY]*) dflt='y';;
    *) dflt='n';;
    esac
    cat <<EOM
 
 Perl can be built to take advantage of 64-bit integer types
-on some systems.  To do so, Configure can be run with -Duse64bits.
+on some systems.  To do so, Configure can be run with -Duse64bitint.
 Choosing this option will most probably introduce binary incompatibilities.
 
 If this doesn't make any sense to you, just accept the default '$dflt'.
@@ -112,12 +135,12 @@ EOM
    esac
    ;;
 esac
-set use64bits
+set use64bitint
 eval $setvar
 
-case "$usefull64bits" in
+case "$use64bitall" in
 "$define"|true|[yY]*) val="$define" ;;
-*)	case "$use64bits" in
+*)	case "$use64bitint" in
 	"$define")	case "$longsize" in
 			4)	dflt='n'
 				cat <<EOM
@@ -146,47 +169,47 @@ EOM
 	esac
 	;;
 esac 
-set usefull64bits
+set use64bitall
 eval $setvar
 
-case "$use64bits" in
+case "$use64bitint" in
 "$define"|true|[yY]*)
 : Look for a hint-file generated 'call-back-unit'.  If the
 : user has specified that a 64-bit perl is to be built,
 : we may need to set or change some other defaults.
-	if $test -f use64bits.cbu; then
+	if $test -f use64bitint.cbu; then
 		echo "Your platform has some specific hints for 64-bit builds, using them..."
-		. ./use64bits.cbu
+		. ./use64bitint.cbu
 	fi
 	case "$longsize" in
 	4) case "$ccflags" in
-	   *-DUSE_64_BITS*) ;;
-	   *) ccflags="$ccflags -DUSE_64_BITS";;
+	   *-DUSE_64_BIT_INT*) ;;
+	   *) ccflags="$ccflags -DUSE_64_BIT_INT";;
 	   esac
 	   case "$archname64" in
-	   '') archname64=64 ;;
+	   '') archname64=64int ;;
 	   esac
 	   ;;
 	esac
 	;;
 esac
 
-case "$usefull64bits" in
+case "$use64bitall" in
 "$define"|true|[yY]*)
 : Look for a hint-file generated 'call-back-unit'.  If the
 : user has specified that a full 64-bit perl is to be built,
 : we may need to set or change some other defaults.
-	if $test -f usefull64bits.cbu; then
+	if $test -f use64bitall.cbu; then
 		echo "Your platform has some specific hints for full 64-bit builds, using them..."
-		. ./usefull64bits.cbu
+		. ./use64bitall.cbu
 	fi
 	case "$longsize" in
 	4) case "$ccflags" in
-	   *-DUSE_FULL_64_BITS*) ;;
-      	   *) ccflags="$ccflags -DUSE_FULL_64_BITS";;
+	   *-DUSE_64_BIT_ALL*) ;;
+      	   *) ccflags="$ccflags -DUSE_64_BIT_ALL";;
 	   esac
 	   case "$archname64" in
-	   ''|64) archname64=full64 ;;
+	   ''|64) archname64=64all ;;
 	   esac
 	   ;;
 	esac

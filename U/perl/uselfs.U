@@ -30,6 +30,18 @@
 ?LINT:change lseeksize
 ?LINT:change fpossize
 
+# Backward compatibility (uselfs is deprecated).
+case "$uselfs" in
+"$define"|true|[yY]*)
+	cat <<EOM >&4
+
+*** Configure -Duselfs is deprecated, using -Duselargefiles instead.
+
+EOM
+	uselargefiles="$define"
+	;;
+esac                          
+
 case "$lseeksize:$fpossize" in
 8:8) cat <<EOM
 

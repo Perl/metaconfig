@@ -5,7 +5,7 @@
 #  Jarkko Hietaniemi	Sept 15, 1998	Added -Duse64bits
 
 rm -f config.sh Policy.sh
-sh Configure -Dprefix=/opt/perl -Doptimize=-O -Dusethreads -Duse64bits -Duselfs \
+sh Configure -Dprefix=/opt/perl -Doptimize=-O -Dusethreads -Duse64bitint -Duselfs \
 	-Dcf_by='yourname' \
 	-Dcf_email='yourname@yourhost.yourplace.com' \
 	-Dperladmin='yourname@yourhost.yourplace.com' \

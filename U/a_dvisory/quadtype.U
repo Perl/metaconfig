@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_quad quadtype uquadtype quadkind: \
 	longsize intsize d_longlong longlongsize d_int64_t \
-	Inhdr Setvar use64bits
+	Inhdr Setvar use64bitint
 ?MAKE:	-pick add $@ %<
 ?S:d_quad:
 ?S:	This variable, if defined, tells that there's a 64-bit integer type,
@@ -100,7 +100,7 @@ case "$quadtype" in
 '')	echo "Alas, no 64-bit integer types in sight." >&4
 	d_quad="$undef"
 	;;
-*)	if test X"$use64bits" = Xdefine -o X"$longsize" = X8; then
+*)	if test X"$use64bitint" = Xdefine -o X"$longsize" = X8; then
 	    verb="will"
 	else
 	    verb="could"

@@ -9,7 +9,7 @@
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size \
 	d_nv_preserves_uv: \
-	echo rm use64bits d_quad quadtype uquadtype \
+	echo rm use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
 	cat Compile i_inttypes exe_ext test
@@ -187,7 +187,7 @@
 echo " "
 $echo "Choosing the C types to be used for Perl's internal types..." >&4
 
-case "$use64bits:$d_quad:$quadtype" in
+case "$use64bitint:$d_quad:$quadtype" in
 define:define:?*)
 	ivtype="$quadtype"
 	uvtype="$uquadtype"

@@ -19,7 +19,7 @@
 ?RCS: patch51: created
 ?RCS:
 ?MAKE:archname myarchname: sed Loc Myread Oldconfig osname test rm \
-	usethreads usemultiplicity use64bits archname64
+	usethreads usemultiplicity use64bitint archname64
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current
@@ -102,8 +102,8 @@ $define)
 	;;
 esac
 @end
-@if use64bits
-case "$use64bits" in
+@if use64bitint
+case "$use64bitint" in
 $define)
 	case "$archname64" in
 	'')

@@ -21,14 +21,14 @@
 ?H:?%<:#$usemorebits	USE_MORE_BITS		/**/
 ?H:?%<:#endif
 ?H:.
-?LINT:extern use64bits
-?LINT:change use64bits
+?LINT:extern use64bitint
+?LINT:change use64bitint
 ?LINT:extern uselongdouble
 ?LINT:change uselongdouble
 
 case "$usemorebits" in
 "$define"|true|[yY]*)
-	use64bits="$define"
+	use64bitint="$define"
 	uselongdouble="$define"
 	usemorebits="$define"
 	;;

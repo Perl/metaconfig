@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_fgetpos64 d_fopen64 d_freopen64 d_fseek64 d_fseeko64 d_fsetpos64 \
-	d_ftell64 d_ftello64 d_tmpfile64: Inlibc use64bits Setvar test
+	d_ftell64 d_ftello64 d_tmpfile64: Inlibc use64bitint Setvar test
 ?MAKE:	-pick add $@ %<
 ?S:d_fgetpos64:
 ?S:	This variable conditionally defines the HAS_FGETPOS64 symbol, which
@@ -101,7 +101,7 @@
 ?LINT:set d_ftello64
 ?LINT:set d_tmpfile64
 
-if $test X"$use64bits" = X"$define"; then
+if $test X"$use64bitint" = X"$define"; then
 	: see if fgetpos64 exists
 	set fgetpos64 d_fgetpos64
 	eval $inlibc

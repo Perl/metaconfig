@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_dbminit64 d_dbmclose64 d_fetch64 d_store64 d_delete64 \
-	d_firstkey64 d_nextkey64: Inlibc use64bits Setvar test
+	d_firstkey64 d_nextkey64: Inlibc use64bitint Setvar test
 ?MAKE:	-pick add $@ %<
 ?S:d_dbminit64:
 ?S:	This variable conditionally defines the HAS_DBMINIT64 symbol, which
@@ -81,7 +81,7 @@
 ?LINT:set d_firstkey64
 ?LINT:set d_nextkey64
 
-if $test X"$use64bits" = X"$define"; then
+if $test X"$use64bitint" = X"$define"; then
 	: see if dbminit64 exists
 	set dbminit64 d_dbminit64
 	eval $inlibc
