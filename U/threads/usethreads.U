@@ -135,6 +135,20 @@ EOM
 	;;
 esac
 
+?X: This is not supposed to be possible but with some trickery, maybe.
+case "$useithreads$use5005threads" in
+"$define$define")
+	$cat >&4 <<EOM
+
+You cannot have both the ithreads and the 5.005 threads enabled
+at the same time.  Disabling the 5.005 threads since they are
+much less stable than the ithreads.
+
+EOM
+	use5005threads="$undef"
+	;;
+esac
+
 ?X: Check out what kind of threads api we have
 case "$d_oldpthreads" in
 '')	: Configure tests would be welcome here.  For now, assume undef.
