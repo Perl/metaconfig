@@ -78,13 +78,11 @@
 ?LINT:use d_open3
 : check for non-blocking I/O stuff
 case "$h_sysfile" in
-true) echo "#include <sys/file.h>" > head.c;;
-*)
-	case "$h_fcntl" in
-	true) echo "#include <fcntl.h>" > head.c;;
-	*) echo "#include <sys/fcntl.h>" > head.c;;
-	esac
-	;;
+true) echo "#include <sys/file.h>" >  head.c;;
+esac
+case "$h_fcntl" in
+true) echo "#include <fcntl.h>"    >> head.c;;
+*) echo "#include <sys/fcntl.h>"   >> head.c;;
 esac
 echo " "
 echo "Figuring out the flag used by open() for non-blocking I/O..." >&4
