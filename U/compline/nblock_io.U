@@ -144,7 +144,8 @@ extern int errno;
 #ifdef I_UNISTD
 #include <unistd.h>
 #endif
-#ifdef $i_string
+#$i_string I_STRING
+#ifdef I_STRING
 #include <string.h>
 #else
 #include <strings.h>

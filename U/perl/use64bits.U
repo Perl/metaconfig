@@ -169,6 +169,14 @@ esac
 set use64bitint
 eval $setvar
 
+case "$use64bitall" in
+"$define"|true|[yY]*) dflt='y' ;;
+*) case "$longsize" in
+   8) dflt='y' ;;
+   *) dflt='n' ;;
+   esac
+   ;;
+esac	
 cat <<EOM
 
 You may also choose to try maximal 64-bitness.  It means using as much
@@ -179,14 +187,6 @@ have any more 64-bitness available than what you already have chosen.
 If this doesn't make any sense to you, just accept the default '$dflt'.
 EOM
 rp='Try to use maximal 64-bit support, if available?'
-case "$use64bitall" in
-"$define"|true|[yY]*) dflt='y' ;;
-*) case "$longsize" in
-   8) dflt='y' ;;
-   *) dflt='n' ;;
-   esac
-   ;;
-esac	
 . ./myread
 case "$ans" in
 [yY]*) val="$define" ;;
