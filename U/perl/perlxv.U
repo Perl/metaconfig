@@ -8,7 +8,7 @@
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size \
-	d_nv_preserves_uv d_nv_preserved_bits: \
+	d_nv_preserves_uv d_nv_preserves_uv_bits: \
 	echo rm use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
@@ -84,7 +84,7 @@
 ?S:	This variable indicates whether a variable of type nvtype
 ?S:	can preserve all the bits a variable of type uvtype.
 ?S:.
-?S:d_nv_preserved_bits:
+?S:d_nv_preserves_uv_bits:
 ?S:	This variable indicates how many of bits type uvtype
 ?S:	a variable nvtype can preserve.
 ?S:.
@@ -158,7 +158,7 @@
 ?C:	This symbol, if defined, indicates that a variable of type NVTYPE
 ?C:	can preserve all the bits of a variable of type UVTYPE.
 ?C:.
-?C:NV_PRESERVED_BITS:
+?C:NV_PRESERVES_UV_BITS:
 ?C:	This symbol contains the number of bits a variable of type NVTYPE
 ?C:	can preserve of a variable of type UVTYPE.
 ?C:.
@@ -189,7 +189,7 @@
 ?H:?%<:#endif
 ?H:#define	NVSIZE		$nvsize		/**/
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
-?H:#define	NV_PRESERVED_BITS	$d_nv_preserved_bits
+?H:#define	NV_PRESERVES_UV_BITS	$d_nv_preserves_uv_bits
 ?H:.
 ?F:!try
 
@@ -400,7 +400,7 @@ esac
 $rm -f try.* try
 
 case "$d_nv_preserves_uv" in
-"$define") d_nv_preserved_bits=`expr $uvsize \* 8` ;;
+"$define") d_nv_preserves_uv_bits=`expr $uvsize \* 8` ;;
 *)	$echo "Checking how many bits of your UVs your NVs can preserve..." >&4
 	$cat <<EOP >try.c
 #include <stdio.h>
@@ -419,12 +419,12 @@ int main() {
 EOP
 	set try
 	if eval $compile; then
-		d_nv_preserved_bits="`./try$exe_ext`"
+		d_nv_preserves_uv_bits="`./try$exe_ext`"
 	fi
-	case "$d_nv_preserved_bits" in
-	[1-9]*)	$echo "Your NVs can preserve $d_nv_preserved_bits bits of your NVs."  2>&1 ;;
+	case "$d_nv_preserves_uv_bits" in
+	[1-9]*)	$echo "Your NVs can preserve $d_nv_preserves_uv_bits bits of your UVs."  2>&1 ;;
 	*)	$echo "Can't figure out how many bits your NVs preserve." 2>&1
-		d_nv_preserved_bits="$undef"
+		d_nv_preserves_uv_bits="$undef"
 		;;
 	esac
 	$rm -f try.* try
