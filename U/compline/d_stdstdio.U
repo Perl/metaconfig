@@ -65,7 +65,7 @@
 ?S:.
 ?S:stdio_filbuf:
 ?S:	This variable defines how, given a FILE pointer, fp, to tell
-?S:	stdio to refill it's internal buffers (?).  This will
+?S:	stdio to refill its internal buffers (?).  This will
 ?S:	be used to define the macro FILE_filbuf(fp).
 ?S:.
 ?S:d_stdiobase:
