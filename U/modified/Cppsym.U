@@ -52,20 +52,17 @@
 ?X:
 ?S:ccsymbols:
 ?S:	The variable contains the symbols defined by the C compiler alone.
-?S:	The symbols defined by cpp or by cc when it calls cpp are not in
-?S:	this list, see cppsymbols and cppccsymbols.
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
 ?S:cppsymbols:
-?S:	The variable contains the symbols defined by the C preprocessor
-?S:	alone.  The symbols defined by cc or by cc when it calls cpp are
-?S:	not in this list, see ccsymbols and cppccsymbols.
+?S:	The variable contains the symbols during a compilation
+?S:	that includes stdio.h.
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
 ?S:cppccsymbols:
-?S:	The variable contains the symbols defined by the C compiler
-?S:	when it calls cpp.  The symbols defined by the cc alone or cpp
-?S:	alone are not in this list, see ccsymbols and cppsymbols.
+?S:	The variable contains the symbols defined by both
+?S:	the bare C compiler and during a compilation that
+?S:	includes stdio.h.
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
 ?F:./Cppsym
