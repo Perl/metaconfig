@@ -5,21 +5,67 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_asctime_r: Inlibc
+?MAKE:d_asctime_r asctime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:	-pick add $@ %<
 ?S:d_asctime_r:
 ?S:	This variable conditionally defines the HAS_ASCTIME_R symbol,
 ?S:	which indicates to the C program that the asctime_r()
 ?S:	routine is available.
 ?S:.
+?S:asctime_r_proto:
+?S:	This variable encodes the prototype of asctime_r.
+?S:.
 ?C:HAS_ASCTIME_R:
 ?C:	This symbol, if defined, indicates that the asctime_r routine
 ?C:	is available to asctime re-entrantly.
 ?C:.
+?C:ASCTIME_R_PROTO:
+?C:	This symbol encodes the prototype of asctime_r.
+?C:	  1	int   asctime_r(const struct *tm, char *);
+?C:	  2	char* asctime_r(const struct *tm, char *);
+?C:	 13	int   asctime_r(const struct *tm, char *, int);
+?C:	 14	char* asctime_r(const struct *tm, char *, int);
+?C:	The 2 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:.
 ?H:#$d_asctime_r HAS_ASCTIME_R		/**/
+?H:#define ASCTIME_R_PROTO $asctime_r_proto	/**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_asctime_r
 : see if asctime_r exists
 set asctime_r d_asctime_r
 eval $inlibc
+case "$d_asctime_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h $i_time time.h"
+	try='extern char* asctime_r(struct *tm, char *);'
+	if ./protochk $try $hdrs; then
+		echo "Your system has $try"
+		asctime_r_proto=2
+	else
+		try='extern char* asctime_r(struct tm*, char*, int);'
+		if ./protochk $try $hdrs; then
+			echo "Your system has $try"
+			asctime_r_proto=14
+		else
+			try='extern int asctime_r(struct tm*, char*, int);'
+			if ./protochk $try $hdrs; then
+				echo "Your system has $try"
+				asctime_r_proto=13
+			else
+				try='extern int asctime_r(struct tm*, char*);'
+				if ./protochk $try $hdrs; then
+					echo "Your system has $try"
+					asctime_r_proto=1
+				else
+					echo "I do not recognize the prototype of your asctime_r, not using it." >&4
+					d_asctime_r="$undef"
+					asctime_r_proto=0
+				fi
+			fi
+		fi
+	fi
+	;;
+*)	asctime_r_proto=0 ;;
+esac
 

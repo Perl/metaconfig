@@ -5,21 +5,67 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_getpwuid_r: Inlibc
+?MAKE:d_getpwuid_r getpwuid_r_proto: Inlibc Protochk i_systypes i_pwd uidtype
 ?MAKE:	-pick add $@ %<
 ?S:d_getpwuid_r:
 ?S:	This variable conditionally defines the HAS_GETPWUID_R symbol,
 ?S:	which indicates to the C propwam that the getpwuid_r()
 ?S:	routine is available.
 ?S:.
+?S:getpwuid_r_proto:
+?S:	This variable encodes the prototype of getpwuid_r.
+?S:.
 ?C:HAS_GETPWUID_R:
 ?C:	This symbol, if defined, indicates that the getpwuid_r routine
 ?C:	is available to getpwuid re-entrantly.
 ?C:.
+?C:GETPWUID_R_PROTO:
+?C:	This symbol encodes the prototype of getpwuid_r.
+?C:	 13	int   getpwuid_r(char*, struct passwd*, char*, int)
+?C:	 15	struct passwd* getpwuid_r(char*, struct passwd*, char*, int)
+?C:	 45	int   getpwuid_r(char*, struct passwd*, char*, int, struct passwd**)
+?C:	 53	int   getpwuid_r(char*, struct passwd*, char*, size_t, struct passwd**)
+?C:	The 53 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:.
 ?H:#$d_getpwuid_r HAS_GETPWUID_R		/**/
+?H:#define GETPWUID_R_PROTO $getpwuid_r_proto	/**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_getpwuid_r
 : see if getpwuid_r exists
 set getpwuid_r d_getpwuid_r
 eval $inlibc
+case "$d_getpwuid_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
+	try="extern char* getpwuid_r($uidtype, struct passwd*, char*, size_t, struct passwd**);"
+	if ./protochk $try $hdrs; then
+		echo "Your system has $try"
+		getpwuid_r_proto=53
+	else
+		try="extern char* getpwuid_r($uidtype, struct passwd*, char*, size_t, struct passwd**);"
+		if ./protochk $try $hdrs; then
+			echo "Your system has $try"
+			getpwuid_r_proto=45
+		else
+			try="extern int getpwuid_r($uidtype, struct passwd*, char*, size_t);"
+			if ./protochk $try $hdrs; then
+				echo "Your system has $try"
+				getpwuid_r_proto=13
+			else
+				try="extern struct passwd* getpwuid_r($uidtype, struct passwd*, char*, size_t);"
+				if ./protochk $try $hdrs; then
+					echo "Your system has $try"
+					getpwuid_r_proto=15
+				else
+					echo "I do not recognize the prototype of your getpwuid_r, not using it." >&4
+					d_getpwuid_r="$undef"
+					getpwuid_r_proto=0
+				fi
+			fi
+		fi
+	fi
+	;;
+*)	getpwuid_r_proto=0 ;;
+esac
 

@@ -5,21 +5,67 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_ctime_r: Inlibc
+?MAKE:d_ctime_r ctime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:	-pick add $@ %<
 ?S:d_ctime_r:
 ?S:	This variable conditionally defines the HAS_CTIME_R symbol,
 ?S:	which indicates to the C program that the ctime_r()
 ?S:	routine is available.
 ?S:.
+?S:ctime_r_proto:
+?S:	This variable encodes the prototype of ctime_r.
+?S:.
 ?C:HAS_CTIME_R:
 ?C:	This symbol, if defined, indicates that the ctime_r routine
 ?C:	is available to ctime re-entrantly.
 ?C:.
+?C:CTIME_R_PROTO:
+?C:	This symbol encodes the prototype of ctime_r.
+?C:	  1	int   ctime_r(const struct *tm, char *);
+?C:	  2	char* ctime_r(const struct *tm, char *);
+?C:	 13	int   ctime_r(const struct *tm, char *, int);
+?C:	 14	char* ctime_r(const struct *tm, char *, int);
+?C:	The 2 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:.
 ?H:#$d_ctime_r HAS_CTIME_R		/**/
+?H:#define CTIME_R_PROTO $ctime_r_proto	/**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_ctime_r
 : see if ctime_r exists
 set ctime_r d_ctime_r
 eval $inlibc
+case "$d_ctime_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h $i_time time.h"
+	try='extern char* ctime_r(struct *tm, char *);'
+	if ./protochk $try $hdrs; then
+		echo "Your system has $try"
+		ctime_r_proto=2
+	else
+		try='extern char* ctime_r(struct tm*, char*, int);'
+		if ./protochk $try $hdrs; then
+			echo "Your system has $try"
+			ctime_r_proto=14
+		else
+			try='extern int ctime_r(struct tm*, char*, int);'
+			if ./protochk $try $hdrs; then
+				echo "Your system has $try"
+				ctime_r_proto=13
+			else
+				try='extern int ctime_r(struct tm*, char*);'
+				if ./protochk $try $hdrs; then
+					echo "Your system has $try"
+					ctime_r_proto=1
+				else
+					echo "I do not recognize the prototype of your ctime_r, not using it." >&4
+					d_ctime_r="$undef"
+					ctime_r_proto=0
+				fi
+			fi
+		fi
+	fi
+	;;
+*)	ctime_r_proto=0 ;;
+esac
 

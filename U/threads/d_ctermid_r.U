@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_ctermid_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_ctermid_r:
+?S:	This variable conditionally defines the HAS_CTERMID_R symbol,
+?S:	which indicates to the C prospam that the ctermid_r()
+?S:	routine is available.
+?S:.
+?C:HAS_CTERMID_R:
+?C:	This symbol, if defined, indicates that the ctermid_r routine
+?C:	is available to ctermid re-entrantly.
+?C:.
+?H:#$d_ctermid_r HAS_CTERMID_R		/**/
+?H:.
+?LINT:set d_ctermid_r
+: see if ctermid_r exists
+set ctermid_r d_ctermid_r
+eval $inlibc
+

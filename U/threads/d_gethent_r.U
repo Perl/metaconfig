@@ -20,6 +20,6 @@
 ?H:.
 ?LINT:set d_gethent_r
 : see if gethent_r exists
-set gethent_r d_gethent_r
+set gethostent_r d_gethent_r
 eval $inlibc
 

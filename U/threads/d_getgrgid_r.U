@@ -5,21 +5,67 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_getgrgid_r: Inlibc
+?MAKE:d_getgrgid_r getgrgid_r_proto: Inlibc Protochk i_systypes i_grp gidtype
 ?MAKE:	-pick add $@ %<
 ?S:d_getgrgid_r:
 ?S:	This variable conditionally defines the HAS_GETGRGID_R symbol,
 ?S:	which indicates to the C program that the getgrgid_r()
 ?S:	routine is available.
 ?S:.
+?S:getgrgid_r_proto:
+?S:	This variable encodes the prototype of getgrgid_r.
+?S:.
 ?C:HAS_GETGRGID_R:
 ?C:	This symbol, if defined, indicates that the getgrgid_r routine
 ?C:	is available to getgrgid re-entrantly.
 ?C:.
+?C:GETGRGID_R_PROTO:
+?C:	This symbol encodes the prototype of getgrgid_r.
+?C:	 13	int   getgrgid_r(char*, struct group*, char*, int)
+?C:	 15	struct group* getgrgid_r(char*, struct group*, char*, int)
+?C:	 45	int   getgrgid_r(char*, struct group*, char*, int, struct group**)
+?C:	 53	int   getgrgid_r(char*, struct group*, char*, size_t, struct group**)
+?C:	The 53 is preferred since it's the SUSv3/POSIX 1001.3-2001 one.
+?C:.
 ?H:#$d_getgrgid_r HAS_GETGRGID_R		/**/
+?H:#define GETGRGID_R_PROTO $getgrgid_r_proto	/**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_getgrgid_r
 : see if getgrgid_r exists
 set getgrgid_r d_getgrgid_r
 eval $inlibc
+case "$d_getgrgid_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h $i_grp grp.h"
+	try="extern char* getgrgid_r($gidtype, struct group*, char*, size_t, struct group**);"
+	if ./protochk $try $hdrs; then
+		echo "Your system has $try"
+		getgrgid_r_proto=53
+	else
+		try="extern char* getgrgid_r($gidtype, struct group*, char*, size_t, struct group**);"
+		if ./protochk $try $hdrs; then
+			echo "Your system has $try"
+			getgrgid_r_proto=45
+		else
+			try="extern int getgrgid_r($gidtype, struct group*, char*, size_t);"
+			if ./protochk $try $hdrs; then
+				echo "Your system has $try"
+				getgrgid_r_proto=13
+			else
+				try="extern struct group* getgrgid_r($gidtype, struct group*, char*, size_t);"
+				if ./protochk $try $hdrs; then
+					echo "Your system has $try"
+					getgrgid_r_proto=15
+				else
+					echo "I do not recognize the prototype of your getgrgid_r, not using it." >&4
+					d_getgrgid_r="$undef"
+					getgrgid_r_proto=0
+				fi
+			fi
+		fi
+	fi
+	;;
+*)	getgrgid_r_proto=0 ;;
+esac
 

@@ -5,21 +5,68 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_getgrent_r: Inlibc
+?MAKE:d_getgrent_r getgrent_r_proto: Inlibc Protochk i_systypes i_grp
 ?MAKE:	-pick add $@ %<
 ?S:d_getgrent_r:
 ?S:	This variable conditionally defines the HAS_GETGRENT_R symbol,
 ?S:	which indicates to the C program that the getgrent_r()
 ?S:	routine is available.
 ?S:.
+?S:getgrent_r_proto:
+?S:	This variable encodes the prototype of getgrent_r.
+?S:.
 ?C:HAS_GETGRENT_R:
 ?C:	This symbol, if defined, indicates that the getgrent_r routine
 ?C:	is available to getgrent re-entrantly.
 ?C:.
+?C:GETGRENT_R_PROTO:
+?C:	This symbol encodes the prototype of getgrent_r.
+?C:	  53	int getgrent_r(struct group*, char*, size_t, struct group**)
+?C:	  45	int getgrent_r(struct group*, char*, int, struct group**)
+?C:	  13	int getgrent_r(struct group*, char*, int)
+?C:	  77	int getgrent_r(struct group*, char*, int, FILE**)
+?C:	Ordering based mainly on popularity.
+?C:.
 ?H:#$d_getgrent_r HAS_GETGRENT_R		/**/
+?H:#define GETGRENT_R_PROTO $getgrent_r_proto	/**/
 ?H:.
+?T:try hdrs
 ?LINT:set d_getgrent_r
 : see if getgrent_r exists
 set getgrent_r d_getgrent_r
 eval $inlibc
+case "$d_getgrent_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h $i_grp grp.h"
+	try='extern int getgrent_r(struct group*, char*, size_t, struct group**);'
+	if ./protochk $try $hdrs; then
+		echo "Your system has $try"
+		getgrent_r_proto=53
+	else
+		try='extern int getgrent_r(struct group*, char*, int, struct group**);'
+		if ./protochk $try $hdrs; then
+			echo "Your system has $try"
+			getgrent_r_proto=45
+		else
+			try='extern int getgrent_r(struct group*, char*, int);'
+			if ./protochk $try $hdrs; then
+				echo "Your system has $try"
+				getgrent_r_proto=13
+			else
+				try='extern struct group* getgrent_r(struct group*, int, FILE**);'
+				if ./protochk $try $hdrs; then
+					echo "Your system has $try"
+					getgrent_r_proto=77
+				else
+					echo "I do not recognize the prototype of your getgrent_r, not using it." >&4
+					d_getgrent_r="$undef"
+					getgrent_r_proto=0
+				fi
+			fi
+		fi
+	fi
+	;;
+*)	getgrent_r_proto=0 ;;
+esac
+
 

@@ -20,6 +20,6 @@
 ?H:.
 ?LINT:set d_endnent_r
 : see if endnent_r exists
-set endnent_r d_endnent_r
+set endnetent_r d_endnent_r
 eval $inlibc
 
