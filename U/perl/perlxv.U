@@ -422,7 +422,7 @@ EOP
 		d_nv_preserved_bits="`./try$exe_ext`"
 	fi
 	case "$d_nv_preserved_bits" in
-	[1-9]*)	$echo "Your NVs can preserve $d_nv_preserved_bits of your NVs."  2>&1 ;;
+	[1-9]*)	$echo "Your NVs can preserve $d_nv_preserved_bits bits of your NVs."  2>&1 ;;
 	*)	$echo "Can't figure out how many bits your NVs preserve." 2>&1
 		d_nv_preserved_bits="$undef"
 		;;
