@@ -148,6 +148,7 @@ $sed 's/\(.*\)/__\1__/' < Cppsym.know > Cppsym.c
 $cat Cppsym.know Cppsym.a Cppsym.b Cppsym.c | sort | uniq > Cppsym.d
 mv Cppsym.d Cppsym.know
 rm Cppsym.?
+al=`cat Cppsym.know`
 $cat <<EOSS >Cppsym
 $startsh
 case "\$1" in
