@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:run to from targetarch usecrosscompile: src awk grep test rm \
-	echo sed mkdir cp touch
+	echo sed mkdir cp touch chmod
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usecrosscompile:
@@ -90,20 +90,20 @@ $define|true|[yY]*)
 	    nm=$targetarch-nm
 	    ranlib=$targetarch-ranlib
 	    $echo 'extern int foo;' > try.c
-	    set X `$cc -v -E perl.c 2>&1 | $awk '/^#include </,/^End of search /'|$grep '/include'`
+	    set X `$cc -v -E try.c 2>&1 | $awk '/^#include </,/^End of search /'|$grep '/include'`
 	    shift
             if $test $# -gt 0; then
 	        incpth="$incpth $*"
-		incpth="$echo $incpth|$sed 's/^ //'"
-                echo "Guessing incpth $incpth" >&4
+		incpth="`$echo $incpth|$sed 's/^ //'`"
+                echo "Guessing incpth '$incpth'." >&4
                 for i in $*; do
-		    j=`$echo $i|$sed 's,/include$,/lib,'`
+		    j="`$echo $i|$sed 's,/include$,/lib,'`"
 		    if $test -d $j; then
 			libpth="$libpth $j"
 		    fi
                 done   
-		libpth="$echo $libpth|$sed 's/^ //'"
-                echo "Guessing libpth $libpth." >&4
+		libpth="`$echo $libpth|$sed 's/^ //'`"
+                echo "Guessing libpth '$libpth'." >&4
 	    fi
 	    $rm -f try.c
 	    ;;
@@ -114,11 +114,11 @@ $define|true|[yY]*)
 	esac
 	case "$incpth" in
 	'') echo "Incpth not defined." >&4; croak=y ;;
-        *)  echo "Using incpth $incpth." >&4 ;;
+        *)  echo "Using incpth '$incpth'." >&4 ;;
 	esac
 	case "$libpth" in
 	'') echo "Libpth not defined." >&4; croak=y ;;
-        *)  echo "Using libpth $libpth." >&4 ;;
+        *)  echo "Using libpth '$libpth'." >&4 ;;
 	esac
 	case "$usrinc" in
 	'') for i in $incpth; do
@@ -151,7 +151,7 @@ $define|true|[yY]*)
 	    ;;
 	*)  pwd=`$test -f ../Configure & cd ..; pwd`
 	    run=$pwd/Cross/run
-	    targetmkdir=$pwd/Cross/mkdirkrun
+	    targetmkdir=$pwd/Cross/mkdir
 	    to=$pwd/Cross/to
 	    from=$pwd/Cross/from
 	    ;;
@@ -215,6 +215,7 @@ EOF
 #!/bin/sh
 $targetrun -l $targetuser $targethost "mkdir -p \$@"
 EOF
+	    $chmod a+rx $targetmkdir
 	    ;;
 	*)  echo "Unknown targetmkdir '$targetmkdir'" >&4
 	    exit 1
@@ -291,23 +292,24 @@ EOF
 	if $test ! -f $run; then
 	    echo "Target 'run' script '$run' not found." >&4
 	else
-	    chmod a+rx $run
+	    $chmod a+rx $run
 	fi
 	if $test ! -f $to; then
 	    echo "Target 'to' script '$to' not found." >&4
 	else
-	    chmod a+rx $to
+	    $chmod a+rx $to
 	fi
 	if $test ! -f $from; then
 	    echo "Target 'from' script '$from' not found." >&4
 	else
-	    chmod a+rx $from
+	    $chmod a+rx $from
 	fi
 	if $test ! -f $run -o ! -f $to -o ! -f $from; then
 	    exit 1
 	fi
 	cat >&4 <<EOF
-Using '$run' for remote execution, and '$from' and '$to'
+Using '$run' for remote execution,
+and '$from' and '$to'
 for remote file transfer.
 EOF
 	;;
