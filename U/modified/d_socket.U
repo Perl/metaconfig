@@ -20,9 +20,9 @@
 ?RCS:
 ?MAKE:d_socket d_oldsock d_sockpair socketlib sockethdr \
 	d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy \
-	d_scm_rights d_sendmsg d_recvmsg d_msghdr_s d_cmsghdr_s: \
+	d_scm_rights: \
 	contains libc echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
-	Compile cat rm Setvar Hasfield i_sysuio
+	Compile cat rm Setvar Hasfield
 ?MAKE:	-pick add $@ %<
 ?S:d_socket:
 ?S:	This variable conditionally defines HAS_SOCKET, which indicates
@@ -65,22 +65,6 @@
 ?S:	This variable conditionally defines the HAS_SCM_RIGHTS symbol,
 ?S:	which indicates that the SCM_RIGHTS is available.  #ifdef is
 ?S:	not enough because it may be an enum, glibc has been known to do this.
-?S:.
-?S:d_sendmsg:
-?S:	This variable conditionally defines the HAS_SENDMSG symbol,
-?S:	which indicates that the sendmsg is supported.
-?S:.
-?S:d_recvmsg:
-?S:	This variable conditionally defines the HAS_RECVMSG symbol,
-?S:	which indicates that the recvmsg is supported.
-?S:.
-?S:d_msghdr_s:
-?S:	This variable conditionally defines the HAS_STRUCT_MSGHDR symbol,
-?S:	which indicates that the struct msghdr is supported.
-?S:.
-?S:d_cmsghdr_s:
-?S:	This variable conditionally defines the HAS_STRUCT_CMSGHDR symbol,
-?S:	which indicates that the the struct cmsghdr is supported.
 ?S:.
 ?S:socketlib:
 ?S:	This variable has the names of any libraries needed for socket support.
@@ -131,26 +115,6 @@
 ?C:	Checking just with #ifdef might not be enough because this symbol
 ?C:	has been known to be an enum.
 ?C:.
-?C:HAS_SENDMSG:
-?C:	This symbol, if defined, indicates that the sendmsg is supported
-?C:	to send messages between sockets.  You will also need struct
-?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
-?C:.
-?C:HAS_RECVMSG:
-?C:	This symbol, if defined, indicates that the recvmsg is supported
-?C:	to send messages between sockets.  You will also need struct
-?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
-?C:.
-?C:HAS_STRUCT_MSGHDR:
-?C:	This symbol, if defined, indicates that the struct msghdr
-?C:	(BSD 4.3 or 4.4) is supported.  You will also need struct
-?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
-?C:.
-?C:HAS_STRUCT_CMSGHDR:
-?C:	This symbol, if defined, indicates that the struct cmsghdr
-?C:	(BSD 4.4) is supported.  You will also need struct
-?C:	iovec from <sys/uio.h>, HAS_STRUCT_IOVEC and I_SYSUIO.
-?C:.
 ?H:#$d_socket	HAS_SOCKET		/**/
 ?H:#$d_sockpair	HAS_SOCKETPAIR	/**/
 ?H:#$d_oldsock	USE_OLDSOCKET	/**/
@@ -160,16 +124,12 @@
 ?H:#$d_msg_peek	HAS_MSG_PEEK	/**/
 ?H:#$d_msg_proxy	HAS_MSG_PROXY	/**/
 ?H:#$d_scm_rights	HAS_SCM_RIGHTS	/**/
-?H:#$d_sendmsg	HAS_SENDMSG	/**/
-?H:#$d_recvmsg	HAS_RECVMSG	/**/
-?H:#$d_msghdr_s	HAS_STRUCT_MSGHDR	/**/
-?H:#$d_cmsghdr_s	HAS_STRUCT_CMSGHDR	/**/
 ?H:.
 ?T:val net ENUM enum
 ?F:try.c
 ?LINT:set d_sockpair
 ?LINT:set d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy
-?LINT:set d_scm_rights d_sendmsg d_recvmsg d_msghdr_s d_cmsghdr_s
+?LINT:set d_scm_rights
 socketlib=''
 sockethdr=''
 : see whether socket exists
@@ -263,31 +223,4 @@ EOF
 	set d_${enum}; eval $setvar
 	$rm -f try.c try
 done
-
-set sendmsg d_sendmsg
-eval $inlibc
-
-set recvmsg d_recvmsg
-eval $inlibc
-
-echo " "
-$echo $n "Checking to see if your system supports struct msghdr...$c" >&4
-set d_msghdr_s msghdr msg_name define sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h
-eval $hasfield
-case "$d_msghdr_s" in
-"$define")      echo "Yup, it does." >&4
-                ;;
-*)              echo "Nope, it doesn't." >&4
-                ;;
-esac
-
-$echo $n "Checking to see if your system supports struct cmsghdr...$c" >&4
-set d_cmsghdr_s cmsghdr cmsg_len define sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h
-eval $hasfield
-case "$d_cmsghdr_s" in
-"$define")      echo "Yup, it does." >&4
-                ;;
-*)              echo "Nope, it doesn't." >&4
-                ;;
-esac
 

@@ -1,0 +1,31 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_cmsghdr_s: Hasstruct i_systypes d_socket i_sysuio Setvar
+?MAKE:	-pick add $@ %<
+?S:d_cmsghdr_s:
+?S:	This variable conditionally defines the HAS_STRUCT_CMSGHDR symbol,
+?S:	which indicates that the struct cmsghdr is supported.
+?S:.
+?C:HAS_STRUCT_CMSGHDR:
+?C:	This symbol, if defined, indicates that the struct cmsghdr
+?C:	is supported.
+?C:.
+?H:#$d_cmsghdr_s HAS_STRUCT_CMSGHDR	/**/
+?H:.
+?LINT:set d_cmsghdr_s
+
+echo " "
+echo "Checking to see if your system supports struct cmsghdr..." >&4
+set d_ccmsghdr_s ccmsghdr ccmsg_len $i_systypes sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h
+eval $hasstruct
+case "$d_cmsghdr_s" in
+"$define")      echo "Yup, it does."     >&4 ;;
+*)              echo "Nope, it doesn't." >&4 ;;
+esac
+
+

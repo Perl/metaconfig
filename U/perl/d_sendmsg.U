@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_sendmsg: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sendmsg:
+?S:	This variable conditionally defines the HAS_SENDMSG symbol, which
+?S:	indicates to the C program that the sendmsg() routine is available.
+?S:.
+?C:HAS_SENDMSG:
+?C:	This symbol, if defined, indicates that the sendmsg routine is
+?C:	available to send structured socket messages.
+?C:.
+?H:#$d_sendmsg HAS_SENDMSG		/**/
+?H:.
+?LINT:set d_sendmsg
+: see if sendmsg exists
+set sendmsg d_sendmsg
+eval $inlibc
+

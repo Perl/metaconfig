@@ -28,8 +28,10 @@
 ?H:#endif
 ?H:.
 ?LINT:set d_statblks
+
 : see if stat knows about block sizes
 echo " "
+echo "Checking to see if your struct stat has st_blocks field..." >&4
 set d_statblks stat st_blocks $i_sysstat sys/stat.h
 eval $hasfield
 

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_recvmsg: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_recvmsg:
+?S:	This variable conditionally defines the HAS_RECVMSG symbol, which
+?S:	indicates to the C program that the recvmsg() routine is available.
+?S:.
+?C:HAS_RECVMSG:
+?C:	This symbol, if defined, indicates that the recvmsg routine is
+?C:	available to send structured socket messages.
+?C:.
+?H:#$d_recvmsg HAS_RECVMSG		/**/
+?H:.
+?LINT:set d_recvmsg
+: see if recvmsg exists
+set recvmsg d_recvmsg
+eval $inlibc
+
