@@ -39,8 +39,8 @@
 ?X: it in Myinit.U.
 ?X: 
 ?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: \
-	eunicefix Guess cppstdin awk cat tr sed sort grep rm startsh osname \
-	contains cppminus +cc +gccversion test comm uniq echo n c Options trnl
+	eunicefix Guess awk cat tr sed sort grep rm startsh osname exe_ext \
+	contains Compile +cc +gccversion test comm uniq echo n c Options trnl
 ?MAKE:	-pick add $@ %<
 ?F:./Cppsym
 ?T:sym list unknown status also symbols i postprocess_cc_v
@@ -145,14 +145,21 @@ $osname
 EOSH
 ./tr '[a-z]' '[A-Z]' < Cppsym.know > Cppsym.a
 ./tr '[A-Z]' '[a-z]' < Cppsym.know > Cppsym.b
+$cat Cppsym.a Cppsym.b | $tr ' ' $trnl | sort | uniq > Cppsym.know
+cat <<'EOCP' > try.c
+#include <stdio.h>
+int main() {
+EOCP
 ?X: The length($1) command guards against possible empty entries.
-$cat Cppsym.a Cppsym.b | $tr ' ' $trnl > Cppsym.know
-$awk 'length($1) > 0 {  printf "#ifdef %s\nFound_it(\"%s\")\n#endif\n", $1, $1
-	printf "#ifdef _%s\nFound_it(\"_%s\")\n#endif\n", $1, $1
-	printf "#ifdef __%s\nFound_it(\"__%s\")\n#endif\n", $1, $1
-	printf "#ifdef __%s__\nFound_it(\"__%s__\")\n#endif\n", $1, $1 }' \
-	Cppsym.know | $cppstdin $cppminus |
-	$sed -ne '/Found_it/ s/Found_it("\(..*\)")/\1/p' > Cppsym.true
+$awk 'length($1) > 0 {
+    printf "#ifdef %s\nprintf(\"%s\\n\");\n#endif\n", $1, $1
+    printf "#ifdef _%s\nprintf(\"_%s\\n\");\n#endif\n", $1, $1
+    printf "#ifdef __%s\nprintf(\"__%s\\n\");\n#endif\n", $1, $1
+    printf "#ifdef __%s__\nprintf(\"__%s__\\n\");\n#endif\n", $1, $1 }' \
+	Cppsym.know >> try.c
+echo '}' >> try.c
+	set try
+	eval $compile_ok && ./try$exe_ext > Cppsym.true
 : now check the C compiler for additional symbols
 ?X: suggested by Jarkko Hietaniemi <jhi@snakemail.hut.fi>, thanks!
 postprocess_cc_v=''
