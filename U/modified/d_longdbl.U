@@ -42,10 +42,12 @@ echo 'int main() { long double x = 7.0; }' > try.c
 set try
 if eval $compile; then
 	val="$define"
-	echo " Yes, it does."
+	echo " " >&4
+	echo "You have long double."
 else
 	val="$undef"
-	echo " No, it doesn't."
+	echo " " >&4
+	echo "You do not have long double."
 fi
 $rm try.*
 set d_longdbl

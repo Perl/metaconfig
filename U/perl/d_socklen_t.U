@@ -34,10 +34,12 @@ EOCP
 set try
 if eval $compile; then
 	val="$define"
-	echo " Yes, it does."
+	echo " " >&4
+	echo "You have socklen_t."
 else
 	val="$undef"
-	echo " No, it doesn't."
+	echo " " >&4
+	echo "You do not have socklen_t."
 fi
 $rm -f try try.*
 set d_socklen_t
