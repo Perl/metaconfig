@@ -1,0 +1,92 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:need_va_copy: +ccflags rm cat Compile i_stdarg
+?MAKE:	-pick add $@ %<
+?S:need_va_copy:
+?S:	This symbol, if defined, indicates that the system stores
+?S:	the variable argument list datatype, va_list, in a format
+?S:	that cannot be copied by simple assignment, so that some
+?S:	other means must be used when copying is required.
+?S:	As such systems vary in their provision (or non-provision)
+?S:	of copying mechanisms, handy.h defines a platform-
+?S:	independent macro, Perl_va_copy(src, dst), to do the job.
+?S:.
+?C:NEED_VA_COPY:
+?C:	This symbol, if defined, indicates that the system stores
+?C:	the variable argument list datatype, va_list, in a format
+?C:	that cannot be copied by simple assignment, so that some
+?C:	other means must be used when copying is required.
+?C:	As such systems vary in their provision (or non-provision)
+?C:	of copying mechanisms, handy.h defines a platform-
+?C:	independent macro, Perl_va_copy(src, dst), to do the job.
+?C:.
+?H:#$need_va_copy	NEED_VA_COPY		/**/
+?H:.
+?T:okay
+?F:!try
+?LINT:set need_va_copy
+: see if we need va_copy
+echo " "
+case "$i_stdarg" in
+"$define")
+	$cat >try.c <<EOCP
+#include <stdarg.h>
+#include <stdio.h>
+
+int
+ivfprintf(FILE *f, const char *fmt, va_list *valp)
+{
+  return vfprintf(f, fmt, *valp);
+}
+ 
+int    
+myvfprintf(FILE *f, const  char *fmt, va_list val)
+{
+  return ivfprintf(f, fmt, &val);
+}
+      
+int
+myprintf(char *fmt, ...) 
+{
+  va_list val;
+  va_start(val, fmt);
+  return myvfprintf(stdout, fmt, val); 
+}         
+
+int
+main(int ac, char **av)
+{
+  myprintf("%s%cs all right, then\n", "that", '\'');                            
+  exit(0);      
+}
+EOCP
+	set try
+	if eval $compile_ok && ./try >/dev/null; then
+		case "`./try`" in
+		"that's all right, then")
+			okay=yes
+			;;
+		esac
+	fi
+	case "$okay" in
+	yes)	echo "It seems that you don't need va_copy()." >&4
+		need_va_copy="$undef"
+		;;
+	*)	echo "It seems that va_copy() or similar will be needed." >&4
+		need_va_copy="$define"
+		;;
+	esac
+	$rm -f try.* core core.* *.core *.core.*
+	;;
+*)	echo "You don't have <stdarg.h>, not checking for va_copy()." >&4
+	;;
+esac
+
