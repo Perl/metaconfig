@@ -34,7 +34,7 @@
 ?C:	This symbol holds the return type of getgid() and the type of
 ?C:	argument to setrgid() and related functions.  Typically,
 ?C:	it is the type of group ids in the kernel. It can be int, ushort,
-?C:	uid_t, etc... It may be necessary to include <sys/types.h> to get
+?C:	gid_t, etc... It may be necessary to include <sys/types.h> to get
 ?C:	any typedef'ed information.
 ?C:.
 ?H:#define Gid_t $gidtype		/* Type for getgid(), etc... */

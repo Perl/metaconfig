@@ -29,9 +29,9 @@
 ?S:.
 ?C:Groups_t (GROUPSTYPE):
 ?C:	This symbol holds the type used for the second argument to
-?C:	getgroups() and setgropus().  Usually, this is the same as
+?C:	getgroups() and setgroups().  Usually, this is the same as
 ?C:	gidtype (gid_t) , but sometimes it isn't.
-?C:	It can be int, ushort, uid_t, etc... 
+?C:	It can be int, ushort, gid_t, etc... 
 ?C:	It may be necessary to include <sys/types.h> to get any 
 ?C:	typedef'ed information.  This is only required if you have
 ?C:	getgroups() or setgropus()..
