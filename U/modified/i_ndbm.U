@@ -42,6 +42,7 @@ $undef)
     # Some Linux distributions such as RedHat 7.1 put the
     # ndbm.h header in /usr/include/gdbm/ndbm.h.
     if $test -f /usr/include/gdbm/ndbm.h; then
+	echo '<gdbm/ndbm.h> found.'
         ccflags="$ccflags -I/usr/include/gdbm"
         cppflags="$cppflags -I/usr/include/gdbm"
         t_ndbm=$define
