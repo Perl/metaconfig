@@ -42,6 +42,7 @@
 case "$selecttype" in
 '') case "$d_select" in
 	$define)
+		echo " "
 		$cat <<EOM
 Checking to see what type of arguments are accepted by select().
 EOM

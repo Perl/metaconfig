@@ -7,7 +7,8 @@
 ?RCS:
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
 	i8type u8type i16type u16type i32type u32type i64type u64type \
-	i8size u8size i16size u16size i32size u32size i64size u64size: \
+	i8size u8size i16size u16size i32size u32size i64size u64size \
+	d_nvpresuv: \
 	echo rm use64bits d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
@@ -79,6 +80,10 @@
 ?S:nvsize:
 ?S:	This variable is the size of an NV in bytes.
 ?S:.
+?S:d_nvpresuv:
+?S:	This variable indicates whether a variable of type nvtype
+?S:	can preserve all the bits a variable of type uvtype.
+?S:.
 ?C:IVTYPE:
 ?C:	This symbol defines the C type used for Perl's IV.
 ?C:.
@@ -145,6 +150,10 @@
 ?C:NVSIZE:
 ?C:	This symbol contains the sizeof(NV).
 ?C:.
+?C:NV_PRESERVES_UV:
+?C:	This symbol, if defined, indicates that a variable of type NVTYPE
+?C:	can preserve all the bit of a variable of type UVSIZE.
+?C:.
 ?H:#define	IVTYPE		$ivtype		/**/
 ?H:#define	UVTYPE		$uvtype		/**/
 ?H:#define	I8TYPE		$i8type		/**/
@@ -171,6 +180,7 @@
 ?H:?%<:#define	U64SIZE		$u64size	/**/
 ?H:?%<:#endif
 ?H:#define	NVSIZE		$nvsize		/**/
+?H:#$d_nvpresuv	NV_PRESERVES_UV
 ?H:.
 ?F:!try
 
@@ -201,9 +211,9 @@ define:define)
 	;;
 esac
 
-echo "(IV will be "$ivtype", $ivsize bytes)"
-echo "(UV will be "$uvtype", $uvsize bytes)"
-echo "(NV will be "$nvtype", $nvsize bytes)"
+$echo "(IV will be "$ivtype", $ivsize bytes)"
+$echo "(UV will be "$uvtype", $uvsize bytes)"
+$echo "(NV will be "$nvtype", $nvsize bytes)"
 
 $cat >try.c <<EOCP
 #$i_inttypes I_INTTYPES
@@ -349,6 +359,33 @@ case "$i64type" in
 		;;
 	esac
 	;;
+esac
+
+$echo "Checking whether your NVs can preserve your UVs..." >&4
+$cat <<EOP >try.c
+#include <stdio.h>
+int main() {
+    $uvtype k = ($uvtype)~0, l;
+    $nvtype d;
+    l = k;
+    d = ($nvtype)l;
+    l = ($uvtype)d;
+    if (l == k)
+       printf("preserve\n");
+    exit(0);
+}
+EOP
+set try
+if eval $compile; then
+	case "`./try$exe_ext`" in
+	preserve) d_nvpresuv="$define" ;;
+	esac
+fi	
+case "$d_nvpresuv" in
+$define) $echo "Yes, they can."  2>&1 ;;
+*)	 $echo "No, they can't." 2>&1
+	 d_nvpresuv="$undef"
+	 ;;
 esac
 
 $rm -f try.* try
