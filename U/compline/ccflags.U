@@ -1,7 +1,7 @@
 ?RCS: $Id: ccflags.U,v 3.0.1.9 1997/02/28 15:27:07 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -129,6 +129,7 @@ default|recommended)
 	2*) if test -d /etc/conf/kconfig.d &&
 			$contains _POSIX_VERSION $usrinc/sys/unistd.h >/dev/null 2>&1
 		then
+			# Interactive Systems (ISC) POSIX mode.
 			dflt="$dflt -posix"
 		fi
 		;;
@@ -147,10 +148,34 @@ default|recommended)
 		if $cc -O2 -fno-strict-aliasing -o gcctest gcctest.c; then
 			echo "Yes, it does." 2>&1
 			case "$ccflags" in
-			*strict-aliasing*) 
+			*strict-aliasing*)
 				echo "Leaving current flags $ccflags alone." 2>&1
 				;;
 			*) dflt="$dflt -fno-strict-aliasing" ;;
+			esac
+		else
+			echo "Nope, it doesn't, but that's ok." 2>&1
+		fi
+		;;
+	esac
+?X: HMB 200405
+?X: -pipe has shown a compile time speedup of about 40% on Linux and HP-UX
+?X: and also worked on cygwin-1.5.9
+?X: If a system fails, disable it in the hints. 99% of gcc uses binutils
+	# For gcc, adding -pipe speeds up compilations for some, but apparently
+	# some assemblers can't read from stdin.  (It also slows down compilations
+	# in other cases, but those are apparently rarer these days.)  AD 5/2004.
+	case "$gccversion" in
+	?*)	echo " "
+		echo "Checking if your compiler accepts -pipe" 2>&1
+		echo 'int main(void) { return 0; }' > gcctest.c
+		if $cc -O2 -pipe -o gcctest gcctest.c; then
+			echo "Yes, it does." 2>&1
+			case "$ccflags" in
+			*-pipe*)
+				echo "Leaving current flags $ccflags alone." 2>&1
+				;;
+			*) dflt="$dflt -pipe" ;;
 			esac
 		else
 			echo "Nope, it doesn't, but that's ok." 2>&1
@@ -169,8 +194,8 @@ for thisincl in $inclwanted; do
 	if $test -d $thisincl; then
 		if $test x$thisincl != x$usrinc; then
 			case "$dflt" in
-                        *" -I$thisincl "*);;
-                        *) dflt="$dflt -I$thisincl ";;
+			*" -I$thisincl "*);;
+			*) dflt="$dflt -I$thisincl ";;
 			esac
 		fi
 	fi
@@ -308,7 +333,7 @@ esac
 for thislibdir in $libpth; do
 	case " $loclibpth " in
 	*" $thislibdir "*)
-		case "$dflt " in 
+		case "$dflt " in
 		*"-L$thislibdir "*) ;;
 		*)  dflt="$dflt -L$thislibdir" ;;
 		esac
@@ -365,7 +390,7 @@ esac
 ?X: possible that the suggested ccflags/ldflags will be wrong.  Try to
 ?X: compile and run a simple test program.  Let the user see all the
 ?X: error messages. -- ADO and RAM
-?X: Sometimes, particularly on Linux systems, there is a bad library 
+?X: Sometimes, particularly on Linux systems, there is a bad library
 ?X: (e.g. a dangling symlink or incompatible library or a "run-time"
 ?X: version but not a "development" version of a library).  This test
 ?X: will catch those sorts of problems too, though how to fix them
@@ -406,7 +431,7 @@ dflt=y
 ?X: Also check the xxx=`$run ./try` output to check for misconfigured -lsfio.
 ?X: If sfio's iffe goofed and it uses _exit instead of exit, then the
 ?X: output buffers don't get flushed and we don't see any output
-?X: when run from within `backticks`.  What fun.  
+?X: when run from within `backticks`.  What fun.
 ?X: --Andy Dougherty 2/13/1998
 if $sh -c "$cc -o try $optimize $ccflags $ldflags try.c $libs" >>try.msg 2>&1; then
 	if $sh -c "$run ./try" >>try.msg 2>&1; then
