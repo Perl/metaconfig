@@ -1,0 +1,79 @@
+Jarrko's How to build Configure tweaked by Nick.
+
+You have presumably obtained the metaconfig from the repository e.g.
+p4 sync //depot/metaconfig/...
+or some other way to obtain this file.
+
+Normally this directory and perl directory are next to each other
+so ../perl will get you to perl and ../perl/../metaconfig will get you
+back here.
+
+(a) You need to have dist installed so that you have metalint and metaconfig
+    in your $PATH.
+    The dist version used for perl is dist-3.0at70b in this directory.
+    Unsurprisingly 'dist' uses (its) Configure to generate itself:
+
+    cd dist-3.0at70b
+    chmod +w -R .     # We have derived files in perforce :-(
+    ./Configure
+    make
+    make install
+
+    dist's 'Configure' is similar to perl's but perhaps not
+    quite as polished.
+
+    There are some perl specific "dist units" in the 'U' directory.
+    The U directory also contains some patches to 'dist' which
+    have already been applied to dist-3.0at70b directory.
+    We have not yet arranged for metaconfig to use perl's versions
+    of the 'units' by default so you need some housekeeping
+    in the perl directory...
+
+(b) You need to be in a/the Perl directory, i.e. either
+    something from //depot/perl/... or one of its branches
+    (e.g. Nick I-S is usually in //depot/perlio/...)
+    and you need:
+     1) have a symlink to ../metaconfig/U called U
+     2) have a symlink to ../metaconfig/.package called .package
+     3) have a symlink to MANIFEST called MANIFEST.new
+
+(c) Write the new unit as U/foo/bar.U (usually 'foo' is just 'perl',
+    but sometimes there's some more appropriate subdir of U)
+
+(d) metalint to see nits: as opposed to lint, the gripings of
+    metalint are usually serious :-) and need fixing
+
+    Exceptions are lots of
+      Your private U/modified/voidflags.U overrides the public one.
+    due to the perl special units
+
+    and
+
+    "End.U": stale ?MAKE: dependency '$W'.
+
+    which is apparently normal ...
+
+(e) p4 edit Configure config_h.SH
+
+(f) metaconfig -m to regenerate Configure
+
+(g) The messy not-yet-automated part is that the knowledge of the new symbol
+    needs to be propagated to non-Configure lands like Win32, Netware,
+    VMS, VOS, ...  see previous Configure changes to see which are these
+    heathen lands
+
+    For Win32 the process is semi-automated - if you have a Win32
+    machine to run dmake on ...
+
+(h) then there's the running of mksample to freshen the Porting/config*
+    and Porting/Glossary, but I can't remember where the 'mksample' came
+    from, could be part of 'dist'. You can skip this phase,
+    it's not essential, just good housekeeping.
+
+(i) make veryclean;sh Configure -des -Dusedevel;make all test
+
+(j) p4 add ../metaconfig/foo/bar.U when you are ready ...
+
+(k) p4 submit
+
+
