@@ -1,0 +1,125 @@
+?RCS: $Id: mandirs.U,v $
+?RCS:
+?RCS: Copyright (c) 2000, Andy Dougherty
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: mandirs.U,v $
+?RCS:
+?MAKE: man1 man2 man3 man4 man5 man6 man7 man8 \
+	man2ext man4ext man5ext man6ext man7ext man8ext: \
+	mandirstyle man1dir man1ext man3dir prefix sed
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?X:	This unit just provides convenient definitions so that
+?X:	MakeMaker can sensibly assume that man5 pages go in
+?X:	$prefix/man/$man5 (or $siteprefix/man/$man5 as appropriate)
+?X:	and the BSD vs. SVR4 directory naming conventions will be
+?X:	handled automatically, as will older System V
+?X:	$prefix/man/u_man style directories.
+?X:
+?S:man1:
+?S:	Man 1 pages will normally be installed in $prefix/man/$man1.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man2:
+?S:	Man 2 pages will normally be installed in $prefix/man/$man2.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man2ext:
+?S:	Extension for man2 pages, typically just '2'.  See mandirstyle.
+?S:.
+?S:man3:
+?S:	Man 3 pages will normally be installed in $prefix/man/$man3.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man4:
+?S:	Man 4 pages will normally be installed in $prefix/man/$man4.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man4ext:
+?S:	Extension for man4 pages, typically just '4'.  See mandirstyle.
+?S:.
+?S:man5:
+?S:	Man 5 pages will normally be installed in $prefix/man/$man5.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man5ext:
+?S:	Extension for man5 pages, typically just '5'.  See mandirstyle.
+?S:.
+?S:man6:
+?S:	Man 6 pages will normally be installed in $prefix/man/$man6.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man6ext:
+?S:	Extension for man6 pages, typically just '6'.  See mandirstyle.
+?S:.
+?S:man7:
+?S:	Man 7 pages will normally be installed in $prefix/man/$man7.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man7ext:
+?S:	Extension for man7 pages, typically just '7'.  See mandirstyle.
+?S:.
+?S:man8:
+?S:	Man 8 pages will normally be installed in $prefix/man/$man8.
+?S:	This variable handles SysV/SVR4/BSD conventions appropriately.
+?S:	See mandirstyle.
+?S:.
+?S:man8ext:
+?S:	Extension for man8 pages, typically just '8'.  See mandirstyle.
+?S:.
+?LINT: set man2 man4 man5 man6 man7 man8
+?LINT: set man2ext man4ext
+?LINT: set man5ext man6ext man7ext man8ext
+?T: num s ts text
+?X: eval fools metalint
+?T: ext man
+: Determine locations for other man pages.  For example, programs
+: should place man4 pages in $prefix/man/$man4 with an extension
+: of $man4ext.  Use bsd naming conventions.  See mandirstyle.
+: man1 and man3 are handled separately above.
+echo "Deducing locations for other man pages for future use."
+: Deduce man1 and man3 from existing variables.  Keep them for completeness.
+: This approach preserves an existing SystemV-style
+: /usr/local/man/l_man/man1 hierarchy.
+man1=`echo $man1dir | $sed -e "s!$prefix/man/!!"`
+man3=`echo $man3dir | $sed -e "s!$prefix/man/!!"`
+for num in 2 4 5 6 7 8; do
+	s=$num
+	case "$mandirstyle" in
+	sysv|svr4)
+		case "$num" in
+		4) s='7' ;;
+		5) s='4' ;;
+		7) s='5' ;;
+		8) s='1M' ;;
+		esac
+		;;
+	esac
+	eval "ts=\"\$man${num}\""
+	eval "text=\"\$man${num}ext\""
+	case "$ts" in
+	'') ts=`echo $man1 | $sed -e "s/1/$s/g"` ;;
+	none|$undef) ts=' ' ;;
+	esac
+	case "$text" in
+	'') text=`echo $man1ext | $sed -e "s/1/$s/g"` ;;
+	none|$undef) text=' ' ;;
+	esac
+	: Use extra quotes to preserve an empty ' ' value.
+	eval "man${num}=\"$ts\""
+	eval "man${num}ext=\"$text\""
+done
+

@@ -1,0 +1,53 @@
+?RCS: $Id: mandirstyle.U,v 3.1 1999/07/08 20:52:19 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 2000, Andy Dougherty
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: mandirstyle.U,v $
+?RCS:
+?MAKE:mandirstyle: test
+?MAKE:	-pick add $@ %<
+?S:mandirstyle:
+?S:	This variable indicates the style of man page directory layout
+?S:	used on this system.  Current possible values are sysv, svr4, and
+?S:	bsd.  This information is used for determining where to put various
+?S:	man pages.  Configure uses the BSD convention internally (we've got
+?S:	to give *some* name to the variables).
+?S:
+?S:	BSD     SVR4    Description             Example
+?S:	Number  Number                          man page
+?S:	1       1       Commands                cat
+?S:	2       2       system calls            creat
+?S:	3       3       library functions       fread
+?S:	4       7       special files           fd
+?S:	5       4       file formats            magic
+?S:	6       6       games and demos         magic
+?S:	7       5       miscellany              eqnchar
+?S:	8       1M      Administrative commands mount
+?S:
+?S:	The SysV style is almost the same as SVR4, but instead of
+?S:	/usr/man/man1, there is /usr/man/u_man/man1.
+?S:.
+: determine style of existing man page installation
+if $test "$mandirstyle" = ""; then
+	if $test -d /usr/man/u_man/man1; then
+		mandirstyle=sysv
+	elif $test -d /usr/man/man1m; then
+		mandirstyle=svr4
+	elif $test -d /usr/share/man/man1m; then
+		mandirstyle=svr4
+	elif $test -d /usr/share/man/sman1m; then
+		mandirstyle=svr4  # Solaris 8 and beyond
+	else
+		# We could work a lot harder here, but there isn't
+		# really much point.
+		mandirstyle=bsd
+	fi
+fi
+echo "You appear to have $mandirstyle style man page directories."
+
