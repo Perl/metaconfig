@@ -54,7 +54,7 @@ echo "Extracting $file (with variable substitutions)"
 \$spitshell >$base <<!GROK!THIS!
 BLURFL
 
-	case `head -1 $file` in
+	case `sed q $file` in
 	*/bin/sh) echo '$startsh' >>$file.SH ;;
 	esac
 
