@@ -1,0 +1,46 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_int64t: Inhdr echo n c cat rm Setvar Compile i_inttypes
+?MAKE:	-pick add $@ %<
+?S:d_int64t:
+?S:     This symbol will be defined if the C compiler supports int64_t.
+?S:.
+?C:HAS_INT64_T:
+?C:     This symbol will defined if the C compiler supports int64_t.
+?C:     Usually the <inttypes.h> needs to be included, but sometimes
+?C:	<sys/types.h> is enough.
+?C:.
+?H:#$d_int64t     HAS_INT64_T               /**/
+?H:.
+?LINT:set d_int64t
+: check for int64_t
+echo " "
+$echo $n "Checking to see if your system supports int64_t...$c" >&4
+$cat >try.c <<EOCP
+#include <sys/types.h>
+#$i_inttypes I_INTTYPES
+#ifdef I_INTTYPES
+#include <inttypes.h>
+#endif
+int main() { int64_t x = 7; }
+EOCP
+set try
+if eval $compile; then
+	val="$define"
+	echo " Yes, it does." >&4
+else
+	val="$undef"
+	echo " No, it doesn't." >&4
+fi
+$rm -f try try.*
+set d_int64t
+eval $setvar
+

@@ -64,7 +64,7 @@ else
 	val="$undef"
 	echo "No, it doesn't."
 	case "$fpossize" in
-	8) echo "(This is okay because your fpos_t is 64 bits wide.)" ;;
+	8) echo "(This is okay because your fpos_t is 64 bits wide.)" >&4 ;;
 	esac
 fi
 $rm -f try.* try

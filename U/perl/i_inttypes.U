@@ -8,29 +8,19 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:i_inttypes d_int64t: Inhdr echo n c cat rm Setvar Compile use64bits
+?MAKE:i_inttypes: Inhdr cat rm Setvar Compile
 ?MAKE:	-pick add $@ %<
 ?S:i_inttypes:
 ?S:     This variable conditionally defines the I_INTTYPES symbol,
 ?S:     and indicates whether a C program should include <inttypes.h>.
 ?S:.
-?S:d_int64t:
-?S:     This symbol will be defined if the C compiler supports int64_t.
-?S:.
 ?C:I_INTTYPES:
 ?C:     This symbol, if defined, indicates to the C program that it should
 ?C:     include <inttypes.h>.
 ?C:.
-?C:HAS_INT64_T:
-?C:     This symbol will defined if the C compiler supports int64_t.
-?C:     Usually the <inttypes.h> needs to be included, but sometimes
-?C:	<sys/types.h> is enough.
-?C:.
 ?H:#$i_inttypes   I_INTTYPES                /**/
-?H:#$d_int64t     HAS_INT64_T               /**/
 ?H:.
 ?LINT:set i_inttypes
-?LINT:set d_int64t
 : see if inttypes.h is available
 : we want a real compile instead of Inhdr because some systems
 : have an inttypes.h which includes non-existent headers
@@ -52,34 +42,4 @@ fi
 $rm -f try.c try
 set i_inttypes
 eval $setvar
-
-: check for int64_t
-case "$use64bits" in
-"$define" )
-	echo " "
-	$echo $n "Checking to see if your system supports int64_t...$c" >&4
-	$cat >try.c <<EOCP
-#include <sys/types.h>
-#$i_inttypes I_INTTYPES
-#ifdef I_INTTYPES
-#include <inttypes.h>
-#endif
-int main() { int64_t x = 7; }
-EOCP
-	set try
-	if eval $compile; then
-		val="$define"
-		echo " Yes, it does." >&4
-	else
-		val="$undef"
-		echo " No, it doesn't." >&4
-	fi
-	$rm -f try try.*
-	;;
-*)	val="$undef"
-	;;
-esac
-set d_int64t
-eval $setvar
-
 
