@@ -65,11 +65,6 @@ $define)
 		;;
 	*)	echo "Ok, avoiding sfio this time.  I'll use stdio instead."
 		val="$undef"
-		: Remove sfio from list of libraries to use
-		set `echo X $libs | $sed -e 's/-lsfio / /' -e 's/-lsfio$//'`
-		shift
-		libs="$*"
-		echo "libs = $libs" >&4
 		;;
 	esac
 	;;
@@ -92,4 +87,14 @@ case "$d_sfio" in
 $define) usesfio='true';;
 *) usesfio='false';;
 esac
+case "$d_sfio" in
+$define) ;;
+*)	: Remove sfio from list of libraries to use
+	set `echo X $libs | $sed -e 's/-lsfio / /' -e 's/-lsfio$//'`
+	shift
+	libs="$*"
+	echo "libs = $libs" >&4
+;;
+esac
+
 
