@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:gccversion gccosandvers: cat cpp rm +cc \
+?MAKE:gccversion gccosandvers gccansipedantic: cat cpp rm +cc \
 	Mcc Myread Guess Options Oldconfig Loc osname osvers run
 ?MAKE:	-pick add $@ %<
 ?S:gccversion:
@@ -17,14 +17,20 @@
 ?S:	setting some of the default cflags.  It is set to '' if not gcc.
 ?S:.
 ?S:gccosandvers:
-?S:	If GNU cc (gcc) is used, this variable the operating system and
-?S:	version used to compile the gcc.  It is set to '' if not gcc,
+?S:	If GNU cc (gcc) is used, this variable holds the operating system
+?S:	and version used to compile gcc.  It is set to '' if not gcc,
 ?S:	or if nothing useful can be parsed as the os version.
+?S:.
+?S:gccansipedantic:
+?S:	If GNU cc (gcc) is used, this variable will enable (if set) the
+?S:	-ansi and -pedantic ccflags for building core files (through
+?S:	cflags script). (See Porting/pumpkin.pod for full description).
 ?S:.
 ?T:gccshortvers
 ?T:incdir
 ?T:warn
 ?D:gccversion=''
+?D:gccansipedantic=''
 ?LINT:change cpp
 ?LINT:extern ccflags
 ?LINT:extern ldflags
