@@ -33,7 +33,7 @@
 ?X: for it correctly, including possible shared library versions.
 : If anyone needs -lnet, put it in a hint file.
 libswanted='sfio socket inet nsl nm ndbm gdbm dbm db malloc dl'
-libswanted="$libswanted dld ld sun m rt c cposix posix"
+libswanted="$libswanted dld ld sun m c cposix posix"
 libswanted="$libswanted ndir dir crypt sec"
 libswanted="$libswanted ucb bsd BSD PW x"
 : We probably want to search /usr/shlib before most other libraries.
