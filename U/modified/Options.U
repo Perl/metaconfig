@@ -48,7 +48,8 @@
 ?V:reuseval alldone error realsilent silent extractsh fastread \
 	override knowitall: config_sh
 ?T:arg argn symbol config_arg0 config_args config_argc xxx yyy zzz uuu
-?F:./optdef.sh ./cmdline.opt ./posthint.sh
+?T:args_exp args_sep arg_exp
+?F:./optdef.sh ./cmdline.opt ./posthint.sh ./cmdl.opt
 
 : Save command line options in file UU/cmdline.opt for later use in
 : generating config.sh.
@@ -69,12 +70,24 @@ config_args='$*'
 config_argc=$#
 EOSH
 argn=1
+args_exp=''
+args_sep=''
 for arg in "$@"; do
 	cat >>cmdline.opt <<EOSH
 config_arg$argn='$arg'
 EOSH
+	# Extreme backslashitis: replace each ' by '"'"'
+	cat <<EOC | sed -e "s/'/'"'"'"'"'"'"'/g" > cmdl.opt
+$arg
+EOC
+	arg_exp=`cat cmdl.opt`
+	args_exp="$args_exp$args_sep'$arg_exp'"
 	argn=`expr $argn + 1`
+	args_sep=' '
 done
+# args_exp is good for restarting self: eval "set X $args_exp"; shift; $0 "$@"
+# used by ./hints/os2.sh
+rm -f cmdl.opt
 
 : produce awk script to parse command line options
 cat >options.awk <<'EOF'
