@@ -1,0 +1,102 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_u32align: Compile cat rm Oldconfig \
+	byteorder u32type Myread Setvar
+?MAKE:	-pick add $@ %<
+?S:d_u32align:
+?S:	This variable tells whether you must access character data
+?S:	through U32-aligned pointers.
+?S:.
+?C:U32_ALIGNMENT_REQUIRED:
+?C:	This symbol, if defined, indicates that you must access
+?C:	character data through U32-aligned pointers.
+?C:.
+?H:#$d_u32align U32_ALIGNMENT_REQUIRED	/**/
+?H:.
+?F:!try
+$cat <<EOM
+
+Checking to see whether you can access character data unalignedly...
+EOM
+$cat >try.c <<EOCP
+#include <stdio.h>
+#define U32 $u32type
+#define BYTEORDER $byteorder
+int main() {
+#if BYTEORDER == 0x1234 || BYTEORDER == 0x4321
+    U8 buf[] = "\0\0\0\1\0\0\0\0";
+    U32 *up;
+    int i;
+
+    if (sizeof(U32) != 4) {
+	printf("sizeof(U32) is not 4, but %d\n", sizeof(U32));
+	exit(1);
+    }
+
+    fflush(stdout);
+
+    for (i = 0; i < 4; i++) {
+	up = (U32*)(buf + i);
+	if (! ((*up == 1 << (8*i)) ||   /* big-endian */
+	       (*up == 1 << (8*(3-i)))  /* little-endian */
+	      )
+	   )
+	{
+	    printf("read failed (%x)\n", *up);
+	    exit(2);
+	}
+    }
+
+    /* write test */
+    for (i = 0; i < 4; i++) {
+	up = (U32*)(buf + i);
+	*up = 0xBeef;
+	if (*up != 0xBeef) {
+	    printf("write failed (%x)\n", *up);
+	    exit(3);
+	}
+    }
+
+    exit(0);
+#else
+    printf("1\n");
+    exit(1);
+#endif
+    return 0;
+}
+EOCP
+set try
+if eval $compile_ok; then
+	echo "(This test may dump core.)" >&4
+	./try >&2 >/dev/null
+	case "$?" in
+	0)	cat >&4 <<EOM
+You can access character data pretty unalignedly.
+EOM
+		d_u32align="$undef"
+		;;
+	*)	cat >&4 <<EOM
+It seems that you must access character data in an aligned manner.
+EOM
+		d_u32align="$define"
+		;;
+	esac
+	$rm -f core core.try.* try.core
+else
+	rp='Can you access character data at unaligned addresses?'
+	dflt='n'
+	. ./myread
+	case "$ans" in
+	[yY]*)	d_u32align="$undef"  ;;
+	*)	d_u32align="$define" ;;
+	esac
+fi
+

@@ -8,9 +8,9 @@ Porting/Glossary.
 
     Andy Dougherty  July 9, 1998
 
---- Glossary.mc	Tue Oct 26 16:41:48 1999
-+++ Glossary	Tue Oct 26 16:41:48 1999
-@@ -2336,7 +2336,7 @@
+--- Glossary.orig	Thu Apr  5 20:40:06 2001
++++ Glossary	Thu Apr  5 20:40:06 2001
+@@ -2690,7 +2690,7 @@
  	make_set_make='#'		# If your make program handles this for you,
  	make_set_make="MAKE=$make"	# if it doesn't.
  	I used a comment character so that we can distinguish a
@@ -19,7 +19,7 @@ Porting/Glossary.
  	from an uncomputed value.
  
  mallocobj (mallocsrc.U):
-@@ -2451,7 +2451,7 @@
+@@ -2799,7 +2799,7 @@
  	whole thing is then lower-cased.
  
  n (n.U):
@@ -28,7 +28,7 @@ Porting/Glossary.
  	command to suppress newline.  Otherwise it is null.  Correct usage is
  	$echo $n "prompt for a question: $c".
  
-@@ -2781,9 +2781,9 @@
+@@ -3168,9 +3168,9 @@
  	/bin/sh, though it's possible that some systems will have /bin/ksh,
  	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
  	D:/bin/sh.exe.
@@ -40,12 +40,12 @@ Porting/Glossary.
  
  shar (Loc.U):
  	This variable is defined but not used by Configure.
-@@ -2921,7 +2921,7 @@
+@@ -3346,7 +3346,7 @@
  
  spitshell (spitshell.U):
  	This variable contains the command necessary to spit out a runnable
 -	shell on this system.  It is either cat or a grep -v for # comments.
 +	shell on this system.  It is either cat or a grep '-v' for # comments.
  
- split (models.U):
- 	This variable contains a flag which will tell the C compiler and loader
+ sPRId64 (quadfio.U):
+ 	This variable, if defined, contains the string used by stdio to
