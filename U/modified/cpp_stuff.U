@@ -84,8 +84,8 @@
 ?H:?%<:#  define PeRl_StGiFy(a)	#a
 ?H:?%<:/* the additional level of indirection enables these macros to be
 ?H:?%<: * used as arguments to other macros.  See K&R 2nd ed., page 231. */
-?H:?CAT2:#  define CAT2(a,b)	Perl_CaTiFy(a,b)
-?H:?CAT3:#  define CAT3(a,b,c)	CAT2(Perl_CaTiFy(a,b),c)
+?H:?CAT2:#  define CAT2(a,b)	PeRl_CaTiFy(a,b)
+?H:?CAT3:#  define CAT3(a,b,c)	CAT2(PeRl_CaTiFy(a,b),c)
 ?H:?CAT4:#  define CAT4(a,b,c,d)	CAT2(CAT3(a,b,c),d)
 ?H:?CAT5:#  define CAT5(a,b,c,d,e)	CAT2(CAT4(a,b,c,d),e)
 ?H:?%<:#  define StGiFy(a)	PeRl_StGiFy(a)
