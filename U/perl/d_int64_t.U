@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_int64_t: Inhdr echo n c cat rm Setvar Compile i_inttypes
+?MAKE:d_int64_t: Inhdr cat rm Setvar Compile i_inttypes
 ?MAKE:	-pick add $@ %<
 ?S:d_int64_t:
 ?S:     This symbol will be defined if the C compiler supports int64_t.
@@ -23,7 +23,7 @@
 ?LINT:set d_int64_t
 : check for int64_t
 echo " "
-$echo $n "Checking to see if your system supports int64_t...$c" >&4
+echo "Checking to see if you have int64_t..." >&4
 $cat >try.c <<EOCP
 #include <sys/types.h>
 #$i_inttypes I_INTTYPES
@@ -35,11 +35,9 @@ EOCP
 set try
 if eval $compile; then
 	val="$define"
-	echo " " >&4
 	echo "You have int64_t."
 else
 	val="$undef"
-	echo " " >&4
 	echo "You do not have int64_t."
 fi
 $rm -f try try.*

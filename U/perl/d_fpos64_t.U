@@ -1,0 +1,42 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fpos64_t: \
+	Inlibc Setvar Compile rm cat fpossize
+?MAKE:	-pick add $@ %<
+?S:d_fpos64_t:
+?S:	This symbol will be defined if the C compiler supports fpos64_t.
+?S:.
+?C:HAS_FPOS64_T:
+?C:	This symbol will be defined if the C compiler supports fpos64_t.
+?C:.
+?H:#$d_fpos64_t	HAS_FPOS64_T    	/**/
+?H:.
+?LINT:set d_fpos64_t
+
+: check for fpos64_t
+echo " "
+echo "Checking to see if you have fpos64_t..." >&4
+$cat >try.c <<EOCP
+#include <stdio.h>
+int main() { fpos64_t x = 7; }
+EOCP
+set try
+if eval $compile; then
+	val="$define"
+	echo "You have fpos64_t."
+else
+	val="$undef"
+	echo "You do not have fpos64_t."
+	case "$fpossize" in
+	8) echo "(Your fpos_t is 64 bits, so you could use that.)" ;;
+	esac
+fi
+$rm -f try.* try
+set d_fpos64_t
+eval $setvar
+

@@ -37,16 +37,14 @@
 ?F:!try
 : check for long doubles
 echo " "
-$echo $n "Checking to see if your system supports long double..." $c >&4
+echo "Checking to see if you have long double..." >&4
 echo 'int main() { long double x = 7.0; }' > try.c
 set try
 if eval $compile; then
 	val="$define"
-	echo " " >&4
 	echo "You have long double."
 else
 	val="$undef"
-	echo " " >&4
 	echo "You do not have long double."
 fi
 $rm try.*
