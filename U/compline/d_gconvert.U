@@ -21,7 +21,8 @@
 ?RCS: Revision 3.0.1.1	1994/10/29  16:12:51  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_Gconvert: Compile cat Inlibc rm _o i_stdlib d_longdbl uselongdouble
+?MAKE:d_Gconvert: Compile cat Inlibc rm _o i_stdlib d_qgcvt \
+	uselongdouble d_longdbl d_PRIgldbl sPRIgldbl
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
 ?S:	This variable holds what Gconvert is defined as to convert
@@ -56,7 +57,17 @@
 if test "X$d_Gconvert" = X; then
 	echo " "
 	echo "Checking for an efficient way to convert floats to strings."
-	$cat >try.c <<EOP
+	echo " " > try.c
+	case "$uselongdouble" in
+	"$define") echo "#define USE_LONG_DOUBLE" >>try.c ;;
+	esac
+	case "$d_longdbl" in
+	"$define") echo "#define HAS_LONG_DOUBLE" >>try.c ;;
+	esac
+	case "$d_PRIgldbl" in
+	"$define") echo "#define HAS_PRIgldbl"    >>try.c ;;
+	esac
+	$cat >>try.c <<EOP
 #ifdef TRY_gconvert
 #define Gconvert(x,n,t,b) gconvert((x),(n),(t),(b))
 char *myname = "gconvert";
@@ -71,12 +82,20 @@ char *myname = "qgcvt";
 #define DOUBLETYPE long double
 #endif
 #ifdef TRY_sprintf
+#if defined(USE_LONG_DOUBLE) && defined(HAS_LONG_DOUBLE) && defined(HAS_PRIgldbl)
+#define Gconvert(x,n,t,b) sprintf((b),"%.*"$sPRIgldbl,(n),(x))
+#else
 #define Gconvert(x,n,t,b) sprintf((b),"%.*g",(n),(x))
+#endif
 char *myname = "sprintf";
 #endif
 
 #ifndef DOUBLETYPE
+#if defined(USE_LONG_DOUBLE) && defined(HAS_LONG_DOUBLE)
+#define DOUBLETYPE long double
+#else
 #define DOUBLETYPE double
+#endif
 #endif
 
 #include <stdio.h>
@@ -111,6 +130,24 @@ int main()
 	Gconvert((DOUBLETYPE)1.0, 8, 0, buf); 
 	checkit("1", buf);
 
+	Gconvert((DOUBLETYPE)1.1, 8, 0, buf); 
+	checkit("1.1", buf);
+
+	Gconvert((DOUBLETYPE)1.01, 8, 0, buf); 
+	checkit("1.01", buf);
+
+	Gconvert((DOUBLETYPE)1.001, 8, 0, buf); 
+	checkit("1.001", buf);
+
+	Gconvert((DOUBLETYPE)1.0001, 8, 0, buf); 
+	checkit("1.0001", buf);
+
+	Gconvert((DOUBLETYPE)1.00001, 8, 0, buf); 
+	checkit("1.00001", buf);
+
+	Gconvert((DOUBLETYPE)1.000001, 8, 0, buf); 
+	checkit("1.000001", buf);
+
 	Gconvert((DOUBLETYPE)0.0, 8, 0, buf); 
 	checkit("0", buf);
 
@@ -142,8 +179,8 @@ EOP
 	*) xxx_list='gconvert gcvt sprintf' ;;
 	esac
 
-        case "$d_longdbl$uselongdouble" in
-        definedefine) xxx_list="`echo $xxx_list|sed 's/gcvt/qgcvt gcvt/'`" ;;
+        case "$d_longdbl$uselongdouble$d_qgcvt" in
+        "$define$define$define") xxx_list="`echo $xxx_list|sed 's/gcvt/qgcvt gcvt/'`" ;;
 	esac
 
 	for xxx_convert in $xxx_list; do
@@ -167,7 +204,12 @@ EOP
 	gconvert) d_Gconvert='gconvert((x),(n),(t),(b))' ;;
 	gcvt) d_Gconvert='gcvt((x),(n),(b))' ;;
 	qgcvt) d_Gconvert='qgcvt((x),(n),(b))' ;;
-	*) d_Gconvert='sprintf((b),"%.*g",(n),(x))' ;;
+	*) case "$uselongdouble$d_longdbl$d_PRIgldbl" in
+	   "$define$define$define")
+	      d_Gconvert="sprintf((b),\"%.*$sPRIgldbl\",(n),(x))" ;;
+	   *) d_Gconvert='sprintf((b),"%.*g",(n),(x))' ;;
+	   esac
+	   ;;  
 	esac
 fi
 
