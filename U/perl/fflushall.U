@@ -116,10 +116,11 @@ if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
     output=''
     set try -DTRY_FPUTC
     if eval $compile; then
- 	    $run ./try 2>/dev/null
 	    $rm -f try.out
+ 	    $run ./try 2>/dev/null
+	    code="$?"
 	    $from try.out
-	    if $test ! -s try.out -a "X$?" = X42; then
+	    if $test ! -s try.out -a "X$code" = X42; then
 		output=-DTRY_FPUTC
 	    fi
     fi
@@ -127,10 +128,11 @@ if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
     '')
 	    set try -DTRY_FPRINTF
 	    if eval $compile; then
- 		    $run ./try 2>/dev/null
 		    $rm -f try.out
+ 		    $run ./try 2>/dev/null
+		    code="$?"
 		    $from try.out
-		    if $test ! -s try.out -a "X$?" = X42; then
+		    if $test ! -s try.out -a "X$code" = X42; then
 			output=-DTRY_FPRINTF
 		    fi
 	    fi
@@ -141,9 +143,9 @@ fi
 case "$fflushNULL" in
 '') 	set try -DTRY_FFLUSH_NULL $output
 	if eval $compile; then
+	        $rm -f try.out
 	    	$run ./try 2>/dev/null
 		code="$?"
-	        $rm -f try.out
 		$from try.out
 		if $test -s try.out -a "X$code" = X42; then
 			fflushNULL="`$cat try.out`"
@@ -268,7 +270,9 @@ EOM
 EOM
 				$rm -f try.out
 				$run ./try 2>/dev/null
-				if $test -s try.out -a "X$?" = X42; then
+				code=$?
+				$from try.out
+				if $test -s try.out -a "X$code" = X42; then
 					fflushall="`$cat try.out`"
 				fi
 			fi
