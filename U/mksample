@@ -2,16 +2,16 @@
 # This is the script I use to keep the Porting/ stuff up-to-date
 # with the latest Configure.
 #  Andy Dougherty   	July 14, 1998
-#  Jarkko Hietaniemi	Sept 15, 1998	Added -Duse64bits
 
 rm -f config.sh Policy.sh
-sh ./Configure -Dprefix=/opt/perl -Doptimize=-O -Dusethreads -Duse5005threads -Duse64bitint -Duselargefiles \
+sh ./Configure -Dprefix=/opt/perl \
 	-Dcf_by='yourname' \
 	-Dcf_email='yourname@yourhost.yourplace.com' \
 	-Dperladmin='yourname@yourhost.yourplace.com' \
 	-Dmydomain='.yourplace.com' \
 	-Dmyhostname='yourhost' \
-	-dE -Dusedevel
+	-Dusedevel \
+	-dE
 test $? = 0 || exit 1
 chmod u+w Porting Porting/Glossary Porting/config*
 cp config.sh Porting/config.sh
@@ -37,4 +37,9 @@ if newer Configure Porting/Glossary; then
 	echo 'Check possible failed patch to Porting/Glossary!'
 	exit 2
     fi
+    cd $pwd
+fi
+# Remove detritus.
+if test -f makeaperl -a -f pod/Makefile; then
+    rm -f cflags config.h cppstdin makeaperl makedepend makedir Makefile myconfig pod/Makefile Policy.sh writemain x2p/cflags x2p/Makefile Obsolete Wanted
 fi

@@ -1,0 +1,6 @@
+#!/usr/bin/perl
+die "Usage: $0 file1 file2\n" unless @ARGV == 2;
+exit(-M $ARGV[0] < -M $ARGV[1]);
+
+
+
