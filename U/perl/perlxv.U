@@ -8,7 +8,7 @@
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size \
-	d_nv_preserves_uv d_nv_preserves_uv_bits: \
+	d_nv_preserves_uv nv_preserves_uv_bits: \
 	echo rm use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
@@ -84,7 +84,7 @@
 ?S:	This variable indicates whether a variable of type nvtype
 ?S:	can preserve all the bits a variable of type uvtype.
 ?S:.
-?S:d_nv_preserves_uv_bits:
+?S:nv_preserves_uv_bits:
 ?S:	This variable indicates how many of bits type uvtype
 ?S:	a variable nvtype can preserve.
 ?S:.
@@ -189,7 +189,7 @@
 ?H:?%<:#endif
 ?H:#define	NVSIZE		$nvsize		/**/
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
-?H:#define	NV_PRESERVES_UV_BITS	$d_nv_preserves_uv_bits
+?H:#define	NV_PRESERVES_UV_BITS	$nv_preserves_uv_bits
 ?H:.
 ?T:volatile
 
@@ -416,18 +416,18 @@ set try
 
 d_nv_preserves_uv="$undef"
 if eval $compile; then
-	d_nv_preserves_uv_bits="`$run ./try`"
+	nv_preserves_uv_bits="`$run ./try`"
 fi
-case "$d_nv_preserves_uv_bits" in
+case "$nv_preserves_uv_bits" in
 \-[1-9]*)	
-	d_nv_preserves_uv_bits=`expr 0 - $d_nv_preserves_uv_bits`
-	$echo "Your NVs can preserve all $d_nv_preserves_uv_bits bits of your UVs."  2>&1
+	nv_preserves_uv_bits=`expr 0 - $nv_preserves_uv_bits`
+	$echo "Your NVs can preserve all $nv_preserves_uv_bits bits of your UVs."  2>&1
 	d_nv_preserves_uv="$define"
 	;;
-[1-9]*)	$echo "Your NVs can preserve only $d_nv_preserves_uv_bits bits of your UVs."  2>&1
+[1-9]*)	$echo "Your NVs can preserve only $nv_preserves_uv_bits bits of your UVs."  2>&1
 	d_nv_preserves_uv="$undef" ;;
 *)	$echo "Can't figure out how many bits your NVs preserve." 2>&1
-	d_nv_preserves_uv_bits="$undef" ;;
+	nv_preserves_uv_bits="$undef" ;;
 esac
 
 $rm -f try.* try
