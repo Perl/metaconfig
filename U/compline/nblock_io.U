@@ -23,7 +23,7 @@
 ?X:
 ?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm Compile run \
 	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar \
-	startsh i_unistd i_string
+	startsh i_unistd i_string i_fcntl
 ?MAKE:	-pick add $@ %<
 ?S:o_nonblock:
 ?S:	This variable bears the symbol value to be used during open() or fcntl()
@@ -94,6 +94,10 @@ case "$o_nonblock" in
 	$cat >>try.c <<'EOCP'
 #include <stdio.h>
 #include <stdlib.h>
+#$i_fcntl I_FCNTL
+#ifdef I_FCNTL
+#include <fcntl.h>
+#endif
 int main() {
 #ifdef O_NONBLOCK
 	printf("O_NONBLOCK\n");
@@ -104,7 +108,7 @@ int main() {
 	exit(0);
 #endif
 ?X: Stevens "Advanced Programming in the UNIX Environment" page 364 mentions
-?X: the FNDELAY symbol, used in 4.33BSD (source: Paul Marquess).
+?X: the FNDELAY symbol, used in 4.3BSD (source: Paul Marquess).
 #ifdef FNDELAY
 	printf("FNDELAY\n");
 	exit(0);
