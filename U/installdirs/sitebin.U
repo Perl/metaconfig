@@ -41,7 +41,7 @@ sitebin="$ans"
 sitebinexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitebin=`echo $sitebinexp | sed 's#^$prefix#$installprefix#'`
+	installsitebin=`echo $sitebinexp | sed "s#^$prefix#$installprefix#"`
 else
 	installsitebin="$sitebinexp"
 fi

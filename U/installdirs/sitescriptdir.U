@@ -31,7 +31,7 @@
 ?S:.
 : determine where add-on public executables go
 case "$sitescriptdir" in
-'')	dflt=`echo $scriptdir | $sed 's#^$prefix#$siteprefix#'` ;;
+'')	dflt=`echo $scriptdir | $sed "s#^$prefix#$siteprefix#"` ;;
 *)  dflt=$sitescriptdir ;;
 esac
 fn=d~
@@ -41,7 +41,7 @@ sitescriptdir="$ans"
 sitescriptdirexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitescriptdir=`echo $sitescriptdirexp | sed 's#^$prefix#$installprefix#'`
+	installsitescriptdir=`echo $sitescriptdirexp | sed "s#^$prefix#$installprefix#"`
 else
 	installsitescriptdir="$sitescriptdirexp"
 fi

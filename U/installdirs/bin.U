@@ -73,7 +73,7 @@ binexp="$ansexp"
 : Change installation prefix, if necessary.
 : XXX Bug? -- ignores Configure -Dinstallprefix setting.
 if $test X"$prefix" != X"$installprefix"; then
-	installbin=`echo $binexp | sed 's#^$prefix#$installprefix#'`
+	installbin=`echo $binexp | sed "s#^$prefix#$installprefix#"`
 else
 	installbin="$binexp"
 fi

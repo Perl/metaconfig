@@ -75,7 +75,7 @@ EOM
 	vendorscriptexp="$ansexp"
 	: Change installation prefix, if necessary.
 	if $test X"$prefix" != X"$installprefix"; then
-		installvendorscript=`echo $vendorscriptexp | $sed 's#^$prefix#$installprefix#'`
+		installvendorscript=`echo $vendorscriptexp | $sed "s#^$prefix#$installprefix#"`
 	else
 		installvendorscript="$vendorscriptexp"
 	fi

@@ -78,7 +78,7 @@ sitearch="$ans"
 sitearchexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitearch=`echo $sitearchexp | sed 's#^$prefix#$installprefix#'`
+	installsitearch=`echo $sitearchexp | sed "s#^$prefix#$installprefix#"`
 else
 	installsitearch="$sitearchexp"
 fi

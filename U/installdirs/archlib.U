@@ -107,7 +107,7 @@ else
 fi
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installarchlib=`echo $archlibexp | sed 's#^$prefix#$installprefix#'`
+	installarchlib=`echo $archlibexp | sed "s#^$prefix#$installprefix#"`
 else
 	installarchlib="$archlibexp"
 fi

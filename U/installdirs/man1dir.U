@@ -105,7 +105,7 @@ esac
 
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installman1dir=`echo $man1direxp | $sed 's#^$prefix#$installprefix#'`
+	installman1dir=`echo $man1direxp | $sed "s#^$prefix#$installprefix#"`
 else
 	installman1dir="$man1direxp"
 fi

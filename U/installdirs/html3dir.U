@@ -56,7 +56,7 @@ case "$html3dir" in
 *)
 	: Change installation prefix, if necessary.
 	if $test X"$prefix" != X"$installprefix"; then
-		installhtml3dir=`echo $html3direxp | sed 's#^$prefix#$installprefix#'`
+		installhtml3dir=`echo $html3direxp | sed "s#^$prefix#$installprefix#"`
 	fi
 	;;
 esac

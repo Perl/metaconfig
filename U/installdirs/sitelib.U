@@ -78,7 +78,7 @@ sitelib="$ans"
 sitelibexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitelib=`echo $sitelibexp | sed 's#^$prefix#$installprefix#'`
+	installsitelib=`echo $sitelibexp | sed "s#^$prefix#$installprefix#"`
 else
 	installsitelib="$sitelibexp"
 fi

@@ -95,7 +95,7 @@ scriptdir="$ans"
 scriptdirexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installscript=`echo $scriptdirexp | sed 's#^$prefix#$installprefix#'`
+	installscript=`echo $scriptdirexp | sed "s#^$prefix#$installprefix#"`
 else
 	installscript="$scriptdirexp"
 fi

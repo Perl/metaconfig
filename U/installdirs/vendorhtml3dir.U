@@ -54,7 +54,7 @@ case "$vendorprefix" in
 	vendorhtml3exp="$ansexp"
 	: Change installation prefix, if necessary.
 	if $test X"$prefix" != X"$installprefix"; then
-		installvendorhtml3=`echo $vendorhtml3exp | $sed 's#^$prefix#$installprefix#'`
+		installvendorhtml3=`echo $vendorhtml3exp | $sed "s#^$prefix#$installprefix#"`
 	else
 		installvendorhtml3="$vendorhtml3exp"
 	fi

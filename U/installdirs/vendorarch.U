@@ -78,7 +78,7 @@ case "$vendorprefix" in
 	vendorarchexp="$ansexp"
 	: Change installation prefix, if necessary.
 	if $test X"$prefix" != X"$installprefix"; then
-		installvendorarch=`echo $vendorarchexp | sed 's#^$prefix#$installprefix#'`
+		installvendorarch=`echo $vendorarchexp | sed "s#^$prefix#$installprefix#"`
 	else
 		installvendorarch="$vendorarchexp"
 	fi

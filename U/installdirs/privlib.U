@@ -85,7 +85,7 @@ privlib="$ans"
 privlibexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installprivlib=`echo $privlibexp | sed 's#^$prefix#$installprefix#'`
+	installprivlib=`echo $privlibexp | sed "s#^$prefix#$installprefix#"`
 else
 	installprivlib="$privlibexp"
 fi

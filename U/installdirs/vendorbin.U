@@ -69,7 +69,7 @@ case "$vendorprefix" in
 	vendorbinexp="$ansexp"
 	: Change installation prefix, if necessary.
 	if $test X"$prefix" != X"$installprefix"; then
-		installvendorbin=`echo $vendorbinexp | $sed 's#^$prefix#$installprefix#'`
+		installvendorbin=`echo $vendorbinexp | $sed "s#^$prefix#$installprefix#"`
 	else
 		installvendorbin="$vendorbinexp"
 	fi

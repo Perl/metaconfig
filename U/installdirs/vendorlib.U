@@ -76,7 +76,7 @@ case "$vendorprefix" in
 	vendorlibexp="$ansexp"
 	: Change installation prefix, if necessary.
 	if $test X"$prefix" != X"$installprefix"; then
-		installvendorlib=`echo $vendorlibexp | $sed 's#^$prefix#$installprefix#'`
+		installvendorlib=`echo $vendorlibexp | $sed "s#^$prefix#$installprefix#"`
 	else
 		installvendorlib="$vendorlibexp"
 	fi

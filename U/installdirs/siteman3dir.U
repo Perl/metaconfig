@@ -40,7 +40,7 @@ siteman3dir="$ans"
 siteman3direxp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsiteman3dir=`echo $siteman3direxp | $sed 's#^$prefix#$installprefix#'`
+	installsiteman3dir=`echo $siteman3direxp | $sed "s#^$prefix#$installprefix#"`
 else
 	installsiteman3dir="$siteman3direxp"
 fi

@@ -57,7 +57,7 @@ case "$html1dir" in
 *)
 	: Change installation prefix, if necessary.
 	if $test X"$prefix" != X"$installprefix"; then
-		installhtml1dir=`echo $html1direxp | sed 's#^$prefix#$installprefix#'`
+		installhtml1dir=`echo $html1direxp | sed "s#^$prefix#$installprefix#"`
 	fi
 	;;
 esac

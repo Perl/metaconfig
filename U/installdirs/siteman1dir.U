@@ -40,7 +40,7 @@ siteman1dir="$ans"
 siteman1direxp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsiteman1dir=`echo $siteman1direxp | $sed 's#^$prefix#$installprefix#'`
+	installsiteman1dir=`echo $siteman1direxp | $sed "s#^$prefix#$installprefix#"`
 else
 	installsiteman1dir="$siteman1direxp"
 fi

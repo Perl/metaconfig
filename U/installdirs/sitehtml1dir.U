@@ -40,7 +40,7 @@ sitehtml1dir="$ans"
 sitehtml1direxp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitehtml1dir=`echo $sitehtml1direxp | $sed 's#^$prefix#$installprefix#'`
+	installsitehtml1dir=`echo $sitehtml1direxp | $sed "s#^$prefix#$installprefix#"`
 else
 	installsitehtml1dir="$sitehtml1direxp"
 fi
