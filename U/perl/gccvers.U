@@ -65,7 +65,7 @@ case "$gccversion" in
 esac
 case "$gccversion" in
 '') gccosandvers='' ;;
-*) gccosandvers=`gcc -v 2>&1|grep '/specs$'|sed 's!.*/[^-]*-[^-]*-\([^/]*\)/'$gccversion'/specs$!\1!'`
+*) gccosandvers=`$cc -v 2>&1|grep '/specs$'|sed 's!.*/[^-]*-[^-]*-\([^/]*\)/'$gccversion'/specs$!\1!'`
    case "$gccosandvers" in
    $osname$osvers) ;;
    $osname*) cat <<EOM >&4
@@ -86,7 +86,7 @@ case "$gccversion" in
 
 EOM
       ;;
-   *) ;; # failed to parse, better be silent
+   *) gccosandvers='' ;; # failed to parse, better be silent
    esac
    ;;
 esac
