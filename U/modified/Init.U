@@ -52,9 +52,13 @@ if test -f /etc/unixtovms.exe; then
 	eunicefix=/etc/unixtovms.exe
 fi
 
-?X: Set executable suffix now -- needed before hints available
-?X: Are we running on the Stratus VOS operating system?
+: Set executable suffix now -- needed before hints available
+: maybe Stratus VOS
 if test -f "/system/gnu_library/bin/ar.pm"; then
-     _exe=".pm"
+    _exe=".pm"
+fi
+: maybe dos djgpp
+if test -n "$DJGPP"; then
+    _exe=".exe"
 fi
 
