@@ -316,7 +316,7 @@ EOM
 		domainos) osname=apollo
 			osvers="$3"
 			;;
-		dgux) osname=dgux 
+		dgux)	osname=dgux 
 			osvers="$3"
 			;;
 ?X:		uname -a returns
@@ -326,27 +326,29 @@ EOM
 			;;
 		freebsd) osname=freebsd 
 			osvers="$3" ;;
-		genix) osname=genix ;;
+		genix)	osname=genix ;;
+		gnu)	osname=gnu
+			osvers="$3" ;;
 ?X: HP-UX uname -a gives something like
 ?X: HP-UX foobar B.10.20 A 9000/735 2016483812 two-user license
 ?X: Preserve the full 10.20 string instead of the previous plain '10'.
 ?X:  Thanks to Graham Barr.    --AD 6/30/1998
-		hp*) osname=hpux 
+		hp*)	osname=hpux 
 			osvers=`echo "$3" | $sed 's,.*\.\([0-9]*\.[0-9]*\),\1,'`
 			;;
-		irix*) osname=irix
+		irix*)	osname=irix
 			case "$3" in
 			4*) osvers=4 ;;
 			5*) osvers=5 ;;
 			*)	osvers="$3" ;;
 			esac
 			;;
-		linux) osname=linux
+		linux)	osname=linux
 			case "$3" in
 			*)	osvers="$3" ;;
 			esac
 			;;
-		MiNT) osname=mint
+		MiNT)	osname=mint
 			;;
 		netbsd*) osname=netbsd
 			osvers="$3"
