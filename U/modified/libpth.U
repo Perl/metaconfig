@@ -74,7 +74,7 @@
 ?X:	/shlib is for Digital Unix 4.0
 ?X:	/usr/shlib is for OSF/1 systems.
 ?X:	I don't know why the large & small libraries are in this order.
-?INIT:glibpth="/shlib /usr/shlib /lib/pa1.1 /usr/lib/large"
+?INIT:glibpth="/shlib /usr/shlib /lib/pa20_64 /lib/pa1.1 /usr/lib/large"
 ?INIT:glibpth="$glibpth /lib /usr/lib $xlibpth"
 ?INIT:glibpth="$glibpth /lib/large /usr/lib/small /lib/small"
 ?INIT:glibpth="$glibpth /usr/ccs/lib /usr/ucblib /usr/local/lib"

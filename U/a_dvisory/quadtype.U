@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_quad quadtype uquadtype quadkind: \
-	longsize intsize d_longlong longlongsize uselonglong d_int64t \
+	longsize intsize d_longlong longlongsize d_int64t \
 	Inhdr Setvar use64bits
 ?MAKE:	-pick add $@ %<
 ?S:d_quad:
@@ -97,11 +97,7 @@ case "$intsize" in
 esac
 
 case "$quadtype" in
-'')	case "$uselonglong:$d_longlong:$longlongsize" in
-	undef:define:8)
-	   echo "(You would have 'long long', but you are not using it.)" >&4 ;;
-	*) echo "Alas, no 64-bit integer types in sight." >&4 ;;
-	esac
+'')	echo "Alas, no 64-bit integer types in sight." >&4
 	d_quad="$undef"
 	;;
 *)	if test X"$use64bits" = Xdefine -o X"$longsize" = X8; then

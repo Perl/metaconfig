@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:use64bits archname64: Myread Oldconfig Setvar test gccversion cat \
-	uselargefiles usemorebits longsize intsize
+	uselargefiles usemorebits longsize intsize ccflags
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bits:
@@ -32,6 +32,8 @@
 ?LINT:change ccflags
 ?LINT:use uselargefiles
 ?LINT:use usemorebits
+?LINT:extern uselonglong
+?LINT:use uselonglong
 ?F:!use64bits.cbu
 
 case "$intsize:$longsize" in
@@ -39,25 +41,33 @@ case "$intsize:$longsize" in
 
 You have natively 64-bit integers.
 EOM
-   val="$define" ;;
-*) cat <<EOM
+   val="$define"
+   ;;
+*) case "$ccflags" in
+   *-DUSE_64_BITS*|*-DUSE_LONG_LONG*) use64bits="$define";;
+   *) case "$uselonglong" in
+      $define|true|[yY]*) use64bits="$define";;
+      esac
+      ;;
+   esac
+   case "$use64bits" in
+   $define|true|[yY]*) dflt='y';;
+   *) dflt='n';;
+   esac
+cat <<EOM
 
 Perl can be built to take advantage of 64-bit integer types
 on some systems.  To do so, Configure must be run with -Duse64bits.
 
-If this doesn't make any sense to you, just accept the default.
+If this doesn't make any sense to you, just accept the default '$dflt'.
 EOM
-  case "$use64bits" in
-  $define|true|[yY]*)	dflt='y';;
-  *) dflt='n';;
-  esac
-  rp='Try to use 64-bit integers, if available?'
-  . ./myread
-  case "$ans" in
-  y|Y) val="$define" ;;
-  *)   val="$undef"  ;;
-  esac
-  ;;
+   rp='Try to use 64-bit integers, if available?'
+   . ./myread
+   case "$ans" in
+   [yY]*) val="$define" ;;
+   *)     val="$undef"  ;;
+   esac
+   ;;
 esac
 set use64bits
 eval $setvar

@@ -34,7 +34,7 @@
 ?RCS:
 ?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
-	usesocks ccflags
+	use64bits usesocks ccflags
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
@@ -85,7 +85,6 @@
 ?INIT:libswanted=''
 ?INIT:: some systems want to use only the non-versioned libso:s
 ?INIT:ignore_versioned_solibs=''
-?LINT:extern libscheck
 : Looking for optional libraries
 echo " "
 echo "Checking for optional libraries..." >&4
@@ -126,11 +125,6 @@ for thislib in $libswanted; do
 		libname=${thislib}_s
 	elif xxx=`./loc Slib$thislib$_a X $xlibpth`; $test -f "$xxx"; then
 		libstyle="static"
-	fi
-	if $test -f "$xxx"; then
-?X: If $xxx is not to be used as a library, $libscheck (set in
-?X: some hints file, most likely) should set the $xxx to a non-file.
-		eval $libscheck
 	fi
 	if $test -f "$xxx"; then
 		case "$libstyle" in
