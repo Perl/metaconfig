@@ -74,7 +74,7 @@
 ?H:.
 ?LINT:set usethreads useithreads use5005threads d_oldpthreads usereentrant
 ?INIT:: set usethreads on the Configure command line to enable threads.
-?INIT::usereentrant='undef'
+?INIT:usereentrant='undef'
 ?F:!usethreads.cbu
 ?X: We should really have some explanatory text here, and some
 ?X: automatic setting of sensible defaults.
