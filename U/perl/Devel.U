@@ -8,23 +8,23 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:Devel: Myread rsrc
+?MAKE:Devel: Myread rsrc package
 ?MAKE:	-pick wipe $@ %<
-?T:xpatchlevel
+?T:xversion
 ?X: waiver of rights
 ?LINT:extern usedevel
-xpatchlevel=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
+xversion=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
 case "$usedevel" in
 $define|true|[yY]*) ;;
-*) case "$xpatchlevel" in
+*) case "$xversion" in
    *[13579])
 	cat >&4 <<EOH
 *** WHOA THERE!!! ***
 
     This is an UNSTABLE DEVELOPMENT release.
-    (The patchlevel, $xpatchlevel, is odd--as opposed to even,
-     and that signifies a development release.  If you want a
-     maintenance release, you want an even-numbered release.)
+    The version of this $package distribution is $xversion, that is, odd,
+    (as opposed to even) and that signifies a development release.
+    If you want a maintenance release, you want an even-numbered version.)
 
     Do ***NOT*** install this into production use.
     Data corruption and crashes are possible.

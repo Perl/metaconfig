@@ -18,7 +18,7 @@
 ?RCS:
 ?MAKE:patchlevel revision version subversion \
 	api_revision api_version api_subversion api_versionstring: \
-	package test rsrc echo n c awk osname
+	package test rsrc echo awk osname
 ?MAKE:	-pick add $@ %<
 ?S:revision:
 ?S:	The value of revision comes from the patchlevel.h file.
@@ -114,10 +114,7 @@ else
 	api_version=0
 	api_subversion=0
 fi
-$echo $n "(You have $package revision $revision" $c
-$echo $n " patchlevel $patchlevel" $c
-test 0 -eq "$subversion" || $echo $n " subversion $subversion" $c
-echo ".)"
+$echo "(You have $package version $patchlevel subversion $subversion.)"
 case "$osname" in
 dos|vms)
 	: XXX Should be a Configure test for double-dots in filenames.
