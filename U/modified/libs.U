@@ -102,9 +102,7 @@ case "$libswanted" in
 esac
 ?X: libsocks has nasty naming.
 case "$usesocks" in
-$define)
-	libswanted="$libswanted socks5 socks5_sh"
-	;;
+"$define") libswanted="$libswanted socks5 socks5_sh" ;;
 esac
 libsfound=''
 libsfiles=''

@@ -1,0 +1,24 @@
+?RCS: $Id: i_sunmath.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_sunmath: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_sunmath:
+?S:	This variable conditionally defines the I_SUNMATH symbol, and indicates
+?S:	whether a C program should include <sunmath.h>.
+?S:.
+?C:I_SUNMATH:
+?C:	This symbol, if defined, indicates that <sunmath.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_sunmath	I_SUNMATH		/**/
+?H:.
+?LINT:set i_sunmath
+: see if this is a sunmath.h system
+set sunmath.h i_sunmath
+eval $inhdr
+
