@@ -38,7 +38,7 @@ eval $inlibc
 case "$d_asctime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h $i_time time.h"
-	try='extern char* asctime_r(const struct *tm, char *);'
+	try='extern char* asctime_r(const struct tm*, char *);'
 	if ./protochk "$try" $hdrs; then
 		echo "Your system has $try"
 		asctime_r_proto=2
