@@ -114,7 +114,7 @@ y*) usedl="$define"
 	. ./getfile
 	usedl="$define"
 	: emulate basename
-	dlsrc=`echo $ans | $sed -e 's@.*/\([^/]*\)$@\1@'`
+	dlsrc=`echo $ans | $sed -e 's%.*/\([^/]*\)$%\1%'`
 
 	$cat << EOM
 

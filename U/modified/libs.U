@@ -34,7 +34,7 @@
 ?RCS:
 ?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs libspath: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
-	usesocks ccflags
+	usesocks ccflags sed
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
@@ -158,7 +158,7 @@ for thislib in $libswanted; do
                    libsfound="$libsfound $xxx"
                    yyy=`basename $xxx`
                    libsfiles="$libsfiles $yyy"
-                   yyy=`echo $xxx|sed "s@/$yyy\\$@@"`
+                   yyy=`echo $xxx|$sed -e "s%/$yyy\\$%%"`
                    case " $libsdirs " in
                    *" $yyy "*) ;;
                    *) libsdirs="$libsdirs $yyy" ;;

@@ -469,12 +469,12 @@ EOM
 	: specified already.
 	case "$hintfile" in
 	''|' ')
-		file=`echo "${osname}_${osvers}" | $sed -e 's@\.@_@g' -e 's@_$@@'`
+		file=`echo "${osname}_${osvers}" | $sed -e 's%\.%_%g' -e 's%_$%%'`
 		: Also try without trailing minor version numbers.
-		xfile=`echo $file | $sed -e 's@_[^_]*$@@'`
-		xxfile=`echo $xfile | $sed -e 's@_[^_]*$@@'`
-		xxxfile=`echo $xxfile | $sed -e 's@_[^_]*$@@'`
-		xxxxfile=`echo $xxxfile | $sed -e 's@_[^_]*$@@'`
+		xfile=`echo $file | $sed -e 's%_[^_]*$%%'`
+		xxfile=`echo $xfile | $sed -e 's%_[^_]*$%%'`
+		xxxfile=`echo $xxfile | $sed -e 's%_[^_]*$%%'`
+		xxxxfile=`echo $xxxfile | $sed -e 's%_[^_]*$%%'`
 		case "$file" in
 		'') dflt=none ;;
 		*)  case "$osvers" in
