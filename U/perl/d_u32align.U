@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:d_u32align: Compile cat rm Oldconfig run \
-	byteorder u32type Myread Setvar
+	byteorder u32type Myread Setvar u8type
 ?MAKE:	-pick add $@ %<
 ?S:d_u32align:
 ?S:	This variable tells whether you must access character data
@@ -28,7 +28,8 @@ EOM
 $cat >try.c <<EOCP
 #include <stdio.h>
 #define U32 $u32type
-#define BYTEORDER $byteorder
+#define BYTEORDER 0x$byteorder
+#define U8 $u8type
 int main() {
 #if BYTEORDER == 0x1234 || BYTEORDER == 0x4321
     U8 buf[] = "\0\0\0\1\0\0\0\0";
@@ -74,7 +75,7 @@ int main() {
 EOCP
 set try
 if eval $compile_ok; then
-	echo "(Testing for character data alignment may dump core.)" >&4
+	echo "(Testing for character data alignment may crash the test.  That's okay.)" >&4
 	$run ./try 2>&1 >/dev/null
 	case "$?" in
 	0)	cat >&4 <<EOM
