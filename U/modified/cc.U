@@ -44,6 +44,7 @@
 ?D:gccversion=''
 ?LINT:change cpp
 ?LINT:change ccflags
+?LINT:extern ldflags
 : see if we need a special compiler
 echo " "
 if ./usg; then

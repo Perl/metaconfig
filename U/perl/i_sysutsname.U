@@ -11,11 +11,11 @@
 ?S:	This variable conditionally defines the I_SYSUTSNAME symbol,
 ?S:	and indicates whether a C program should include <sys/utsname.h>.
 ?S:.
-?C:I_SYS_UTSNAME:
+?C:I_SYSUTSNAME:
 ?C:	This symbol, if defined, indicates that <sys/utsname.h> exists and
 ?C:	should be included.
 ?C:.
-?H:#$i_sysutsname	I_SYS_UTSNAME		/**/
+?H:#$i_sysutsname	I_SYSUTSNAME		/**/
 ?H:.
 ?LINT:set i_sysutsname
 

@@ -19,7 +19,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:alignbytes: Myread Compile cat rm crosscompile multiarch \
-	d_longdbl uselongdouble longdblsize
+	d_longdbl uselongdouble test 
 ?MAKE:	-pick add $@ %<
 ?S:alignbytes:
 ?S:	This variable holds the number of bytes required to align a

@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_quad quadtype uquadtype quadkind: \
-	longsize intsize d_longlong longlongsize d_int64t \
+	longsize intsize d_longlong longlongsize d_int64_t \
 	Inhdr Setvar use64bits
 ?MAKE:	-pick add $@ %<
 ?S:d_quad:
@@ -78,7 +78,7 @@ case "$intsize" in
         eval $setvar
         quadkind=3
         ;;
-      *) case "$d_int64t" in
+      *) case "$d_int64_t" in
          define)
            val=int64_t
            set quadtype

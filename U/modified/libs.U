@@ -32,7 +32,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:03  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs: \
+?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs libspath: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
 	usesocks ccflags
 ?MAKE:	-pick add $@ %<
@@ -51,6 +51,9 @@
 ?S:libsdirs:
 ?S:	This variable holds the directory names aka dirnames of the libraries
 ?S:	we found and accepted, duplicates are removed.
+?S:.
+?S:libspath:
+?S:	This variable holds the directory names probed for libraries.
 ?S:.
 ?S:ignore_versioned_solibs:
 ?S:	This variable should be non-empty if non-versioned shared
@@ -85,6 +88,7 @@
 ?INIT:libswanted=''
 ?INIT:: some systems want to use only the non-versioned libso:s
 ?INIT:ignore_versioned_solibs=''
+?LINT:extern libscheck
 ?LINT:use libscheck
 : Looking for optional libraries
 echo " "
@@ -105,14 +109,12 @@ esac
 libsfound=''
 libsfiles=''
 libsdirs=''
+libspath=''
+for thisdir in $libpth $xlibpth; do
+  test -d $thisdir && libspath="$libspath $thisdir"
+done
 for thislib in $libswanted; do
-?X:
-?X: Comparisons via case statement use the string " $dflt " to ensure that
-?X: each library is separated by a space. That way, by looking to something
-?X: like *"-l$thislib "*, we ensure we find -lm and not -lmalloc (which was
-?X: the case with the old looking pattern *-l$thislib*.
-?X:
-	for thisdir in $libpth; do
+	for thisdir in $libspath; do
 	    xxx=''
 	    if $test ! -f "$xxx" -a "X$ignore_versioned_solibs" = "X"; then
 		xxx=`ls $thisdir/lib$thislib.$so.[0-9] 2>/dev/null|tail -1`
