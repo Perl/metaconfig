@@ -105,7 +105,6 @@ esac
 @if use64bits
 case "$use64bits" in
 $define)
-	echo "Explicit 64-bitness selected." >&4
 	case "$archname64" in
 	'')
 		;;

@@ -6,20 +6,20 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:use64bits archname64: Myread Oldconfig Setvar test gccversion cat \
-	usemorebits uselargefiles
+	uselargefiles usemorebits longsize intsize
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bits:
 ?S:	This variable conditionally defines the USE_64_BITS symbol,
-?S:	and indicates that explicit 64-bit interfaces should be used
+?S:	and indicates that 64-bit integer types should be used
 ?S:	when available.
 ?S:.
 ?S:archname64:
 ?S:	This variable is used for the 64-bitness part of $archname.
 ?S:.
 ?C:USE_64_BITS:
-?C:	This symbol, if defined, indicates that 64-bit interfaces should
-?C:	be used when available.  If not defined, the native default interfaces
+?C:	This symbol, if defined, indicates that 64-bit integers should
+?C:	be used when available.  If not defined, the native integers
 ?C:	will be used (be they 32 or 64 bits).
 ?C:.
 ?H:?%<:#ifndef USE_64_BITS
@@ -30,29 +30,34 @@
 ?LINT:set archname64
 ?LINT:extern ccflags
 ?LINT:change ccflags
-?LINT:use usemorebits
 ?LINT:use uselargefiles
+?LINT:use usemorebits
 ?F:!use64bits.cbu
-cat <<EOM
 
-Perl can be built to take advantage of explicit 64-bit interfaces,
+case "$intsize:$longsize" in
+8:*|*:8) cat <<EOM
+
+You have natively 64-bit integers.
+EOM
+   val="$define" ;;
+*) cat <<EOM
+
+Perl can be built to take advantage of 64-bit integer types
 on some systems.  To do so, Configure must be run with -Duse64bits.
 
 If this doesn't make any sense to you, just accept the default.
 EOM
-case "$use64bits" in
-$define|true|[yY]*)	dflt='y';;
-*) dflt='n';;
-esac
-rp='Try to use explicit 64-bit interfaces, if available?'
-. ./myread
-case "$ans" in
-y|Y) 
-	val="$define"
-	;;     
-*)      
-	val="$undef"
-	;;
+  case "$use64bits" in
+  $define|true|[yY]*)	dflt='y';;
+  *) dflt='n';;
+  esac
+  rp='Try to use 64-bit integers, if available?'
+  . ./myread
+  case "$ans" in
+  y|Y) val="$define" ;;
+  *)   val="$undef"  ;;
+  esac
+  ;;
 esac
 set use64bits
 eval $setvar
@@ -64,23 +69,32 @@ esac
 case "$use64bits" in
 "$define"|true|[yY]*)
 : Look for a hint-file generated 'call-back-unit'.  If the
-: user has specified that a 64 bit perl is to be built,
+: user has specified that a 64-bit perl is to be built,
 : we may need to set or change some other defaults.
 	if $test -f use64bits.cbu; then
 		echo "Your platform has some specific hints for 64-bit builds, using them..."
 		. ./use64bits.cbu
 	else
 		$cat <<EOM
-(Your platform doesn't have any specific hints for 64-bit builds.
- This is probably okay, especially if your system is a true 64-bit system.)
+(Your platform doesn't have any specific hints for 64-bit builds.)
 EOM
+                case "$intsize:$longsize" in
+8:*|*:8) cat <<EOM
+(This is probably okay, as your system is a natively 64-bit system.)
+EOM
+                  ;;
+                esac
 		case "$gccversion" in
 		'')	;;
-		*)	$cat <<EOM
-But since you seem to be using gcc,
-I will now add -DUSE_LONG_LONG to the compilation flags.
+		*)	case "$ccflags" in
+			*-DUSE_LONG_LONG*) ;;
+			*) $cat <<EOM
+But since you seem to be using gcc, I will now add -DUSE_LONG_LONG
+to the compilation flags.
 EOM
-			ccflags="$ccflags -DUSE_LONG_LONG"
+			   ccflags="$ccflags -DUSE_LONG_LONG"
+			   ;;
+			esac
 			;;
 		esac
 	fi

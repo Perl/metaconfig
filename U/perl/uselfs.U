@@ -5,7 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:uselargefiles: Myread Oldconfig Setvar
+?MAKE:uselargefiles: Myread Oldconfig Setvar test lseeksize fpossize \
+	fpostype Compile echo n c cat lseektype rm
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselargefiles:
@@ -22,30 +23,107 @@
 ?H:?%<:#$uselargefiles	USE_LARGE_FILES		/**/
 ?H:?%<:#endif
 ?H:.
+?F:!uselfs.cbu !try
+?T:yyy zzz
 ?LINT:set uselargefiles
 ?LINT:extern use64bits
 ?LINT:change use64bits
+?LINT:change lseeksize
+?LINT:change fpossize
 
-cat <<EOM
+case "$lseeksize:$fpossize" in
+8:8) cat <<EOM
+
+You can have files larger than 2 gigabytes.
+EOM
+   val="$define" ;;
+*) cat <<EOM
 
 Perl can be built to understand large files (files larger than 2 gigabytes)
 on some systems.  To do so, Configure must be run with -Duselargefiles.
 
-If this doesn't make any sense to you, just accept the default.
+If this doesn't make any sense to you, just accept the default 'y'.
 EOM
-case "$uselargefiles" in
-"$define"|true|[yY]*) dflt='y' ;;
-*)	dflt='n' ;;
-esac
-rp='Try to understand large files?'
-. ./myread
-case "$ans" in
-y|Y) 	val="$define" ;;
-*)   	val="$undef"  ;;
+   case "$uselargefiles" in
+   "$undef"|false|[nN]*) dflt='n' ;;
+   *)	dflt='y' ;;
+   esac
+   rp='Try to understand large files, if available?'
+   . ./myread
+   case "$ans" in
+   y|Y) 	val="$define" ;;
+   *)   	val="$undef"  ;;
+   esac
+   ;;
 esac
 set uselargefiles
 eval $setvar
 case "$uselargefiles" in
-"$define") use64bits="$define" ;;
+"$define")
+: Look for a hint-file generated 'call-back-unit'.  If the
+: user has specified that a large files perl is to be built,
+: we may need to set or change some other defaults.
+	if $test -f uselfs.cbu; then
+		echo "Your platform has some specific hints for large file builds, using them..."
+		. ./uselfs.cbu
+		echo " "
+		$echo $n "Rechecking to see how big your file offsets are...$c" >&4
+		$cat >try.c <<EOCP
+#include <sys/types.h>
+#include <stdio.h>
+int main()
+{
+    printf("%d\n", (int)sizeof($lseektype));
+    return(0); 
+}
+EOCP
+		set try
+		if eval $compile_ok; then
+			lseeksize=`./try`
+			$echo " $lseeksize bytes." >&4
+		else
+			dflt="$lseeksize"
+			echo " "
+			echo "(I can't seem to compile the test program.  Guessing...)"
+			rp="What is the size of your file offsets (in bytes)?"
+			. ./myread
+			lseeksize="$ans"
+		fi
+		case "$fpostype" in
+		*_t) zzz="$fpostype"	;;
+		*)   zzz="fpos_t"	;;
+		esac
+		$echo $n "Rechecking the size of $zzz...$c" >&4 
+		$cat > try.c <<EOCP
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+    printf("%d\n", (int)sizeof($fpostype));
+    exit(0);
+}
+EOCP
+		set try
+		if eval $compile_ok; then
+			yyy=`./try`
+			dflt="$lseeksize"
+			case "$yyy" in
+			'')	echo " "
+				echo "(I can't execute the test program--guessing $fpossize.)" >&4
+				;;
+			*)	fpossize=$yyy
+				echo " $fpossize bytes."
+				;;
+			esac
+		else
+			dflt="$fpossize"
+			echo " "
+			echo "(I can't compile the test program.  Guessing...)" >&4
+			rp="What is the size of your file positions (in bytes)?"
+			. ./myread
+			fpossize="$ans"
+		fi
+		$rm -f try.c try
+	fi
+	;;
 esac
 

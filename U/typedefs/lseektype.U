@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:08  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:lseektype lseeksize: Myread Typedef echo n c cat Compile rm
+?MAKE:lseektype lseeksize: Myread Typedef echo n c cat Compile rm longsize
 ?MAKE:	-pick add $@ %<
 ?S:lseektype:
 ?S:	This variable defines lseektype to be something like off_t, long, 
@@ -66,7 +66,7 @@ if eval $compile_ok; then
 	lseeksize=`./try`
 	$echo " $lseeksize bytes." >&4
 else
-	dflt='4'
+	dflt=$longsize
 	echo " "
 	echo "(I can't seem to compile the test program.  Guessing...)"
 	rp="What is the size of your file offsets (in bytes)?"
