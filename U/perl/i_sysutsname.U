@@ -1,0 +1,25 @@
+?RCS: $Id: i_sysutsname.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_sysutsname: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_sysutsname:
+?S:	This variable conditionally defines the I_SYSUTSNAME symbol,
+?S:	and indicates whether a C program should include <sys/utsname.h>.
+?S:.
+?C:I_SYS_UTSNAME:
+?C:	This symbol, if defined, indicates that <sys/utsname.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_sysutsname	I_SYS_UTSNAME		/**/
+?H:.
+?LINT:set i_sysutsname
+
+: see if this is a sys/utsname.h system
+set sys/utsname.h i_sysutsname
+eval $inhdr
+
