@@ -15,8 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:14  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_getpagsz: Compile Oldconfig Myread Inlibc cat contains \
-	rm Findhdr +cc +optimize +ccflags +ldflags +libs
+?MAKE:d_getpagsz: Compile Oldconfig Myread Inlibc Findhdr
 ?MAKE:	-pick add $@ %<
 ?S:d_getpagsz:
 ?S:	This variable conditionally defines HAS_GETPAGESIZE if getpagesize()
