@@ -72,24 +72,28 @@
 ?X:	?H:?SCAT5:#define SCAT5(a,b,c,d,e)EQuoTe(SQuoTe(a)b/**/c/**/d/**/e)
 ?X:	?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff == 1
-?H:?CAT2:#define CAT2(a,b)a/**/b
-?H:?CAT3#define CAT3(a,b,c)a/**/b/**/c
-?H:?CAT4:#define CAT4(a,b,c,d)a/**/b/**/c/**/d
-?H:?CAT5:#define CAT5(a,b,c,d,e)a/**/b/**/c/**/d/**/e
-?H:?STRINGIFY:#define STRINGIFY(a)"a"
+?H:?CAT2:#  define CAT2(a,b)	a/**/b
+?H:?CAT3:#  define CAT3(a,b,c)	a/**/b/**/c
+?H:?CAT4:#  define CAT4(a,b,c,d)	a/**/b/**/c/**/d
+?H:?CAT5:#  define CAT5(a,b,c,d,e)	a/**/b/**/c/**/d/**/e
+?H:?STRINGIFY:#  define STRINGIFY(a)	"a"
 ?H:?%<:		/* If you can get stringification with catify, tell me how! */
 ?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff == 42
-?H:?CAT2:#define CAT2(a,b)a ## b
-?H:?CAT3:#define CAT3(a,b,c)a ## b ## c
-?H:?CAT4:#define CAT4(a,b,c,d)a ## b ## c ## d
-?H:?CAT5:#define CAT5(a,b,c,d,e)a ## b ## c ## d ## e
-?H:?%<:#define StGiFy(a)# a
-?H:?STRINGIFY:#define STRINGIFY(a)StGiFy(a)
-?H:?SCAT2:#define SCAT2(a,b)StGiFy(a) StGiFy(b)
-?H:?SCAT3:#define SCAT3(a,b,c)StGiFy(a) StGiFy(b) StGiFy(c)
-?H:?SCAT4:#define SCAT4(a,b,c,d)StGiFy(a) StGiFy(b) StGiFy(c) StGiFy(d)
-?H:?SCAT5:#define SCAT5(a,b,c,d,e)StGiFy(a) StGiFy(b) StGiFy(c) StGiFy(d) StGiFy(e)
+?H:?%<:#  define PeRl_CaTiFy(a, b)	a ## b	
+?H:?%<:#  define PeRl_StGiFy(a)	#a
+?H:?%<:/* the additional level of indirection enables these macros to be
+?H:?%<: * used as arguments to other macros.  See K&R 2nd ed., page 231. */
+?H:?CAT2:#  define CAT2(a,b)	Perl_CaTiFy(a,b)
+?H:?CAT3:#  define CAT3(a,b,c)	CAT2(Perl_CaTiFy(a,b),c)
+?H:?CAT4:#  define CAT4(a,b,c,d)	CAT2(CAT3(a,b,c),d)
+?H:?CAT5:#  define CAT5(a,b,c,d,e)	CAT2(CAT4(a,b,c,d),e)
+?H:?%<:#  define StGiFy(a)	PeRl_StGiFy(a)
+?H:?STRINGIFY:#  define STRINGIFY(a)	PeRl_StGiFy(a)
+?H:?SCAT2:#  define SCAT2(a,b)	PeRl_StGiFy(a) PeRl_StGiFy(b)
+?H:?SCAT3:#  define SCAT3(a,b,c)	PeRl_StGiFy(a) PeRl_StGiFy(b) PeRl_StGiFy(c)
+?H:?SCAT4:#  define SCAT4(a,b,c,d)	PeRl_StGiFy(a) PeRl_StGiFy(b) PeRl_StGiFy(c) PeRl_StGiFy(d)
+?H:?SCAT5:#  define SCAT5(a,b,c,d,e)	PeRl_StGiFy(a) PeRl_StGiFy(b) PeRl_StGiFy(c) PeRl_StGiFy(d) PeRl_StGiFy(e)
 ?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff != 1 && $cpp_stuff != 42
 ?H:?%<:#include "Bletch: How does this C preprocessor catenate tokens?"
