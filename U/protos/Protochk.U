@@ -56,6 +56,9 @@
 ?T:foo status pthread_h_done
 ?LINT: change cc optimize ccflags prototype define rm
 ?LINT: extern pthread_h_first
+?LINT: change pthread_h_first
+?LINT: change usethreads
+?LINT: change i_pthread
 : define a fucntion to check prototypes
 $cat > protochk <<EOSH
 $startsh
