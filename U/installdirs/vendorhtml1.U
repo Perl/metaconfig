@@ -13,9 +13,9 @@
 ?RCS: Initial revision
 ?RCS:
 ?RCS:
-?MAKE:vendorhtml1 vendorhtml1exp installvendorhtml1: Getfile \
-	Oldconfig Prefixit test package vendorprefix prefix sed \
-	installstyle installprefix
+?MAKE:vendorhtml1 vendorhtml1exp installvendorhtml1: html1dir Getfile \
+	Oldconfig Prefixit test vendorprefix prefix sed \
+	installprefix
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorhtml1:
@@ -36,29 +36,34 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
-?T:prog
 case "$vendorprefix" in
 '')	vendorhtml1=''
 	vendorhtml1exp=''
 	;;
 *)	: determine where vendor-supplied html pages go.
-?X: remove any trailing -3.0 or other version identification
-	prog=`echo $package | $sed 's/-*[0-9.]*$//'`
-	case "$installstyle" in
-	*lib/perl5*) dflt=$vendorprefix/lib/$package/vendor_$prog/html ;;
-	*)	     dflt=$vendorprefix/lib/vendor_$prog/html ;;
+	: There is no standard location, so try to copy the previously-selected
+	: directory structure for the core html pages.
+	: XXX Better default suggestions would be welcome.
+	case "$vendorhtml1" in
+	'')	dflt=`echo "$html1dir" | $sed "s#^$prefix#$vendorprefix#"` ;;
+	*)	dflt=$vendorhtml1 ;;
 	esac
-	fn=d~+
+	case "$dflt" in
+	''|' ') dflt=none ;;
+	esac
+	fn=dn+~
 	rp='Pathname for the vendor-supplied html pages?'
 	. ./getfile
 	vendorhtml1="$ans"
 	vendorhtml1exp="$ansexp"
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installvendorhtml1=`echo $vendorhtml1exp | $sed "s#^$prefix#$installprefix#"`
-	else
-		installvendorhtml1="$vendorhtml1exp"
-	fi
 	;;
 esac
+: Use ' ' for none so value is preserved next time through Configure
+$test X"$vendorhtml1" = "X" && vendorhtml1=' '
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorhtml1=`echo $vendorhtml1exp | $sed "s#^$prefix#$installprefix#"`
+else
+	installvendorhtml1="$vendorhtml1exp"
+fi
 

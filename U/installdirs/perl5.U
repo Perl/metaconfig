@@ -1,0 +1,46 @@
+?RCS: $Id: perl5.U,v $
+?RCS:
+?RCS: Copyright (c) 2000 Andrew Dougherty
+?RCS: 
+?RCS:     You may distribute under the terms of either the GNU General Public
+?RCS:     License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: perl5.U,v $
+?RCS:
+?X:
+?X:	The purpose of this unit is to locate a previously installed
+?X:	version of perl5 suitable for running inc_version_list.U.
+?X:	We check for 5.005 and later because inc_version_list is
+?X:	irrelevant for earlier versions.
+?X:
+?MAKE:perl5: path_sep binexp test sed
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:perl5:
+?S:	This variable contains the full path (if any) to a previously
+?S:	installed perl5.005 or later suitable for running the script
+?S:	to determine inc_version_list.
+?S:.
+?T: tdir
+: Find perl5.005 or later.
+echo "Looking for a previously installed perl5.005 or later... "
+case "$perl5" in
+'')	for tdir in `echo "$binexp:$PATH" | $sed "s/$path_sep/ /g"`; do
+		: Check if this perl is recent and can load a simple module
+		if $test -x $tdir/perl && $tdir/perl -Mless -e 'use 5.005;' >/dev/null 2>&1; then
+			perl5=$tdir/perl
+			break;
+		elif $test -x $tdir/perl5 && $tdir/perl5 -Mless -e 'use 5.005;' >/dev/null 2>&1; then
+			perl5=$tdir/perl
+			break;
+		fi
+	done
+	;;
+*)	perl5="$perl5"
+	;;
+esac
+case "$perl5" in
+'')	echo "None found.  That's ok.";;
+*)	echo "Using $perl5." ;;
+esac
+

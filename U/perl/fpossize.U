@@ -7,7 +7,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:fpossize: Myread Typedef fpostype Compile longsize echo n c
+?MAKE:fpossize: Myread Typedef fpostype Compile longsize
 ?MAKE:	-pick add $@ %<
 ?S:fpossize:
 ?S:	This variable contains the size of a fpostype in bytes.
@@ -25,7 +25,7 @@ case "$fpostype" in
 *_t) zzz="$fpostype"	;;
 *)   zzz="fpos_t"	;;
 esac
-$echo $n "Checking the size of $zzz...$c" >&4 
+echo "Checking the size of $zzz..." >&4 
 cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
@@ -39,11 +39,10 @@ if eval $compile_ok; then
 	yyy=`./try`
 	case "$yyy" in
 	'')	fpossize=4
-		echo " " >&4
 		echo "(I can't execute the test program--guessing $fpossize.)" >&4
 		;;
 	*)	fpossize=$yyy
-		echo " $fpossize bytes." >&4
+		echo "Your $zzz is bytes long." >&4
 		;;
 	esac
 else

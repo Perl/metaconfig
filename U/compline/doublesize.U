@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:06  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:doublesize: cat rm Myread Compile echo n c
+?MAKE:doublesize: cat rm Myread Compile
 ?MAKE:	-pick add $@ %<
 ?S:doublesize:
 ?S:	This variable contains the value of the DOUBLESIZE symbol, which
@@ -32,7 +32,7 @@
 echo " "
 case "$doublesize" in
 '')
-	$echo $n "Checking to see how big your double precision numbers are...$c" >&4
+	echo "Checking to see how big your double precision numbers are..." >&4
 	$cat >try.c <<'EOCP'
 #include <stdio.h>
 int main()
@@ -44,7 +44,7 @@ EOCP
 	set try
 	if eval $compile_ok; then
 		doublesize=`./try`
-		$echo " $doublesize bytes." >&4
+		echo "Your double is $doublesize bytes long."
 	else
 		dflt='8'
 		echo "(I can't seem to compile the test program.  Guessing...)"

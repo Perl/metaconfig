@@ -66,23 +66,29 @@ case "$vendorprefix" in
 *)	d_vendorlib="$define"
 	: determine where vendor-supplied modules go.
 	: Usual default is /usr/local/lib/perl5/vendor_perl/$version
-?X: remove any trailing -3.0 or other version identification
-	prog=`echo $package | $sed 's/-*[0-9.]*$//'`
-	case "$installstyle" in
-	*lib/perl5*) dflt=$vendorprefix/lib/$package/vendor_$prog/$version ;;
-	*)	     dflt=$vendorprefix/lib/vendor_$prog/$version ;;
+	case "$vendorlib" in
+	'')
+?X:		remove any trailing -3.0 or other version identification
+		prog=`echo $package | $sed 's/-*[0-9.]*$//'`
+		case "$installstyle" in
+		*lib/perl5*) dflt=$vendorprefix/lib/$package/vendor_$prog/$version ;;
+		*)	     dflt=$vendorprefix/lib/vendor_$prog/$version ;;
+		esac
+		;;
+	*)	dflt="$vendorlib"
+		;;
 	esac
 	fn=d~+
 	rp='Pathname for the vendor-supplied library files?'
 	. ./getfile
 	vendorlib="$ans"
 	vendorlibexp="$ansexp"
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installvendorlib=`echo $vendorlibexp | $sed "s#^$prefix#$installprefix#"`
-	else
-		installvendorlib="$vendorlibexp"
-	fi
 	;;
 esac
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorlib=`echo $vendorlibexp | $sed "s#^$prefix#$installprefix#"`
+else
+	installvendorlib="$vendorlibexp"
+fi
 

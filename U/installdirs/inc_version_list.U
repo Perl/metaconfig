@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS: $Log: inc_version_list.U,v $
 ?RCS:
-?MAKE:inc_version_list inc_version_list_init: cat sed Getfile perl \
+?MAKE:inc_version_list inc_version_list_init: cat sed Getfile perl5 \
 	version api_versionstring rm Myread archname prefix sitelib
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -46,7 +46,7 @@
 ?T: stem d
 : Determine list of previous versions to include in @INC
 $cat > getverlist <<EOPL
-#!$perl -w
+#!$perl5 -w
 use File::Basename;
 \$api_versionstring = "$api_versionstring";
 \$version = "$version";
@@ -57,7 +57,7 @@ EOPL
 # Can't have leading @ because metaconfig interprets it as a command!
 ;@inc_version_list=();
 $stem=dirname($sitelib);
-# Redo to do opendir/readdir? 
+# XXX Redo to do opendir/readdir? 
 if (-d $stem) {
     chdir($stem);
     ;@candidates = glob("5.*");
@@ -97,14 +97,17 @@ else {
 EOPL
 chmod +x getverlist
 case "$inc_version_list" in
-'')	if test -x $perl; then
-		dflt=`$perl getverlist`
+'')	if test -x "$perl5"; then
+		dflt=`$perl5 getverlist`
 	else
 		dflt='none'
 	fi
 	;;
 $undef) dflt='none' ;;
 *)  dflt="$inc_version_list" ;;
+esac
+case "$dflt" in
+''|' ') dflt=none ;;
 esac
 $cat <<'EOM'
 
@@ -123,7 +126,7 @@ EOM
 rp='List of earlier versions to include in @INC?'
 . ./myread
 case "$ans" in
-[Nn]one) inc_version_list=' ' ;;
+[Nn]one|''|' ') inc_version_list=' ' ;;
 *) inc_version_list="$ans" ;;
 esac
 case "$inc_version_list" in

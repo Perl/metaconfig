@@ -10,9 +10,9 @@
 ?RCS:
 ?RCS: $Log: html3dir.U,v $
 ?RCS:
-?MAKE:html3dir html3direxp installhtml3dir: cat Loc \
+?MAKE:html3dir html3direxp installhtml3dir: cat sed Loc \
 	spackage test Getfile Prefixit Prefixup Myread \
-	prefix installprefix
+	prefix installprefix html1dir
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:html3dir:
@@ -39,8 +39,10 @@ If you wish to install html files for modules associated with $spackage,
 indicate the appropriate directory here.  To skip installing html files,
 answer "none".
 EOM
+: There is no obvious default.  If they have specified html1dir, then
+: try to key off that, possibly changing .../html1 into .../html3.
 case "$html3dir" in
-''|none|$undef|' ') dflt=none ;;
+'') html3dir=`echo "$html1dir" | $sed 's/1$/3$/'` ;;
 *) dflt=$html3dir ;;
 esac
 fn=dn+~
@@ -48,16 +50,12 @@ rp="Directory for the $spackage module html pages?"
 . ./getfile
 html3dir="$ans"
 html3direxp="$ansexp"
-case "$html3dir" in
-''|none)
-	: Use ' ' so value is preserved next time through Configure
-	html3dir=' '
-	installhtml3dir='';;
-*)
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installhtml3dir=`echo $html3direxp | sed "s#^$prefix#$installprefix#"`
-	fi
-	;;
-esac
+: Use ' ' for none so value is preserved next time through Configure
+$test X"$html3dir" = "X" && html3dir=' '
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installhtml3dir=`echo $html3direxp | sed "s#^$prefix#$installprefix#"`
+else
+	installhtml3dir="$html3direxp"
+fi
 

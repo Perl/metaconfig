@@ -50,11 +50,11 @@ case "$siteprefix" in
 *)  dflt=$siteprefix ;;
 esac
 . ./getfile
+: XXX Prefixit unit does not yet support siteprefix and vendorprefix
 oldsiteprefix=''
 case "$siteprefix" in
 '') ;;
-*)
-	case "$ans" in
+*)	case "$ans" in
 	"$prefix") ;;
 	*) oldsiteprefix="$prefix";;
 	esac

@@ -16,25 +16,31 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:31  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:patchlevel subversion version api_revision api_version \
-	api_subversion api_versionstring: package baserev test rsrc \
-	echo n c awk osname
+?MAKE:patchlevel revision version subversion \
+	api_revision api_version api_subversion api_versionstring: \
+	package test rsrc echo n c awk osname
 ?MAKE:	-pick add $@ %<
+?S:revision:
+?S:	The value of revision comes from the patchlevel.h file.
+?S:	In a version number such as 5.6.1, this is the "5".
+?S:	In patchlevel.h, this is referred to as "PERL_REVISION".
+?S:.
 ?S:patchlevel:
 ?S:	The patchlevel level of this package.
 ?S:	The value of patchlevel comes from the patchlevel.h file.
 ?S:	In a version number such as 5.6.1, this is the "6".
-?S:	In patchlevel.h, this is referred to as the "PERL_VERSION".
+?S:	In patchlevel.h, this is referred to as "PERL_VERSION".
 ?S:.
 ?S:subversion:
 ?S:	The subversion level of this package.
 ?S:	The value of subversion comes from the patchlevel.h file.
 ?S:	In a version number such as 5.6.1, this is the "1".
+?S:	In patchlevel.h, this is referred to as "PERL_SUBVERSION".
 ?S:	This is unique to perl.
 ?S:.
 ?S:version:
 ?S:	The full version number of this package, such as 5.6.1 (or 5_6_1).
-?S:	This combines baserev, patchlevel, and subversion to get the
+?S:	This combines revision, patchlevel, and subversion to get the
 ?S:	full version number, including any possible subversions.
 ?S:	This is suitable for use as a directory name, and hence is
 ?S:	filesystem dependent.
@@ -94,36 +100,34 @@
 echo " "
 echo "Getting the current patchlevel..." >&4
 if $test -r $rsrc/patchlevel.h;then
+	revision=`awk '/define[ 	]+PERL_REVISION/ {print $3}' $rsrc/patchlevel.h`
 	patchlevel=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
 	subversion=`awk '/define[ 	]+PERL_SUBVERSION/ {print $3}' $rsrc/patchlevel.h`
 	api_revision=`awk '/define[ 	]+PERL_API_REVISION/ {print $3}' $rsrc/patchlevel.h`
 	api_version=`awk '/define[ 	]+PERL_API_VERSION/ {print $3}' $rsrc/patchlevel.h`
 	api_subversion=`awk '/define[ 	]+PERL_API_SUBVERSION/ {print $3}' $rsrc/patchlevel.h`
 else
+	revision=0
 	patchlevel=0
 	subversion=0
 	api_revision=0
 	api_version=0
 	api_subversion=0
 fi
-$echo $n "(You have $package" $c
-case "$package" in
-"*$baserev")	;;
-*)		$echo $n " $baserev" $c ;;
-esac
+$echo $n "(You have $package revision $revision" $c
 $echo $n " patchlevel $patchlevel" $c
 test 0 -eq "$subversion" || $echo $n " subversion $subversion" $c
 echo ".)"
 case "$osname" in
 dos|vms)
 	: XXX Should be a Configure test for double-dots in filenames.
-	version=`echo $baserev $patchlevel $subversion | \
+	version=`echo $revision $patchlevel $subversion | \
 		 $awk '{ printf "%d_%d_%d\n", $1, $2, $3 }'`
 	api_versionstring=`echo $api_revision $api_version $api_subversion | \
 		 $awk '{ printf "%d_%d_%d\n", $1, $2, $3 }'`
 	;;
 *)
-	version=`echo $baserev $patchlevel $subversion | \
+	version=`echo $revision $patchlevel $subversion | \
 		 $awk '{ printf "%d.%d.%d\n", $1, $2, $3 }'`
 	api_versionstring=`echo $api_revision $api_version $api_subversion | \
 		 $awk '{ printf "%d.%d.%d\n", $1, $2, $3 }'`

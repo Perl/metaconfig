@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:37  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:ptrsize: echo n c cat rm Myread Compile voidflags
+?MAKE:ptrsize: cat rm Myread Compile voidflags
 ?MAKE:	-pick add $@ %<
 ?S:ptrsize:
 ?S:	This variable contains the value of the PTRSIZE symbol, which
@@ -34,7 +34,7 @@
 echo " "
 case "$ptrsize" in
 '')
-	$echo $n "Checking to see how big your pointers are...$c" >&4
+	echo "Checking to see how big your pointers are..." >&4
 	if test "$voidflags" -gt 7; then
 		echo '#define VOID_PTR char *' > try.c
 	else
@@ -51,7 +51,7 @@ EOCP
 	set try
 	if eval $compile_ok; then
 		ptrsize=`./try`
-		$echo " $ptrsize bytes." >&4
+		echo "Your pointers are $ptrsize bytes long."
 	else
 		dflt='4'
 		echo "(I can't seem to compile the test program.  Guessing...)" >&4

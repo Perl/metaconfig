@@ -62,18 +62,21 @@ case "$vendorprefix" in
 	;;
 *)	d_vendorbin="$define"
 	: determine where vendor-supplied executables go.
-	dflt=$vendorprefix/bin
+	case "$vendorbin" in
+	'') dflt=$vendorprefix/bin ;;
+	*)	dflt="$vendorbin" ;;
+	esac
 	fn=d~+
 	rp='Pathname for the vendor-supplied executables directory?'
 	. ./getfile
 	vendorbin="$ans"
 	vendorbinexp="$ansexp"
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installvendorbin=`echo $vendorbinexp | $sed "s#^$prefix#$installprefix#"`
-	else
-		installvendorbin="$vendorbinexp"
-	fi
 	;;
 esac
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorbin=`echo $vendorbinexp | $sed "s#^$prefix#$installprefix#"`
+else
+	installvendorbin="$vendorbinexp"
+fi
 

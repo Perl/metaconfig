@@ -49,16 +49,12 @@ rp="Directory for the main $spackage html pages?"
 . ./getfile
 html1dir="$ans"
 html1direxp="$ansexp"
-case "$html1dir" in
-''|none)
-	: Use ' ' so value is preserved next time through Configure
-	html1dir=' '  
-	installhtml1dir='';;
-*)
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installhtml1dir=`echo $html1direxp | sed "s#^$prefix#$installprefix#"`
-	fi
-	;;
-esac
+: Use ' ' for none so value is preserved next time through Configure
+$test X"$html1dir" = "X" && html1dir=' '
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installhtml1dir=`echo $html1direxp | sed "s#^$prefix#$installprefix#"`
+else
+	installhtml1dir="$html1direxp"
+fi
 

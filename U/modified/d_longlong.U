@@ -8,7 +8,7 @@
 ?RCS: $Log: d_longlong.U,v $
 ?RCS:
 ?MAKE:d_longlong longlongsize: Compile Setvar Myread \
-	echo n c cat rm test longsize exe_ext
+	cat rm test longsize exe_ext
 ?MAKE:	-pick add $@ %<
 ?S:d_longlong:
 ?S:	This variable conditionally defines HAS_LONG_LONG if 
@@ -56,7 +56,7 @@ eval $setvar
 case "${d_longlong}${longlongsize}" in
 $define)
 	echo " "
-	$echo $n "Checking to see how big your long longs are..." $c >&4
+	echo "Checking to see how big your long longs are..." >&4
 	$cat >try.c <<'EOCP'
 #include <stdio.h>
 int main()
@@ -68,7 +68,7 @@ EOCP
 	set try
 	if eval $compile_ok; then
 		longlongsize=`./try$exe_ext`
-		$echo " $longlongsize bytes." >&4
+		echo "Your long longs are $longlongsize bytes long."
 	else
 		dflt='8'
 		echo " "

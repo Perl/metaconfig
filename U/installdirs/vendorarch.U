@@ -57,7 +57,6 @@
 ?H:#$d_vendorarch PERL_VENDORARCH "$vendorarch"		/**/
 ?H:#$d_vendorarch PERL_VENDORARCH_EXP "$vendorarchexp"		/**/
 ?H:.
-?T:tdflt
 case "$vendorprefix" in
 '')	d_vendorarch="$undef"
 	vendorarch=''
@@ -68,23 +67,23 @@ case "$vendorprefix" in
 	: vendorlib  default is /usr/local/lib/perl5/vendor_perl/$version
 	: vendorarch default is /usr/local/lib/perl5/vendor_perl/$version/$archname
 	: vendorlib may have an optional trailing /share.
-	tdflt=`echo $vendorlib | $sed 's,/share$,,'`
-	tdflt="$tdflt/$archname"
 	case "$vendorarch" in
-	'')	dflt="$tdflt" ;;
+	'')	dflt=`echo $vendorlib | $sed 's,/share$,,'`
+		dflt="$dflt/$archname"
+		;;
 	*)	dflt="$vendorarch" ;;
 	esac
-	fn=nd~+
+	fn=d~+
 	rp='Pathname for vendor-supplied architecture-dependent files?'
 	. ./getfile
 	vendorarch="$ans"
 	vendorarchexp="$ansexp"
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installvendorarch=`echo $vendorarchexp | sed "s#^$prefix#$installprefix#"`
-	else
-		installvendorarch="$vendorarchexp"
-	fi
 	;;
 esac
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorarch=`echo $vendorarchexp | sed "s#^$prefix#$installprefix#"`
+else
+	installvendorarch="$vendorarchexp"
+fi
 

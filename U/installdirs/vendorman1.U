@@ -13,9 +13,9 @@
 ?RCS: Initial revision
 ?RCS:
 ?RCS:
-?MAKE:vendorman1 vendorman1exp installvendorman1: Getfile \
-	Oldconfig Prefixit test package vendorprefix prefix sed \
-	installstyle installprefix
+?MAKE:vendorman1 vendorman1exp installvendorman1: man1dir Getfile \
+	Oldconfig Prefixit test vendorprefix prefix sed \
+	installprefix
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorman1:
@@ -36,29 +36,31 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
-?T:prog
 case "$vendorprefix" in
 '')	vendorman1=''
 	vendorman1exp=''
 	;;
 *)	: determine where vendor-supplied manual pages go.
-?X: remove any trailing -3.0 or other version identification
-	prog=`echo $package | $sed 's/-*[0-9.]*$//'`
-	case "$installstyle" in
-	*lib/perl5*) dflt=$vendorprefix/lib/$package/vendor_$prog/man/man1 ;;
-	*)	     dflt=$vendorprefix/lib/vendor_$prog/man/man1 ;;
+	case "$vendorman1" in
+	'') dflt=`echo "$man1dir" | $sed "s#^$prefix#$vendorprefix#"` ;;
+	*)	dflt=$vendorman1 ;;
 	esac
-	fn=d~+
-	rp='Pathname for the vendor-supplied manual pages?'
+	case "$dflt" in
+	''|' ') dflt=none ;;
+	esac
+	fn=nd~+
+	rp='Pathname for the vendor-supplied manual section 1 pages?'
 	. ./getfile
 	vendorman1="$ans"
 	vendorman1exp="$ansexp"
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installvendorman1=`echo $vendorman1exp | $sed "s#^$prefix#$installprefix#"`
-	else
-		installvendorman1="$vendorman1exp"
-	fi
 	;;
 esac
+: Use ' ' for none so value is preserved next time through Configure
+$test X"$vendorman1" = "X" && vendorman1=' '
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorman1=`echo "$vendorman1exp" | $sed "s#^$prefix#$installprefix#"`
+else
+	installvendorman1="$vendorman1exp"
+fi
 

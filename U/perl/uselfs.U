@@ -67,7 +67,7 @@ case "$uselargefiles" in
 		echo "Your platform has some specific hints for large file builds, using them..."
 		. ./uselfs.cbu
 		echo " "
-		$echo $n "Rechecking to see how big your file offsets are...$c" >&4
+		echo "Rechecking to see how big your file offsets are..." >&4
 		$cat >try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
@@ -80,7 +80,7 @@ EOCP
 		set try
 		if eval $compile_ok; then
 			lseeksize=`./try`
-			$echo " $lseeksize bytes." >&4
+			$echo "Your file offsets are now $lseeksize bytes long."
 		else
 			dflt="$lseeksize"
 			echo " "
@@ -111,7 +111,7 @@ EOCP
 				echo "(I can't execute the test program--guessing $fpossize.)" >&4
 				;;
 			*)	fpossize=$yyy
-				echo " $fpossize bytes."
+				echo " $fpossize bytes." >&4
 				;;
 			esac
 		else

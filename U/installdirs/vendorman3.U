@@ -1,6 +1,6 @@
 ?RCS: $Id: vendorman3.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
 ?RCS:
-?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: Copyright (c) 1999-2000, Andy Dougherty
 ?RCS: 
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -13,9 +13,9 @@
 ?RCS: Initial revision
 ?RCS:
 ?RCS:
-?MAKE:vendorman3 vendorman3exp installvendorman3: Getfile \
-	Oldconfig Prefixit test package vendorprefix prefix sed \
-	installstyle installprefix
+?MAKE:vendorman3 vendorman3exp installvendorman3: man3dir Getfile \
+	Oldconfig Prefixit test vendorprefix prefix sed \
+	installprefix
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorman3:
@@ -36,29 +36,31 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
-?T:prog
 case "$vendorprefix" in
 '')	vendorman3=''
 	vendorman3exp=''
 	;;
-*)	: determine where vendor-supplied manual pages go.
-?X: remove any trailing -3.0 or other version identification
-	prog=`echo $package | $sed 's/-*[0-9.]*$//'`
-	case "$installstyle" in
-	*lib/perl5*) dflt=$vendorprefix/lib/$package/vendor_$prog/man/man3 ;;
-	*)	     dflt=$vendorprefix/lib/vendor_$prog/man/man3 ;;
+*)	: determine where vendor-supplied module manual pages go.
+	case "$vendorman3" in
+	'') dflt=`echo "$man3dir" | $sed "s#^$prefix#$vendorprefix#"` ;;
+	*)	dflt=$vendorman3 ;;
 	esac
-	fn=d~+
-	rp='Pathname for the vendor-supplied library manual pages?'
+	case "$dflt" in
+	''|' ') dflt=none ;;
+	esac
+	fn=nd~+
+	rp='Pathname for the vendor-supplied manual section 3 pages?'
 	. ./getfile
 	vendorman3="$ans"
 	vendorman3exp="$ansexp"
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installvendorman3=`echo $vendorman3exp | $sed "s#^$prefix#$installprefix#"`
-	else
-		installvendorman3="$vendorman3exp"
-	fi
 	;;
 esac
+: Use ' ' for none so value is preserved next time through Configure
+$test X"$vendorman3" = "X" && vendorman3=' '
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorman3=`echo "$vendorman3exp" | $sed "s#^$prefix#$installprefix#"`
+else
+	installvendorman3="$vendorman3exp"
+fi
 

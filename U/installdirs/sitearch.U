@@ -59,26 +59,26 @@
 ?H:#define SITEARCH "$sitearch"		/**/
 ?H:#define SITEARCH_EXP "$sitearchexp"		/**/
 ?H:.
-?T:tdflt
 : determine where site specific architecture-dependent libraries go.
 : sitelib  default is /usr/local/lib/perl5/site_perl/$version
 : sitearch default is /usr/local/lib/perl5/site_perl/$version/$archname
 : sitelib may have an optional trailing /share.
-tdflt=`echo $sitelib | $sed 's,/share$,,'`
-tdflt="$tdflt/$archname"
+case "$sitearch" in
+'')	dflt=`echo $sitelib | $sed 's,/share$,,'`
+	dflt="$dflt/$archname"
+	;;
+*)	dflt="$sitearch"
+	;;
+esac
 set sitearch sitearch none
 eval $prefixit
-case "$sitearch" in
-'')	dflt="$tdflt" ;;
-*)	dflt="$sitearch" ;;
-esac
 $cat <<EOM
 
 The installation process will also create a directory for
 architecture-dependent site-specific extensions and modules.
 
 EOM
-fn=nd~+
+fn=d~+
 rp='Pathname for the site-specific architecture-dependent library files?'
 . ./getfile
 sitearch="$ans"

@@ -42,7 +42,7 @@ if eval $compile_ok; then
 		echo "(I can't execute the test program--guessing $uidsize.)" >&4
 		;;
 	*)	uidsize=$yyy
-		echo "Your $zzz size is $uidsize bytes."
+		echo "Your $zzz is $uidsize bytes long."
 		;;
 	esac
 else

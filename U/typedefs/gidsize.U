@@ -42,7 +42,7 @@ if eval $compile_ok; then
 		echo "(I can't execute the test program--guessing $gidsize.)" >&4
 		;;
 	*)	gidsize=$yyy
-		echo "Your $zzz size is $gidsize bytes."
+		echo "Your $zzz is $gidsize bytes long."
 		;;
 	esac
 else

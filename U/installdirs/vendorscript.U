@@ -13,7 +13,8 @@
 ?RCS: Initial revision
 ?RCS:
 ?RCS:
-?MAKE:d_vendorscript vendorscript vendorscriptexp installvendorscript: cat Getfile \
+?MAKE:d_vendorscript vendorscript vendorscriptexp installvendorscript: \
+	vendorbin cat Getfile \
 	Oldconfig Prefixit test vendorprefix prefix sed installprefix
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -62,7 +63,11 @@ case "$vendorprefix" in
 	;;
 *)	d_vendorscript="$define"
 	: determine where vendor-supplied scripts go.
-	dflt=$vendorprefix/script
+	case "$vendorscript" in
+	'')	dflt=$vendorprefix/script
+		$test -d $dflt || dflt=$vendorbin ;;
+	*)  dflt="$vendorscript" ;;
+	esac
 	$cat <<EOM
 
 The installation process will create a directory for 
@@ -74,12 +79,12 @@ EOM
 	. ./getfile
 	vendorscript="$ans"
 	vendorscriptexp="$ansexp"
-	: Change installation prefix, if necessary.
-	if $test X"$prefix" != X"$installprefix"; then
-		installvendorscript=`echo $vendorscriptexp | $sed "s#^$prefix#$installprefix#"`
-	else
-		installvendorscript="$vendorscriptexp"
-	fi
 	;;
 esac
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorscript=`echo $vendorscriptexp | $sed "s#^$prefix#$installprefix#"`
+else
+	installvendorscript="$vendorscriptexp"
+fi
 

@@ -1,0 +1,32 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_lseekproto: Hasproto i_systypes i_unistd
+?MAKE:	-pick add $@ %<
+?S:d_lseekproto:
+?S:	This variable conditionally defines the HAS_LSEEK_PROTO symbol,
+?S:	which indicates to the C program that the system provides
+?S:	a prototype for the lseek() function.  Otherwise, it is
+?S:	up to the program to supply one.
+?S:.
+?C:HAS_LSEEK_PROTO:
+?C:	This symbol, if defined, indicates that the system provides
+?C:	a prototype for the lseek() function.  Otherwise, it is up
+?C:	to the program to supply one.  A good guess is
+?C:		extern off_t lseek(int, off_t, int);
+?C:.
+?H:#$d_lseekproto	HAS_LSEEK_PROTO	/**/
+?H:.
+?LINT:set d_lseekproto 
+: see if prototype for lseek is available
+echo " "
+set d_lseekproto lseek $i_systypes sys/types.h $i_unistd unistd.h
+eval $hasproto
+

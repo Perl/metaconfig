@@ -52,7 +52,12 @@ EOM
 rp='Do you want to configure vendor-specific add-on directories?'
 case "$usevendorprefix" in
 define|true|[yY]*) dflt=y ;;
-*) dflt=n ;;
+*)	: User may have set vendorprefix directly on Configure command line.
+	case "$vendorprefix" in
+	''|' ') dflt=n ;;
+	*)	dflt=y ;;
+	esac
+	;;
 esac
 . ./myread
 case "$ans" in
@@ -63,6 +68,7 @@ case "$ans" in
 	*)  dflt=$vendorprefix ;;
 	esac
 	. ./getfile
+	: XXX Prefixit unit does not yet support siteprefix and vendorprefix
 	oldvendorprefix=''
 	case "$vendorprefix" in
 	'') ;;

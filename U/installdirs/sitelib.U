@@ -66,9 +66,14 @@
 : XXX No longer works with Prefixit stuff.
 ?X: remove any trailing -3.0 or other version identification
 prog=`echo $package | $sed 's/-*[0-9.]*$//'`
-case "$installstyle" in
-*lib/perl5*) dflt=$siteprefix/lib/$package/site_$prog/$version ;;
-*)	 dflt=$siteprefix/lib/site_$prog/$version ;;
+case "$sitelib" in
+'') case "$installstyle" in
+	*lib/perl5*) dflt=$siteprefix/lib/$package/site_$prog/$version ;;
+	*)	 dflt=$siteprefix/lib/site_$prog/$version ;;
+	esac
+	;;
+*)	dflt="$sitelib"
+	;;
 esac
 $cat <<EOM
 
@@ -85,7 +90,7 @@ sitelib="$ans"
 sitelibexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitelib=`echo $sitelibexp | sed "s#^$prefix#$installprefix#"`
+	installsitelib=`echo $sitelibexp | $sed "s#^$prefix#$installprefix#"`
 else
 	installsitelib="$sitelibexp"
 fi

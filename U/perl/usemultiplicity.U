@@ -41,6 +41,7 @@ EOM
 	$define|true|[yY]*)	dflt='y';;
 	*) dflt='n';;
 	esac
+	echo " "
 	echo "If this doesn't make any sense to you, just accept the default '$dflt'."
 	rp='Build Perl for multiplicity?'
 	. ./myread

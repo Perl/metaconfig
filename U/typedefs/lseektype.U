@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:08  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:lseektype lseeksize: Myread Typedef echo n c cat Compile rm longsize
+?MAKE:lseektype lseeksize: Myread Typedef cat Compile rm longsize
 ?MAKE:	-pick add $@ %<
 ?S:lseektype:
 ?S:	This variable defines lseektype to be something like off_t, long, 
@@ -51,7 +51,7 @@ set off_t lseektype long stdio.h sys/types.h
 eval $typedef_ask
 
 echo " "
-$echo $n "Checking to see how big your file offsets are...$c" >&4
+echo "Checking to see how big your file offsets are..." >&4
 $cat >try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
@@ -64,7 +64,7 @@ EOCP
 set try
 if eval $compile_ok; then
 	lseeksize=`./try`
-	$echo " $lseeksize bytes." >&4
+	echo "Your file offsets are $lseeksize bytes long."
 else
 	dflt=$longsize
 	echo " "
