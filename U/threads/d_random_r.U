@@ -1,5 +1,5 @@
 ?RCS: $Id: d_random_r.U,v 0RCS:
-?RCS: Copyright (c) 2002 Jarkko Hietaniemi
+?RCS: Copyright (c) 2002,2003 Jarkko Hietaniemi
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
@@ -51,7 +51,15 @@ case "$d_random_r" in
 	define)
 	case "$random_r_proto" in
 	''|0) try='int random_r(int*, struct random_data*);'
-	./protochk "extern $try" $hdrs && random_r_proto=I_TS ;;
+	./protochk "extern $try" $hdrs && random_r_proto=I_iS ;;
+	esac
+	case "$random_r_proto" in
+	''|0) try='int random_r(long*, struct random_data*);'
+	./protochk "extern $try" $hdrs && random_r_proto=I_lS ;;
+	esac
+	case "$random_r_proto" in
+	''|0) try='int random_r(struct random_data*, int32_t*);'
+	./protochk "extern $try" $hdrs && random_r_proto=I_St ;;
 	esac
 	case "$random_r_proto" in
 	''|0)	d_random_r=undef

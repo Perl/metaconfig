@@ -1,5 +1,5 @@
 ?RCS: $Id: d_getnetbyaddr_r.U,v 0RCS:
-?RCS: Copyright (c) 2002 Jarkko Hietaniemi
+?RCS: Copyright (c) 2002,2003 Jarkko Hietaniemi
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
@@ -76,6 +76,10 @@ case "$d_getnetbyaddr_r" in
 	case "$getnetbyaddr_r_proto" in
 	''|0) try='int getnetbyaddr_r(int, int, struct netent*, struct netent_data*);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=I_IISD ;;
+	esac
+	case "$getnetbyaddr_r_proto" in
+	''|0) try='int getnetbyaddr_r(uint32_t, int, struct netent*, char*, size_t, struct netent**, int*);'
+	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=I_uISBWRE ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
 	''|0)	d_getnetbyaddr_r=undef

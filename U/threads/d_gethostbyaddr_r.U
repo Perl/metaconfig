@@ -1,5 +1,5 @@
 ?RCS: $Id: d_gethostbyaddr_r.U,v 0RCS:
-?RCS: Copyright (c) 2002 Jarkko Hietaniemi
+?RCS: Copyright (c) 2002,2003 Jarkko Hietaniemi
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
@@ -88,6 +88,10 @@ case "$d_gethostbyaddr_r" in
 	case "$gethostbyaddr_r_proto" in
 	''|0) try='int gethostbyaddr_r(const char*, int, int);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CII ;;
+	esac
+	case "$gethostbyaddr_r_proto" in
+	''|0) try='int gethostbyaddr_r(const void*, socklen_t, int, struct hostent*, char*, size_t, struct hostent**, int*);'
+	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_TsISBWRE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
 	''|0)	d_gethostbyaddr_r=undef
