@@ -1,37 +1,37 @@
 ?RCS: $Id$
 ?RCS:
-?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?X:	This unit generates a $hasfield string that is used internally 
+?X:	This unit generates a $hasstruct string that is used internally 
 ?X:	by Configure to check if this system has a field for a 
 ?X:	particular struct (of if this system has a particular struct!)
 ?X:
 ?X:	To use it, say something like:
-?X:		set d_statblocks stat st_blocks i_sysstat sys/stat.h
-?X:		eval $hasfield
+?X:		set d_statblocks stat i_sysstat sys/stat.h
+?X:		eval $hasstruct
 ?X:	Or, for more complicated sets of headers, do something like
 ?X:	hdrs="$define sys/foo.h
 ?X:		$i_sysbar sys/bar.h 
 ?X:		$i_syszot sys/zot.h
 ?X:		$i_zappa zappa.h"
-?X:	set d_statblocks stat st_blocks $hdrs
-?X:	eval $hasfield
+?X:	set d_statblocks stat $hdrs
+?X:	eval $hasstruct
 ?X:
-?MAKE:Hasfield: Setvar rm test Compile
+?MAKE:Hasstruct: Setvar rm test Compile
 ?MAKE:	-pick add $@ %<
-?T:varname struct field
-?V:hasfield
-hasfield='varname=$1; struct=$2; field=$3; shift; shift; shift;
+?T:varname struct
+?V:hasstruct
+hasstruct='varname=$1; struct=$2; shift; shift;
 while $test $# -ge 2; do
 	case "$1" in
 	$define) echo "#include <$2>";;
 	esac ;
     shift 2;
 done > try.c;
-echo "int main () { struct $struct foo; char* bar; bar = (char*)foo.$field; }" >> try.c;
+echo "int main () { struct $struct foo; }" >> try.c;
 set try;
 if eval $compile; then
 	val="$define";

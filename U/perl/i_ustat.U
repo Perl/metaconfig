@@ -1,0 +1,24 @@
+?RCS: $Id: i_ustat.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_ustat: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_ustat:
+?S:	This variable conditionally defines the I_USTAT symbol, and indicates
+?S:	whether a C program should include <ustat.h>.
+?S:.
+?C:I_USTAT:
+?C:	This symbol, if defined, indicates that <ustat.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_ustat	I_USTAT		/**/
+?H:.
+?LINT:set i_ustat
+: see if this is a ustat.h system
+set ustat.h i_ustat
+eval $inhdr
+

@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_ustat: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_ustat:
+?S:	This variable conditionally defines HAS_USTAT if ustat() is
+?S:	available to query file system statistics by dev_t.
+?S:.
+?C:HAS_USTAT:
+?C:	This symbol, if defined, indicates that the ustat system call is
+?C:	available to query file system statistics by dev_t.
+?C:.
+?H:#$d_ustat HAS_USTAT		/**/
+?H:.
+?LINT:set d_ustat
+: see if ustat exists
+set ustat d_ustat
+eval $inlibc
+
