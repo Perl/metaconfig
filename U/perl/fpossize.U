@@ -12,10 +12,10 @@
 ?S:fpossize:
 ?S:	This variable contains the size of a fpostype in bytes.
 ?S:.
-?C:Fpos_t_SIZE:
+?C:Fpos_t_size:
 ?C:	This symbol holds the size of a Fpos_t in bytes.
 ?C:.
-?H:#define Fpos_t_SIZE $fpossize		/* FPOS size */
+?H:#define Fpos_t_size $fpossize		/* FPOS size */
 ?H:.
 ?F:!try
 ?T:yyy zzz

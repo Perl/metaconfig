@@ -39,7 +39,7 @@ else
 	val="$undef"
 	echo "You do not have socklen_t."
 	case "$sizetype" in
-	size_t) echo "(You do have size_t, that might work.)" ;;
+	size_t) echo "(You do have size_t, that might work. Some people are happy with just an int.)" ;;
 	esac
 fi
 $rm -f try try.*
