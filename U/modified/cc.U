@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:30  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:cc gccversion: cat contains sysman +large cpp rm \
+?MAKE:cc gccversion: cat contains sysman +large cpp ccflags rm \
 	Mcc Myread Guess Options Oldconfig Loc test
 ?MAKE:	-pick add $@ %<
 ?S:cc:
@@ -43,6 +43,7 @@
 ?D:cc='cc'
 ?D:gccversion=''
 ?LINT:change cpp
+?LINT:change ccflags
 : see if we need a special compiler
 echo " "
 if ./usg; then
@@ -118,7 +119,10 @@ if $cc -o gccvers gccvers.c; then
 	gccversion=`./gccvers`
 	case "$gccversion" in
 	'') echo "You are not using GNU cc." ;;
-	*)  echo "You are using GNU cc $gccversion." ;;
+	*)  echo "You are using GNU cc $gccversion."
+	    echo "Adding -D_GNU_SOURCE to ccflags."
+	    ccflags="$ccflags -D_GNU_SOURCE" # expose glibc interfaces
+	    ;;
 	esac
 else
 	echo " "
