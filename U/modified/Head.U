@@ -91,7 +91,7 @@
 # Generated on <DATE> [metaconfig <VERSION> PL<PATCHLEVEL>]
 # (with additional metaconfig patches by <MAINTLOC>)
 
-cat >/tmp/c1$$ <<EOF
+cat >c1$$ <<EOF
 ARGGGHHHH!!!!!
 
 SCO csh still thinks true is false.  Write to SCO today and tell them that next
@@ -102,18 +102,18 @@ we'd have to do is go in and swap the && and || tokens, wherever they are.)
 
 [End of diatribe. We now return you to your regularly scheduled programming...]
 EOF
-cat >/tmp/c2$$ <<EOF
+cat >c2$$ <<EOF
 
 OOPS!  You naughty creature!  You didn't run Configure with sh!
 I will attempt to remedy the situation by running sh for you...
 EOF
 
-true || cat /tmp/c1$$ /tmp/c2$$
+true || cat c1$$ c2$$
 true || exec sh $0 $argv:q
 
-(exit $?0) || cat /tmp/c2$$
+(exit $?0) || cat c2$$
 (exit $?0) || exec sh $0 $argv:q
-rm -f /tmp/c1$$ /tmp/c2$$
+rm -f c1$$ c2$$
 
 : compute my invocation name
 me=$0
