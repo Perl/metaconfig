@@ -36,23 +36,24 @@ case "$d_ctime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
 	case "$ctime_r_proto" in
-	'') try='char* ctime_r(const time_t*, char*);'
+	''|0) try='char* ctime_r(const time_t*, char*);'
 	./protochk "extern $try" $hdrs && ctime_r_proto=B_SB ;;
 	esac
 	case "$ctime_r_proto" in
-	'') try='char* ctime_r(const time_t*, char*, int);'
+	''|0) try='char* ctime_r(const time_t*, char*, int);'
 	./protochk "extern $try" $hdrs && ctime_r_proto=B_SBI ;;
 	esac
 	case "$ctime_r_proto" in
-	'') try='int ctime_r(const time_t*, char*);'
+	''|0) try='int ctime_r(const time_t*, char*);'
 	./protochk "extern $try" $hdrs && ctime_r_proto=I_SB ;;
 	esac
 	case "$ctime_r_proto" in
-	'') try='int ctime_r(const time_t*, char*, int);'
+	''|0) try='int ctime_r(const time_t*, char*, int);'
 	./protochk "extern $try" $hdrs && ctime_r_proto=I_SBI ;;
 	esac
 	case "$ctime_r_proto" in
 	'')	d_ctime_r=undef
+ 	        ctime_r_proto=0
 		echo "Disabling ctime_r, cannot determine prototype." ;;
 	* )	case "$ctime_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_ctime_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	ctime_r_proto=0
 	;;
 esac
 

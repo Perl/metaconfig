@@ -36,15 +36,16 @@ case "$d_gmtime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
 	case "$gmtime_r_proto" in
-	'') try='struct tm* gmtime_r(const time_t*, struct tm*);'
+	''|0) try='struct tm* gmtime_r(const time_t*, struct tm*);'
 	./protochk "extern $try" $hdrs && gmtime_r_proto=S_TS ;;
 	esac
 	case "$gmtime_r_proto" in
-	'') try='int gmtime_r(const time_t*, struct tm*);'
+	''|0) try='int gmtime_r(const time_t*, struct tm*);'
 	./protochk "extern $try" $hdrs && gmtime_r_proto=I_TS ;;
 	esac
 	case "$gmtime_r_proto" in
 	'')	d_gmtime_r=undef
+ 	        gmtime_r_proto=0
 		echo "Disabling gmtime_r, cannot determine prototype." ;;
 	* )	case "$gmtime_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -52,6 +53,8 @@ case "$d_gmtime_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	gmtime_r_proto=0
 	;;
 esac
 

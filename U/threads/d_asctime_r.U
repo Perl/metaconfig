@@ -36,23 +36,24 @@ case "$d_asctime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
 	case "$asctime_r_proto" in
-	'') try='char* asctime_r(const struct tm*, char*);'
+	''|0) try='char* asctime_r(const struct tm*, char*);'
 	./protochk "extern $try" $hdrs && asctime_r_proto=B_SB ;;
 	esac
 	case "$asctime_r_proto" in
-	'') try='char* asctime_r(const struct tm*, char*, int);'
+	''|0) try='char* asctime_r(const struct tm*, char*, int);'
 	./protochk "extern $try" $hdrs && asctime_r_proto=B_SBI ;;
 	esac
 	case "$asctime_r_proto" in
-	'') try='int asctime_r(const struct tm*, char*);'
+	''|0) try='int asctime_r(const struct tm*, char*);'
 	./protochk "extern $try" $hdrs && asctime_r_proto=I_SB ;;
 	esac
 	case "$asctime_r_proto" in
-	'') try='int asctime_r(const struct tm*, char*, int);'
+	''|0) try='int asctime_r(const struct tm*, char*, int);'
 	./protochk "extern $try" $hdrs && asctime_r_proto=I_SBI ;;
 	esac
 	case "$asctime_r_proto" in
 	'')	d_asctime_r=undef
+ 	        asctime_r_proto=0
 		echo "Disabling asctime_r, cannot determine prototype." ;;
 	* )	case "$asctime_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_asctime_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	asctime_r_proto=0
 	;;
 esac
 

@@ -36,11 +36,12 @@ case "$d_srandom_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_stdlib stdlib.h"
 	case "$srandom_r_proto" in
-	'') try='int srandom_r(unsigned int, struct random_data*);'
+	''|0) try='int srandom_r(unsigned int, struct random_data*);'
 	./protochk "extern $try" $hdrs && srandom_r_proto=I_TS ;;
 	esac
 	case "$srandom_r_proto" in
 	'')	d_srandom_r=undef
+ 	        srandom_r_proto=0
 		echo "Disabling srandom_r, cannot determine prototype." ;;
 	* )	case "$srandom_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -48,6 +49,8 @@ case "$d_srandom_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	srandom_r_proto=0
 	;;
 esac
 

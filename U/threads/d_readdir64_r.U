@@ -36,15 +36,16 @@ case "$d_readdir64_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_dirent dirent.h"
 	case "$readdir64_r_proto" in
-	'') try='int readdir64_r(DIR*, struct dirent64*, struct dirent64**);'
+	''|0) try='int readdir64_r(DIR*, struct dirent64*, struct dirent64**);'
 	./protochk "extern $try" $hdrs && readdir64_r_proto=I_TSR ;;
 	esac
 	case "$readdir64_r_proto" in
-	'') try='int readdir64_r(DIR*, struct dirent64*);'
+	''|0) try='int readdir64_r(DIR*, struct dirent64*);'
 	./protochk "extern $try" $hdrs && readdir64_r_proto=I_TS ;;
 	esac
 	case "$readdir64_r_proto" in
 	'')	d_readdir64_r=undef
+ 	        readdir64_r_proto=0
 		echo "Disabling readdir64_r, cannot determine prototype." ;;
 	* )	case "$readdir64_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -52,6 +53,8 @@ case "$d_readdir64_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	readdir64_r_proto=0
 	;;
 esac
 

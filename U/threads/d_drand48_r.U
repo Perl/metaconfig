@@ -36,11 +36,12 @@ case "$d_drand48_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_stdlib stdlib.h"
 	case "$drand48_r_proto" in
-	'') try='int drand48_r(struct drand48_data*, double*);'
+	''|0) try='int drand48_r(struct drand48_data*, double*);'
 	./protochk "extern $try" $hdrs && drand48_r_proto=I_ST ;;
 	esac
 	case "$drand48_r_proto" in
 	'')	d_drand48_r=undef
+ 	        drand48_r_proto=0
 		echo "Disabling drand48_r, cannot determine prototype." ;;
 	* )	case "$drand48_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -48,6 +49,8 @@ case "$d_drand48_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	drand48_r_proto=0
 	;;
 esac
 

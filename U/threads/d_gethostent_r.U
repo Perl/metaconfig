@@ -36,31 +36,32 @@ case "$d_gethostent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$gethostent_r_proto" in
-	'') try='int gethostent_r(struct hostent*, char*, size_t, struct hostent**, int*);'
+	''|0) try='int gethostent_r(struct hostent*, char*, size_t, struct hostent**, int*);'
 	./protochk "extern $try" $hdrs && gethostent_r_proto=I_SBWRE ;;
 	esac
 	case "$gethostent_r_proto" in
-	'') try='int gethostent_r(struct hostent*, char*, int, int*);'
+	''|0) try='int gethostent_r(struct hostent*, char*, int, int*);'
 	./protochk "extern $try" $hdrs && gethostent_r_proto=I_SBIE ;;
 	esac
 	case "$gethostent_r_proto" in
-	'') try='struct hostent* gethostent_r(struct hostent*, char*, int, int*);'
+	''|0) try='struct hostent* gethostent_r(struct hostent*, char*, int, int*);'
 	./protochk "extern $try" $hdrs && gethostent_r_proto=S_SBIE ;;
 	esac
 	case "$gethostent_r_proto" in
-	'') try='struct hostent* gethostent_r(struct hostent*, char*, int);'
+	''|0) try='struct hostent* gethostent_r(struct hostent*, char*, int);'
 	./protochk "extern $try" $hdrs && gethostent_r_proto=S_SBI ;;
 	esac
 	case "$gethostent_r_proto" in
-	'') try='int gethostent_r(struct hostent*, char*, int);'
+	''|0) try='int gethostent_r(struct hostent*, char*, int);'
 	./protochk "extern $try" $hdrs && gethostent_r_proto=I_SBI ;;
 	esac
 	case "$gethostent_r_proto" in
-	'') try='int gethostent_r(struct hostent*, struct hostent_data*);'
+	''|0) try='int gethostent_r(struct hostent*, struct hostent_data*);'
 	./protochk "extern $try" $hdrs && gethostent_r_proto=I_SD ;;
 	esac
 	case "$gethostent_r_proto" in
 	'')	d_gethostent_r=undef
+ 	        gethostent_r_proto=0
 		echo "Disabling gethostent_r, cannot determine prototype." ;;
 	* )	case "$gethostent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -68,6 +69,8 @@ case "$d_gethostent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	gethostent_r_proto=0
 	;;
 esac
 

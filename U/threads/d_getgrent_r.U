@@ -36,31 +36,32 @@ case "$d_getgrent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
 	case "$getgrent_r_proto" in
-	'') try='int getgrent_r(struct group*, char*, size_t, struct group**);'
+	''|0) try='int getgrent_r(struct group*, char*, size_t, struct group**);'
 	./protochk "extern $try" $hdrs && getgrent_r_proto=I_SBWR ;;
 	esac
 	case "$getgrent_r_proto" in
-	'') try='int getgrent_r(struct group*, char*, int, struct group**);'
+	''|0) try='int getgrent_r(struct group*, char*, int, struct group**);'
 	./protochk "extern $try" $hdrs && getgrent_r_proto=I_SBIR ;;
 	esac
 	case "$getgrent_r_proto" in
-	'') try='struct group* getgrent_r(struct group*, char*, size_t);'
+	''|0) try='struct group* getgrent_r(struct group*, char*, size_t);'
 	./protochk "extern $try" $hdrs && getgrent_r_proto=S_SBW ;;
 	esac
 	case "$getgrent_r_proto" in
-	'') try='struct group* getgrent_r(struct group*, char*, int);'
+	''|0) try='struct group* getgrent_r(struct group*, char*, int);'
 	./protochk "extern $try" $hdrs && getgrent_r_proto=S_SBI ;;
 	esac
 	case "$getgrent_r_proto" in
-	'') try='int getgrent_r(struct group*, char*, int);'
+	''|0) try='int getgrent_r(struct group*, char*, int);'
 	./protochk "extern $try" $hdrs && getgrent_r_proto=I_SBI ;;
 	esac
 	case "$getgrent_r_proto" in
-	'') try='int getgrent_r(struct group*, char*, int, FILE**);'
+	''|0) try='int getgrent_r(struct group*, char*, int, FILE**);'
 	./protochk "extern $try" $hdrs && getgrent_r_proto=I_SBIH ;;
 	esac
 	case "$getgrent_r_proto" in
 	'')	d_getgrent_r=undef
+ 	        getgrent_r_proto=0
 		echo "Disabling getgrent_r, cannot determine prototype." ;;
 	* )	case "$getgrent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -68,6 +69,8 @@ case "$d_getgrent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getgrent_r_proto=0
 	;;
 esac
 

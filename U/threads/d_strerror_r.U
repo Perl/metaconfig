@@ -36,19 +36,20 @@ case "$d_strerror_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_string string.h"
 	case "$strerror_r_proto" in
-	'') try='int strerror_r(int, char*, size_t);'
+	''|0) try='int strerror_r(int, char*, size_t);'
 	./protochk "extern $try" $hdrs && strerror_r_proto=I_IBW ;;
 	esac
 	case "$strerror_r_proto" in
-	'') try='int strerror_r(int, char*, int);'
+	''|0) try='int strerror_r(int, char*, int);'
 	./protochk "extern $try" $hdrs && strerror_r_proto=I_IBI ;;
 	esac
 	case "$strerror_r_proto" in
-	'') try='char* strerror_r(int, char*, size_t);'
+	''|0) try='char* strerror_r(int, char*, size_t);'
 	./protochk "extern $try" $hdrs && strerror_r_proto=B_IBW ;;
 	esac
 	case "$strerror_r_proto" in
 	'')	d_strerror_r=undef
+ 	        strerror_r_proto=0
 		echo "Disabling strerror_r, cannot determine prototype." ;;
 	* )	case "$strerror_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -56,6 +57,8 @@ case "$d_strerror_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	strerror_r_proto=0
 	;;
 esac
 

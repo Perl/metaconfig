@@ -36,15 +36,16 @@ case "$d_setnetent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$setnetent_r_proto" in
-	'') try='int setnetent_r(int, struct netent_data*);'
+	''|0) try='int setnetent_r(int, struct netent_data*);'
 	./protochk "extern $try" $hdrs && setnetent_r_proto=I_ID ;;
 	esac
 	case "$setnetent_r_proto" in
-	'') try='void setnetent_r(int, struct netent_data*);'
+	''|0) try='void setnetent_r(int, struct netent_data*);'
 	./protochk "extern $try" $hdrs && setnetent_r_proto=V_ID ;;
 	esac
 	case "$setnetent_r_proto" in
 	'')	d_setnetent_r=undef
+ 	        setnetent_r_proto=0
 		echo "Disabling setnetent_r, cannot determine prototype." ;;
 	* )	case "$setnetent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -52,6 +53,8 @@ case "$d_setnetent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	setnetent_r_proto=0
 	;;
 esac
 

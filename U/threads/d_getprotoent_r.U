@@ -36,23 +36,24 @@ case "$d_getprotoent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getprotoent_r_proto" in
-	'') try='int getprotoent_r(struct protoent*, char*, size_t, struct protoent**);'
+	''|0) try='int getprotoent_r(struct protoent*, char*, size_t, struct protoent**);'
 	./protochk "extern $try" $hdrs && getprotoent_r_proto=I_SBWR ;;
 	esac
 	case "$getprotoent_r_proto" in
-	'') try='int getprotoent_r(struct protoent*, char*, int);'
+	''|0) try='int getprotoent_r(struct protoent*, char*, int);'
 	./protochk "extern $try" $hdrs && getprotoent_r_proto=I_SBI ;;
 	esac
 	case "$getprotoent_r_proto" in
-	'') try='struct protoent* getprotoent_r(struct protoent*, char*, int);'
+	''|0) try='struct protoent* getprotoent_r(struct protoent*, char*, int);'
 	./protochk "extern $try" $hdrs && getprotoent_r_proto=S_SBI ;;
 	esac
 	case "$getprotoent_r_proto" in
-	'') try='int getprotoent_r(struct protoent*, struct protoent_data*);'
+	''|0) try='int getprotoent_r(struct protoent*, struct protoent_data*);'
 	./protochk "extern $try" $hdrs && getprotoent_r_proto=I_SD ;;
 	esac
 	case "$getprotoent_r_proto" in
 	'')	d_getprotoent_r=undef
+ 	        getprotoent_r_proto=0
 		echo "Disabling getprotoent_r, cannot determine prototype." ;;
 	* )	case "$getprotoent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_getprotoent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getprotoent_r_proto=0
 	;;
 esac
 

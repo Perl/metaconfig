@@ -36,15 +36,16 @@ case "$d_getspnam_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_shadow shadow.h"
 	case "$getspnam_r_proto" in
-	'') try='int getspnam_r(const char*, struct spwd*, char*, size_t, struct spwd**);'
+	''|0) try='int getspnam_r(const char*, struct spwd*, char*, size_t, struct spwd**);'
 	./protochk "extern $try" $hdrs && getspnam_r_proto=I_CSBWR ;;
 	esac
 	case "$getspnam_r_proto" in
-	'') try='struct spwd* getspnam_r(const char*, struct spwd*, char*, int);'
+	''|0) try='struct spwd* getspnam_r(const char*, struct spwd*, char*, int);'
 	./protochk "extern $try" $hdrs && getspnam_r_proto=S_CSBI ;;
 	esac
 	case "$getspnam_r_proto" in
 	'')	d_getspnam_r=undef
+ 	        getspnam_r_proto=0
 		echo "Disabling getspnam_r, cannot determine prototype." ;;
 	* )	case "$getspnam_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -52,6 +53,8 @@ case "$d_getspnam_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getspnam_r_proto=0
 	;;
 esac
 

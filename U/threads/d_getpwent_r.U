@@ -36,31 +36,32 @@ case "$d_getpwent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
 	case "$getpwent_r_proto" in
-	'') try='int getpwent_r(struct passwd*, char*, size_t, struct passwd**);'
+	''|0) try='int getpwent_r(struct passwd*, char*, size_t, struct passwd**);'
 	./protochk "extern $try" $hdrs && getpwent_r_proto=I_SBWR ;;
 	esac
 	case "$getpwent_r_proto" in
-	'') try='int getpwent_r(struct passwd*, char*, int, struct passwd**);'
+	''|0) try='int getpwent_r(struct passwd*, char*, int, struct passwd**);'
 	./protochk "extern $try" $hdrs && getpwent_r_proto=I_SBIR ;;
 	esac
 	case "$getpwent_r_proto" in
-	'') try='struct passwd* getpwent_r(struct passwd*, char*, size_t);'
+	''|0) try='struct passwd* getpwent_r(struct passwd*, char*, size_t);'
 	./protochk "extern $try" $hdrs && getpwent_r_proto=S_SBW ;;
 	esac
 	case "$getpwent_r_proto" in
-	'') try='struct passwd* getpwent_r(struct passwd*, char*, int);'
+	''|0) try='struct passwd* getpwent_r(struct passwd*, char*, int);'
 	./protochk "extern $try" $hdrs && getpwent_r_proto=S_SBI ;;
 	esac
 	case "$getpwent_r_proto" in
-	'') try='int getpwent_r(struct passwd*, char*, int);'
+	''|0) try='int getpwent_r(struct passwd*, char*, int);'
 	./protochk "extern $try" $hdrs && getpwent_r_proto=I_SBI ;;
 	esac
 	case "$getpwent_r_proto" in
-	'') try='int getpwent_r(struct passwd*, char*, int, FILE**);'
+	''|0) try='int getpwent_r(struct passwd*, char*, int, FILE**);'
 	./protochk "extern $try" $hdrs && getpwent_r_proto=I_SBIH ;;
 	esac
 	case "$getpwent_r_proto" in
 	'')	d_getpwent_r=undef
+ 	        getpwent_r_proto=0
 		echo "Disabling getpwent_r, cannot determine prototype." ;;
 	* )	case "$getpwent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -68,6 +69,8 @@ case "$d_getpwent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getpwent_r_proto=0
 	;;
 esac
 

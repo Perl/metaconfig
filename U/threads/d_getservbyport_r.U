@@ -36,19 +36,20 @@ case "$d_getservbyport_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getservbyport_r_proto" in
-	'') try='int getservbyport_r(int, const char*, struct servent*, char*, size_t, struct servent**);'
+	''|0) try='int getservbyport_r(int, const char*, struct servent*, char*, size_t, struct servent**);'
 	./protochk "extern $try" $hdrs && getservbyport_r_proto=I_ICSBWR ;;
 	esac
 	case "$getservbyport_r_proto" in
-	'') try='struct servent* getservbyport_r(int, const char*, struct servent*, char*, int);'
+	''|0) try='struct servent* getservbyport_r(int, const char*, struct servent*, char*, int);'
 	./protochk "extern $try" $hdrs && getservbyport_r_proto=S_ICSBI ;;
 	esac
 	case "$getservbyport_r_proto" in
-	'') try='int getservbyport_r(int, const char*, struct servent*, struct servent_data*);'
+	''|0) try='int getservbyport_r(int, const char*, struct servent*, struct servent_data*);'
 	./protochk "extern $try" $hdrs && getservbyport_r_proto=I_ICSD ;;
 	esac
 	case "$getservbyport_r_proto" in
 	'')	d_getservbyport_r=undef
+ 	        getservbyport_r_proto=0
 		echo "Disabling getservbyport_r, cannot determine prototype." ;;
 	* )	case "$getservbyport_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -56,6 +57,8 @@ case "$d_getservbyport_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getservbyport_r_proto=0
 	;;
 esac
 

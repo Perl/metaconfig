@@ -36,23 +36,24 @@ case "$d_getservent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getservent_r_proto" in
-	'') try='int getservent_r(struct servent*, char*, size_t, struct servent**);'
+	''|0) try='int getservent_r(struct servent*, char*, size_t, struct servent**);'
 	./protochk "extern $try" $hdrs && getservent_r_proto=I_SBWR ;;
 	esac
 	case "$getservent_r_proto" in
-	'') try='int getservent_r(struct servent*, char*, int);'
+	''|0) try='int getservent_r(struct servent*, char*, int);'
 	./protochk "extern $try" $hdrs && getservent_r_proto=I_SBI ;;
 	esac
 	case "$getservent_r_proto" in
-	'') try='struct servent* getservent_r(struct servent*, char*, int);'
+	''|0) try='struct servent* getservent_r(struct servent*, char*, int);'
 	./protochk "extern $try" $hdrs && getservent_r_proto=S_SBI ;;
 	esac
 	case "$getservent_r_proto" in
-	'') try='int getservent_r(struct servent*, struct servent_data*);'
+	''|0) try='int getservent_r(struct servent*, struct servent_data*);'
 	./protochk "extern $try" $hdrs && getservent_r_proto=I_SD ;;
 	esac
 	case "$getservent_r_proto" in
 	'')	d_getservent_r=undef
+ 	        getservent_r_proto=0
 		echo "Disabling getservent_r, cannot determine prototype." ;;
 	* )	case "$getservent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_getservent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getservent_r_proto=0
 	;;
 esac
 

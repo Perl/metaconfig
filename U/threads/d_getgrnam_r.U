@@ -36,27 +36,28 @@ case "$d_getgrnam_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
 	case "$getgrnam_r_proto" in
-	'') try='int getgrnam_r(const char*, struct group*, char*, size_t, struct group**);'
+	''|0) try='int getgrnam_r(const char*, struct group*, char*, size_t, struct group**);'
 	./protochk "extern $try" $hdrs && getgrnam_r_proto=I_CSBWR ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'') try='int getgrnam_r(const char*, struct group*, char*, int, struct group**);'
+	''|0) try='int getgrnam_r(const char*, struct group*, char*, int, struct group**);'
 	./protochk "extern $try" $hdrs && getgrnam_r_proto=I_CSBIR ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'') try='struct group* getgrnam_r(const char*, char*, int);'
+	''|0) try='struct group* getgrnam_r(const char*, char*, int);'
 	./protochk "extern $try" $hdrs && getgrnam_r_proto=S_CBI ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'') try='int getgrnam_r(const char*, struct group*, char*, int);'
+	''|0) try='int getgrnam_r(const char*, struct group*, char*, int);'
 	./protochk "extern $try" $hdrs && getgrnam_r_proto=I_CSBI ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'') try='struct group* getgrnam_r(const char*, struct group*, char*, int);'
+	''|0) try='struct group* getgrnam_r(const char*, struct group*, char*, int);'
 	./protochk "extern $try" $hdrs && getgrnam_r_proto=S_CSBI ;;
 	esac
 	case "$getgrnam_r_proto" in
 	'')	d_getgrnam_r=undef
+ 	        getgrnam_r_proto=0
 		echo "Disabling getgrnam_r, cannot determine prototype." ;;
 	* )	case "$getgrnam_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -64,6 +65,8 @@ case "$d_getgrnam_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getgrnam_r_proto=0
 	;;
 esac
 

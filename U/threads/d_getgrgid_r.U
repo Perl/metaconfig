@@ -36,23 +36,24 @@ case "$d_getgrgid_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
 	case "$getgrgid_r_proto" in
-	'') try='int getgrgid_r(gid_t, struct group*, char*, size_t, struct group**);'
+	''|0) try='int getgrgid_r(gid_t, struct group*, char*, size_t, struct group**);'
 	./protochk "extern $try" $hdrs && getgrgid_r_proto=I_TSBWR ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'') try='int getgrgid_r(gid_t, struct group*, char*, int, struct group**);'
+	''|0) try='int getgrgid_r(gid_t, struct group*, char*, int, struct group**);'
 	./protochk "extern $try" $hdrs && getgrgid_r_proto=I_TSBIR ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'') try='int getgrgid_r(gid_t, struct group*, char*, int);'
+	''|0) try='int getgrgid_r(gid_t, struct group*, char*, int);'
 	./protochk "extern $try" $hdrs && getgrgid_r_proto=I_TSBI ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'') try='struct group* getgrgid_r(gid_t, struct group*, char*, int);'
+	''|0) try='struct group* getgrgid_r(gid_t, struct group*, char*, int);'
 	./protochk "extern $try" $hdrs && getgrgid_r_proto=S_TSBI ;;
 	esac
 	case "$getgrgid_r_proto" in
 	'')	d_getgrgid_r=undef
+ 	        getgrgid_r_proto=0
 		echo "Disabling getgrgid_r, cannot determine prototype." ;;
 	* )	case "$getgrgid_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_getgrgid_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getgrgid_r_proto=0
 	;;
 esac
 

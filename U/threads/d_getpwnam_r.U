@@ -36,23 +36,24 @@ case "$d_getpwnam_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
 	case "$getpwnam_r_proto" in
-	'') try='int getpwnam_r(const char*, struct passwd*, char*, size_t, struct passwd**);'
+	''|0) try='int getpwnam_r(const char*, struct passwd*, char*, size_t, struct passwd**);'
 	./protochk "extern $try" $hdrs && getpwnam_r_proto=I_CSBWR ;;
 	esac
 	case "$getpwnam_r_proto" in
-	'') try='int getpwnam_r(const char*, struct passwd*, char*, int, struct passwd**);'
+	''|0) try='int getpwnam_r(const char*, struct passwd*, char*, int, struct passwd**);'
 	./protochk "extern $try" $hdrs && getpwnam_r_proto=I_CSBIR ;;
 	esac
 	case "$getpwnam_r_proto" in
-	'') try='struct passwd* getpwnam_r(const char*, struct passwd*, char*, int);'
+	''|0) try='struct passwd* getpwnam_r(const char*, struct passwd*, char*, int);'
 	./protochk "extern $try" $hdrs && getpwnam_r_proto=S_CSBI ;;
 	esac
 	case "$getpwnam_r_proto" in
-	'') try='int getpwnam_r(const char*, struct passwd*, char*, int);'
+	''|0) try='int getpwnam_r(const char*, struct passwd*, char*, int);'
 	./protochk "extern $try" $hdrs && getpwnam_r_proto=I_CSBI ;;
 	esac
 	case "$getpwnam_r_proto" in
 	'')	d_getpwnam_r=undef
+ 	        getpwnam_r_proto=0
 		echo "Disabling getpwnam_r, cannot determine prototype." ;;
 	* )	case "$getpwnam_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_getpwnam_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getpwnam_r_proto=0
 	;;
 esac
 

@@ -36,15 +36,16 @@ case "$d_setpwent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
 	case "$setpwent_r_proto" in
-	'') try='int setpwent_r(FILE**);'
+	''|0) try='int setpwent_r(FILE**);'
 	./protochk "extern $try" $hdrs && setpwent_r_proto=I_H ;;
 	esac
 	case "$setpwent_r_proto" in
-	'') try='void setpwent_r(FILE**);'
+	''|0) try='void setpwent_r(FILE**);'
 	./protochk "extern $try" $hdrs && setpwent_r_proto=V_H ;;
 	esac
 	case "$setpwent_r_proto" in
 	'')	d_setpwent_r=undef
+ 	        setpwent_r_proto=0
 		echo "Disabling setpwent_r, cannot determine prototype." ;;
 	* )	case "$setpwent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -52,6 +53,8 @@ case "$d_setpwent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	setpwent_r_proto=0
 	;;
 esac
 

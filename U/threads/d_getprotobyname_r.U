@@ -36,19 +36,20 @@ case "$d_getprotobyname_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getprotobyname_r_proto" in
-	'') try='int getprotobyname_r(const char*, struct protoent*, char*, size_t, struct protoent**);'
+	''|0) try='int getprotobyname_r(const char*, struct protoent*, char*, size_t, struct protoent**);'
 	./protochk "extern $try" $hdrs && getprotobyname_r_proto=I_CSBWR ;;
 	esac
 	case "$getprotobyname_r_proto" in
-	'') try='struct protoent* getprotobyname_r(const char*, struct protoent*, char*, int);'
+	''|0) try='struct protoent* getprotobyname_r(const char*, struct protoent*, char*, int);'
 	./protochk "extern $try" $hdrs && getprotobyname_r_proto=S_CSBI ;;
 	esac
 	case "$getprotobyname_r_proto" in
-	'') try='int getprotobyname_r(const char*, struct protoent*, struct protoent_data*);'
+	''|0) try='int getprotobyname_r(const char*, struct protoent*, struct protoent_data*);'
 	./protochk "extern $try" $hdrs && getprotobyname_r_proto=I_CSD ;;
 	esac
 	case "$getprotobyname_r_proto" in
 	'')	d_getprotobyname_r=undef
+ 	        getprotobyname_r_proto=0
 		echo "Disabling getprotobyname_r, cannot determine prototype." ;;
 	* )	case "$getprotobyname_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -56,6 +57,8 @@ case "$d_getprotobyname_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getprotobyname_r_proto=0
 	;;
 esac
 

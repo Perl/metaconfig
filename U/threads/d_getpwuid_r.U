@@ -36,23 +36,24 @@ case "$d_getpwuid_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
 	case "$getpwuid_r_proto" in
-	'') try='int getpwuid_r(uid_t, struct passwd*, char*, size_t, struct passwd**);'
+	''|0) try='int getpwuid_r(uid_t, struct passwd*, char*, size_t, struct passwd**);'
 	./protochk "extern $try" $hdrs && getpwuid_r_proto=I_TSBWR ;;
 	esac
 	case "$getpwuid_r_proto" in
-	'') try='int getpwuid_r(uid_t, struct passwd*, char*, int, struct passwd**);'
+	''|0) try='int getpwuid_r(uid_t, struct passwd*, char*, int, struct passwd**);'
 	./protochk "extern $try" $hdrs && getpwuid_r_proto=I_TSBIR ;;
 	esac
 	case "$getpwuid_r_proto" in
-	'') try='int getpwuid_r(uid_t, struct passwd*, char*, int);'
+	''|0) try='int getpwuid_r(uid_t, struct passwd*, char*, int);'
 	./protochk "extern $try" $hdrs && getpwuid_r_proto=I_TSBI ;;
 	esac
 	case "$getpwuid_r_proto" in
-	'') try='struct passwd* getpwuid_r(uid_t, struct passwd*, char*, int);'
+	''|0) try='struct passwd* getpwuid_r(uid_t, struct passwd*, char*, int);'
 	./protochk "extern $try" $hdrs && getpwuid_r_proto=S_TSBI ;;
 	esac
 	case "$getpwuid_r_proto" in
 	'')	d_getpwuid_r=undef
+ 	        getpwuid_r_proto=0
 		echo "Disabling getpwuid_r, cannot determine prototype." ;;
 	* )	case "$getpwuid_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_getpwuid_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getpwuid_r_proto=0
 	;;
 esac
 

@@ -36,11 +36,12 @@ case "$d_crypt_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_crypt crypt.h"
 	case "$crypt_r_proto" in
-	'') try='char* crypt_r(const char*, const char*, struct crypt_data*);'
+	''|0) try='char* crypt_r(const char*, const char*, struct crypt_data*);'
 	./protochk "extern $try" $hdrs && crypt_r_proto=B_CCS ;;
 	esac
 	case "$crypt_r_proto" in
 	'')	d_crypt_r=undef
+ 	        crypt_r_proto=0
 		echo "Disabling crypt_r, cannot determine prototype." ;;
 	* )	case "$crypt_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -48,6 +49,8 @@ case "$d_crypt_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	crypt_r_proto=0
 	;;
 esac
 

@@ -36,47 +36,48 @@ case "$d_gethostbyaddr_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$gethostbyaddr_r_proto" in
-	'') try='int gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, size_t, struct hostent**, int*);'
+	''|0) try='int gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, size_t, struct hostent**, int*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CWISBWRE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='struct hostent* gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, size_t, int, int*);'
+	''|0) try='struct hostent* gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, size_t, int, int*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_CWISBWIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='struct hostent* gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, int, int*);'
+	''|0) try='struct hostent* gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, int, int*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_CWISBIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='struct hostent* gethostbyaddr_r(const void*, size_t, int, struct hostent*, char*, int, int*);'
+	''|0) try='struct hostent* gethostbyaddr_r(const void*, size_t, int, struct hostent*, char*, int, int*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_TWISBIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='struct hostent* gethostbyaddr_r(const char*, int, int, struct hostent*, char*, int, int*);'
+	''|0) try='struct hostent* gethostbyaddr_r(const char*, int, int, struct hostent*, char*, int, int*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_CIISBIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='struct hostent* gethostbyaddr_r(const char*, struct hostent*, char*, int, int*);'
+	''|0) try='struct hostent* gethostbyaddr_r(const char*, struct hostent*, char*, int, int*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_CSBIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='struct hostent* gethostbyaddr_r(const void*, struct hostent*, char*, int, int*);'
+	''|0) try='struct hostent* gethostbyaddr_r(const void*, struct hostent*, char*, int, int*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_TSBIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='int gethostbyaddr_r(const char*, size_t, int, struct hostent*, struct hostent_data*);'
+	''|0) try='int gethostbyaddr_r(const char*, size_t, int, struct hostent*, struct hostent_data*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CWISD ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='int gethostbyaddr_r(const char*, int, int, struct hostent*, struct hostent_data*);'
+	''|0) try='int gethostbyaddr_r(const char*, int, int, struct hostent*, struct hostent_data*);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CIISD ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') try='int gethostbyaddr_r(const char*, int, int);'
+	''|0) try='int gethostbyaddr_r(const char*, int, int);'
 	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CII ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
 	'')	d_gethostbyaddr_r=undef
+ 	        gethostbyaddr_r_proto=0
 		echo "Disabling gethostbyaddr_r, cannot determine prototype." ;;
 	* )	case "$gethostbyaddr_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -84,6 +85,8 @@ case "$d_gethostbyaddr_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	gethostbyaddr_r_proto=0
 	;;
 esac
 

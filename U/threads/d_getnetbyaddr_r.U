@@ -36,35 +36,36 @@ case "$d_getnetbyaddr_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getnetbyaddr_r_proto" in
-	'') try='int getnetbyaddr_r(unsigned long, int, struct netent*, char*, size_t, struct netent**, int*);'
+	''|0) try='int getnetbyaddr_r(unsigned long, int, struct netent*, char*, size_t, struct netent**, int*);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=I_UISBWRE ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
-	'') try='int getnetbyaddr_r(long, int, struct netent*, char*, int);'
+	''|0) try='int getnetbyaddr_r(long, int, struct netent*, char*, int);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=I_LISBI ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
-	'') try='struct netent* getnetbyaddr_r(in_addr_t, int, struct netent*, char*, int);'
+	''|0) try='struct netent* getnetbyaddr_r(in_addr_t, int, struct netent*, char*, int);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=S_TISBI ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
-	'') try='struct netent* getnetbyaddr_r(long, int, struct netent*, char*, int);'
+	''|0) try='struct netent* getnetbyaddr_r(long, int, struct netent*, char*, int);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=S_LISBI ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
-	'') try='int getnetbyaddr_r(in_addr_t, int, struct netent*, struct netent_data*);'
+	''|0) try='int getnetbyaddr_r(in_addr_t, int, struct netent*, struct netent_data*);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=I_TISD ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
-	'') try='int getnetbyaddr_r(long, int, struct netent*, struct netent_data*);'
+	''|0) try='int getnetbyaddr_r(long, int, struct netent*, struct netent_data*);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=I_LISD ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
-	'') try='int getnetbyaddr_r(int, int, struct netent*, struct netent_data*);'
+	''|0) try='int getnetbyaddr_r(int, int, struct netent*, struct netent_data*);'
 	./protochk "extern $try" $hdrs && getnetbyaddr_r_proto=I_IISD ;;
 	esac
 	case "$getnetbyaddr_r_proto" in
 	'')	d_getnetbyaddr_r=undef
+ 	        getnetbyaddr_r_proto=0
 		echo "Disabling getnetbyaddr_r, cannot determine prototype." ;;
 	* )	case "$getnetbyaddr_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -72,6 +73,8 @@ case "$d_getnetbyaddr_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getnetbyaddr_r_proto=0
 	;;
 esac
 

@@ -36,23 +36,24 @@ case "$d_getnetbyname_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getnetbyname_r_proto" in
-	'') try='int getnetbyname_r(const char*, struct netent*, char*, size_t, struct netent**, int*);'
+	''|0) try='int getnetbyname_r(const char*, struct netent*, char*, size_t, struct netent**, int*);'
 	./protochk "extern $try" $hdrs && getnetbyname_r_proto=I_CSBWRE ;;
 	esac
 	case "$getnetbyname_r_proto" in
-	'') try='int getnetbyname_r(const char*, struct netent*, char*, int);'
+	''|0) try='int getnetbyname_r(const char*, struct netent*, char*, int);'
 	./protochk "extern $try" $hdrs && getnetbyname_r_proto=I_CSBI ;;
 	esac
 	case "$getnetbyname_r_proto" in
-	'') try='struct netent* getnetbyname_r(const char*, struct netent*, char*, int);'
+	''|0) try='struct netent* getnetbyname_r(const char*, struct netent*, char*, int);'
 	./protochk "extern $try" $hdrs && getnetbyname_r_proto=S_CSBI ;;
 	esac
 	case "$getnetbyname_r_proto" in
-	'') try='int getnetbyname_r(const char*, struct netent*, struct netent_data*);'
+	''|0) try='int getnetbyname_r(const char*, struct netent*, struct netent_data*);'
 	./protochk "extern $try" $hdrs && getnetbyname_r_proto=I_CSD ;;
 	esac
 	case "$getnetbyname_r_proto" in
 	'')	d_getnetbyname_r=undef
+ 	        getnetbyname_r_proto=0
 		echo "Disabling getnetbyname_r, cannot determine prototype." ;;
 	* )	case "$getnetbyname_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -60,6 +61,8 @@ case "$d_getnetbyname_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	getnetbyname_r_proto=0
 	;;
 esac
 

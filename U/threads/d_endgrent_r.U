@@ -36,15 +36,16 @@ case "$d_endgrent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
 	case "$endgrent_r_proto" in
-	'') try='int endgrent_r(FILE**);'
+	''|0) try='int endgrent_r(FILE**);'
 	./protochk "extern $try" $hdrs && endgrent_r_proto=I_H ;;
 	esac
 	case "$endgrent_r_proto" in
-	'') try='void endgrent_r(FILE**);'
+	''|0) try='void endgrent_r(FILE**);'
 	./protochk "extern $try" $hdrs && endgrent_r_proto=V_H ;;
 	esac
 	case "$endgrent_r_proto" in
 	'')	d_endgrent_r=undef
+ 	        endgrent_r_proto=0
 		echo "Disabling endgrent_r, cannot determine prototype." ;;
 	* )	case "$endgrent_r_proto" in
 		REENTRANT_PROTO*) ;;
@@ -52,6 +53,8 @@ case "$d_endgrent_r" in
 		esac
 		echo "Prototype: $try" ;;
 	esac
+	;;
+*)	endgrent_r_proto=0
 	;;
 esac
 
