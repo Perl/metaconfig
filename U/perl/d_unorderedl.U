@@ -5,21 +5,21 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_unordered: Inlibc
+?MAKE:d_unorderedl: Inlibc
 ?MAKE:	-pick add $@ %<
-?S:d_unordered:
-?S:	This variable conditionally defines the HAS_UNORDERED symbol, which
-?S:	indicates to the C program that the unordered() routine is available.
+?S:d_unorderedl:
+?S:	This variable conditionally defines the HAS_UNORDEREDL symbol, which
+?S:	indicates to the C program that the unorderedl() routine is available.
 ?S:.
-?C:HAS_UNORDERED:
-?C:	This symbol, if defined, indicates that the unordered routine is
-?C:	available to check whether two long doubles are unordered
+?C:HAS_UNORDEREDL:
+?C:	This symbol, if defined, indicates that the unorderedl routine is
+?C:	available to check whether two long doubles are unorderedl
 ?C:	(effectively: whether either of them is NaN)
 ?C:.
-?H:#$d_unordered HAS_UNORDERED		/**/
+?H:#$d_unorderedl HAS_UNORDEREDL		/**/
 ?H:.
-?LINT:set d_unordered
-: see if unordered exists
-set unordered d_unordered
+?LINT:set d_unorderedl
+: see if unorderedl exists
+set unorderedl d_unorderedl
 eval $inlibc
 
