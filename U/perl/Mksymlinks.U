@@ -49,8 +49,8 @@ $define|true|[yY]*)
 				fi
 			done
 			# Sanity check 2.
-			if test ! -f t/base/commonsense.t; then
-				echo "Failed to create the symlinks.  Aborting." >&4
+			if test ! -f t/base/lex.t; then
+				echo "Failed to create the symlinks (t/base/lex.t missing).  Aborting." >&4
 				exit 1
 			fi
 			cd UU
