@@ -64,18 +64,17 @@
 ?T: xxx dlist
 ?INIT:: change the next line if compiling for Xenix/286 on Xenix/386
 ?INIT:xlibpth='/usr/lib/386 /lib/386'
-?INIT:
 ?INIT:: Possible local library directories to search.
 ?INIT:loclibpth="/usr/local/lib /opt/local/lib /usr/gnu/lib"
 ?INIT:loclibpth="$loclibpth /opt/gnu/lib /usr/GNU/lib /opt/GNU/lib"
 ?INIT:
 ?INIT:: general looking path for locating libraries
-?X:	/shlib is for Digital Unix 4.0
-?X:	/usr/shlib is for OSF/1 systems.
 ?X:	I don't know why the large & small libraries are in this order.
-?INIT:glibpth="/usr/lib/large /lib/pa1.1 /lib /usr/lib $xlibpth"
+?INIT:glibpth="/usr/lib/large /lib /usr/lib $xlibpth"
 ?INIT:glibpth="$glibpth /lib/large /usr/lib/small /lib/small"
 ?INIT:glibpth="$glibpth /usr/ccs/lib /usr/ucblib /usr/local/lib"
+?X:	/shlib is for Digital Unix 4.0
+?X:	/usr/shlib is for OSF/1 systems.
 ?INIT:test -f /usr/shlib/libc.so && glibpth="/usr/shlib $glibpth"
 ?INIT:test -f /shlib/libc.so     && glibpth="/shlib $glibpth"
 ?INIT:
@@ -85,6 +84,7 @@
 ?INIT:plibpth=''
 ?INIT:
 ?LINT:describe xlibpth glibpth
+?LINT:use use64bits
 : Set private lib path
 case "$plibpth" in
 '') if ./mips; then

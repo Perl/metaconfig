@@ -57,7 +57,7 @@
 ?S:	libraries (libfoo.so.x.y) are to be ignored (because they
 ?S:	cannot be linked against).
 ?S:.
-?T:xxx yyy thislib libswanted libstyle libname
+?T:xxx yyy thislib thisdir libswanted libstyle
 ?D:libs=''
 ?X:
 ?X: This order is chosen so that libraries  -lndir, -ldir, -lucb, -lbsd,
@@ -85,6 +85,7 @@
 ?INIT:libswanted=''
 ?INIT:: some systems want to use only the non-versioned libso:s
 ?INIT:ignore_versioned_solibs=''
+?LINT:use libscheck
 : Looking for optional libraries
 echo " "
 echo "Checking for optional libraries..." >&4

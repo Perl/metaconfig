@@ -115,7 +115,7 @@ int main() {
 	exit(0);
 }
 EOM
-if $cc -o gccvers gccvers.c; then
+if $cc $ldflags -o gccvers gccvers.c; then
 	gccversion=`./gccvers`
 	case "$gccversion" in
 	'') echo "You are not using GNU cc." ;;
