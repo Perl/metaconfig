@@ -61,13 +61,22 @@
 ?LINT:change ccflags
 ?LINT:use uselargefiles
 ?LINT:use usemorebits
+?LINT:extern use64bits
+?LINT:use use64bits
 ?LINT:extern uselonglong
 ?LINT:use uselonglong
+?LINT:extern uselonglongs
+?LINT:use uselonglongs
+?LINT:extern use64bitints
+?LINT:use use64bitints
+?LINT:extern use64bitsint
+?LINT:use use64bitints
+?LINT:extern use64bitsall
+?LINT:use use64bitsall
 ?LINT:set use64bitall
 ?F:!use64bitint.cbu
 ?F:!use64bitall.cbu
 
-# Backward compatibility (uselonglong is deprecated).
 case "$uselonglong" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -77,7 +86,6 @@ EOM
 	use64bitint="$define"
 	;;
 esac                          
-# Backward compatibility (use64bits is deprecated).
 case "$use64bits" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -87,12 +95,29 @@ EOM
 	use64bitint="$define"
 	;;
 esac                          
-# Thinko compatibilities.
 case "$use64bitints" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
 
 *** There is no Configure -Duse64bitints, using -Duse64bitint instead.
+EOM
+	use64bitint="$define"
+	;;
+esac                          
+case "$use64bitsint" in
+"$define"|true|[yY]*)
+	cat <<EOM >&4
+
+*** There is no Configure -Duse64bitsint, using -Duse64bitint instead.
+EOM
+	use64bitint="$define"
+	;;
+esac                          
+case "$uselonglongs" in
+"$define"|true|[yY]*)
+	cat <<EOM >&4
+
+*** There is no Configure -Duselonglongs, using -Duse64bitint instead.
 EOM
 	use64bitint="$define"
 	;;

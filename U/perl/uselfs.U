@@ -29,6 +29,8 @@
 ?LINT:change use64bits
 ?LINT:change lseeksize
 ?LINT:change fpossize
+?LINT:extern uselfs
+?LINT:use uselfs
 
 # Backward compatibility (uselfs is deprecated).
 case "$uselfs" in
