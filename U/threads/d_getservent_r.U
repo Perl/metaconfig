@@ -1,4 +1,4 @@
-?MAKE:d_getservent_r getservent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getservent_r getservent_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_getservent_r:
 ?S:	This variable conditionally defines the HAS_GETSERVENT_R symbol,
@@ -26,25 +26,31 @@ set getservent_r d_getservent_r
 eval $inlibc
 case "$d_getservent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getservent_r_proto" in
-	'')	try='extern int getservent_r(struct servent*, char*, size_t, struct servent**);'
-		./protochk "$try" $hdrs && getservent_r_proto=I_SBWR;
-	;;
+	'') try='int getservent_r(struct servent*, char*, size_t, struct servent**);'
+	./protochk "extern $try" $hdrs && getservent_r_proto=I_SBWR ;;
 	esac
 	case "$getservent_r_proto" in
-	'')	try='extern int getservent_r(struct servent*, char*, int);'
-		./protochk "$try" $hdrs && getservent_r_proto=I_SBI;
-	;;
+	'') try='int getservent_r(struct servent*, char*, int);'
+	./protochk "extern $try" $hdrs && getservent_r_proto=I_SBI ;;
 	esac
 	case "$getservent_r_proto" in
-	'')	try='extern int getservent_r(struct servent*, struct servent_data*);'
-		./protochk "$try" $hdrs && getservent_r_proto=I_SD;
-	;;
+	'') try='struct servent* getservent_r(struct servent*, char*, int);'
+	./protochk "extern $try" $hdrs && getservent_r_proto=S_SBI ;;
 	esac
 	case "$getservent_r_proto" in
-	'') d_getservent_r=undef ; echo "Disabling getservent_r, cannot find prototype." ;;
-	* ) getservent_r_proto="REENTRANT_PROTO_$getservent_r_proto" ; echo "$try" ;;
+	'') try='int getservent_r(struct servent*, struct servent_data*);'
+	./protochk "extern $try" $hdrs && getservent_r_proto=I_SD ;;
+	esac
+	case "$getservent_r_proto" in
+	'')	d_getservent_r=undef
+		echo "Disabling getservent_r, cannot determine prototype." ;;
+	* )	case "$getservent_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getservent_r_proto="REENTRANT_PROTO_$getservent_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

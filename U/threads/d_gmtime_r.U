@@ -1,4 +1,4 @@
-?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:	-pick add $@ %<
 ?S:d_gmtime_r:
 ?S:	This variable conditionally defines the HAS_GMTIME_R symbol,
@@ -26,20 +26,23 @@ set gmtime_r d_gmtime_r
 eval $inlibc
 case "$d_gmtime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
 	case "$gmtime_r_proto" in
-	'')	try='extern struct tm* gmtime_r(const time_t*, struct tm*);'
-		./protochk "$try" $hdrs && gmtime_r_proto=S_TS;
-	;;
+	'') try='struct tm* gmtime_r(const time_t*, struct tm*);'
+	./protochk "extern $try" $hdrs && gmtime_r_proto=S_TS ;;
 	esac
 	case "$gmtime_r_proto" in
-	'')	try='extern int gmtime_r(const time_t*, struct tm*);'
-		./protochk "$try" $hdrs && gmtime_r_proto=I_TS;
-	;;
+	'') try='int gmtime_r(const time_t*, struct tm*);'
+	./protochk "extern $try" $hdrs && gmtime_r_proto=I_TS ;;
 	esac
 	case "$gmtime_r_proto" in
-	'') d_gmtime_r=undef ; echo "Disabling gmtime_r, cannot find prototype." ;;
-	* ) gmtime_r_proto="REENTRANT_PROTO_$gmtime_r_proto" ; echo "$try" ;;
+	'')	d_gmtime_r=undef
+		echo "Disabling gmtime_r, cannot determine prototype." ;;
+	* )	case "$gmtime_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) gmtime_r_proto="REENTRANT_PROTO_$gmtime_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

@@ -1,4 +1,4 @@
-?MAKE:d_getnetbyname_r getnetbyname_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getnetbyname_r getnetbyname_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_getnetbyname_r:
 ?S:	This variable conditionally defines the HAS_GETNETBYNAME_R symbol,
@@ -26,25 +26,31 @@ set getnetbyname_r d_getnetbyname_r
 eval $inlibc
 case "$d_getnetbyname_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getnetbyname_r_proto" in
-	'')	try='extern int getnetbyname_r(const char*, int, struct netent*, char*, size_t, struct netent**, int*);'
-		./protochk "$try" $hdrs && getnetbyname_r_proto=I_CISBWRE;
-	;;
+	'') try='int getnetbyname_r(const char*, struct netent*, char*, size_t, struct netent**, int*);'
+	./protochk "extern $try" $hdrs && getnetbyname_r_proto=I_CSBWRE ;;
 	esac
 	case "$getnetbyname_r_proto" in
-	'')	try='extern int getnetbyname_r(const char*, struct netent*, char*, int);'
-		./protochk "$try" $hdrs && getnetbyname_r_proto=I_CSBI;
-	;;
+	'') try='int getnetbyname_r(const char*, struct netent*, char*, int);'
+	./protochk "extern $try" $hdrs && getnetbyname_r_proto=I_CSBI ;;
 	esac
 	case "$getnetbyname_r_proto" in
-	'')	try='extern int getnetbyname_r(const char*, struct netent*, struct netent_data*);'
-		./protochk "$try" $hdrs && getnetbyname_r_proto=I_CSD;
-	;;
+	'') try='struct netent* getnetbyname_r(const char*, struct netent*, char*, int);'
+	./protochk "extern $try" $hdrs && getnetbyname_r_proto=S_CSBI ;;
 	esac
 	case "$getnetbyname_r_proto" in
-	'') d_getnetbyname_r=undef ; echo "Disabling getnetbyname_r, cannot find prototype." ;;
-	* ) getnetbyname_r_proto="REENTRANT_PROTO_$getnetbyname_r_proto" ; echo "$try" ;;
+	'') try='int getnetbyname_r(const char*, struct netent*, struct netent_data*);'
+	./protochk "extern $try" $hdrs && getnetbyname_r_proto=I_CSD ;;
+	esac
+	case "$getnetbyname_r_proto" in
+	'')	d_getnetbyname_r=undef
+		echo "Disabling getnetbyname_r, cannot determine prototype." ;;
+	* )	case "$getnetbyname_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getnetbyname_r_proto="REENTRANT_PROTO_$getnetbyname_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

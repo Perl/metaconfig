@@ -1,4 +1,4 @@
-?MAKE:d_getservbyname_r getservbyname_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getservbyname_r getservbyname_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_getservbyname_r:
 ?S:	This variable conditionally defines the HAS_GETSERVBYNAME_R symbol,
@@ -26,25 +26,27 @@ set getservbyname_r d_getservbyname_r
 eval $inlibc
 case "$d_getservbyname_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getservbyname_r_proto" in
-	'')	try='extern int getservbyname_r(const char*, const char*, struct servent*, char*, size_t, struct servent**);'
-		./protochk "$try" $hdrs && getservbyname_r_proto=I_CCSBWR;
-	;;
+	'') try='int getservbyname_r(const char*, const char*, struct servent*, char*, size_t, struct servent**);'
+	./protochk "extern $try" $hdrs && getservbyname_r_proto=I_CCSBWR ;;
 	esac
 	case "$getservbyname_r_proto" in
-	'')	try='extern struct servent* getservbyname_r(const char*, const char*, struct servent*, char*, int);'
-		./protochk "$try" $hdrs && getservbyname_r_proto=S_CCSBI;
-	;;
+	'') try='struct servent* getservbyname_r(const char*, const char*, struct servent*, char*, int);'
+	./protochk "extern $try" $hdrs && getservbyname_r_proto=S_CCSBI ;;
 	esac
 	case "$getservbyname_r_proto" in
-	'')	try='extern int getservbyname_r(const char*, const char*, struct servent*, struct servent_data*);'
-		./protochk "$try" $hdrs && getservbyname_r_proto=I_CCSD;
-	;;
+	'') try='int getservbyname_r(const char*, const char*, struct servent*, struct servent_data*);'
+	./protochk "extern $try" $hdrs && getservbyname_r_proto=I_CCSD ;;
 	esac
 	case "$getservbyname_r_proto" in
-	'') d_getservbyname_r=undef ; echo "Disabling getservbyname_r, cannot find prototype." ;;
-	* ) getservbyname_r_proto="REENTRANT_PROTO_$getservbyname_r_proto" ; echo "$try" ;;
+	'')	d_getservbyname_r=undef
+		echo "Disabling getservbyname_r, cannot determine prototype." ;;
+	* )	case "$getservbyname_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getservbyname_r_proto="REENTRANT_PROTO_$getservbyname_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

@@ -1,4 +1,4 @@
-?MAKE:d_strerror_r strerror_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_strerror_r strerror_r_proto: Inlibc Protochk i_systypes i_string
 ?MAKE:	-pick add $@ %<
 ?S:d_strerror_r:
 ?S:	This variable conditionally defines the HAS_STRERROR_R symbol,
@@ -26,20 +26,27 @@ set strerror_r d_strerror_r
 eval $inlibc
 case "$d_strerror_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_string string.h"
 	case "$strerror_r_proto" in
-	'')	try='extern int strerror_r(int, char*, size_t);'
-		./protochk "$try" $hdrs && strerror_r_proto=I_IBW;
-	;;
+	'') try='int strerror_r(int, char*, size_t);'
+	./protochk "extern $try" $hdrs && strerror_r_proto=I_IBW ;;
 	esac
 	case "$strerror_r_proto" in
-	'')	try='extern char* strerror_r(int, char*, size_t);'
-		./protochk "$try" $hdrs && strerror_r_proto=B_IBW;
-	;;
+	'') try='int strerror_r(int, char*, int);'
+	./protochk "extern $try" $hdrs && strerror_r_proto=I_IBI ;;
 	esac
 	case "$strerror_r_proto" in
-	'') d_strerror_r=undef ; echo "Disabling strerror_r, cannot find prototype." ;;
-	* ) strerror_r_proto="REENTRANT_PROTO_$strerror_r_proto" ; echo "$try" ;;
+	'') try='char* strerror_r(int, char*, size_t);'
+	./protochk "extern $try" $hdrs && strerror_r_proto=B_IBW ;;
+	esac
+	case "$strerror_r_proto" in
+	'')	d_strerror_r=undef
+		echo "Disabling strerror_r, cannot determine prototype." ;;
+	* )	case "$strerror_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) strerror_r_proto="REENTRANT_PROTO_$strerror_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

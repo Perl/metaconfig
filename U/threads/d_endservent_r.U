@@ -1,4 +1,4 @@
-?MAKE:d_endservent_r endservent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_endservent_r endservent_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_endservent_r:
 ?S:	This variable conditionally defines the HAS_ENDSERVENT_R symbol,
@@ -26,20 +26,23 @@ set endservent_r d_endservent_r
 eval $inlibc
 case "$d_endservent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$endservent_r_proto" in
-	'')	try='extern int endservent_r(struct servent_data*);'
-		./protochk "$try" $hdrs && endservent_r_proto=I_S;
-	;;
+	'') try='int endservent_r(struct servent_data*);'
+	./protochk "extern $try" $hdrs && endservent_r_proto=I_S ;;
 	esac
 	case "$endservent_r_proto" in
-	'')	try='extern void endservent_r(struct servent_data*);'
-		./protochk "$try" $hdrs && endservent_r_proto=V_S;
-	;;
+	'') try='void endservent_r(struct servent_data*);'
+	./protochk "extern $try" $hdrs && endservent_r_proto=V_S ;;
 	esac
 	case "$endservent_r_proto" in
-	'') d_endservent_r=undef ; echo "Disabling endservent_r, cannot find prototype." ;;
-	* ) endservent_r_proto="REENTRANT_PROTO_$endservent_r_proto" ; echo "$try" ;;
+	'')	d_endservent_r=undef
+		echo "Disabling endservent_r, cannot determine prototype." ;;
+	* )	case "$endservent_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) endservent_r_proto="REENTRANT_PROTO_$endservent_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

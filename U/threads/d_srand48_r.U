@@ -1,4 +1,4 @@
-?MAKE:d_srand48_r srand48_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_srand48_r srand48_r_proto: Inlibc Protochk i_systypes i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_srand48_r:
 ?S:	This variable conditionally defines the HAS_SRAND48_R symbol,
@@ -26,15 +26,19 @@ set srand48_r d_srand48_r
 eval $inlibc
 case "$d_srand48_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_stdlib stdlib.h"
 	case "$srand48_r_proto" in
-	'')	try='extern int srand48_r(long, struct drand48_data*);'
-		./protochk "$try" $hdrs && srand48_r_proto=I_LS;
-	;;
+	'') try='int srand48_r(long, struct drand48_data*);'
+	./protochk "extern $try" $hdrs && srand48_r_proto=I_LS ;;
 	esac
 	case "$srand48_r_proto" in
-	'') d_srand48_r=undef ; echo "Disabling srand48_r, cannot find prototype." ;;
-	* ) srand48_r_proto="REENTRANT_PROTO_$srand48_r_proto" ; echo "$try" ;;
+	'')	d_srand48_r=undef
+		echo "Disabling srand48_r, cannot determine prototype." ;;
+	* )	case "$srand48_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) srand48_r_proto="REENTRANT_PROTO_$srand48_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

@@ -1,4 +1,4 @@
-?MAKE:d_localtime_r localtime_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_localtime_r localtime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:	-pick add $@ %<
 ?S:d_localtime_r:
 ?S:	This variable conditionally defines the HAS_LOCALTIME_R symbol,
@@ -26,20 +26,23 @@ set localtime_r d_localtime_r
 eval $inlibc
 case "$d_localtime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
 	case "$localtime_r_proto" in
-	'')	try='extern struct tm* localtime_r(const time_t*, struct tm*);'
-		./protochk "$try" $hdrs && localtime_r_proto=S_TS;
-	;;
+	'') try='struct tm* localtime_r(const time_t*, struct tm*);'
+	./protochk "extern $try" $hdrs && localtime_r_proto=S_TS ;;
 	esac
 	case "$localtime_r_proto" in
-	'')	try='extern int localtime_r(const time_t*, struct tm*);'
-		./protochk "$try" $hdrs && localtime_r_proto=I_TS;
-	;;
+	'') try='int localtime_r(const time_t*, struct tm*);'
+	./protochk "extern $try" $hdrs && localtime_r_proto=I_TS ;;
 	esac
 	case "$localtime_r_proto" in
-	'') d_localtime_r=undef ; echo "Disabling localtime_r, cannot find prototype." ;;
-	* ) localtime_r_proto="REENTRANT_PROTO_$localtime_r_proto" ; echo "$try" ;;
+	'')	d_localtime_r=undef
+		echo "Disabling localtime_r, cannot determine prototype." ;;
+	* )	case "$localtime_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) localtime_r_proto="REENTRANT_PROTO_$localtime_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

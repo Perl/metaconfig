@@ -1,4 +1,4 @@
-?MAKE:d_sethostent_r sethostent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_sethostent_r sethostent_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_sethostent_r:
 ?S:	This variable conditionally defines the HAS_SETHOSTENT_R symbol,
@@ -26,15 +26,19 @@ set sethostent_r d_sethostent_r
 eval $inlibc
 case "$d_sethostent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$sethostent_r_proto" in
-	'')	try='extern int sethostent_r(int, struct hostent_data*);'
-		./protochk "$try" $hdrs && sethostent_r_proto=I_IS;
-	;;
+	'') try='int sethostent_r(int, struct hostent_data*);'
+	./protochk "extern $try" $hdrs && sethostent_r_proto=I_IS ;;
 	esac
 	case "$sethostent_r_proto" in
-	'') d_sethostent_r=undef ; echo "Disabling sethostent_r, cannot find prototype." ;;
-	* ) sethostent_r_proto="REENTRANT_PROTO_$sethostent_r_proto" ; echo "$try" ;;
+	'')	d_sethostent_r=undef
+		echo "Disabling sethostent_r, cannot determine prototype." ;;
+	* )	case "$sethostent_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) sethostent_r_proto="REENTRANT_PROTO_$sethostent_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

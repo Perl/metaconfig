@@ -26,25 +26,27 @@ set ttyname_r d_ttyname_r
 eval $inlibc
 case "$d_ttyname_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_unistd unistd.h"
 	case "$ttyname_r_proto" in
-	'')	try='extern int ttyname_r(int, char*, size_t);'
-		./protochk "$try" $hdrs && ttyname_r_proto=I_IBW;
-	;;
+	'') try='int ttyname_r(int, char*, size_t);'
+	./protochk "extern $try" $hdrs && ttyname_r_proto=I_IBW ;;
 	esac
 	case "$ttyname_r_proto" in
-	'')	try='extern int ttyname_r(int, char*, int);'
-		./protochk "$try" $hdrs && ttyname_r_proto=I_IBI;
-	;;
+	'') try='int ttyname_r(int, char*, int);'
+	./protochk "extern $try" $hdrs && ttyname_r_proto=I_IBI ;;
 	esac
 	case "$ttyname_r_proto" in
-	'')	try='extern char* ttyname_r(int, char*, int);'
-		./protochk "$try" $hdrs && ttyname_r_proto=B_IBI;
-	;;
+	'') try='char* ttyname_r(int, char*, int);'
+	./protochk "extern $try" $hdrs && ttyname_r_proto=B_IBI ;;
 	esac
 	case "$ttyname_r_proto" in
-	'') d_ttyname_r=undef ; echo "Disabling ttyname_r, cannot find prototype." ;;
-	* ) ttyname_r_proto="REENTRANT_PROTO_$ttyname_r_proto" ; echo "$try" ;;
+	'')	d_ttyname_r=undef
+		echo "Disabling ttyname_r, cannot determine prototype." ;;
+	* )	case "$ttyname_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) ttyname_r_proto="REENTRANT_PROTO_$ttyname_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

@@ -1,4 +1,4 @@
-?MAKE:d_getpwnam_r getpwnam_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getpwnam_r getpwnam_r_proto: Inlibc Protochk i_systypes i_pwd
 ?MAKE:	-pick add $@ %<
 ?S:d_getpwnam_r:
 ?S:	This variable conditionally defines the HAS_GETPWNAM_R symbol,
@@ -26,30 +26,27 @@ set getpwnam_r d_getpwnam_r
 eval $inlibc
 case "$d_getpwnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
 	case "$getpwnam_r_proto" in
-	'')	try='extern int getpwnam_r(const char*, struct passwd*, char*, size_t, struct passwd**);'
-		./protochk "$try" $hdrs && getpwnam_r_proto=I_CSBWR;
-	;;
+	'') try='int getpwnam_r(const char*, struct passwd*, char*, size_t, struct passwd**);'
+	./protochk "extern $try" $hdrs && getpwnam_r_proto=I_CSBWR ;;
 	esac
 	case "$getpwnam_r_proto" in
-	'')	try='extern int getpwnam_r(const char*, struct passwd*, char*, int, struct passwd**);'
-		./protochk "$try" $hdrs && getpwnam_r_proto=I_CSBIR;
-	;;
+	'') try='struct passwd* getpwnam_r(const char*, struct passwd*, char*, int);'
+	./protochk "extern $try" $hdrs && getpwnam_r_proto=S_CSBI ;;
 	esac
 	case "$getpwnam_r_proto" in
-	'')	try='extern int getpwnam_r(const char*, struct passwd*, char*, int);'
-		./protochk "$try" $hdrs && getpwnam_r_proto=I_CSBI;
-	;;
+	'') try='int getpwnam_r(const char*, struct passwd*, char*, int);'
+	./protochk "extern $try" $hdrs && getpwnam_r_proto=I_CSBI ;;
 	esac
 	case "$getpwnam_r_proto" in
-	'')	try='extern struct passwd* getpwnam_r(const char*, struct passwd*, char*, int);'
-		./protochk "$try" $hdrs && getpwnam_r_proto=S_CSBI;
-	;;
-	esac
-	case "$getpwnam_r_proto" in
-	'') d_getpwnam_r=undef ; echo "Disabling getpwnam_r, cannot find prototype." ;;
-	* ) getpwnam_r_proto="REENTRANT_PROTO_$getpwnam_r_proto" ; echo "$try" ;;
+	'')	d_getpwnam_r=undef
+		echo "Disabling getpwnam_r, cannot determine prototype." ;;
+	* )	case "$getpwnam_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getpwnam_r_proto="REENTRANT_PROTO_$getpwnam_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

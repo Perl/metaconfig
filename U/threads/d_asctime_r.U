@@ -1,4 +1,4 @@
-?MAKE:d_asctime_r asctime_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_asctime_r asctime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:	-pick add $@ %<
 ?S:d_asctime_r:
 ?S:	This variable conditionally defines the HAS_ASCTIME_R symbol,
@@ -26,30 +26,31 @@ set asctime_r d_asctime_r
 eval $inlibc
 case "$d_asctime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
 	case "$asctime_r_proto" in
-	'')	try='extern char* asctime_r(const struct tm*, char*);'
-		./protochk "$try" $hdrs && asctime_r_proto=B_SB;
-	;;
+	'') try='char* asctime_r(const struct tm*, char*);'
+	./protochk "extern $try" $hdrs && asctime_r_proto=B_SB ;;
 	esac
 	case "$asctime_r_proto" in
-	'')	try='extern char* asctime_r(const struct tm*, char*, int);'
-		./protochk "$try" $hdrs && asctime_r_proto=B_SBI;
-	;;
+	'') try='char* asctime_r(const struct tm*, char*, int);'
+	./protochk "extern $try" $hdrs && asctime_r_proto=B_SBI ;;
 	esac
 	case "$asctime_r_proto" in
-	'')	try='extern int asctime_r(const struct tm*, char*);'
-		./protochk "$try" $hdrs && asctime_r_proto=I_SB;
-	;;
+	'') try='int asctime_r(const struct tm*, char*);'
+	./protochk "extern $try" $hdrs && asctime_r_proto=I_SB ;;
 	esac
 	case "$asctime_r_proto" in
-	'')	try='extern int asctime_r(const struct tm*, char*, int);'
-		./protochk "$try" $hdrs && asctime_r_proto=I_SBI;
-	;;
+	'') try='int asctime_r(const struct tm*, char*, int);'
+	./protochk "extern $try" $hdrs && asctime_r_proto=I_SBI ;;
 	esac
 	case "$asctime_r_proto" in
-	'') d_asctime_r=undef ; echo "Disabling asctime_r, cannot find prototype." ;;
-	* ) asctime_r_proto="REENTRANT_PROTO_$asctime_r_proto" ; echo "$try" ;;
+	'')	d_asctime_r=undef
+		echo "Disabling asctime_r, cannot determine prototype." ;;
+	* )	case "$asctime_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) asctime_r_proto="REENTRANT_PROTO_$asctime_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

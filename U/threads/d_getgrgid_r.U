@@ -1,4 +1,4 @@
-?MAKE:d_getgrgid_r getgrgid_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getgrgid_r getgrgid_r_proto: Inlibc Protochk i_systypes i_grp
 ?MAKE:	-pick add $@ %<
 ?S:d_getgrgid_r:
 ?S:	This variable conditionally defines the HAS_GETGRGID_R symbol,
@@ -26,30 +26,31 @@ set getgrgid_r d_getgrgid_r
 eval $inlibc
 case "$d_getgrgid_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
 	case "$getgrgid_r_proto" in
-	'')	try='extern int getgrgid_r(gid_t, struct group*, char*, size_t, struct group**);'
-		./protochk "$try" $hdrs && getgrgid_r_proto=I_TSBWR;
-	;;
+	'') try='int getgrgid_r(gid_t, struct group*, char*, size_t, struct group**);'
+	./protochk "extern $try" $hdrs && getgrgid_r_proto=I_TSBWR ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'')	try='extern int getgrgid_r(gid_t, struct group*, char*, int, struct group**);'
-		./protochk "$try" $hdrs && getgrgid_r_proto=I_TSBIR;
-	;;
+	'') try='int getgrgid_r(gid_t, struct group*, char*, int, struct group**);'
+	./protochk "extern $try" $hdrs && getgrgid_r_proto=I_TSBIR ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'')	try='extern int getgrgid_r(gid_t, struct group*, char*, int);'
-		./protochk "$try" $hdrs && getgrgid_r_proto=I_TSBI;
-	;;
+	'') try='int getgrgid_r(gid_t, struct group*, char*, int);'
+	./protochk "extern $try" $hdrs && getgrgid_r_proto=I_TSBI ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'')	try='extern struct group* getgrgid_r(gid_t, struct group*, char*, int);'
-		./protochk "$try" $hdrs && getgrgid_r_proto=S_TSBI;
-	;;
+	'') try='struct group* getgrgid_r(gid_t, struct group*, char*, int);'
+	./protochk "extern $try" $hdrs && getgrgid_r_proto=S_TSBI ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'') d_getgrgid_r=undef ; echo "Disabling getgrgid_r, cannot find prototype." ;;
-	* ) getgrgid_r_proto="REENTRANT_PROTO_$getgrgid_r_proto" ; echo "$try" ;;
+	'')	d_getgrgid_r=undef
+		echo "Disabling getgrgid_r, cannot determine prototype." ;;
+	* )	case "$getgrgid_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getgrgid_r_proto="REENTRANT_PROTO_$getgrgid_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

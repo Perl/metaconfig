@@ -1,4 +1,4 @@
-?MAKE:d_tmpnam_r tmpnam_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_tmpnam_r tmpnam_r_proto: Inlibc Protochk i_systypes 
 ?MAKE:	-pick add $@ %<
 ?S:d_tmpnam_r:
 ?S:	This variable conditionally defines the HAS_TMPNAM_R symbol,
@@ -26,15 +26,19 @@ set tmpnam_r d_tmpnam_r
 eval $inlibc
 case "$d_tmpnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_stdio stdio.h"
 	case "$tmpnam_r_proto" in
-	'')	try='extern char* tmpnam_r(char*);'
-		./protochk "$try" $hdrs && tmpnam_r_proto=B_B;
-	;;
+	'') try='char* tmpnam_r(char*);'
+	./protochk "extern $try" $hdrs && tmpnam_r_proto=B_B ;;
 	esac
 	case "$tmpnam_r_proto" in
-	'') d_tmpnam_r=undef ; echo "Disabling tmpnam_r, cannot find prototype." ;;
-	* ) tmpnam_r_proto="REENTRANT_PROTO_$tmpnam_r_proto" ; echo "$try" ;;
+	'')	d_tmpnam_r=undef
+		echo "Disabling tmpnam_r, cannot determine prototype." ;;
+	* )	case "$tmpnam_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) tmpnam_r_proto="REENTRANT_PROTO_$tmpnam_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

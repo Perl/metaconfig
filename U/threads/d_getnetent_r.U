@@ -1,4 +1,4 @@
-?MAKE:d_getnetent_r getnetent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getnetent_r getnetent_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_getnetent_r:
 ?S:	This variable conditionally defines the HAS_GETNETENT_R symbol,
@@ -26,30 +26,39 @@ set getnetent_r d_getnetent_r
 eval $inlibc
 case "$d_getnetent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getnetent_r_proto" in
-	'')	try='extern int getnetent_r(struct netent*, char*, size_t, struct netent**, int*);'
-		./protochk "$try" $hdrs && getnetent_r_proto=I_SBWRE;
-	;;
+	'') try='int getnetent_r(struct netent*, char*, size_t, struct netent**, int*);'
+	./protochk "extern $try" $hdrs && getnetent_r_proto=I_SBWRE ;;
 	esac
 	case "$getnetent_r_proto" in
-	'')	try='extern int getnetent_r(struct netent*, char*, int, int*);'
-		./protochk "$try" $hdrs && getnetent_r_proto=I_SBIE;
-	;;
+	'') try='int getnetent_r(struct netent*, char*, int, int*);'
+	./protochk "extern $try" $hdrs && getnetent_r_proto=I_SBIE ;;
 	esac
 	case "$getnetent_r_proto" in
-	'')	try='extern int getnetent_r(struct netent*, char*, int);'
-		./protochk "$try" $hdrs && getnetent_r_proto=I_SBI;
-	;;
+	'') try='struct netent* getnetent_r(struct netent*, char*, int, int*);'
+	./protochk "extern $try" $hdrs && getnetent_r_proto=S_SBIE ;;
 	esac
 	case "$getnetent_r_proto" in
-	'')	try='extern int getnetent_r(struct netent*, struct netent_data*);'
-		./protochk "$try" $hdrs && getnetent_r_proto=I_SD;
-	;;
+	'') try='struct netent* getnetent_r(struct netent*, char*, int);'
+	./protochk "extern $try" $hdrs && getnetent_r_proto=S_SBI ;;
 	esac
 	case "$getnetent_r_proto" in
-	'') d_getnetent_r=undef ; echo "Disabling getnetent_r, cannot find prototype." ;;
-	* ) getnetent_r_proto="REENTRANT_PROTO_$getnetent_r_proto" ; echo "$try" ;;
+	'') try='int getnetent_r(struct netent*, char*, int);'
+	./protochk "extern $try" $hdrs && getnetent_r_proto=I_SBI ;;
+	esac
+	case "$getnetent_r_proto" in
+	'') try='int getnetent_r(struct netent*, struct netent_data*);'
+	./protochk "extern $try" $hdrs && getnetent_r_proto=I_SD ;;
+	esac
+	case "$getnetent_r_proto" in
+	'')	d_getnetent_r=undef
+		echo "Disabling getnetent_r, cannot determine prototype." ;;
+	* )	case "$getnetent_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getnetent_r_proto="REENTRANT_PROTO_$getnetent_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

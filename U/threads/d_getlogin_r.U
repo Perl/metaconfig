@@ -26,20 +26,31 @@ set getlogin_r d_getlogin_r
 eval $inlibc
 case "$d_getlogin_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_unistd unistd.h"
 	case "$getlogin_r_proto" in
-	'')	try='extern int getlogin_r(char*, size_t);'
-		./protochk "$try" $hdrs && getlogin_r_proto=I_BW;
-	;;
+	'') try='int getlogin_r(char*, size_t);'
+	./protochk "extern $try" $hdrs && getlogin_r_proto=I_BW ;;
 	esac
 	case "$getlogin_r_proto" in
-	'')	try='extern int getlogin_r(char*, int);'
-		./protochk "$try" $hdrs && getlogin_r_proto=I_BI;
-	;;
+	'') try='int getlogin_r(char*, int);'
+	./protochk "extern $try" $hdrs && getlogin_r_proto=I_BI ;;
 	esac
 	case "$getlogin_r_proto" in
-	'') d_getlogin_r=undef ; echo "Disabling getlogin_r, cannot find prototype." ;;
-	* ) getlogin_r_proto="REENTRANT_PROTO_$getlogin_r_proto" ; echo "$try" ;;
+	'') try='char* getlogin_r(char*, size_t);'
+	./protochk "extern $try" $hdrs && getlogin_r_proto=B_BW ;;
+	esac
+	case "$getlogin_r_proto" in
+	'') try='char* getlogin_r(char*, int);'
+	./protochk "extern $try" $hdrs && getlogin_r_proto=B_BI ;;
+	esac
+	case "$getlogin_r_proto" in
+	'')	d_getlogin_r=undef
+		echo "Disabling getlogin_r, cannot determine prototype." ;;
+	* )	case "$getlogin_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getlogin_r_proto="REENTRANT_PROTO_$getlogin_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

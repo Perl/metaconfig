@@ -1,4 +1,4 @@
-?MAKE:d_endpwent_r endpwent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_endpwent_r endpwent_r_proto: Inlibc Protochk i_systypes i_pwd
 ?MAKE:	-pick add $@ %<
 ?S:d_endpwent_r:
 ?S:	This variable conditionally defines the HAS_ENDPWENT_R symbol,
@@ -26,20 +26,23 @@ set endpwent_r d_endpwent_r
 eval $inlibc
 case "$d_endpwent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
 	case "$endpwent_r_proto" in
-	'')	try='extern int endpwent_r(FILE**);'
-		./protochk "$try" $hdrs && endpwent_r_proto=I_H;
-	;;
+	'') try='int endpwent_r(FILE**);'
+	./protochk "extern $try" $hdrs && endpwent_r_proto=I_H ;;
 	esac
 	case "$endpwent_r_proto" in
-	'')	try='extern void endpwent_r(FILE**);'
-		./protochk "$try" $hdrs && endpwent_r_proto=V_H;
-	;;
+	'') try='void endpwent_r(FILE**);'
+	./protochk "extern $try" $hdrs && endpwent_r_proto=V_H ;;
 	esac
 	case "$endpwent_r_proto" in
-	'') d_endpwent_r=undef ; echo "Disabling endpwent_r, cannot find prototype." ;;
-	* ) endpwent_r_proto="REENTRANT_PROTO_$endpwent_r_proto" ; echo "$try" ;;
+	'')	d_endpwent_r=undef
+		echo "Disabling endpwent_r, cannot determine prototype." ;;
+	* )	case "$endpwent_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) endpwent_r_proto="REENTRANT_PROTO_$endpwent_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

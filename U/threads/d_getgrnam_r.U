@@ -1,4 +1,4 @@
-?MAKE:d_getgrnam_r getgrnam_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getgrnam_r getgrnam_r_proto: Inlibc Protochk i_systypes i_grp
 ?MAKE:	-pick add $@ %<
 ?S:d_getgrnam_r:
 ?S:	This variable conditionally defines the HAS_GETGRNAM_R symbol,
@@ -26,30 +26,35 @@ set getgrnam_r d_getgrnam_r
 eval $inlibc
 case "$d_getgrnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
 	case "$getgrnam_r_proto" in
-	'')	try='extern int getgrnam_r(const char*, struct group*, char*, size_t, struct group**);'
-		./protochk "$try" $hdrs && getgrnam_r_proto=I_CSBWR;
-	;;
+	'') try='int getgrnam_r(const char*, struct group*, char*, size_t, struct group**);'
+	./protochk "extern $try" $hdrs && getgrnam_r_proto=I_CSBWR ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'')	try='extern int getgrnam_r(const char*, struct group*, char*, int, struct group**);'
-		./protochk "$try" $hdrs && getgrnam_r_proto=I_CSBIR;
-	;;
+	'') try='int getgrnam_r(const char*, struct group*, char*, int, struct group**);'
+	./protochk "extern $try" $hdrs && getgrnam_r_proto=I_CSBIR ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'')	try='extern int getgrnam_r(const char*, struct group*, char*, int);'
-		./protochk "$try" $hdrs && getgrnam_r_proto=I_CSBI;
-	;;
+	'') try='struct group* getgrnam_r(const char*, char*, int);'
+	./protochk "extern $try" $hdrs && getgrnam_r_proto=S_CBI ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'')	try='extern struct group* getgrnam_r(const char*, struct group*, char*, int);'
-		./protochk "$try" $hdrs && getgrnam_r_proto=S_CSBI;
-	;;
+	'') try='int getgrnam_r(const char*, struct group*, char*, int);'
+	./protochk "extern $try" $hdrs && getgrnam_r_proto=I_CSBI ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'') d_getgrnam_r=undef ; echo "Disabling getgrnam_r, cannot find prototype." ;;
-	* ) getgrnam_r_proto="REENTRANT_PROTO_$getgrnam_r_proto" ; echo "$try" ;;
+	'') try='struct group* getgrnam_r(const char*, struct group*, char*, int);'
+	./protochk "extern $try" $hdrs && getgrnam_r_proto=S_CSBI ;;
+	esac
+	case "$getgrnam_r_proto" in
+	'')	d_getgrnam_r=undef
+		echo "Disabling getgrnam_r, cannot determine prototype." ;;
+	* )	case "$getgrnam_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getgrnam_r_proto="REENTRANT_PROTO_$getgrnam_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

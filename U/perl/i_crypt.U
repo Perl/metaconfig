@@ -1,0 +1,24 @@
+?RCS: $Id: i_crypt.U,v $
+?RCS:
+?RCS: Copyright (c) 2002 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_crypt: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_crypt:
+?S:	This variable conditionally defines the I_CRYPT symbol, and indicates
+?S:	whether a C program should include <crypt.h>.
+?S:.
+?C:I_CRYPT:
+?C:	This symbol, if defined, indicates that <crypt.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_crypt	I_CRYPT		/**/
+?H:.
+?LINT:set i_crypt
+: see if this is a crypt.h system
+set crypt.h i_crypt
+eval $inhdr
+

@@ -1,4 +1,4 @@
-?MAKE:d_getprotoent_r getprotoent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getprotoent_r getprotoent_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_getprotoent_r:
 ?S:	This variable conditionally defines the HAS_GETPROTOENT_R symbol,
@@ -26,25 +26,31 @@ set getprotoent_r d_getprotoent_r
 eval $inlibc
 case "$d_getprotoent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$getprotoent_r_proto" in
-	'')	try='extern int getprotoent_r(struct protoent*, char*, size_t, struct protoent**);'
-		./protochk "$try" $hdrs && getprotoent_r_proto=I_SBWR;
-	;;
+	'') try='int getprotoent_r(struct protoent*, char*, size_t, struct protoent**);'
+	./protochk "extern $try" $hdrs && getprotoent_r_proto=I_SBWR ;;
 	esac
 	case "$getprotoent_r_proto" in
-	'')	try='extern int getprotoent_r(struct protoent*, char*, int);'
-		./protochk "$try" $hdrs && getprotoent_r_proto=I_SBI;
-	;;
+	'') try='int getprotoent_r(struct protoent*, char*, int);'
+	./protochk "extern $try" $hdrs && getprotoent_r_proto=I_SBI ;;
 	esac
 	case "$getprotoent_r_proto" in
-	'')	try='extern int getprotoent_r(struct protoent*, struct protoent_data*);'
-		./protochk "$try" $hdrs && getprotoent_r_proto=I_SD;
-	;;
+	'') try='struct protoent* getprotoent_r(struct protoent*, char*, int);'
+	./protochk "extern $try" $hdrs && getprotoent_r_proto=S_SBI ;;
 	esac
 	case "$getprotoent_r_proto" in
-	'') d_getprotoent_r=undef ; echo "Disabling getprotoent_r, cannot find prototype." ;;
-	* ) getprotoent_r_proto="REENTRANT_PROTO_$getprotoent_r_proto" ; echo "$try" ;;
+	'') try='int getprotoent_r(struct protoent*, struct protoent_data*);'
+	./protochk "extern $try" $hdrs && getprotoent_r_proto=I_SD ;;
+	esac
+	case "$getprotoent_r_proto" in
+	'')	d_getprotoent_r=undef
+		echo "Disabling getprotoent_r, cannot determine prototype." ;;
+	* )	case "$getprotoent_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getprotoent_r_proto="REENTRANT_PROTO_$getprotoent_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

@@ -1,4 +1,4 @@
-?MAKE:d_getpwuid_r getpwuid_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_getpwuid_r getpwuid_r_proto: Inlibc Protochk i_systypes i_pwd
 ?MAKE:	-pick add $@ %<
 ?S:d_getpwuid_r:
 ?S:	This variable conditionally defines the HAS_GETPWUID_R symbol,
@@ -26,30 +26,31 @@ set getpwuid_r d_getpwuid_r
 eval $inlibc
 case "$d_getpwuid_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
 	case "$getpwuid_r_proto" in
-	'')	try='extern int getpwuid_r(uid_t, struct passwd*, char*, size_t, struct passwd**);'
-		./protochk "$try" $hdrs && getpwuid_r_proto=I_TSBWR;
-	;;
+	'') try='int getpwuid_r(uid_t, struct passwd*, char*, size_t, struct passwd**);'
+	./protochk "extern $try" $hdrs && getpwuid_r_proto=I_TSBWR ;;
 	esac
 	case "$getpwuid_r_proto" in
-	'')	try='extern int getpwuid_r(uid_t, struct passwd*, char*, int, struct passwd**);'
-		./protochk "$try" $hdrs && getpwuid_r_proto=I_TSBIR;
-	;;
+	'') try='int getpwuid_r(uid_t, struct passwd*, char*, int, struct passwd**);'
+	./protochk "extern $try" $hdrs && getpwuid_r_proto=I_TSBIR ;;
 	esac
 	case "$getpwuid_r_proto" in
-	'')	try='extern int getpwuid_r(uid_t, struct passwd*, char*, int);'
-		./protochk "$try" $hdrs && getpwuid_r_proto=I_TSBI;
-	;;
+	'') try='int getpwuid_r(uid_t, struct passwd*, char*, int);'
+	./protochk "extern $try" $hdrs && getpwuid_r_proto=I_TSBI ;;
 	esac
 	case "$getpwuid_r_proto" in
-	'')	try='extern struct passwd* getpwuid_r(uid_t, struct passwd*, char*, int);'
-		./protochk "$try" $hdrs && getpwuid_r_proto=S_TSBI;
-	;;
+	'') try='struct passwd* getpwuid_r(uid_t, struct passwd*, char*, int);'
+	./protochk "extern $try" $hdrs && getpwuid_r_proto=S_TSBI ;;
 	esac
 	case "$getpwuid_r_proto" in
-	'') d_getpwuid_r=undef ; echo "Disabling getpwuid_r, cannot find prototype." ;;
-	* ) getpwuid_r_proto="REENTRANT_PROTO_$getpwuid_r_proto" ; echo "$try" ;;
+	'')	d_getpwuid_r=undef
+		echo "Disabling getpwuid_r, cannot determine prototype." ;;
+	* )	case "$getpwuid_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) getpwuid_r_proto="REENTRANT_PROTO_$getpwuid_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

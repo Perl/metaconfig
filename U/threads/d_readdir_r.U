@@ -1,4 +1,4 @@
-?MAKE:d_readdir_r readdir_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_readdir_r readdir_r_proto: Inlibc Protochk i_systypes i_dirent
 ?MAKE:	-pick add $@ %<
 ?S:d_readdir_r:
 ?S:	This variable conditionally defines the HAS_READDIR_R symbol,
@@ -26,20 +26,23 @@ set readdir_r d_readdir_r
 eval $inlibc
 case "$d_readdir_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_dirent dirent.h"
 	case "$readdir_r_proto" in
-	'')	try='extern int readdir_r(DIR*, struct dirent*, struct dirent**);'
-		./protochk "$try" $hdrs && readdir_r_proto=I_TSR;
-	;;
+	'') try='int readdir_r(DIR*, struct dirent*, struct dirent**);'
+	./protochk "extern $try" $hdrs && readdir_r_proto=I_TSR ;;
 	esac
 	case "$readdir_r_proto" in
-	'')	try='extern int readdir_r(DIR*, struct dirent*);'
-		./protochk "$try" $hdrs && readdir_r_proto=I_TS;
-	;;
+	'') try='int readdir_r(DIR*, struct dirent*);'
+	./protochk "extern $try" $hdrs && readdir_r_proto=I_TS ;;
 	esac
 	case "$readdir_r_proto" in
-	'') d_readdir_r=undef ; echo "Disabling readdir_r, cannot find prototype." ;;
-	* ) readdir_r_proto="REENTRANT_PROTO_$readdir_r_proto" ; echo "$try" ;;
+	'')	d_readdir_r=undef
+		echo "Disabling readdir_r, cannot determine prototype." ;;
+	* )	case "$readdir_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) readdir_r_proto="REENTRANT_PROTO_$readdir_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

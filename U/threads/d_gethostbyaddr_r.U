@@ -1,4 +1,4 @@
-?MAKE:d_gethostbyaddr_r gethostbyaddr_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_gethostbyaddr_r gethostbyaddr_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:	-pick add $@ %<
 ?S:d_gethostbyaddr_r:
 ?S:	This variable conditionally defines the HAS_GETHOSTBYADDR_R symbol,
@@ -26,40 +26,39 @@ set gethostbyaddr_r d_gethostbyaddr_r
 eval $inlibc
 case "$d_gethostbyaddr_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
 	case "$gethostbyaddr_r_proto" in
-	'')	try='extern int gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, struct hostent**, int*);'
-		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CWISBRE;
-	;;
+	'') try='int gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, size_t, struct hostent**, int*);'
+	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CWISBWRE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'')	try='extern struct hostent* gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, int, int*);'
-		./protochk "$try" $hdrs && gethostbyaddr_r_proto=S_CWISBIE;
-	;;
+	'') try='struct hostent* gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, size_t, int, int*);'
+	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_CWISBWIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'')	try='extern struct hostent* gethostbyaddr_r(const char*, int, int, struct hostent*, char*, int, int*);'
-		./protochk "$try" $hdrs && gethostbyaddr_r_proto=S_CIISBIE;
-	;;
+	'') try='struct hostent* gethostbyaddr_r(const char*, int, int, struct hostent*, char*, int, int*);'
+	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=S_CIISBIE ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'')	try='extern int gethostbyaddr_r(const char*, size_t, int, struct hostent*, struct hostent);'
-		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CWISD;
-	;;
+	'') try='int gethostbyaddr_r(const char*, size_t, int, struct hostent*, struct hostent_data*);'
+	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CWISD ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'')	try='extern int gethostbyaddr_r(const char*, int, int, struct hostent*, struct hostent);'
-		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CIISD;
-	;;
+	'') try='int gethostbyaddr_r(const char*, int, int, struct hostent*, struct hostent_data*);'
+	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CIISD ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'')	try='extern int gethostbyaddr_r(const char*, int, int);'
-		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CII;
-	;;
+	'') try='int gethostbyaddr_r(const char*, int, int);'
+	./protochk "extern $try" $hdrs && gethostbyaddr_r_proto=I_CII ;;
 	esac
 	case "$gethostbyaddr_r_proto" in
-	'') d_gethostbyaddr_r=undef ; echo "Disabling gethostbyaddr_r, cannot find prototype." ;;
-	* ) gethostbyaddr_r_proto="REENTRANT_PROTO_$gethostbyaddr_r_proto" ; echo "$try" ;;
+	'')	d_gethostbyaddr_r=undef
+		echo "Disabling gethostbyaddr_r, cannot determine prototype." ;;
+	* )	case "$gethostbyaddr_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) gethostbyaddr_r_proto="REENTRANT_PROTO_$gethostbyaddr_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

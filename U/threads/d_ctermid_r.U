@@ -1,4 +1,4 @@
-?MAKE:d_ctermid_r ctermid_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_ctermid_r ctermid_r_proto: Inlibc Protochk i_systypes 
 ?MAKE:	-pick add $@ %<
 ?S:d_ctermid_r:
 ?S:	This variable conditionally defines the HAS_CTERMID_R symbol,
@@ -26,15 +26,19 @@ set ctermid_r d_ctermid_r
 eval $inlibc
 case "$d_ctermid_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_stdio stdio.h"
 	case "$ctermid_r_proto" in
-	'')	try='extern char* ctermid_r(char*);'
-		./protochk "$try" $hdrs && ctermid_r_proto=B_B;
-	;;
+	'') try='char* ctermid_r(char*);'
+	./protochk "extern $try" $hdrs && ctermid_r_proto=B_B ;;
 	esac
 	case "$ctermid_r_proto" in
-	'') d_ctermid_r=undef ; echo "Disabling ctermid_r, cannot find prototype." ;;
-	* ) ctermid_r_proto="REENTRANT_PROTO_$ctermid_r_proto" ; echo "$try" ;;
+	'')	d_ctermid_r=undef
+		echo "Disabling ctermid_r, cannot determine prototype." ;;
+	* )	case "$ctermid_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) ctermid_r_proto="REENTRANT_PROTO_$ctermid_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac

@@ -1,4 +1,4 @@
-?MAKE:d_setlocale_r setlocale_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:d_setlocale_r setlocale_r_proto: Inlibc Protochk i_systypes i_locale
 ?MAKE:	-pick add $@ %<
 ?S:d_setlocale_r:
 ?S:	This variable conditionally defines the HAS_SETLOCALE_R symbol,
@@ -26,15 +26,19 @@ set setlocale_r d_setlocale_r
 eval $inlibc
 case "$d_setlocale_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
+	hdrs="$i_systypes sys/types.h define stdio.h $i_locale locale.h"
 	case "$setlocale_r_proto" in
-	'')	try='extern int setlocale_r(int, const char*, char*, int);'
-		./protochk "$try" $hdrs && setlocale_r_proto=I_ICBI;
-	;;
+	'') try='int setlocale_r(int, const char*, char*, int);'
+	./protochk "extern $try" $hdrs && setlocale_r_proto=I_ICBI ;;
 	esac
 	case "$setlocale_r_proto" in
-	'') d_setlocale_r=undef ; echo "Disabling setlocale_r, cannot find prototype." ;;
-	* ) setlocale_r_proto="REENTRANT_PROTO_$setlocale_r_proto" ; echo "$try" ;;
+	'')	d_setlocale_r=undef
+		echo "Disabling setlocale_r, cannot determine prototype." ;;
+	* )	case "$setlocale_r_proto" in
+		REENTRANT_PROTO*) ;;
+		*) setlocale_r_proto="REENTRANT_PROTO_$setlocale_r_proto" ;;
+		esac
+		echo "Prototype: $try" ;;
 	esac
 	;;
 esac
