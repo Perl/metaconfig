@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_getlogin_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_unistd unistd.h"
+	case "unistd" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_getlogin_r_proto:$usethreads" in
 	":define")	d_getlogin_r_proto=define
 		set d_getlogin_r_proto getlogin_r $hdrs
@@ -60,7 +65,7 @@ case "$d_getlogin_r" in
 	./protochk "extern $try" $hdrs && getlogin_r_proto=B_BI ;;
 	esac
 	case "$getlogin_r_proto" in
-	'')	d_getlogin_r=undef
+	''|0)	d_getlogin_r=undef
  	        getlogin_r_proto=0
 		echo "Disabling getlogin_r, cannot determine prototype." >&4 ;;
 	* )	case "$getlogin_r_proto" in
@@ -73,6 +78,8 @@ case "$d_getlogin_r" in
 	*)	case "$usethreads" in
 		define) echo "getlogin_r has no prototype, not using it." >&4 ;;
 		esac
+		d_getlogin_r=undef
+		getlogin_r_proto=0
 		;;
 	esac
 	;;

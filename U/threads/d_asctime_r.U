@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_asctime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
+	case "time" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_asctime_r_proto:$usethreads" in
 	":define")	d_asctime_r_proto=define
 		set d_asctime_r_proto asctime_r $hdrs
@@ -60,7 +65,7 @@ case "$d_asctime_r" in
 	./protochk "extern $try" $hdrs && asctime_r_proto=I_SBI ;;
 	esac
 	case "$asctime_r_proto" in
-	'')	d_asctime_r=undef
+	''|0)	d_asctime_r=undef
  	        asctime_r_proto=0
 		echo "Disabling asctime_r, cannot determine prototype." >&4 ;;
 	* )	case "$asctime_r_proto" in
@@ -73,6 +78,8 @@ case "$d_asctime_r" in
 	*)	case "$usethreads" in
 		define) echo "asctime_r has no prototype, not using it." >&4 ;;
 		esac
+		d_asctime_r=undef
+		asctime_r_proto=0
 		;;
 	esac
 	;;

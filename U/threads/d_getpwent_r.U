@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_getpwent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
+	case "pwd" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_getpwent_r_proto:$usethreads" in
 	":define")	d_getpwent_r_proto=define
 		set d_getpwent_r_proto getpwent_r $hdrs
@@ -68,7 +73,7 @@ case "$d_getpwent_r" in
 	./protochk "extern $try" $hdrs && getpwent_r_proto=I_SBIH ;;
 	esac
 	case "$getpwent_r_proto" in
-	'')	d_getpwent_r=undef
+	''|0)	d_getpwent_r=undef
  	        getpwent_r_proto=0
 		echo "Disabling getpwent_r, cannot determine prototype." >&4 ;;
 	* )	case "$getpwent_r_proto" in
@@ -81,6 +86,8 @@ case "$d_getpwent_r" in
 	*)	case "$usethreads" in
 		define) echo "getpwent_r has no prototype, not using it." >&4 ;;
 		esac
+		d_getpwent_r=undef
+		getpwent_r_proto=0
 		;;
 	esac
 	;;

@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_srandom_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_stdlib stdlib.h"
+	case "stdlib" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_srandom_r_proto:$usethreads" in
 	":define")	d_srandom_r_proto=define
 		set d_srandom_r_proto srandom_r $hdrs
@@ -48,7 +53,7 @@ case "$d_srandom_r" in
 	./protochk "extern $try" $hdrs && srandom_r_proto=I_TS ;;
 	esac
 	case "$srandom_r_proto" in
-	'')	d_srandom_r=undef
+	''|0)	d_srandom_r=undef
  	        srandom_r_proto=0
 		echo "Disabling srandom_r, cannot determine prototype." >&4 ;;
 	* )	case "$srandom_r_proto" in
@@ -61,6 +66,8 @@ case "$d_srandom_r" in
 	*)	case "$usethreads" in
 		define) echo "srandom_r has no prototype, not using it." >&4 ;;
 		esac
+		d_srandom_r=undef
+		srandom_r_proto=0
 		;;
 	esac
 	;;

@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_getnetent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
+	case "netdb" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_getnetent_r_proto:$usethreads" in
 	":define")	d_getnetent_r_proto=define
 		set d_getnetent_r_proto getnetent_r $hdrs
@@ -68,7 +73,7 @@ case "$d_getnetent_r" in
 	./protochk "extern $try" $hdrs && getnetent_r_proto=I_SD ;;
 	esac
 	case "$getnetent_r_proto" in
-	'')	d_getnetent_r=undef
+	''|0)	d_getnetent_r=undef
  	        getnetent_r_proto=0
 		echo "Disabling getnetent_r, cannot determine prototype." >&4 ;;
 	* )	case "$getnetent_r_proto" in
@@ -81,6 +86,8 @@ case "$d_getnetent_r" in
 	*)	case "$usethreads" in
 		define) echo "getnetent_r has no prototype, not using it." >&4 ;;
 		esac
+		d_getnetent_r=undef
+		getnetent_r_proto=0
 		;;
 	esac
 	;;

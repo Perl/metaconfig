@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_ctermid_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_stdio stdio.h"
+	case "stdio" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_ctermid_r_proto:$usethreads" in
 	":define")	d_ctermid_r_proto=define
 		set d_ctermid_r_proto ctermid_r $hdrs
@@ -48,7 +53,7 @@ case "$d_ctermid_r" in
 	./protochk "extern $try" $hdrs && ctermid_r_proto=B_B ;;
 	esac
 	case "$ctermid_r_proto" in
-	'')	d_ctermid_r=undef
+	''|0)	d_ctermid_r=undef
  	        ctermid_r_proto=0
 		echo "Disabling ctermid_r, cannot determine prototype." >&4 ;;
 	* )	case "$ctermid_r_proto" in
@@ -61,6 +66,8 @@ case "$d_ctermid_r" in
 	*)	case "$usethreads" in
 		define) echo "ctermid_r has no prototype, not using it." >&4 ;;
 		esac
+		d_ctermid_r=undef
+		ctermid_r_proto=0
 		;;
 	esac
 	;;

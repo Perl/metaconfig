@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_getgrgid_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
+	case "grp" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_getgrgid_r_proto:$usethreads" in
 	":define")	d_getgrgid_r_proto=define
 		set d_getgrgid_r_proto getgrgid_r $hdrs
@@ -60,7 +65,7 @@ case "$d_getgrgid_r" in
 	./protochk "extern $try" $hdrs && getgrgid_r_proto=S_TSBI ;;
 	esac
 	case "$getgrgid_r_proto" in
-	'')	d_getgrgid_r=undef
+	''|0)	d_getgrgid_r=undef
  	        getgrgid_r_proto=0
 		echo "Disabling getgrgid_r, cannot determine prototype." >&4 ;;
 	* )	case "$getgrgid_r_proto" in
@@ -73,6 +78,8 @@ case "$d_getgrgid_r" in
 	*)	case "$usethreads" in
 		define) echo "getgrgid_r has no prototype, not using it." >&4 ;;
 		esac
+		d_getgrgid_r=undef
+		getgrgid_r_proto=0
 		;;
 	esac
 	;;

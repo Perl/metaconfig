@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_drand48_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_stdlib stdlib.h"
+	case "stdlib" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_drand48_r_proto:$usethreads" in
 	":define")	d_drand48_r_proto=define
 		set d_drand48_r_proto drand48_r $hdrs
@@ -48,7 +53,7 @@ case "$d_drand48_r" in
 	./protochk "extern $try" $hdrs && drand48_r_proto=I_ST ;;
 	esac
 	case "$drand48_r_proto" in
-	'')	d_drand48_r=undef
+	''|0)	d_drand48_r=undef
  	        drand48_r_proto=0
 		echo "Disabling drand48_r, cannot determine prototype." >&4 ;;
 	* )	case "$drand48_r_proto" in
@@ -61,6 +66,8 @@ case "$d_drand48_r" in
 	*)	case "$usethreads" in
 		define) echo "drand48_r has no prototype, not using it." >&4 ;;
 		esac
+		d_drand48_r=undef
+		drand48_r_proto=0
 		;;
 	esac
 	;;

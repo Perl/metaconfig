@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_getgrnam_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_grp grp.h"
+	case "grp" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_getgrnam_r_proto:$usethreads" in
 	":define")	d_getgrnam_r_proto=define
 		set d_getgrnam_r_proto getgrnam_r $hdrs
@@ -64,7 +69,7 @@ case "$d_getgrnam_r" in
 	./protochk "extern $try" $hdrs && getgrnam_r_proto=S_CSBI ;;
 	esac
 	case "$getgrnam_r_proto" in
-	'')	d_getgrnam_r=undef
+	''|0)	d_getgrnam_r=undef
  	        getgrnam_r_proto=0
 		echo "Disabling getgrnam_r, cannot determine prototype." >&4 ;;
 	* )	case "$getgrnam_r_proto" in
@@ -77,6 +82,8 @@ case "$d_getgrnam_r" in
 	*)	case "$usethreads" in
 		define) echo "getgrnam_r has no prototype, not using it." >&4 ;;
 		esac
+		d_getgrnam_r=undef
+		getgrnam_r_proto=0
 		;;
 	esac
 	;;

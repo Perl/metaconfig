@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_getprotobyname_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
+	case "netdb" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_getprotobyname_r_proto:$usethreads" in
 	":define")	d_getprotobyname_r_proto=define
 		set d_getprotobyname_r_proto getprotobyname_r $hdrs
@@ -56,7 +61,7 @@ case "$d_getprotobyname_r" in
 	./protochk "extern $try" $hdrs && getprotobyname_r_proto=I_CSD ;;
 	esac
 	case "$getprotobyname_r_proto" in
-	'')	d_getprotobyname_r=undef
+	''|0)	d_getprotobyname_r=undef
  	        getprotobyname_r_proto=0
 		echo "Disabling getprotobyname_r, cannot determine prototype." >&4 ;;
 	* )	case "$getprotobyname_r_proto" in
@@ -69,6 +74,8 @@ case "$d_getprotobyname_r" in
 	*)	case "$usethreads" in
 		define) echo "getprotobyname_r has no prototype, not using it." >&4 ;;
 		esac
+		d_getprotobyname_r=undef
+		getprotobyname_r_proto=0
 		;;
 	esac
 	;;

@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_ctime_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
+	case "time" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_ctime_r_proto:$usethreads" in
 	":define")	d_ctime_r_proto=define
 		set d_ctime_r_proto ctime_r $hdrs
@@ -60,7 +65,7 @@ case "$d_ctime_r" in
 	./protochk "extern $try" $hdrs && ctime_r_proto=I_SBI ;;
 	esac
 	case "$ctime_r_proto" in
-	'')	d_ctime_r=undef
+	''|0)	d_ctime_r=undef
  	        ctime_r_proto=0
 		echo "Disabling ctime_r, cannot determine prototype." >&4 ;;
 	* )	case "$ctime_r_proto" in
@@ -73,6 +78,8 @@ case "$d_ctime_r" in
 	*)	case "$usethreads" in
 		define) echo "ctime_r has no prototype, not using it." >&4 ;;
 		esac
+		d_ctime_r=undef
+		ctime_r_proto=0
 		;;
 	esac
 	;;

@@ -35,6 +35,11 @@ eval $inlibc
 case "$d_getpwnam_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_pwd pwd.h"
+	case "pwd" in
+	time)
+		hdrs="$hdrs $i_systime sys/time.h"
+		;;
+	esac
 	case "$d_getpwnam_r_proto:$usethreads" in
 	":define")	d_getpwnam_r_proto=define
 		set d_getpwnam_r_proto getpwnam_r $hdrs
@@ -60,7 +65,7 @@ case "$d_getpwnam_r" in
 	./protochk "extern $try" $hdrs && getpwnam_r_proto=I_CSBI ;;
 	esac
 	case "$getpwnam_r_proto" in
-	'')	d_getpwnam_r=undef
+	''|0)	d_getpwnam_r=undef
  	        getpwnam_r_proto=0
 		echo "Disabling getpwnam_r, cannot determine prototype." >&4 ;;
 	* )	case "$getpwnam_r_proto" in
@@ -73,6 +78,8 @@ case "$d_getpwnam_r" in
 	*)	case "$usethreads" in
 		define) echo "getpwnam_r has no prototype, not using it." >&4 ;;
 		esac
+		d_getpwnam_r=undef
+		getpwnam_r_proto=0
 		;;
 	esac
 	;;
