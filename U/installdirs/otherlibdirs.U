@@ -1,6 +1,6 @@
 ?RCS: $Id: otherlibdirs.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
 ?RCS:
-?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: Copyright (c) 1999-2000, Andy Dougherty
 ?RCS: 
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -16,28 +16,36 @@
 ?RCS: Initial revision
 ?RCS:
 ?RCS:
-?MAKE:otherlibdirs: Myread cat test sitelib sitearch \
-	vendorarch vendorlib archname
+?MAKE:otherlibdirs d_perl_otherlibdirs: Myread cat sitelib sitearch \
+	vendorarch vendorlib Setvar
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:otherlibdirs:
 ?S:	This variable contains a colon-separated set of paths for the perl
 ?S:	binary to search for additional library files or modules.
 ?S:	These directories will be tacked to the end of @INC.
-?S:	This will initially be used to help find the 5.005_0x-era 
-?S:	architecture-independent sitelib files which were inadvertantly
-?S:	placed (at least by default) in an apiversion-specific directory.
+?S:	Perl will automatically search below each path for version-
+?S:	and architecture-specific directories.  See inc_version_list
+?S:	for more details.
+?S:	A value of ' ' means 'none' and is used to preserve this value
+?S:	for the next run through Configure.
+?S:.
+?S:d_perl_otherlibdirs:
+?S:	This variable conditionally defines PERL_OTHERLIBDIRS, which
+?S:	contains a colon-separated set of paths for the perl binary to
+?S:	include in @INC.  See also otherlibdirs.
 ?S:.
 ?C:PERL_OTHERLIBDIRS:
 ?C:	This variable contains a colon-separated set of paths for the perl
 ?C:	binary to search for additional library files or modules.
 ?C:	These directories will be tacked to the end of @INC.
-?C:	This will initially be used to help find the 5.005_0x-era 
-?C:	architecture-independent sitelib files which were inadvertantly
-?C:	placed (at least by default) in an apiversion-specific directory.
+?C:	Perl will automatically search below each path for version-
+?C:	and architecture-specific directories.  See PERL_INC_VERSION_LIST
+?C:	for more details.
 ?C:.
-?H:#define PERL_OTHERLIBDIRS "$otherlibdirs"		/**/
+?H:#$d_perl_otherlibdirs PERL_OTHERLIBDIRS "$otherlibdirs"		/**/
 ?H:.
+?LINT: set d_perl_otherlibdirs
 : Final catch-all directories to search
 $cat <<EOM
 
@@ -46,43 +54,30 @@ modules in addition to those already specified.
 These directories will be searched after 
 	$sitearch 
 	$sitelib 
-	$vendorarch and 
-	$vendorlib
-
 EOM
+test X"$vendorlib" != "X" && echo '	' $vendorlib
+test X"$vendorarch" != "X" && echo '	' $vendorarch
+echo ' '
 case "$otherlibdirs" in
-'')
-	: Try to guess if they have any 5.004-era .pm files installed.
-	if $test -d $sitelib/$archname/auto; then
-    	$cat <<EOM
-Include $sitelib in the following answer to have 
-this version of perl look for your architecture-independent files
-from your previous perl5.004_0x installation.  The default
-should be fine for most people.  If unsure, accept the default.
-
-EOM
-		dflt=$sitelib
-	else
-		dflt='none'
-	fi
-	;;
-*)	dflt="$otherlibdirs"
-	;;
+''|' ') dflt='none' ;;
+*)	dflt="$otherlibdirs" ;;
 esac
 $cat <<EOM
-Enter a colon-separated set of paths to include in perl's @INC
-search path, or enter 'none' for none.
+Enter a colon-separated set of extra paths to include in perl's @INC
+search path, or enter 'none' for no extra paths.
 
 EOM
 
 rp='Colon-separated list of additional directories for perl to search?'
 . ./myread
 case "$ans" in
-none) 
-	otherlibdirs=''
-	;;     
-*)      
-	otherlibdirs="$ans"
-	;;
+' '|''|none)	otherlibdirs=' ' ;;     
+*)	otherlibdirs="$ans" ;;
 esac
+case "$otherlibdirs" in
+' ') val=$undef ;;
+*)	val=$define ;;
+esac
+set d_perl_otherlibdirs
+eval $setvar
 
