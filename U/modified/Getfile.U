@@ -268,7 +268,7 @@ while test "$type"; do
 					    dir="$ans"
 					    direxp="$ansexp"
 					else    
-					    dir="$fp/$ans"
+					    dir="$fp/$ansexp"
 					    direxp="$fp/$ansexp"
 					fi
 					if test -d "$direxp"; then
