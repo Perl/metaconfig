@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:gccversion gccosandvers: cat cpp rm +cc \
+?MAKE:gccversion gccosandvers ccname: cat cpp rm +cc \
 	Mcc Myread Guess Options Oldconfig Loc osname osvers
 ?MAKE:	-pick add $@ %<
 ?S:gccversion:
@@ -20,6 +20,13 @@
 ?S:	If GNU cc (gcc) is used, this variable the operating system and
 ?S:	version used to compile the gcc.  It is set to '' if not gcc,
 ?S:	or if nothing useful can be parsed as the os version.
+?S:.
+?S:ccname:
+?S:	This can set either by hints files or by Configure.  If using
+?S:	gcc, this is gcc, and if not, usually equal to cc, unimpressive, no?
+?S:	Some platforms, however, make good use of this by storing the
+?S:	flavor of the C compiler being used here.  For example if using
+?S:	the Sun WorkShop suite, ccname will be 'workshop'.
 ?S:.
 ?T:gccshortvers
 ?F:!gccvers
@@ -47,6 +54,7 @@ if $cc $ldflags -o gccvers gccvers.c; then
 	case "$gccversion" in
 	'') echo "You are not using GNU cc." ;;
 	*)  echo "You are using GNU cc $gccversion."
+	    ccname=gcc	
 	    ;;
 	esac
 else
@@ -96,7 +104,7 @@ EOM
    esac
    ;;
 esac
-
-
-
+case "$ccname" in
+'') ccname="$cc" ;;
+esac
 
