@@ -80,12 +80,13 @@
 : determine which malloc to compile in
 echo " "
 case "$usemymalloc" in
-''|[yY]*|true|$define)	dflt='y' ;;
-*)	dflt='n' ;;
-esac
-case "$ptrsize" in
-4) ;;
-*) dflt='n' ;;
+[yY]*|true|$define)	dflt='y' ;;
+[nN]*|false|$undef)	dflt='n' ;;
+*)	case "$ptrsize" in
+	4) dflt='y' ;;
+	*) dflt='n' ;;
+	esac
+	;;
 esac
 rp="Do you wish to attempt to use the malloc that comes with $package?"
 . ./myread
