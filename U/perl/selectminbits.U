@@ -10,7 +10,7 @@
 ?RCS:
 ?MAKE:selectminbits: Compile cat rm Oldconfig d_select \
 	i_time i_systime i_systimek i_sysselct selecttype d_socket \
-	byteorder Myread Setvar run
+	byteorder Myread Setvar run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:selectminbits:
 ?S:	This variable holds the minimum number of bits operated by select.
@@ -63,6 +63,10 @@ EOM
 #   include <sys/socket.h> /* Might include <sys/bsdtypes.h> */
 #endif
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 $selecttype b;
 #define S sizeof(*(b))
 #define MINBITS	64

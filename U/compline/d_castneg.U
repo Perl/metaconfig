@@ -23,7 +23,7 @@
 ?X:
 ?X:	Can the compiler cast negative / odd floats to unsigned values.
 ?X:
-?MAKE:d_castneg castflags: cat Compile rm Setvar signal_t run
+?MAKE:d_castneg castflags: cat Compile rm Setvar signal_t run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_castneg:
 ?S:	This variable conditionally defines CASTNEG, which indicates
@@ -58,6 +58,10 @@ echo " "
 echo 'Checking whether your C compiler can cast negative float to unsigned.' >&4
 $cat >try.c <<EOCP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #include <sys/types.h>
 #include <signal.h>
 $signal_t blech(s) int s; { exit(7); }

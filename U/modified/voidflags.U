@@ -19,7 +19,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:voidflags defvoidused: cat rm contains +cc +ccflags package \
-	Oldconfig Myread
+	Oldconfig Myread i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:voidflags:
 ?S:	This variable contains the eventual value of the VOIDFLAGS symbol,
@@ -68,6 +68,10 @@ echo "Checking to see how well your C compiler groks the void type..." >&4
 case "$voidflags" in
 '')
 	$cat >try.c <<'EOCP'
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #if TRY & 1
 void sub() {
 #else

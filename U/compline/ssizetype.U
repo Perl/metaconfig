@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0.1.1  1994/08/29  16:33:06  ram
 ?RCS: patch32: created by ADO
 ?RCS:
-?MAKE:ssizetype: Myread Typedef sizetype cat rm Compile run
+?MAKE:ssizetype: Myread Typedef sizetype cat rm Compile run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:ssizetype:
 ?S:	This variable defines ssizetype to be something like ssize_t, 
@@ -46,6 +46,10 @@ dflt="$ssizetype"
 ?X: Now check out whether sizeof(SSize_t) == sizeof(Size_t)
 $cat > try.c <<EOM
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #include <sys/types.h>
 #define Size_t $sizetype
 #define SSize_t $dflt

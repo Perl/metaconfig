@@ -16,7 +16,7 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  15:44:33  ram
 ?RCS: patch61: created
 ?RCS:
-?MAKE:d_sigsetjmp: Compile Setvar cat rm run
+?MAKE:d_sigsetjmp: Compile Setvar cat rm run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_sigsetjmp:
 ?S:	This variable conditionally defines the HAS_SIGSETJMP symbol,
@@ -64,6 +64,10 @@ case "$d_sigsetjmp" in
 '')
 	$cat >try.c <<'EOP'
 #include <setjmp.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 sigjmp_buf env;
 int set = 1;
 int main()

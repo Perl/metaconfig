@@ -20,7 +20,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:52  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:intsize longsize shortsize: Compile Myread cat rm run
+?MAKE:intsize longsize shortsize: Compile Myread cat rm run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:intsize:
 ?S:	This variable contains the value of the INTSIZE symbol, which
@@ -57,6 +57,10 @@ case "$intsize" in
 	echo "Checking to see how big your integers are..." >&4
 	$cat >try.c <<'EOCP'
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 int main()
 {
 @if INTSIZE || intsize

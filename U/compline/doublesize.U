@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:06  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:doublesize: cat rm Myread Compile run
+?MAKE:doublesize: cat rm Myread Compile run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:doublesize:
 ?S:	This variable contains the value of the DOUBLESIZE symbol, which
@@ -34,6 +34,10 @@ case "$doublesize" in
 	echo "Checking to see how big your double precision numbers are..." >&4
 	$cat >try.c <<'EOCP'
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 int main()
 {
     printf("%d\n", (int)sizeof(double));

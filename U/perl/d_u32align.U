@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_u32align: Compile cat rm Oldconfig run \
+?MAKE:d_u32align: Compile cat rm Oldconfig run i_stdlib \
 	byteorder u32type Myread Setvar u8type signal_t
 ?MAKE:	-pick add $@ %<
 ?S:d_u32align:
@@ -30,6 +30,10 @@ EOM
 case "$d_u32align" in
 '')   $cat >try.c <<EOCP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #define U32 $u32type
 #define BYTEORDER 0x$byteorder
 #define U8 $u8type

@@ -52,7 +52,7 @@ int main() {
 	printf("%s\n", "1");
 #endif
 #endif
-	exit(0);
+	(int)exit(0);
 }
 EOM
 if $cc -o try $ccflags $ldflags try.c; then

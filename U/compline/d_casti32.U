@@ -23,7 +23,7 @@
 ?X:
 ?X:	Can the compiler cast large floats to 32-bit integers?
 ?X:
-?MAKE:d_casti32: cat Compile rm intsize Setvar test signal_t run
+?MAKE:d_casti32: cat Compile rm intsize Setvar test signal_t run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_casti32:
 ?S:	This variable conditionally defines CASTI32, which indicates
@@ -47,6 +47,10 @@ else
 fi
 $cat >try.c <<EOCP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #include <sys/types.h>
 #include <signal.h>
 $signal_t blech(s) int s; { exit(3); }
