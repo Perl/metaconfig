@@ -37,12 +37,14 @@ case "$lns" in
 			issymlink="test -h"
 		fi		
 	fi
-	if $test "X$issymlink" = X; then
-		if  $test -h >/dev/null 2>&1; then
-			issymlink="$test -h"
-			echo "Your builtin 'test -h' may be broken, I'm using external '$test -h'." >&4
-		fi		
-	fi
+	case "$issymlink" in
+	"test -h")
+		if $test -h >/dev/null 2>&1; then
+			issymlink="/bin/test -h"
+			echo "Your builtin 'test -h' may be broken, I'm using external '/bin/test -h'." >&4
+		fi
+		;;
+	esac
 	if $test "X$issymlink" = X; then
 		if $test -L sym 2>/dev/null; then
 			issymlink="$test -L"
