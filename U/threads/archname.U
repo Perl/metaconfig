@@ -20,7 +20,7 @@
 ?RCS:
 ?MAKE:archname myarchname: sed Loc Myread Oldconfig osname test rm \
 	usethreads usemultiplicity use64bitint use64bitall archname64 \
-	uselongdouble
+	uselongdouble longdblsize doublesize
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current
@@ -109,13 +109,14 @@ case "$use64bitint$use64bitall" in
 *"$define"*)
 	case "$archname64" in
 	'')
+		"This architecture is naturally 64-bit, not changing architecture name." >&4
 		;;
 	*)
 		case "$use64bitint" in
 		"$define") echo "64 bit integers selected." >&4 ;;
 		esac
 		case "$use64bitall" in
-		"$define") echo "64 bit memory model selected." >&4 ;;
+		"$define") echo "Maximal 64 bitness selected." >&4 ;;
 		esac
 		case "$archname" in
 	        *-$archname64*) echo "...and architecture name already has $archname64." >&4
@@ -132,13 +133,20 @@ esac
 case "$uselongdouble" in
 $define)
 	echo "Long doubles selected." >&4
-	case "$archname" in
-        *-ld*) echo "...and architecture name already has -ld." >&4
-                ;;
-        *)      archname="$archname-ld"
-                echo "...setting architecture name to $archname." >&4
-                ;;
-        esac
+	case "$longdblsize" in
+	$doublesize)
+		"...but long doubles are equal to doubles, not changing architecture name." >&4
+		;;
+	*)
+		case "$archname" in
+	        *-ld*) echo "...and architecture name already has -ld." >&4
+	                ;;
+	        *)      archname="$archname-ld"
+	                echo "...setting architecture name to $archname." >&4
+        	        ;;
+	        esac
+		;;
+	esac
 	;;
 esac
 @end
