@@ -40,7 +40,7 @@
 ?S:.
 ?V:fieldn
 ?F:./findhdr !fieldn
-?T:cline pos wanted name awkprg usrincdir status
+?T:cline pos wanted name awkprg usrincdir status cppfilter
 : determine filename position in cpp output
 echo " "
 echo "Computing filename position in cpp output for #include directives..." >&4
@@ -91,8 +91,12 @@ do
 done
 awkprg='{ print \$$fieldn }'
 echo "#include <\$wanted>" > foo\$\$.c
+case "$osname" in
+vos) cppfilter="tr '\\\\>' '/'" ;; # path component separator is >
+*)   cppfilter="cat" ;;
+esac
 $cppstdin $cppminus $cppflags < foo\$\$.c 2>/dev/null | \
-$grep "^[ 	]*#.*\$wanted" | \
+$cppfilter | $grep "^[ 	]*#.*\$wanted" | \
 while read cline; do
 	name=\`echo \$cline | $awk "\$awkprg" | $tr -d '"'\`
 	case "\$name" in
