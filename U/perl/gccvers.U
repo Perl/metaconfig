@@ -21,6 +21,7 @@
 ?S:	version used to compile the gcc.  It is set to '' if not gcc,
 ?S:	or if nothing useful can be parsed as the os version.
 ?S:.
+?T:gccshortvers
 ?F:!gccvers
 ?D:gccversion=''
 ?LINT:change cpp
@@ -66,7 +67,9 @@ case "$gccversion" in
 esac
 case "$gccversion" in
 '') gccosandvers='' ;;
-*) gccosandvers=`$cc -v 2>&1|grep '/specs$'|sed 's!.*/[^-]*-[^-]*-\([^/]*\)/'$gccversion'/specs'$!\1!'`
+*) gccshortvers=`echo "$gccversion"|sed 's/ .*//'`
+   gccosandvers=`$cc -v 2>&1|grep '/specs$'|sed "s!.*/[^-/]*-[^-/]*-\([^-/]*\)/$gccshortvers/specs!\1!"`
+   gccshortvers=''
    case "$gccosandvers" in
    $osname) gccosandvers='' ;; # linux gccs seem to have no linux osvers, grr
    $osname$osvers) ;; # looking good
