@@ -1,0 +1,52 @@
+?RCS: $Id: i_malloc.U,v 3.1 2003/01/21 18:51:51 merijn Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: i_malloc.U,v $
+?RCS: Revision 3.1  2003/01/21  18:51:51  merijn
+?RCS: Moved to modified: Ihdr replaced with Compile
+?RCS:
+?RCS: $Log: i_malloc.U,v $
+?RCS: Revision 3.0  1993/08/18  12:08:21  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:i_malloc: cat rm Compile Setvar
+?MAKE:	-pick add $@ %<
+?S:i_malloc:
+?S:	This variable conditionally defines the I_MALLOC symbol, and indicates
+?S:	whether a C program should include <malloc.h>.
+?S:.
+?C:I_MALLOC:
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <malloc.h>.
+?C:.
+?H:#$i_malloc I_MALLOC		/**/
+?H:.
+?LINT:set i_malloc
+: see if this is a malloc.h system
+: we want a real compile instead of Inhdr because some systems have a
+: malloc.h that just gives a compile error saying to use stdlib.h instead
+echo " "
+$cat >try.c <<EOCP
+#include <stdlib.h>
+#include <malloc.h>
+int main () { return 0; }
+EOCP
+set try
+if eval $compile; then
+    echo "<malloc.h> found." >&4
+    val="$define"
+else
+    echo "<malloc.h> NOT found." >&4
+    val="$undef"
+fi
+$rm -f try.c try
+set i_malloc
+eval $setvar
+
