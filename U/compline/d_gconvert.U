@@ -177,12 +177,13 @@ EOP
 case "$d_Gconvert" in
 gconvert*) xxx_list='gconvert gcvt sprintf' ;;
 gcvt*) xxx_list='gcvt gconvert sprintf' ;;
+sprintf*) xxx_list='sprintf gconvert gcvt' ;;
 *) xxx_list='gconvert gcvt sprintf' ;;
 esac
 
 case "$d_longdbl$uselongdouble$d_PRIgldbl" in
 "$define$define$define")
-    # for long doubles prefer sprintf
+    # for long doubles prefer first qgcvt, then sprintf
     xxx_list="`echo $xxx_list|sed s/sprintf//`" 
     xxx_list="sprintf $xxx_list"
     case "$d_qgcvt" in
