@@ -174,7 +174,7 @@ if $test X"$sPRId64" = X -a X"$d_longlong" = X"$define" -a X"$longlongsize" = X8
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
-  long long q = 12345678901;
+  long long q = 12345678901LL; /* AIX cc requires the LL prefix. */
   printf("%lld\n", q);
 }
 EOCP
