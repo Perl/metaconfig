@@ -1,0 +1,62 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:gccversion: cat cpp rm +cc \
+	Mcc Myread Guess Options Oldconfig Loc
+?MAKE:	-pick add $@ %<
+?S:gccversion:
+?S:	If GNU cc (gcc) is used, this variable holds '1' or '2' to 
+?S:	indicate whether the compiler is version 1 or 2.  This is used in
+?S:	setting some of the default cflags.  It is set to '' if not gcc.
+?S:.
+?F:!gccvers
+?D:gccversion=''
+?LINT:change cpp
+?LINT:extern ldflags
+?X: Check if they have gcc in any guise.  
+echo " "
+echo "Checking for GNU cc in disguise and/or its version number..." >&4
+$cat >gccvers.c <<EOM
+#include <stdio.h>
+int main() {
+#ifdef __GNUC__
+#ifdef __VERSION__
+	printf("%s\n", __VERSION__);
+#else
+	printf("%s\n", "1");
+#endif
+#endif
+	exit(0);
+}
+EOM
+if $cc $ldflags -o gccvers gccvers.c; then
+	gccversion=`./gccvers`
+	case "$gccversion" in
+	'') echo "You are not using GNU cc." ;;
+	*)  echo "You are using GNU cc $gccversion."
+	    ;;
+	esac
+else
+	echo " "
+	echo "*** WHOA THERE!!! ***" >&4
+	echo "    Your C compiler \"$cc\" doesn't seem to be working!" >&4
+?X: using -K will prevent aborting--maybe they're cross compiling?
+	case "$knowitall" in
+	'')
+	echo "    You'd better start hunting for one and let me know about it." >&4
+		exit 1
+		;;
+	esac
+fi
+$rm -f gccvers*
+case "$gccversion" in
+1*) cpp=`./loc gcc-cpp $cpp $pth` ;;
+esac
+

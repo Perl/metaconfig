@@ -54,10 +54,11 @@
 ?S:	huge model is not supported, contains the flag to produce large
 ?S:	model programs.  It is up to the Makefile to use this.
 ?S:.
-?T:unsplit tans
+?T:unsplit tans modelcc
 ?X: This really is a temporary file, but Metalint gets fooled :-(.  --AD.
 ?X:?F:!pdp11
 ?D:large=''
+?LINT:extern cc
 : see what memory models we can support
 case "$models" in
 '')
@@ -74,7 +75,11 @@ int main() {
 EOP
 ?X: Run cc in a subshell in case they don't have a 'cc' command.
 ?X: Presumably they do have gcc or something.
-	( cc -o pdp11 pdp11.c ) >/dev/null 2>&1
+	case "$cc" in
+	'') modelcc="$cc" ;;
+	*) modelcc="cc" ;;
+	esac
+	( $modelcc -o pdp11 pdp11.c ) >/dev/null 2>&1
 	if $test -f pdp11 && ./pdp11 2>/dev/null; then
 		dflt='unsplit split'
 	else

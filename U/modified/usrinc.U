@@ -1,4 +1,4 @@
-?RCS: $Id: usrinc.U,v 3.0.1.3 1997/02/28 16:27:12 ram Exp $
+?RCS: $Id: usrinc.U,v 1.1 2000/06/27 00:20:28 jhi Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
 ?RCS: 
@@ -9,6 +9,9 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: usrinc.U,v $
+?RCS: Revision 1.1  2000/06/27 00:20:28  jhi
+?RCS: Initial revision
+?RCS:
 ?RCS: Revision 3.0.1.3  1997/02/28  16:27:12  ram
 ?RCS: patch61: don't ask for the include path unless they are on a MIPS
 ?RCS:
@@ -21,7 +24,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:58  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:usrinc incpath mips_type: test cat echo n c +cc Getfile Guess \
+?MAKE:usrinc incpath mips_type: test cat echo n c Getfile Guess \
 	Oldconfig eunicefix contains rm
 ?MAKE:	-pick add $@ %<
 ?S:usrinc:
@@ -60,7 +63,7 @@ if $test -f /bin/mips && /bin/mips; then
 /bsd43
 #endif
 EOCP
-	if $cc -E usr.c > usr.out && $contains / usr.out >/dev/null 2>&1; then
+	if cc -E usr.c > usr.out && $contains / usr.out >/dev/null 2>&1; then
 		dflt='/bsd43/usr/include'
 		incpath='/bsd43'
 		mips_type='BSD 4.3'

@@ -34,7 +34,7 @@
 ?RCS:
 ?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs libspath: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
-	usesocks ccflags sed
+	usesocks sed
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
@@ -100,7 +100,8 @@ esac
 case "$libswanted" in
 '') libswanted='c_s';;
 esac
-?X: libsocks has nasty naming.
+?X: libsocks has nasty naming scheme.
+?X: This does not work if somebody wants SOCKS 4. 
 case "$usesocks" in
 "$define") libswanted="$libswanted socks5 socks5_sh" ;;
 esac

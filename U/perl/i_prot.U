@@ -22,27 +22,3 @@
 set prot.h i_prot
 eval $inhdr
 
-?RCS: $Id: i_shadow.U,v $
-?RCS:
-?RCS: Copyright (c) 2000 Jarkko Hietaniemi
-?RCS:
-?RCS: You may distribute under the terms of either the GNU General Public
-?RCS: License or the Artistic License, as specified in the README file.
-?RCS:
-?MAKE:i_prot: Inhdr Hasfield
-?MAKE:	-pick add $@ %<
-?S:i_prot:
-?S:	This variable conditionally defines the I_PROT symbol, and indicates
-?S:	whether a C program should include <prot.h>.
-?S:.
-?C:I_PROT:
-?C:	This symbol, if defined, indicates that <prot.h> exists and
-?C:	should be included.
-?C:.
-?H:#$i_prot	I_PROT		/**/
-?H:.
-?LINT:set i_prot
-: see if this is a prot.h system
-set prot.h i_prot
-eval $inhdr
-

@@ -43,6 +43,10 @@
 ?MAKE:	-pick c_h_weed $@ %<
 ?MAKE:	-pick c_h_weed $@ ./Config_h
 ?MAKE:	-pick c_h_weed $@ ./Obsol_h
+?LINT:extern CONFIG_H
+?LINT:extern CONFIG_SH
+?LINT:change CONFIG_H
+?LINT:change CONFIG_SH
 ?T:CONFIG TOP
 case "$CONFIG_SH" in
 '') CONFIG_SH=config.sh ;;
