@@ -1,0 +1,34 @@
+?RCS: $Id: relocation.U,v 1.0 20041229 14:00:00 merijn Exp merijn $
+?RCS:
+?RCS: Copyright (c) 2004, H.Merijn Brand, Nicholas Clarck
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS:
+?MAKE:userelocatableinc: archlib privlib sitearch sitelib vendorarch vendorlib
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:userelocatableinc:
+?S: 	This variable is set to true to indicate that perl should relocate
+?S: 	@INC entries at runtime based on the path to the perl binary.
+?S: 	Any @INC paths starting ".../" are relocated relative to the directory
+?S: 	containing the perl binary, and a logical cleanup of the path is then
+?S: 	made around the join point (removing "dir/../" pairs)
+?S:.
+?C:PERL_RELOCATABLE_INC:
+?C:	This symbol, if defined, indicates that we'd like to relocate entries
+?C:	in @INC at run time based on the location of the perl binary.
+?C:.
+?H:#define PERL_RELOCATABLE_INC "$userelocatableinc" 		/**/
+?H:.
+?T:need_relocation
+?LINT:extern archlib privlib sitearch sitelib vendorarch vendorlib
+# probably will refer to
+#   $archlib $privlib $sitearch $sitelib $vendorarch $vendorlib
+need_relocation=0
+userelocatableinc=undef
+
