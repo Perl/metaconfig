@@ -1,0 +1,50 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_printf_exp_digits: Compile cat rm _exe
+?MAKE:	-pick add $@ %<
+?S:d_printf_exp_digits:
+?S:	This symbol's value is either 2 or 3, corresponding to the
+?S:	number of exponent digits produced by the system's sprintf %[FGfg]
+?S:	formats when the modulus of the exponent is 99 or less.
+?S:.
+?C:PRINTF_EXP_DIGITS:
+?C:	This symbol's value is either 2 or 3, corresponding to the
+?C:	number of exponent digits produced by the system's sprintf %[FGfg]
+?C:	formats when the modulus of the exponent is 99 or less.
+?C:.
+?H:#define PRINTF_EXP_DIGITS $d_printf_exp_digits
+?H:.
+?LINT:set d_strtoll
+echo " "
+echo "Checking how many exponent digits your sprintf formats use..."
+$cat >try.c <<'EOSC'
+#include <stdio.h> 
+int main() {
+  char b[10];
+  exit(sprintf(b, "%0.1e", 1.2) - 5);
+}
+EOSC
+set try
+if eval $compile; then
+	./try$_exe
+	case "$?" in
+	2|3)	d_printf_exp_digits=$? ;;
+	esac
+fi
+case "$d_printf_exp_digits" in
+2|3)	echo "Your sprintf seems to use $d_printf_exp_digits exponent digits."
+	;;
+*)	cat <<EOM >&4
+I do not understand what your sprintf is saying.
+I'm guessing it uses at least 2 exponent digits.
+EOM
+	d_printf_exp_digits=2
+	;;
+esac
+$rm -f try try.*
+
