@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_sockatmark: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_sockatmark:
+?S:	This variable conditionally defines the HAS_SOCKATMARK symbol, which
+?S:	indicates to the C program that the sockatmark() routine is available.
+?S:.
+?C:HAS_SOCKATMARK:
+?C:	This symbol, if defined, indicates that the sockatmark routine is
+?C:	available to test whether a socket is at the out-of-band mark.
+?C:.
+?H:#$d_sockatmark HAS_SOCKATMARK		/**/
+?H:.
+?LINT:set d_sockatmark
+: see if sockatmark exists
+set sockatmark d_sockatmark
+eval $inlibc
+

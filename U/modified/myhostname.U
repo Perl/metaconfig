@@ -60,6 +60,7 @@
 ?H:#define MYHOSTNAME "$myhostname"		/**/
 ?H:#define MYDOMAIN "$mydomain"		/**/
 ?H:.
+?LINT:extern osname
 ?T:cont i tans tmp_re
 : now get the host name
 echo " "

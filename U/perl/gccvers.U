@@ -25,6 +25,7 @@
 ?F:!gccvers
 ?D:gccversion=''
 ?LINT:change cpp
+?LINT:extern ccflags
 ?LINT:extern ldflags
 ?LINT:extern ccname
 ?LINT:change ccname
