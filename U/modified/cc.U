@@ -26,18 +26,15 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:30  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:cc: cat contains sysman +large cpp rm \
-	Mcc Myread Guess Options Oldconfig Loc test
+?MAKE:cc: cat contains sysman +large cpp \
+	Mcc Myread Guess Options Oldconfig Loc test Checkcc
 ?MAKE:	-pick add $@ %<
 ?S:cc:
 ?S:	This variable holds the name of a command to execute a C compiler which
 ?S:	can resolve multiple global references that happen to have the same
 ?S:	name.  Usual values are 'cc', 'Mcc', 'cc -M', and 'gcc'.
-?S:	Fervent ANSI compilers may be called 'c89'.
-?S:	AIX has xlc.
+?S:	Fervent ANSI compilers may be called 'c89'. AIX has xlc.
 ?S:.
-?T:despair
-?T:trygcc
 ?F:!cc.cbu
 ?D:cc='cc'
 ?LINT:change cpp
@@ -97,44 +94,5 @@ fi
 if $test -f cc.cbu; then
     . ./cc.cbu
 fi
-: Quick sanity check, we will do a fuller one later when we know
-: the various flags and libs
-$rm -f try try.*
-$cat >try.c <<EOM
-int main(int argc, char *argv[]) {
-  return 0;
-}
-EOM
-if $cc -o try try.c; then
-   :
-else
-   echo "Uh-oh, the C compiler '$cc' doesn't seem to be working..." >&4
-   despair=yes
-   trygcc=yes
-   case "$cc" in
-   *gcc) trygcc=no ;;
-   esac
-   case "`$cc -v 2>&1`" in
-   *gcc*) trygcc=no ;;
-   esac
-   if $test X"$trygcc" = Xyes; then
-      if gcc -o try try.c; then
-        echo " "
-        echo "You seem to have a working gcc, though." >&4
-        rp="Do you want to use it?"
-        dflt=y
-        . ./myread
-        case "$ans" in
-        [yY]*) cc=gcc; despair=no ;;
-        esac
-      fi
-   fi
-   if $test X"$despair" = Xyes; then
-      echo "You need to find a working C compiler." >&4
-      echo "I cannot continue any further, aborting." >&4
-      exit 1
-   fi
-fi
-$rm -f try try.*
-
+. ./checkcc
 

@@ -57,7 +57,7 @@
 ?X: This unit tries to remember what we did last time we ran Configure, mostly
 ?X: for the sake of setting defaults.
 ?X:
-?MAKE:Oldconfig hint myuname osname osvers: Instruct Myread uname \
+?MAKE:Oldconfig hint myuname osname osvers: Instruct Myread uname Checkcc \
 	sh awk sed test cat rm lns tr n c contains Loc Options Tr src trnl ln
 ?MAKE:	-pick wipe $@ %<
 ?S:myuname:
@@ -165,6 +165,7 @@ if test -f config.sh; then
 		;;
 	esac
 fi
+. ./UU/checkcc
 if test ! -f config.sh; then
 	$cat <<EOM
 
