@@ -20,7 +20,7 @@
 ?RCS:
 ?MAKE:archname myarchname: sed Loc Myread Oldconfig osname test rm \
 	usethreads usemultiplicity use64bitint use64bitall archname64 \
-	uselongdouble longdblsize doublesize useperlio targetarch sanelongdbl
+	uselongdouble longdblsize doublesize useperlio targetarch
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current

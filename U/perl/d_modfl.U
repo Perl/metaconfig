@@ -6,7 +6,8 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_modfl d_modflproto d_modfl_pow32_bug: Inlibc Compile Hasproto cat \
-	rm test sPRIfldbl d_longdbl osname gccversion ccflags run
+	rm test sPRIfldbl d_longdbl osname gccversion ccflags run \
+	uselongdouble d_sqrtl d_aintl d_copysignl
 ?MAKE:	-pick add $@ %<
 ?S:d_modfl:
 ?S:	This variable conditionally defines the HAS_MODFL symbol, which
@@ -51,6 +52,8 @@
 ?LINT:set d_modflproto
 ?LINT:set d_modfl_pow32_bug
 ?LINT:change ccflags
+?LINT:change uselongdouble
+?T: message
 : see if modfl exists
 set modfl d_modfl
 eval $inlibc
@@ -122,4 +125,39 @@ EOCP
 	esac
 	;;
 esac
+
+if $test "$uselongdouble" = "$define"; then
+    message="No more information."
+    case "$d_sqrtl:$d_modfl" in
+    $define:$define)
+	: You have both
+	;;
+    $define:$undef)
+	if $test "$d_aintl:$d_copysignl" = "$define:$define"; then
+	    echo "You have both aintl and copysignl, so I can emulate modfl."
+	else
+	    message="I could not find modfl."
+	fi
+	;;
+    $undef:$define)
+	message="I could not find sqrtl."
+	;;
+    $undef:$undef)
+	message="I found neither sqrtl nor modfl."
+	;;
+    esac
+
+    if $test "$message" != X; then
+	$cat <<EOM >&4
+
+*** You requested the use of long doubles but you do not seem to have
+*** the mathematic functions for long doubles.
+*** ($message)
+*** I'm disabling the use of long doubles.
+
+EOM
+
+	uselongdouble=$undef
+    fi
+fi
 
