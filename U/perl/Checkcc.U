@@ -7,16 +7,28 @@
 ?X: This unit produces a bit of shell code that must be dotted in order
 ?X: to make quick check on whether the current C compiler is working.
 ?X:	
-?MAKE:Checkcc: rm cat test Myread startsh
+?MAKE:Checkcc ccname ccversion: rm cat test Myread startsh
 ?MAKE:	-pick add $@ %<
+?S:ccname:
+?S:	This can set either by hints files or by Configure.  If using
+?S:	gcc, this is gcc, and if not, usually equal to cc, unimpressive, no?
+?S:	Some platforms, however, make good use of this by storing the
+?S:	flavor of the C compiler being used here.  For example if using
+?S:	the Sun WorkShop suite, ccname will be 'workshop'.
+?S:.
+?S:ccversion:
+?S:	This can set either by hints files or by Configure.  If using
+?S:	a (non-gcc) vendor cc, this variable may contain a version for
+?S:	the compiler.
+?S:.
 ?T: trygcc despair
 ?F:./checkcc
+?INIT:ccname=''
+?INIT:ccversion=''
 ?LINT:extern cc
 ?LINT:change cc
 ?LINT:extern ccflags
 ?LINT:change ccflags
-?LINT:extern ccname
-?LINT:change ccname
 cat <<EOS >checkcc
 $startsh
 EOS

@@ -5,13 +5,13 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:ivdformat uvuformat uvoformat uvxformat uvXformat \
-	nvEformat nvFformat nvGformat \
+?MAKE:ivdformat uvuformat uvoformat uvxformat uvXUformat \
+	nvEUformat nvFUformat nvGUformat \
 	nveformat nvfformat nvgformat: \
 	ivsize longsize intsize shortsize \
-	sPRId64 sPRIu64 sPRIo64 sPRIx64 sPRIX64 \
+	sPRId64 sPRIu64 sPRIo64 sPRIx64 sPRIXU64 \
 	uselongdouble d_longdbl d_PRIgldbl \
-	sPRIEldbl sPRIFldbl sPRIGldbl sPRIeldbl sPRIfldbl sPRIgldbl \
+	sPRIEUldbl sPRIFUldbl sPRIGUldbl sPRIeldbl sPRIfldbl sPRIgldbl \
 	test echo
 ?MAKE:	-pick add $@ %<
 ?S:ivdformat:
@@ -30,7 +30,7 @@
 ?S:	This variable contains the format string used for printing
 ?S:	a Perl UV as an unsigned hexadecimal integer in lowercase abcdef.
 ?S:.
-?S:uvXformat:
+?S:uvXUformat:
 ?S:	This variable contains the format string used for printing
 ?S:	a Perl UV as an unsigned hexadecimal integer in uppercase ABCDEF.
 ?S:.
@@ -46,15 +46,15 @@
 ?S:	This variable contains the format string used for printing
 ?S:	a Perl NV using %g-ish floating point format.
 ?S:.
-?S:nvEformat:
+?S:nvEUformat:
 ?S:	This variable contains the format string used for printing
 ?S:	a Perl NV using %E-ish floating point format.
 ?S:.
-?S:nvFformat:
+?S:nvFUformat:
 ?S:	This variable confains the format string used for printing
 ?S:	a Perl NV using %F-ish floating point format.
 ?S:.
-?S:nvGformat:
+?S:nvGUformat:
 ?S:	This variable contains the format string used for printing
 ?S:	a Perl NV using %G-ish floating point format.
 ?S:.
@@ -106,13 +106,13 @@
 ?H:#define	UVuf		$uvuformat		/**/
 ?H:#define	UVof		$uvoformat		/**/
 ?H:#define	UVxf		$uvxformat		/**/
-?H:#define	UVXf		$uvXformat		/**/
+?H:#define	UVXf		$uvXUformat		/**/
 ?H:#define	NVef		$nveformat		/**/
 ?H:#define	NVff		$nvfformat		/**/
 ?H:#define	NVgf		$nvgformat		/**/
-?H:#define	NVEf		$nvEformat		/**/
-?H:#define	NVFf		$nvFformat		/**/
-?H:#define	NVGf		$nvGformat		/**/
+?H:#define	NVEf		$nvEUformat		/**/
+?H:#define	NVFf		$nvFUformat		/**/
+?H:#define	NVGf		$nvGUformat		/**/
 ?H:.
 
 echo " "
@@ -123,21 +123,21 @@ if $test X"$ivsize" = X8; then
 	uvuformat="$sPRIu64"
 	uvoformat="$sPRIo64"
 	uvxformat="$sPRIx64"
-	uvXformat="$sPRIX64"
+	uvXUformat="$sPRIXU64"
 else
 	if $test X"$ivsize" = X"$longsize"; then
 		ivdformat='"ld"'
 		uvuformat='"lu"'
 		uvoformat='"lo"'
 		uvxformat='"lx"'
-		uvXformat='"lX"'
+		uvXUformat='"lX"'
 	else
 		if $test X"$ivsize" = X"$intsize"; then
 			ivdformat='"d"'
 			uvuformat='"u"'
 			uvoformat='"o"'
 			uvxformat='"x"'
-			uvXformat='"X"'
+			uvXUformat='"X"'
 		else
 			: far out
 			if $test X"$ivsize" = X"$shortsize"; then
@@ -145,7 +145,7 @@ else
 				uvuformat='"hu"'
 				uvoformat='"ho"'
 				uvxformat='"hx"'
-				uvXformat='"hX"'
+				uvXUformat='"hX"'
 			fi
 		fi
 	fi
@@ -155,16 +155,16 @@ if $test X"$uselongdouble" = X"$define" -a X"$d_longdbl" = X"$define" -a X"$d_PR
 	nveformat="$sPRIeldbl"
 	nvfformat="$sPRIfldbl"
 	nvgformat="$sPRIgldbl"
-	nvEformat="$sPRIEldbl"
-	nvFformat="$sPRIFldbl"
-	nvGformat="$sPRIGldbl"
+	nvEUformat="$sPRIEUldbl"
+	nvFUformat="$sPRIFUldbl"
+	nvGUformat="$sPRIGUldbl"
 else
 	nveformat='"e"'
 	nvfformat='"f"'
 	nvgformat='"g"'
-	nvEformat='"E"'
-	nvFformat='"F"'
-	nvGformat='"G"'
+	nvEUformat='"E"'
+	nvFUformat='"F"'
+	nvGUformat='"G"'
 fi
 
 case "$ivdformat" in

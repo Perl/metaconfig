@@ -5,8 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_PRId64 d_PRIi64 d_PRIu64 d_PRIo64 d_PRIx64 d_PRIX64 \
-	sPRId64 sPRIi64 sPRIu64 sPRIo64 sPRIx64 sPRIX64: \
+?MAKE:d_PRId64 d_PRIi64 d_PRIu64 d_PRIo64 d_PRIx64 d_PRIXU64 \
+	sPRId64 sPRIi64 sPRIu64 sPRIo64 sPRIx64 sPRIXU64: \
 	quadtype i_inttypes test cat rm Setvar Compile exe_ext
 ?MAKE:	-pick add $@ %<
 ?S:d_PRId64:
@@ -30,9 +30,11 @@
 ?S:	This variable conditionally defines the PERL_PRIx64 symbol, which
 ?S:	indiciates that stdio has a symbol to print 64-bit hexadecimal numbers.
 ?S:.
-?S:d_PRIX64:
-?S:	This variable conditionally defines the PERL_PRIX64 symbol, which
+?S:d_PRIXU64:
+?S:	This variable conditionally defines the PERL_PRIXU64 symbol, which
 ?S:	indiciates that stdio has a symbol to print 64-bit hExADECimAl numbers.
+?S:	The 'U' in the name is to separate this from d_PRIx64 so that even
+?S:	case-blind systems can see the difference.
 ?S:.
 ?S:sPRId64:
 ?S:	This variable, if defined, contains the string used by stdio to
@@ -54,9 +56,11 @@
 ?S:	This variable, if defined, contains the string used by stdio to
 ?S:	format 64-bit hexadecimal numbers (format 'x') for output.
 ?S:.
-?S:sPRIX64:
+?S:sPRIXU64:
 ?S:	This variable, if defined, contains the string used by stdio to
 ?S:	format 64-bit hExADECimAl numbers (format 'X') for output.
+?S:	The 'U' in the name is to separate this from sPRIx64 so that even
+?S:	case-blind systems can see the difference.
 ?S:.
 ?C:PERL_PRId64:
 ?C:	This symbol, if defined, contains the string used by stdio to
@@ -78,7 +82,7 @@
 ?C:	This symbol, if defined, contains the string used by stdio to
 ?C:	format 64-bit hexadecimal numbers (format 'x') for output.
 ?C:.
-?C:PERL_PRIX64:
+?C:PERL_PRIXU64:
 ?C:	This symbol, if defined, contains the string used by stdio to
 ?C:	format 64-bit hExADECimAl numbers (format 'X') for output.
 ?C:.
@@ -87,7 +91,7 @@
 ?H:#$d_PRIu64 PERL_PRIu64	$sPRIu64	/**/
 ?H:#$d_PRIo64 PERL_PRIo64	$sPRIo64	/**/
 ?H:#$d_PRIx64 PERL_PRIx64	$sPRIx64	/**/
-?H:#$d_PRIx64 PERL_PRIX64	$sPRIX64	/**/
+?H:#$d_PRIx64 PERL_PRIXU64	$sPRIXU64	/**/
 ?H:.
 ?F:!try
 ?T:yyy
@@ -112,7 +116,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"d"'; sPRIi64='"i"'; sPRIu64='"u"';
-                	sPRIo64='"o"'; sPRIx64='"x"'; sPRIX64='"X"';
+                	sPRIo64='"o"'; sPRIx64='"x"'; sPRIXU64='"X"';
 			echo "We will use %d."
 			;;
 		esac
@@ -134,7 +138,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"ld"'; sPRIi64='"li"'; sPRIu64='"lu"';
-                	sPRIo64='"lo"'; sPRIx64='"lx"'; sPRIX64='"lX"';
+                	sPRIo64='"lo"'; sPRIx64='"lx"'; sPRIXU64='"lX"';
 			echo "We will use %ld."
 			;;
 		esac
@@ -157,7 +161,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64=PRId64; sPRIi64=PRIi64; sPRIu64=PRIu64;
-                	sPRIo64=PRIo64; sPRIx64=PRIx64; sPRIX64=PRIX64;
+                	sPRIo64=PRIo64; sPRIx64=PRIx64; sPRIXU64=PRIXU64;
 			echo "We will use the C9X style."
 			;;
 		esac
@@ -179,7 +183,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"lld"'; sPRIi64='"lli"'; sPRIu64='"llu"';
-                	sPRIo64='"llo"'; sPRIx64='"llx"'; sPRIX64='"llX"';
+                	sPRIo64='"llo"'; sPRIx64='"llx"'; sPRIXU64='"llX"';
 			echo "We will use the %lld style."
 			;;
 		esac
@@ -201,7 +205,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"Ld"'; sPRIi64='"Li"'; sPRIu64='"Lu"';
-                	sPRIo64='"Lo"'; sPRIx64='"Lx"'; sPRIX64='"LX"';
+                	sPRIo64='"Lo"'; sPRIx64='"Lx"'; sPRIXU64='"LX"';
 			echo "We will use %Ld."
 			;;
 		esac
@@ -223,7 +227,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"qd"'; sPRIi64='"qi"'; sPRIu64='"qu"';
-                	sPRIo64='"qo"'; sPRIx64='"qx"'; sPRIX64='"qX"';
+                	sPRIo64='"qo"'; sPRIx64='"qx"'; sPRIXU64='"qX"';
 			echo "We will use %qd."
 			;;
 		esac
@@ -240,10 +244,10 @@ fi
 
 case "$sPRId64" in
 '')	d_PRId64="$undef"; d_PRIi64="$undef"; d_PRIu64="$undef"; 
-	d_PRIo64="$undef"; d_PRIx64="$undef"; d_PRIX64="$undef"; 
+	d_PRIo64="$undef"; d_PRIx64="$undef"; d_PRIXU64="$undef"; 
 	;;
 *)	d_PRId64="$define"; d_PRIi64="$define"; d_PRIu64="$define"; 
-	d_PRIo64="$define"; d_PRIx64="$define"; d_PRIX64="$define"; 
+	d_PRIo64="$define"; d_PRIx64="$define"; d_PRIXU64="$define"; 
 	;;
 esac
 
