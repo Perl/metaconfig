@@ -16,8 +16,8 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:31  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:patchlevel version subversion apiversion: package baserev test \
-	rsrc echo n c awk
+?MAKE:patchlevel version subversion apiversion: \
+	package baserev test rsrc echo n c awk
 ?MAKE:	-pick add $@ %<
 ?S:patchlevel:
 ?S:	The patchlevel level of this package.
@@ -36,13 +36,15 @@
 ?S:	like 5.004 instead of 5,004.  This is unique to perl.
 ?S:.
 ?S:apiversion:
-?S:	This is a number which identifies the lowest version of perl
-?S:	to have an API (for XS extensions) compatible with the present
-?S:	version.  For example, for 5.005_01, the apiversion should be
-?S:	5.005, since 5.005_01 should be binary compatible with 5.005.
-?S:	This should probably be incremented manually somehow, perhaps
-?S:	from patchlevel.h.  For now, we'll guess maintenance subversions
-?S:	will retain binary compatibility.
+?S:	MakeMaker will install add-on modules in a directory with the
+?S:	PERL_APIVERSION version number.  The value is set manually in
+?S:	patchlevel.h.  Normally, for maintenance releases, this is
+?S:	just something like 5.005 or 5.6 or 5.7.  That is, it does not
+?S:	include the subversion number and does not change across
+?S:	maintenance releases.  This is so that add-on extensions can
+?S:	be shared across maintenance versions.  It is unclear how this
+?S:	ought to work for developer versions.  If a release breaks
+?S:	binary compatibility, this number should be increased.
 ?S:.
 ?LINT:extern LC_ALL
 ?LINT:change LC_ALL
@@ -54,9 +56,11 @@ echo "Getting the current patchlevel..." >&4
 if $test -r $rsrc/patchlevel.h;then
 	patchlevel=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
 	subversion=`awk '/define[ 	]+PERL_SUBVERSION/ {print $3}' $rsrc/patchlevel.h`
+	apiversion=`awk '/define[ 	]+PERL_APIVERSION/ {print $3}' $rsrc/patchlevel.h`
 else
 	patchlevel=0
 	subversion=0
+	apiversion=0
 fi
 $echo $n "(You have $package" $c
 case "$package" in
@@ -75,14 +79,5 @@ else
 	version=`LC_ALL=C; export LC_ALL; \
 		 echo $baserev $patchlevel $subversion | \
 		 $awk '{ printf "%.5f\n", $1 + $2/1000.0 + $3/100000.0 }'`
-fi
-: Figure out perl API version.  Perhaps this should be in patchlevel.h
-if test "$subversion" -lt 50; then
-	apiversion=`LC_ALL=C; export LC_ALL; \
-		 LANGUAGE=C; export LANGUAGE; \
-		 echo $baserev $patchlevel | \
-		 $awk '{ printf "%.3f\n", $1 + $2/1000.0 }'`
-else
-	apiversion="$version"
 fi
 

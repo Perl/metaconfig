@@ -81,7 +81,7 @@ symbol:  while (defined($var = <WANTED>)) {
 EOE
             } else {
 	        print <<EOE;
-	This variable is be used internally by Configure to determine the
+	This variable is used internally by Configure to determine the
 	full pathname (if any) of the $var program.  After Configure runs,
 	the value is reset to a plain "$var" and is not useful.
 
