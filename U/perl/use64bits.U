@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:use64bits archname64: Myread Oldconfig Setvar test gccversion cat \
-	usemorebits
+	usemorebits uselfs
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bits:
@@ -36,7 +36,7 @@ cat <<EOM
 Perl can be built to take advantage of explicit 64-bit interfaces,
 on some systems.  To do so, Configure must be run with -Duse64bits.
 
-If this doesn't make any sense to you, just accept the default 'n'.
+If this doesn't make any sense to you, just accept the default.
 EOM
 case "$use64bits" in
 $define|true|[yY]*)	dflt='y';;

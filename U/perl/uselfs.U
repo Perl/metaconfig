@@ -5,30 +5,45 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:uselfs: Setvar
+?MAKE:uselfs: Myread Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselfs:
 ?S:	This variable conditionally defines the USE_LARGE_FILES symbol,
 ?S:	and indicates that large file interfaces should be used when
-?S:	available.  The use64bits symbol will also be turned on.
+?S:	available.  The use64bits symbol will also be turned on if necessary.
 ?S:.
 ?C:USE_LARGE_FILES:
 ?C:	This symbol, if defined, indicates that large file support
 ?C:	should be used when available.  The USE_64_BITS symbol will
-?C:	also be turned on.
+?C:	also be turned on if necessary.
 ?C:.
 ?H:#$uselfs	USE_LARGE_FILES		/**/
 ?H:.
+?LINT:set uselfs
 ?LINT:extern use64bits
 ?LINT:change use64bits
 
+cat <<EOM
+
+Perl can be built to understand large files (files larger than 2 gigabytes)
+on some systems.  To do so, Configure must be run with -Duselfs.
+
+If this doesn't make any sense to you, just accept the default.
+EOM
 case "$uselfs" in
-"$define"|true|[yY]*)
-	uselfs="$define"
-	use64bits="$define"
-	;;
-*)	uselfs="$undef"
-	;;
+"$define"|true|[yY]*) dflt='y' ;;
+*)	dflt='n' ;;
+esac
+rp='Try to understand large files?'
+. ./myread
+case "$ans" in
+y|Y) 	val="$define" ;;
+*)   	val="$undef"  ;;
+esac
+set uselfs
+eval $setvar
+case "$uselfs" in
+"$define") use64bits="$define" ;;
 esac
 
