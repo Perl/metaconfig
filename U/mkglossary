@@ -44,7 +44,7 @@ foreach $file (@perl_units) {
 	       @var = ();	     
 	    } else {
 	        s/^\?S://;	# Remove leading ?S: markers.
-	        s/^\s+/\t/;	# Ensure all lines begin with tabs.
+	        s/^\s+(?=.)/\t/;	# Ensure all lines begin with tabs.
 	        push @var, $_;
             }
 	}
