@@ -170,8 +170,8 @@ for thisincl in $inclwanted; do
 	if $test -d $thisincl; then
 		if $test x$thisincl != x$usrinc; then
 			case "$dflt" in
-			*$thisincl*);;
-			*) dflt="$dflt -I$thisincl";;
+                        *" -I$thisincl "*);;
+                        *) dflt="$dflt -I$thisincl ";;
 			esac
 		fi
 	fi
@@ -208,6 +208,7 @@ esac
 case "$dflt" in
 ''|' ') dflt=none;;
 esac
+
 $cat <<EOH
 
 Your C compiler may want other flags.  For this question you should include
