@@ -308,9 +308,9 @@ EOM
 esac
 
 ?X:
-?X: Unless they specified both -d and -e/E, make sure we're running
-?X: interactively, i.e. attached to a terminal. Moved from Head.U to be able
-?X: to handle batch configurations...
+?X: Unless they specified either -S or both -d and -e/E, make sure we're
+?X: running interactively, i.e. attached to a terminal. Moved from Head.U to
+?X: be able to handle batch configurations...
 ?X:
 ?X: We have to hardwire the Configure name and cannot use $me, since if they
 ?X: said 'sh <Configure', then $me is 'sh'...
@@ -319,10 +319,15 @@ esac
 case "$fastread$alldone" in
 yescont|yesexit) ;;
 *)
-	if test ! -t 0; then
-		echo "Say 'sh Configure', not 'sh <Configure'"
-		exit 1
-	fi
+	case "$extractsh" in
+	true) ;;
+	*)
+		if test ! -t 0; then
+			echo "Say 'sh Configure', not 'sh <Configure'"
+			exit 1
+		fi
+		;;
+	esac
 	;;
 esac
 
