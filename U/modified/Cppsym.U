@@ -39,12 +39,10 @@
 ?X: it in Myinit.U.
 ?X: 
 ?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: \
-	eunicefix Guess awk cat tr sed sort grep rm startsh osname exe_ext \
-	contains Compile +cc +gccversion test comm uniq echo n c Options trnl
+	eunicefix Guess awk cat tr sed sort rm startsh osname exe_ext \
+	Compile +cc +gccversion test comm uniq echo Options trnl
 ?MAKE:	-pick add $@ %<
-?F:./Cppsym
-?T:sym list unknown status also symbols i postprocess_cc_v
-?V:al
+?T:also symbols i postprocess_cc_v xxx
 ?X:
 ?X: The symbol list is in alpha order for ease of maintenance...
 ?X:
@@ -69,16 +67,16 @@
 ?S:	alone are not in this list, see ccsymbols and cppsymbols.
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
+?F:./Cppsym
 ?F:!Cppsym.true
 ?F:!ccsym.com
 ?F:!ccsym.cpp
 ?F:!ccsym.own
-?T:startsym
-?T:stopsym
-?T:symbols
-: get C preprocessor symbols handy
 echo " "
 $echo "Guessing which symbols your C compiler and preprocessor define..." >&4 
+?X: If your symbol is mixed case, just add it as-is.
+?X: All symbols will be transformed to both all-lower and all-upper.
+?X: Also drop any leading/trailing underscores, the scan will try all those.
 $cat <<'EOSH' > Cppsym.know
 a29k ABI64 aegis AES_SOURCE AIX AIX32 AIX370
 AIX41 AIX42 AIX43 AIX_SOURCE aixpc ALL_SOURCE
@@ -146,20 +144,43 @@ EOSH
 ./tr '[a-z]' '[A-Z]' < Cppsym.know > Cppsym.a
 ./tr '[A-Z]' '[a-z]' < Cppsym.know > Cppsym.b
 $cat Cppsym.a Cppsym.b | $tr ' ' $trnl | sort | uniq > Cppsym.know
+$rm -f Cppsym.a Cppsym.b
+cat <<EOSH > Cppsym
+$startsh
+if $test \$# -gt 0; then
+ echo \$* | $tr " " "$trnl" | ./Cppsym.try > Cppsym.got
+else
+  $tr " " "$trnl" | ./Cppsym.try > Cppsym.got
+fi
+$test -s Cppsym.got && exit 0
+exit 1
+EOSH
+chmod +x Cppsym
+$eunicefix Cppsym
+cat <<EOSH > Cppsym.try
 cat <<'EOCP' > try.c
 #include <stdio.h>
 int main() {
 EOCP
 ?X: The length($1) command guards against possible empty entries.
-$awk 'length($1) > 0 {
+$awk \\
+EOSH
+cat <<'EOSH' >> Cppsym.try
+'length($1) > 0 {
     printf "#ifdef %s\nprintf(\"%s\\n\");\n#endif\n", $1, $1
     printf "#ifdef _%s\nprintf(\"_%s\\n\");\n#endif\n", $1, $1
     printf "#ifdef __%s\nprintf(\"__%s\\n\");\n#endif\n", $1, $1
     printf "#ifdef __%s__\nprintf(\"__%s__\\n\");\n#endif\n", $1, $1 }' \
-	Cppsym.know >> try.c
+	 >> try.c
 echo '}' >> try.c
-	set try
-	eval $compile_ok && ./try$exe_ext > Cppsym.true
+EOSH
+cat <<'EOSH' >> Cppsym.try
+set try
+eval $compile_ok && ./try$exe_ext
+EOSH
+chmod +x Cppsym.try
+$eunicefix Cppsym.try
+./Cppsym < Cppsym.know > Cppsym.true
 : now check the C compiler for additional symbols
 ?X: suggested by Jarkko Hietaniemi <jhi@snakemail.hut.fi>, thanks!
 postprocess_cc_v=''
