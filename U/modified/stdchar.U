@@ -24,19 +24,25 @@
 ?C:.
 ?H:#define STDCHAR $stdchar	/**/
 ?H:.
+?T:stdiohdr
 : see what type of char stdio uses.
 echo " "
 if $contains 'unsigned.*char.*_ptr;' `./findhdr stdio.h` >/dev/null 2>&1 ; then
 	echo "Your stdio uses unsigned chars." >&4
 	stdchar="unsigned char"
 else
-	: Solaris 7+
-	if $contains 'unsigned.*char.*_ptr;' `./findhdr stdio_impl.h` >/dev/null 2>&1 ; then
-		echo "Your stdio uses unsigned chars." >&4
-		stdchar="unsigned char"
-	else
-		echo "Your stdio uses signed chars." >&4
-		stdchar="char"
-	fi
+	: Solaris 7+, others?
+	stdiohdr=`./findhdr stdio_impl.h`
+	case "$stdiohdr" in
+	'') ;;
+	*)	if $contains 'unsigned.*char.*_ptr;' $stdiohdr >/dev/null 2>&1 ; then
+			echo "Your stdio uses unsigned chars." >&4
+			stdchar="unsigned char"
+		else
+			echo "Your stdio uses signed chars." >&4
+			stdchar="char"
+		fi
+		;;
+	esac
 fi
 
