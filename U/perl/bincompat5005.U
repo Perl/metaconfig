@@ -30,7 +30,10 @@
 : Binary compatibility with 5.005 is not possible for builds
 : with advanced features
 case "$usethreads$usemultiplicity" in
-*define*) bincompat5005="$undef" ;;
+*define*)
+	bincompat5005="$undef"
+	d_bincompat5005="$undef"
+	;;
 *)	$cat <<EOM
 
 Perl 5.006 can be compiled for binary compatibility with 5.005.
@@ -51,8 +54,12 @@ EOM
 	set d_bincompat5005
 	eval $setvar
 	case "$d_bincompat5005" in
-	"$define") bincompat5005="$define" ;;
-	*) bincompat5005="$undef" ;;
+	"$define")
+		bincompat5005="$define"
+		;;
+	*)	bincompat5005="$undef"
+		d_bincompat5005="$undef"
+		;;
 	esac
 	;;
 esac
