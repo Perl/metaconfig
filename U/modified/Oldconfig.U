@@ -377,7 +377,10 @@ EOM
 ?X:	hp and mips were unsupported Technology Releases -- ADO, 24/10/94
 			esac
 			;;
-		uts) osname=uts 
+		unixware) osname=svr5
+			osvers="$4"
+			;;
+		uts) osname=uts
 			osvers="$3"
 			;;
 		qnx) osname=qnx
