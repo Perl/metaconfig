@@ -42,7 +42,10 @@
 : figure best path for perl in scripts
 case "$perlpath" in
 '')
-	perlpath="$binexp/perl"
+	case "$versiononly" in
+	"$define")	perlpath="$binexp/perl$version";;
+	*)		perlpath="$binexp/perl";;
+	esac
 	case "$startperl" in
 	*!*) ;;
 	*)
