@@ -74,9 +74,10 @@ case "$uselongdouble:$d_sqrtl" in
 $define:$undef)
 		$cat <<EOM >&4
 
-You requested the use of long doubles but you do not seem to have
-the mathematic functions for long doubles.  I'm disabling the use
-of long doubles.
+*** You requested the use of long doubles but you do not seem to have
+*** the mathematic functions for long doubles.  I'm disabling the use
+*** of long doubles.
+
 EOM
 	uselongdouble=$undef
 	;;
