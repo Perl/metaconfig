@@ -28,7 +28,7 @@
 echo " "
 if $test -d /usr/bin -a "X$installbin" != X/usr/bin; then
 	$cat <<EOM
-Many scripts expect to perl to be installed as /usr/bin/perl.
+Many scripts expect perl to be installed as /usr/bin/perl.
 I can install the perl you are about to compile also as /usr/bin/perl
 (in addition to $installbin/perl).
 EOM

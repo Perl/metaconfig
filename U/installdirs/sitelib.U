@@ -16,7 +16,7 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  16:21:35  ram
 ?RCS: patch61: created
 ?RCS:
-?MAKE:sitelib sitelibexp installsitelib: cat Getfile \
+?MAKE:sitelib sitelibexp installsitelib sitelib_stem: cat Getfile \
 	Oldconfig Prefixit package installprefix prefix \
 	version test sed installstyle siteprefix
 ?MAKE:	-pick add $@ %<
@@ -41,6 +41,11 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
+?S:sitelib_stem:
+?S:	This variable is $sitelibexp with any trailing version-specific component
+?S:	removed.  The elements in inc_version_list (inc_version_list.U) can
+?S:	be tacked onto this variable to generate a list of directories to search.
+?S:.
 ?C:SITELIB:
 ?C:	This symbol contains the name of the private library for this package.
 ?C:	The library is private in the sense that it needn't be in anyone's
@@ -56,8 +61,14 @@
 ?C:	This symbol contains the ~name expanded version of SITELIB, to be used
 ?C:	in programs that are not prepared to deal with ~ expansion at run-time.
 ?C:.
+?C:SITELIB_STEM:
+?C:	This define is SITELIB_EXP with any trailing version-specific component
+?C:	removed.  The elements in inc_version_list (inc_version_list.U) can
+?C:	be tacked onto this variable to generate a list of directories to search.
+?C:.
 ?H:#define SITELIB "$sitelib"		/**/
 ?H:#define SITELIB_EXP "$sitelibexp"		/**/
+?H:#define SITELIB_STEM "$sitelib_stem"		/**/
 ?H:.
 ?T:prog
 : determine where site specific libraries go.
@@ -88,6 +99,7 @@ rp='Pathname for the site-specific library files?'
 . ./getfile
 sitelib="$ans"
 sitelibexp="$ansexp"
+sitelib_stem=`echo "$sitelibexp" | sed "s,/$version$,,"`
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
 	installsitelib=`echo $sitelibexp | $sed "s#^$prefix#$installprefix#"`
