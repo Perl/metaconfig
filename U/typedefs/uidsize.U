@@ -1,0 +1,47 @@
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:uidsize: Myread Typedef uidtype
+?MAKE:	-pick add $@ %<
+?S:uidsize:
+?S:	This variable contains the size of a uidtype in bytes.
+?S:.
+?C:Uid_t_SIZE:
+?C:	This symbol holds the size of a Uid_t in bytes.
+?C:.
+?H:#define Uid_t_SIZE $uidsize		/* UID size */
+?H:.
+?F:!try
+?T:yyy
+?LINT: set uidsize
+echo " "
+echo "Checking the size of $uidtype..." >&4 
+ry.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+    printf("%d\n", sizeof(uid_t));
+}
+EOCP
+if eval $compile; then
+	yyy=`./try`
+	case "$yyy" in
+	'')	uidsize=4
+		echo "(I can't execute the test program--guessing $uidsize.)" >&4
+		;;
+	*)	uidsize=$yyy
+		echo "Your $uidtype size is $uidsize bytes."
+		;;
+	esac
+else
+	uidsize=4
+	echo "(I can't compile the test program--guessing $uidsize.)" >&4
+fi
+
+

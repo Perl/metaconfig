@@ -1,0 +1,55 @@
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:gidsign: Myread Typedef gidtype
+?MAKE:	-pick add $@ %<
+?S:gidsign:
+?S:	This variable contains the signedness of a gidtype.
+?S:	1 for unsigned, -1 for signed.
+?S:.
+?C:Gid_t_SIGN:
+?C:	This symbol holds the signedess of a Gid_t.
+?C:	1 for unsigned, -1 for signed.
+?C:.
+?H:#define Gid_t_SIGN	$gidsign		/* GID sign */
+?H:.
+?F:!try
+?T:yyy
+?LINT: set gidsign
+echo " "
+echo "Checking the sign of $gidtype..." >&4 
+ry.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+	$gidtype foo = -1;
+	if (foo < 0)
+		printf("-1\n");
+	else
+		printf("1\n");
+}
+EOCP
+if eval $compile; then
+	yyy=`./try`
+	case "$yyy" in
+	'')	gidsign=1
+		echo "(I can't execute the test program--guessing unsigned.)" >&4
+		;;
+	*)	gidsign=$yyy
+		case "$gidsign" in
+		 1) echo "Your $gidtype is unsigned." ;;
+		-1) echo "Your $gidtype is signed."   ;;
+		esac
+	esac
+else
+	gidsign=1
+	echo "(I can't compile the test program--guessing unsigned.)" >&4
+fi
+
+

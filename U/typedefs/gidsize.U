@@ -1,0 +1,47 @@
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:gidsize: Myread Typedef gidtype
+?MAKE:	-pick add $@ %<
+?S:gidsize:
+?S:	This variable contains the size of a gidtype in bytes.
+?S:.
+?C:Gid_t_SIZE:
+?C:	This symbol holds the size of a Gid_t in bytes.
+?C:.
+?H:#define Gid_t_SIZE $gidsize		/* GID size */
+?H:.
+?F:!try
+?T:yyy
+?LINT: set gidsize
+echo " "
+echo "Checking the size of $gidtype..." >&4 
+ry.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+    printf("%d\n", sizeof(gid_t));
+}
+EOCP
+if eval $compile; then
+	yyy=`./try`
+	case "$yyy" in
+	'')	gidsize=4
+		echo "(I can't execute the test program--guessing $gidsize.)" >&4
+		;;
+	*)	gidsize=$yyy
+		echo "Your $gidtype size is $gidsize bytes."
+		;;
+	esac
+else
+	gidsize=4
+	echo "(I can't compile the test program--guessing $gidsize.)" >&4
+fi
+
+

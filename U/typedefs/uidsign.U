@@ -1,0 +1,55 @@
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:uidsign: Myread Typedef uidtype
+?MAKE:	-pick add $@ %<
+?S:uidsign:
+?S:	This variable contains the signedness of a uidtype.
+?S:	1 for unsigned, -1 for signed.
+?S:.
+?C:Uid_t_SIGN:
+?C:	This symbol holds the signedess of a Uid_t.
+?C:	1 for unsigned, -1 for signed.
+?C:.
+?H:#define Uid_t_SIGN	$uidsign		/* UID sign */
+?H:.
+?F:!try
+?T:yyy
+?LINT: set uidsign
+echo " "
+echo "Checking the sign of $uidtype..." >&4 
+ry.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+	$uidtype foo = -1;
+	if (foo < 0)
+		printf("-1\n");
+	else
+		printf("1\n");
+}
+EOCP
+if eval $compile; then
+	yyy=`./try`
+	case "$yyy" in
+	'')	uidsign=1
+		echo "(I can't execute the test program--guessing unsigned.)" >&4
+		;;
+	*)	uidsign=$yyy
+		case "$uidsign" in
+		 1) echo "Your $uidtype is unsigned." ;;
+		-1) echo "Your $uidtype is signed."   ;;
+		esac
+	esac
+else
+	uidsign=1
+	echo "(I can't compile the test program--guessing unsigned.)" >&4
+fi
+
+
