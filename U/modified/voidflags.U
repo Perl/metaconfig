@@ -67,7 +67,7 @@ echo " "
 echo "Checking to see how well your C compiler groks the void type..." >&4
 case "$voidflags" in
 '')
-	$cat >try.c <<'EOCP'
+	$cat >try.c <<EOCP
 #$i_stdlib I_STDLIB
 #ifdef I_STDLIB
 #include <stdlib.h>

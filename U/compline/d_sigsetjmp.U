@@ -62,7 +62,7 @@
 echo " "
 case "$d_sigsetjmp" in
 '')
-	$cat >try.c <<'EOP'
+	$cat >try.c <<EOP
 #include <setjmp.h>
 #$i_stdlib I_STDLIB
 #ifdef I_STDLIB
