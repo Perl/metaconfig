@@ -49,14 +49,12 @@
 ?X:		
 ?X:		Andy Dougherty   Feb. 1998
 ?MAKE:Protochk: cat rm startsh eunicefix +cc +optimize +ccflags \
-	prototype 
+	prototype i_pthread usethreads
 ?MAKE:	-pick add $@ %<
 ?F:./protochk
 ?X: Comfort metalint.  All these are actually used in the protochk script.
 ?T:foo status pthread_h_done
 ?LINT: change cc optimize ccflags prototype define rm
-?LINT: extern usethreads
-?LINT: extern i_pthread
 ?LINT: extern pthread_h_first
 : define a fucntion to check prototypes
 $cat > protochk <<EOSH
@@ -67,6 +65,9 @@ ccflags="$ccflags"
 prototype="$prototype"
 define="$define"
 rm=$rm
+usethreads=$usethreads
+i_pthread=$i_pthread
+pthread_h_first=$pthread_h_first
 EOSH
 
 $cat >> protochk <<'EOSH'
