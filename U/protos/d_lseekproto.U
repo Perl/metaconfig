@@ -27,6 +27,6 @@
 ?LINT:set d_lseekproto 
 : see if prototype for lseek is available
 echo " "
-set d_lseekproto lseek $i_systypes sys/types.h $i_unistd unistd.h
+set lseek d_lseekproto $i_systypes sys/types.h $i_unistd unistd.h
 eval $hasproto
 
