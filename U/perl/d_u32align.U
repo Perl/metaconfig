@@ -37,7 +37,7 @@ $signal_t bletch(s) int s; { exit(4); }
 #endif
 int main() {
 #if BYTEORDER == 0x1234 || BYTEORDER == 0x4321
-    U8 *buf = (U8*)"\0\0\0\1\0\0\0\0";
+    U8 buf[8];
     U32 *up;
     int i;
 
@@ -51,6 +51,15 @@ int main() {
 #ifdef SIGBUS
     signal(SIGBUS, bletch);
 #endif
+
+    buf[0] = 0;
+    buf[1] = 0;
+    buf[2] = 0;
+    buf[3] = 1;
+    buf[5] = 0;
+    buf[6] = 0;
+    buf[7] = 0;
+    buf[8] = 1;
 
     for (i = 0; i < 4; i++) {
 	up = (U32*)(buf + i);

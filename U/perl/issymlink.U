@@ -25,10 +25,11 @@
 ?LINT:change PATH
 ?LINT:change test
 ?LINT:extern newsh
+?LINT:extern _exe
 : determine whether symbolic links are supported
 echo " "
 case "$lns" in
-*"ln -s")
+*"ln$_exe -s")
 	echo "Checking how to test for symbolic links..." >&4
 	$lns blurfl sym
 	if $test "X$issymlink" = X; then
