@@ -42,7 +42,7 @@ case "$ptrsize" in
 	else
 		echo '#define VOID_PTR void *' > try.c
 	fi
-	$cat >>try.c <<'EOCP'
+	$cat >>try.c <<EOCP
 #include <stdio.h>
 #$i_stdlib I_STDLIB
 #ifdef I_STDLIB
