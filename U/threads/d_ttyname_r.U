@@ -1,22 +1,22 @@
 ?MAKE:d_ttyname_r ttyname_r_proto: Inlibc Protochk i_systypes i_unistd
-?MAKE:  -pick add $@ %<
+?MAKE:	-pick add $@ %<
 ?S:d_ttyname_r:
-?S:     This variable conditionally defines the HAS_TTYNAME_R symbol,
-?S:     which indicates to the C program that the ttyname_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_TTYNAME_R symbol,
+?S:	which indicates to the C program that the ttyname_r()
+?S:	routine is available.
 ?S:.
 ?S:ttyname_r_proto:
-?S:     This variable encodes the prototype of ttyname_r.
+?S:	This variable encodes the prototype of ttyname_r.
 ?S:.
 ?C:HAS_TTYNAME_R:
-?C:     This symbol, if defined, indicates that the ttyname_r routine
-?C:     is available to ttyname re-entrantly.
+?C:	This symbol, if defined, indicates that the ttyname_r routine
+?C:	is available to ttyname re-entrantly.
 ?C:.
 ?C:TTYNAME_R_PROTO:
-?C:     This symbol encodes the prototype of ttyname_r.
+?C:	This symbol encodes the prototype of ttyname_r.
 ?C:.
-?H:#$d_ttyname_r HAS_TTYNAME_R          /**/
-?H:#define TTYNAME_R_PROTO $ttyname_r_proto     /**/
+?H:#$d_ttyname_r HAS_TTYNAME_R	   /**/
+?H:#define TTYNAME_R_PROTO $ttyname_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_ttyname_r

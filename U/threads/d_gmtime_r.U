@@ -1,22 +1,22 @@
-?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_time
-?MAKE:  -pick add $@ %<
+?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_gmtime_r:
-?S:     This variable conditionally defines the HAS_GMTIME_R symbol,
-?S:     which indicates to the C program that the gmtime_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_GMTIME_R symbol,
+?S:	which indicates to the C program that the gmtime_r()
+?S:	routine is available.
 ?S:.
 ?S:gmtime_r_proto:
-?S:     This variable encodes the prototype of gmtime_r.
+?S:	This variable encodes the prototype of gmtime_r.
 ?S:.
 ?C:HAS_GMTIME_R:
-?C:     This symbol, if defined, indicates that the gmtime_r routine
-?C:     is available to gmtime re-entrantly.
+?C:	This symbol, if defined, indicates that the gmtime_r routine
+?C:	is available to gmtime re-entrantly.
 ?C:.
 ?C:GMTIME_R_PROTO:
-?C:     This symbol encodes the prototype of gmtime_r.
+?C:	This symbol encodes the prototype of gmtime_r.
 ?C:.
-?H:#$d_gmtime_r HAS_GMTIME_R          /**/
-?H:#define GMTIME_R_PROTO $gmtime_r_proto     /**/
+?H:#$d_gmtime_r HAS_GMTIME_R	   /**/
+?H:#define GMTIME_R_PROTO $gmtime_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_gmtime_r
@@ -26,7 +26,7 @@ set gmtime_r d_gmtime_r
 eval $inlibc
 case "$d_gmtime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_time time.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$gmtime_r_proto" in
 	'')	try='extern struct tm* gmtime_r(const time_t*, struct tm*);'
 		./protochk "$try" $hdrs && gmtime_r_proto=S_TS;

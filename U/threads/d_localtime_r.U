@@ -1,22 +1,22 @@
-?MAKE:d_localtime_r localtime_r_proto: Inlibc Protochk i_systypes i_time
-?MAKE:  -pick add $@ %<
+?MAKE:d_localtime_r localtime_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_localtime_r:
-?S:     This variable conditionally defines the HAS_LOCALTIME_R symbol,
-?S:     which indicates to the C program that the localtime_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_LOCALTIME_R symbol,
+?S:	which indicates to the C program that the localtime_r()
+?S:	routine is available.
 ?S:.
 ?S:localtime_r_proto:
-?S:     This variable encodes the prototype of localtime_r.
+?S:	This variable encodes the prototype of localtime_r.
 ?S:.
 ?C:HAS_LOCALTIME_R:
-?C:     This symbol, if defined, indicates that the localtime_r routine
-?C:     is available to localtime re-entrantly.
+?C:	This symbol, if defined, indicates that the localtime_r routine
+?C:	is available to localtime re-entrantly.
 ?C:.
 ?C:LOCALTIME_R_PROTO:
-?C:     This symbol encodes the prototype of localtime_r.
+?C:	This symbol encodes the prototype of localtime_r.
 ?C:.
-?H:#$d_localtime_r HAS_LOCALTIME_R          /**/
-?H:#define LOCALTIME_R_PROTO $localtime_r_proto     /**/
+?H:#$d_localtime_r HAS_LOCALTIME_R	   /**/
+?H:#define LOCALTIME_R_PROTO $localtime_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_localtime_r
@@ -26,7 +26,7 @@ set localtime_r d_localtime_r
 eval $inlibc
 case "$d_localtime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_time time.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$localtime_r_proto" in
 	'')	try='extern struct tm* localtime_r(const time_t*, struct tm*);'
 		./protochk "$try" $hdrs && localtime_r_proto=S_TS;

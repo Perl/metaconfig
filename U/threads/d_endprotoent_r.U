@@ -1,22 +1,22 @@
-?MAKE:d_endprotoent_r endprotoent_r_proto: Inlibc Protochk i_systypes i_netdb
-?MAKE:  -pick add $@ %<
+?MAKE:d_endprotoent_r endprotoent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_endprotoent_r:
-?S:     This variable conditionally defines the HAS_ENDPROTOENT_R symbol,
-?S:     which indicates to the C program that the endprotoent_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_ENDPROTOENT_R symbol,
+?S:	which indicates to the C program that the endprotoent_r()
+?S:	routine is available.
 ?S:.
 ?S:endprotoent_r_proto:
-?S:     This variable encodes the prototype of endprotoent_r.
+?S:	This variable encodes the prototype of endprotoent_r.
 ?S:.
 ?C:HAS_ENDPROTOENT_R:
-?C:     This symbol, if defined, indicates that the endprotoent_r routine
-?C:     is available to endprotoent re-entrantly.
+?C:	This symbol, if defined, indicates that the endprotoent_r routine
+?C:	is available to endprotoent re-entrantly.
 ?C:.
 ?C:ENDPROTOENT_R_PROTO:
-?C:     This symbol encodes the prototype of endprotoent_r.
+?C:	This symbol encodes the prototype of endprotoent_r.
 ?C:.
-?H:#$d_endprotoent_r HAS_ENDPROTOENT_R          /**/
-?H:#define ENDPROTOENT_R_PROTO $endprotoent_r_proto     /**/
+?H:#$d_endprotoent_r HAS_ENDPROTOENT_R	   /**/
+?H:#define ENDPROTOENT_R_PROTO $endprotoent_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_endprotoent_r
@@ -26,7 +26,7 @@ set endprotoent_r d_endprotoent_r
 eval $inlibc
 case "$d_endprotoent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_netdb netdb.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$endprotoent_r_proto" in
 	'')	try='extern int endprotoent_r(struct protoent_data*);'
 		./protochk "$try" $hdrs && endprotoent_r_proto=I_S;

@@ -1,22 +1,22 @@
-?MAKE:d_getgrent_r getgrent_r_proto: Inlibc Protochk i_systypes i_grp
-?MAKE:  -pick add $@ %<
+?MAKE:d_getgrent_r getgrent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_getgrent_r:
-?S:     This variable conditionally defines the HAS_GETGRENT_R symbol,
-?S:     which indicates to the C program that the getgrent_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_GETGRENT_R symbol,
+?S:	which indicates to the C program that the getgrent_r()
+?S:	routine is available.
 ?S:.
 ?S:getgrent_r_proto:
-?S:     This variable encodes the prototype of getgrent_r.
+?S:	This variable encodes the prototype of getgrent_r.
 ?S:.
 ?C:HAS_GETGRENT_R:
-?C:     This symbol, if defined, indicates that the getgrent_r routine
-?C:     is available to getgrent re-entrantly.
+?C:	This symbol, if defined, indicates that the getgrent_r routine
+?C:	is available to getgrent re-entrantly.
 ?C:.
 ?C:GETGRENT_R_PROTO:
-?C:     This symbol encodes the prototype of getgrent_r.
+?C:	This symbol encodes the prototype of getgrent_r.
 ?C:.
-?H:#$d_getgrent_r HAS_GETGRENT_R          /**/
-?H:#define GETGRENT_R_PROTO $getgrent_r_proto     /**/
+?H:#$d_getgrent_r HAS_GETGRENT_R	   /**/
+?H:#define GETGRENT_R_PROTO $getgrent_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_getgrent_r
@@ -26,7 +26,7 @@ set getgrent_r d_getgrent_r
 eval $inlibc
 case "$d_getgrent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_grp grp.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$getgrent_r_proto" in
 	'')	try='extern int getgrent_r(struct group*, char*, size_t, struct group**);'
 		./protochk "$try" $hdrs && getgrent_r_proto=I_SBWR;

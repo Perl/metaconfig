@@ -1,22 +1,22 @@
-?MAKE:d_ctermid_r ctermid_r_proto: Inlibc Protochk i_systypes i_stdio
-?MAKE:  -pick add $@ %<
+?MAKE:d_ctermid_r ctermid_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_ctermid_r:
-?S:     This variable conditionally defines the HAS_CTERMID_R symbol,
-?S:     which indicates to the C program that the ctermid_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_CTERMID_R symbol,
+?S:	which indicates to the C program that the ctermid_r()
+?S:	routine is available.
 ?S:.
 ?S:ctermid_r_proto:
-?S:     This variable encodes the prototype of ctermid_r.
+?S:	This variable encodes the prototype of ctermid_r.
 ?S:.
 ?C:HAS_CTERMID_R:
-?C:     This symbol, if defined, indicates that the ctermid_r routine
-?C:     is available to ctermid re-entrantly.
+?C:	This symbol, if defined, indicates that the ctermid_r routine
+?C:	is available to ctermid re-entrantly.
 ?C:.
 ?C:CTERMID_R_PROTO:
-?C:     This symbol encodes the prototype of ctermid_r.
+?C:	This symbol encodes the prototype of ctermid_r.
 ?C:.
-?H:#$d_ctermid_r HAS_CTERMID_R          /**/
-?H:#define CTERMID_R_PROTO $ctermid_r_proto     /**/
+?H:#$d_ctermid_r HAS_CTERMID_R	   /**/
+?H:#define CTERMID_R_PROTO $ctermid_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_ctermid_r
@@ -26,7 +26,7 @@ set ctermid_r d_ctermid_r
 eval $inlibc
 case "$d_ctermid_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_stdio stdio.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$ctermid_r_proto" in
 	'')	try='extern char* ctermid_r(char*);'
 		./protochk "$try" $hdrs && ctermid_r_proto=B_B;

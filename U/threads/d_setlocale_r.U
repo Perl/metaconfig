@@ -1,22 +1,22 @@
-?MAKE:d_setlocale_r setlocale_r_proto: Inlibc Protochk i_systypes i_locale
-?MAKE:  -pick add $@ %<
+?MAKE:d_setlocale_r setlocale_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_setlocale_r:
-?S:     This variable conditionally defines the HAS_SETLOCALE_R symbol,
-?S:     which indicates to the C program that the setlocale_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_SETLOCALE_R symbol,
+?S:	which indicates to the C program that the setlocale_r()
+?S:	routine is available.
 ?S:.
 ?S:setlocale_r_proto:
-?S:     This variable encodes the prototype of setlocale_r.
+?S:	This variable encodes the prototype of setlocale_r.
 ?S:.
 ?C:HAS_SETLOCALE_R:
-?C:     This symbol, if defined, indicates that the setlocale_r routine
-?C:     is available to setlocale re-entrantly.
+?C:	This symbol, if defined, indicates that the setlocale_r routine
+?C:	is available to setlocale re-entrantly.
 ?C:.
 ?C:SETLOCALE_R_PROTO:
-?C:     This symbol encodes the prototype of setlocale_r.
+?C:	This symbol encodes the prototype of setlocale_r.
 ?C:.
-?H:#$d_setlocale_r HAS_SETLOCALE_R          /**/
-?H:#define SETLOCALE_R_PROTO $setlocale_r_proto     /**/
+?H:#$d_setlocale_r HAS_SETLOCALE_R	   /**/
+?H:#define SETLOCALE_R_PROTO $setlocale_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_setlocale_r
@@ -26,7 +26,7 @@ set setlocale_r d_setlocale_r
 eval $inlibc
 case "$d_setlocale_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_locale locale.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$setlocale_r_proto" in
 	'')	try='extern int setlocale_r(int, const char*, char*, int);'
 		./protochk "$try" $hdrs && setlocale_r_proto=I_ICBI;

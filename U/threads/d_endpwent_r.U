@@ -1,22 +1,22 @@
-?MAKE:d_endpwent_r endpwent_r_proto: Inlibc Protochk i_systypes i_pwd
-?MAKE:  -pick add $@ %<
+?MAKE:d_endpwent_r endpwent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_endpwent_r:
-?S:     This variable conditionally defines the HAS_ENDPWENT_R symbol,
-?S:     which indicates to the C program that the endpwent_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_ENDPWENT_R symbol,
+?S:	which indicates to the C program that the endpwent_r()
+?S:	routine is available.
 ?S:.
 ?S:endpwent_r_proto:
-?S:     This variable encodes the prototype of endpwent_r.
+?S:	This variable encodes the prototype of endpwent_r.
 ?S:.
 ?C:HAS_ENDPWENT_R:
-?C:     This symbol, if defined, indicates that the endpwent_r routine
-?C:     is available to endpwent re-entrantly.
+?C:	This symbol, if defined, indicates that the endpwent_r routine
+?C:	is available to endpwent re-entrantly.
 ?C:.
 ?C:ENDPWENT_R_PROTO:
-?C:     This symbol encodes the prototype of endpwent_r.
+?C:	This symbol encodes the prototype of endpwent_r.
 ?C:.
-?H:#$d_endpwent_r HAS_ENDPWENT_R          /**/
-?H:#define ENDPWENT_R_PROTO $endpwent_r_proto     /**/
+?H:#$d_endpwent_r HAS_ENDPWENT_R	   /**/
+?H:#define ENDPWENT_R_PROTO $endpwent_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_endpwent_r
@@ -26,7 +26,7 @@ set endpwent_r d_endpwent_r
 eval $inlibc
 case "$d_endpwent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$endpwent_r_proto" in
 	'')	try='extern int endpwent_r(FILE**);'
 		./protochk "$try" $hdrs && endpwent_r_proto=I_H;

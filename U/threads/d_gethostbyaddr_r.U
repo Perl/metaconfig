@@ -1,22 +1,22 @@
-?MAKE:d_gethostbyaddr_r gethostbyaddr_r_proto: Inlibc Protochk i_systypes i_netdb
-?MAKE:  -pick add $@ %<
+?MAKE:d_gethostbyaddr_r gethostbyaddr_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_gethostbyaddr_r:
-?S:     This variable conditionally defines the HAS_GETHOSTBYADDR_R symbol,
-?S:     which indicates to the C program that the gethostbyaddr_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_GETHOSTBYADDR_R symbol,
+?S:	which indicates to the C program that the gethostbyaddr_r()
+?S:	routine is available.
 ?S:.
 ?S:gethostbyaddr_r_proto:
-?S:     This variable encodes the prototype of gethostbyaddr_r.
+?S:	This variable encodes the prototype of gethostbyaddr_r.
 ?S:.
 ?C:HAS_GETHOSTBYADDR_R:
-?C:     This symbol, if defined, indicates that the gethostbyaddr_r routine
-?C:     is available to gethostbyaddr re-entrantly.
+?C:	This symbol, if defined, indicates that the gethostbyaddr_r routine
+?C:	is available to gethostbyaddr re-entrantly.
 ?C:.
 ?C:GETHOSTBYADDR_R_PROTO:
-?C:     This symbol encodes the prototype of gethostbyaddr_r.
+?C:	This symbol encodes the prototype of gethostbyaddr_r.
 ?C:.
-?H:#$d_gethostbyaddr_r HAS_GETHOSTBYADDR_R          /**/
-?H:#define GETHOSTBYADDR_R_PROTO $gethostbyaddr_r_proto     /**/
+?H:#$d_gethostbyaddr_r HAS_GETHOSTBYADDR_R	   /**/
+?H:#define GETHOSTBYADDR_R_PROTO $gethostbyaddr_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_gethostbyaddr_r
@@ -26,7 +26,7 @@ set gethostbyaddr_r d_gethostbyaddr_r
 eval $inlibc
 case "$d_gethostbyaddr_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_netdb netdb.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$gethostbyaddr_r_proto" in
 	'')	try='extern int gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, struct hostent**, int*);'
 		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CWISBRE;

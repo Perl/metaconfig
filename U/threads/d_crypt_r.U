@@ -1,22 +1,22 @@
 ?MAKE:d_crypt_r crypt_r_proto: Inlibc Protochk i_systypes i_unistd
-?MAKE:  -pick add $@ %<
+?MAKE:	-pick add $@ %<
 ?S:d_crypt_r:
-?S:     This variable conditionally defines the HAS_CRYPT_R symbol,
-?S:     which indicates to the C program that the crypt_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_CRYPT_R symbol,
+?S:	which indicates to the C program that the crypt_r()
+?S:	routine is available.
 ?S:.
 ?S:crypt_r_proto:
-?S:     This variable encodes the prototype of crypt_r.
+?S:	This variable encodes the prototype of crypt_r.
 ?S:.
 ?C:HAS_CRYPT_R:
-?C:     This symbol, if defined, indicates that the crypt_r routine
-?C:     is available to crypt re-entrantly.
+?C:	This symbol, if defined, indicates that the crypt_r routine
+?C:	is available to crypt re-entrantly.
 ?C:.
 ?C:CRYPT_R_PROTO:
-?C:     This symbol encodes the prototype of crypt_r.
+?C:	This symbol encodes the prototype of crypt_r.
 ?C:.
-?H:#$d_crypt_r HAS_CRYPT_R          /**/
-?H:#define CRYPT_R_PROTO $crypt_r_proto     /**/
+?H:#$d_crypt_r HAS_CRYPT_R	   /**/
+?H:#define CRYPT_R_PROTO $crypt_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_crypt_r

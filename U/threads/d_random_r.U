@@ -1,22 +1,22 @@
-?MAKE:d_random_r random_r_proto: Inlibc Protochk i_systypes i_stdlib
-?MAKE:  -pick add $@ %<
+?MAKE:d_random_r random_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_random_r:
-?S:     This variable conditionally defines the HAS_RANDOM_R symbol,
-?S:     which indicates to the C program that the random_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_RANDOM_R symbol,
+?S:	which indicates to the C program that the random_r()
+?S:	routine is available.
 ?S:.
 ?S:random_r_proto:
-?S:     This variable encodes the prototype of random_r.
+?S:	This variable encodes the prototype of random_r.
 ?S:.
 ?C:HAS_RANDOM_R:
-?C:     This symbol, if defined, indicates that the random_r routine
-?C:     is available to random re-entrantly.
+?C:	This symbol, if defined, indicates that the random_r routine
+?C:	is available to random re-entrantly.
 ?C:.
 ?C:RANDOM_R_PROTO:
-?C:     This symbol encodes the prototype of random_r.
+?C:	This symbol encodes the prototype of random_r.
 ?C:.
-?H:#$d_random_r HAS_RANDOM_R          /**/
-?H:#define RANDOM_R_PROTO $random_r_proto     /**/
+?H:#$d_random_r HAS_RANDOM_R	   /**/
+?H:#define RANDOM_R_PROTO $random_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_random_r
@@ -26,7 +26,7 @@ set random_r d_random_r
 eval $inlibc
 case "$d_random_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_stdlib stdlib.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$random_r_proto" in
 	'')	try='extern int random_r(int*, struct random_data*);'
 		./protochk "$try" $hdrs && random_r_proto=I_TS;

@@ -1,22 +1,22 @@
-?MAKE:d_readdir64_r readdir64_r_proto: Inlibc Protochk i_systypes i_dirent
-?MAKE:  -pick add $@ %<
+?MAKE:d_readdir64_r readdir64_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_readdir64_r:
-?S:     This variable conditionally defines the HAS_READDIR64_R symbol,
-?S:     which indicates to the C program that the readdir64_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_READDIR64_R symbol,
+?S:	which indicates to the C program that the readdir64_r()
+?S:	routine is available.
 ?S:.
 ?S:readdir64_r_proto:
-?S:     This variable encodes the prototype of readdir64_r.
+?S:	This variable encodes the prototype of readdir64_r.
 ?S:.
 ?C:HAS_READDIR64_R:
-?C:     This symbol, if defined, indicates that the readdir64_r routine
-?C:     is available to readdir64 re-entrantly.
+?C:	This symbol, if defined, indicates that the readdir64_r routine
+?C:	is available to readdir64 re-entrantly.
 ?C:.
 ?C:READDIR64_R_PROTO:
-?C:     This symbol encodes the prototype of readdir64_r.
+?C:	This symbol encodes the prototype of readdir64_r.
 ?C:.
-?H:#$d_readdir64_r HAS_READDIR64_R          /**/
-?H:#define READDIR64_R_PROTO $readdir64_r_proto     /**/
+?H:#$d_readdir64_r HAS_READDIR64_R	   /**/
+?H:#define READDIR64_R_PROTO $readdir64_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_readdir64_r
@@ -26,7 +26,7 @@ set readdir64_r d_readdir64_r
 eval $inlibc
 case "$d_readdir64_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_dirent dirent.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$readdir64_r_proto" in
 	'')	try='extern int readdir64_r(DIR*, struct dirent64*, struct dirent64**);'
 		./protochk "$try" $hdrs && readdir64_r_proto=I_TSR;

@@ -1,22 +1,22 @@
-?MAKE:d_getspnam_r getspnam_r_proto: Inlibc Protochk i_systypes i_shadow
-?MAKE:  -pick add $@ %<
+?MAKE:d_getspnam_r getspnam_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_getspnam_r:
-?S:     This variable conditionally defines the HAS_GETSPNAM_R symbol,
-?S:     which indicates to the C program that the getspnam_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_GETSPNAM_R symbol,
+?S:	which indicates to the C program that the getspnam_r()
+?S:	routine is available.
 ?S:.
 ?S:getspnam_r_proto:
-?S:     This variable encodes the prototype of getspnam_r.
+?S:	This variable encodes the prototype of getspnam_r.
 ?S:.
 ?C:HAS_GETSPNAM_R:
-?C:     This symbol, if defined, indicates that the getspnam_r routine
-?C:     is available to getspnam re-entrantly.
+?C:	This symbol, if defined, indicates that the getspnam_r routine
+?C:	is available to getspnam re-entrantly.
 ?C:.
 ?C:GETSPNAM_R_PROTO:
-?C:     This symbol encodes the prototype of getspnam_r.
+?C:	This symbol encodes the prototype of getspnam_r.
 ?C:.
-?H:#$d_getspnam_r HAS_GETSPNAM_R          /**/
-?H:#define GETSPNAM_R_PROTO $getspnam_r_proto     /**/
+?H:#$d_getspnam_r HAS_GETSPNAM_R	   /**/
+?H:#define GETSPNAM_R_PROTO $getspnam_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_getspnam_r
@@ -26,7 +26,7 @@ set getspnam_r d_getspnam_r
 eval $inlibc
 case "$d_getspnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_shadow shadow.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$getspnam_r_proto" in
 	'')	try='extern int getspnam_r(const char*, struct spwd*, char*, size_t, struct spwd**);'
 		./protochk "$try" $hdrs && getspnam_r_proto=I_CSBWR;

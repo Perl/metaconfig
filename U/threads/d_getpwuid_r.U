@@ -1,22 +1,22 @@
-?MAKE:d_getpwuid_r getpwuid_r_proto: Inlibc Protochk i_systypes i_pwd
-?MAKE:  -pick add $@ %<
+?MAKE:d_getpwuid_r getpwuid_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_getpwuid_r:
-?S:     This variable conditionally defines the HAS_GETPWUID_R symbol,
-?S:     which indicates to the C program that the getpwuid_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_GETPWUID_R symbol,
+?S:	which indicates to the C program that the getpwuid_r()
+?S:	routine is available.
 ?S:.
 ?S:getpwuid_r_proto:
-?S:     This variable encodes the prototype of getpwuid_r.
+?S:	This variable encodes the prototype of getpwuid_r.
 ?S:.
 ?C:HAS_GETPWUID_R:
-?C:     This symbol, if defined, indicates that the getpwuid_r routine
-?C:     is available to getpwuid re-entrantly.
+?C:	This symbol, if defined, indicates that the getpwuid_r routine
+?C:	is available to getpwuid re-entrantly.
 ?C:.
 ?C:GETPWUID_R_PROTO:
-?C:     This symbol encodes the prototype of getpwuid_r.
+?C:	This symbol encodes the prototype of getpwuid_r.
 ?C:.
-?H:#$d_getpwuid_r HAS_GETPWUID_R          /**/
-?H:#define GETPWUID_R_PROTO $getpwuid_r_proto     /**/
+?H:#$d_getpwuid_r HAS_GETPWUID_R	   /**/
+?H:#define GETPWUID_R_PROTO $getpwuid_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_getpwuid_r
@@ -26,7 +26,7 @@ set getpwuid_r d_getpwuid_r
 eval $inlibc
 case "$d_getpwuid_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$getpwuid_r_proto" in
 	'')	try='extern int getpwuid_r(uid_t, struct passwd*, char*, size_t, struct passwd**);'
 		./protochk "$try" $hdrs && getpwuid_r_proto=I_TSBWR;

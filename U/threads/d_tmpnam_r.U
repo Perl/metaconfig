@@ -1,22 +1,22 @@
-?MAKE:d_tmpnam_r tmpnam_r_proto: Inlibc Protochk i_systypes i_stdio
-?MAKE:  -pick add $@ %<
+?MAKE:d_tmpnam_r tmpnam_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_tmpnam_r:
-?S:     This variable conditionally defines the HAS_TMPNAM_R symbol,
-?S:     which indicates to the C program that the tmpnam_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_TMPNAM_R symbol,
+?S:	which indicates to the C program that the tmpnam_r()
+?S:	routine is available.
 ?S:.
 ?S:tmpnam_r_proto:
-?S:     This variable encodes the prototype of tmpnam_r.
+?S:	This variable encodes the prototype of tmpnam_r.
 ?S:.
 ?C:HAS_TMPNAM_R:
-?C:     This symbol, if defined, indicates that the tmpnam_r routine
-?C:     is available to tmpnam re-entrantly.
+?C:	This symbol, if defined, indicates that the tmpnam_r routine
+?C:	is available to tmpnam re-entrantly.
 ?C:.
 ?C:TMPNAM_R_PROTO:
-?C:     This symbol encodes the prototype of tmpnam_r.
+?C:	This symbol encodes the prototype of tmpnam_r.
 ?C:.
-?H:#$d_tmpnam_r HAS_TMPNAM_R          /**/
-?H:#define TMPNAM_R_PROTO $tmpnam_r_proto     /**/
+?H:#$d_tmpnam_r HAS_TMPNAM_R	   /**/
+?H:#define TMPNAM_R_PROTO $tmpnam_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_tmpnam_r
@@ -26,7 +26,7 @@ set tmpnam_r d_tmpnam_r
 eval $inlibc
 case "$d_tmpnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_stdio stdio.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$tmpnam_r_proto" in
 	'')	try='extern char* tmpnam_r(char*);'
 		./protochk "$try" $hdrs && tmpnam_r_proto=B_B;

@@ -1,22 +1,22 @@
-?MAKE:d_setnetent_r setnetent_r_proto: Inlibc Protochk i_systypes i_netdb
-?MAKE:  -pick add $@ %<
+?MAKE:d_setnetent_r setnetent_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_setnetent_r:
-?S:     This variable conditionally defines the HAS_SETNETENT_R symbol,
-?S:     which indicates to the C program that the setnetent_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_SETNETENT_R symbol,
+?S:	which indicates to the C program that the setnetent_r()
+?S:	routine is available.
 ?S:.
 ?S:setnetent_r_proto:
-?S:     This variable encodes the prototype of setnetent_r.
+?S:	This variable encodes the prototype of setnetent_r.
 ?S:.
 ?C:HAS_SETNETENT_R:
-?C:     This symbol, if defined, indicates that the setnetent_r routine
-?C:     is available to setnetent re-entrantly.
+?C:	This symbol, if defined, indicates that the setnetent_r routine
+?C:	is available to setnetent re-entrantly.
 ?C:.
 ?C:SETNETENT_R_PROTO:
-?C:     This symbol encodes the prototype of setnetent_r.
+?C:	This symbol encodes the prototype of setnetent_r.
 ?C:.
-?H:#$d_setnetent_r HAS_SETNETENT_R          /**/
-?H:#define SETNETENT_R_PROTO $setnetent_r_proto     /**/
+?H:#$d_setnetent_r HAS_SETNETENT_R	   /**/
+?H:#define SETNETENT_R_PROTO $setnetent_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_setnetent_r
@@ -26,7 +26,7 @@ set setnetent_r d_setnetent_r
 eval $inlibc
 case "$d_setnetent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_netdb netdb.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$setnetent_r_proto" in
 	'')	try='extern int setnetent_r(int, struct netent_data*);'
 		./protochk "$try" $hdrs && setnetent_r_proto=I_IS;

@@ -1,22 +1,22 @@
-?MAKE:d_asctime_r asctime_r_proto: Inlibc Protochk i_systypes i_time
-?MAKE:  -pick add $@ %<
+?MAKE:d_asctime_r asctime_r_proto: Inlibc Protochk i_systypes i_unistd
+?MAKE:	-pick add $@ %<
 ?S:d_asctime_r:
-?S:     This variable conditionally defines the HAS_ASCTIME_R symbol,
-?S:     which indicates to the C program that the asctime_r()
-?S:     routine is available.
+?S:	This variable conditionally defines the HAS_ASCTIME_R symbol,
+?S:	which indicates to the C program that the asctime_r()
+?S:	routine is available.
 ?S:.
 ?S:asctime_r_proto:
-?S:     This variable encodes the prototype of asctime_r.
+?S:	This variable encodes the prototype of asctime_r.
 ?S:.
 ?C:HAS_ASCTIME_R:
-?C:     This symbol, if defined, indicates that the asctime_r routine
-?C:     is available to asctime re-entrantly.
+?C:	This symbol, if defined, indicates that the asctime_r routine
+?C:	is available to asctime re-entrantly.
 ?C:.
 ?C:ASCTIME_R_PROTO:
-?C:     This symbol encodes the prototype of asctime_r.
+?C:	This symbol encodes the prototype of asctime_r.
 ?C:.
-?H:#$d_asctime_r HAS_ASCTIME_R          /**/
-?H:#define ASCTIME_R_PROTO $asctime_r_proto     /**/
+?H:#$d_asctime_r HAS_ASCTIME_R	   /**/
+?H:#define ASCTIME_R_PROTO $asctime_r_proto	   /**/
 ?H:.
 ?T:try hdrs
 ?LINT:set d_asctime_r
@@ -26,7 +26,7 @@ set asctime_r d_asctime_r
 eval $inlibc
 case "$d_asctime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h $i_time time.h"
+	hdrs="$i_systypes sys/types.h $i_unistd unistd.h"
 	case "$asctime_r_proto" in
 	'')	try='extern char* asctime_r(const struct tm*, char*);'
 		./protochk "$try" $hdrs && asctime_r_proto=B_SB;
