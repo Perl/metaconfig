@@ -178,18 +178,23 @@ case "$myhostname" in
 					/[	 ]$myhostname[	. ]/p" > hosts
 		}
 		tmp_re="[	. ]"
-		$test x`$awk "/[0-9].*[	 ]$myhostname$tmp_re/ { sum++ }
+		if $test -f hosts; then
+			$test x`$awk "/[0-9].*[	 ]$myhostname$tmp_re/ { sum++ }
 			     END { print sum }" hosts` = x1 || tmp_re="[	 ]"
-		dflt=.`$awk "/[0-9].*[	 ]$myhostname$tmp_re/ {for(i=2; i<=NF;i++) print \\\$i}" \
-			hosts | $sort | $uniq | \
-			$sed -n -e "s/$myhostname\.\([-a-zA-Z0-9_.]\)/\1/p"`
-		case `$echo X$dflt` in
-		X*\ *)	echo "(Several hosts in /etc/hosts matched hostname)"
+			dflt=.`$awk "/[0-9].*[	 ]$myhostname$tmp_re/ {for(i=2; i<=NF;i++) print \\\$i}" \
+				hosts | $sort | $uniq | \
+				$sed -n -e "s/$myhostname\.\([-a-zA-Z0-9_.]\)/\1/p"`
+			case `$echo X$dflt` in
+			X*\ *)	echo "(Several hosts in the database matched hostname)"
+				dflt=.
+				;;
+			X.) echo "(You do not have fully-qualified names in the hosts database)"
+				;;
+			esac
+		else
+			echo "(I cannot locate a hosts database anywhere)"
 			dflt=.
-			;;
-		X.) echo "(You do not have fully-qualified names in /etc/hosts)"
-			;;
-		esac
+		fi
 		case "$dflt" in
 		.)
 			tans=`./loc resolv.conf X /etc /usr/etc`
