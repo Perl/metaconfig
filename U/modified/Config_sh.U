@@ -28,12 +28,12 @@
 ?X: here document redirection with variable substitution).
 ?X: 
 ?MAKE:Config_sh: cf_time cf_by test spitshell startsh myuname Myread \
-	End Obsol_sh Loc +d_portable package src +osname
+	End Obsol_sh Loc +d_portable package src
 ?MAKE:	-pick add.Config_sh $@ %<
 ?MAKE:	-pick add $@ ./Obsol_sh
 ?MAKE:	-pick close.Config_sh $@ %<
 ?F:!config.over
-?T:file
+?T:file temp
 : back to where it started
 if test -d ../UU; then
 	cd ..
@@ -64,6 +64,18 @@ case "$d_portable" in
 "$define")
 	echo " "
 	echo "Stripping down executable paths..." >&4
+?X:
+?X:	Previously, we used to do    eval $file="\$file"  but in order
+?X:	to handle things like  sh Configure -Dmake=gmake, we can't do
+?X:	that.  What we *really* want is to strip away the absolute path
+?X:	and rely on the end user's $PATH to correctly find the executable.
+?X:	This method assumes there is a "basename" command available.  If
+?X:	not, replace it with the following expr-based command:
+?X:			expr  $temp : '.*/\(.*\)' \| $temp
+?X:	Since this preserves the actual command name, we can now drop the 
+?X:	OS/2 specific code.
+?X:		--Andy Dougherty  August 1999
+?X:
 ?X:	On OS/2, a special $ar command not even named 'ar' is required,
 ?X:	so we don't strip that name.
 ?X:	Also, on DOSish systems, there might not be a ln command, but we
@@ -72,14 +84,10 @@ case "$d_portable" in
 ?X:	Unix-ish tools don't have standard locations there.  Thus we
 ?X:	MUST rely on the user's $PATH.
 ?X:	--Andy Dougherty  4/1998
+?X:
 	for file in $loclist $trylist; do
-@if osname
-		if test X$file != Xln -a X$file != Xar -o X$osname != Xos2; then
-			eval $file="\$file"
-		fi
-@else
-		eval $file="\$file"
-@end
+		eval temp=\$$file
+		eval $file=`basename $temp`
 	done
 	;;
 esac
