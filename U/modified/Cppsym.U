@@ -52,17 +52,20 @@
 ?X:
 ?S:ccsymbols:
 ?S:	The variable contains the symbols defined by the C compiler alone.
+?S:	The symbols defined by cpp or by cc when it calls cpp are not in
+?S:	this list, see cppsymbols and cppccsymbols.
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
 ?S:cppsymbols:
-?S:	The variable contains the symbols during a compilation
-?S:	that includes stdio.h.
+?S:	The variable contains the symbols defined by the C preprocessor
+?S:	alone.  The symbols defined by cc or by cc when it calls cpp are
+?S:	not in this list, see ccsymbols and cppccsymbols.
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
 ?S:cppccsymbols:
-?S:	The variable contains the symbols defined by both
-?S:	the bare C compiler and during a compilation that
-?S:	includes stdio.h.
+?S:	The variable contains the symbols defined by the C compiler
+?S:	when it calls cpp.  The symbols defined by the cc alone or cpp
+?S:	alone are not in this list, see ccsymbols and cppsymbols.
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
 ?F:./Cppsym
@@ -152,8 +155,9 @@ $osname
 EOSH
 ./tr '[a-z]' '[A-Z]' < Cppsym.know > Cppsym.a
 ./tr '[A-Z]' '[a-z]' < Cppsym.know > Cppsym.b
-$cat Cppsym.a Cppsym.b | $tr ' ' $trnl | sort | uniq > Cppsym.know
-$rm -f Cppsym.a Cppsym.b
+$cat Cppsym.know > Cppsym.c
+$cat Cppsym.a Cppsym.b Cppsym.c | $tr ' ' $trnl | sort | uniq > Cppsym.know
+$rm -f Cppsym.a Cppsym.b Cppsym.c
 cat <<EOSH > Cppsym
 $startsh
 if $test \$# -gt 0; then
@@ -181,6 +185,7 @@ cat <<'EOCP' > try.c
 int main() {
 EOCP
 ?X: The length($1) command guards against possible empty entries.
+?X: The awk snippet is know to give heartburn to UNICOS/mk awk.
 $awk \\
 EOSH
 cat <<'EOSH' >> Cppsym.try
@@ -196,6 +201,7 @@ cat <<EOSH >> Cppsym.try
 ccflags="$ccflags"
 case "$osname-$gccversion" in
 irix-) ccflags="\$ccflags -woff 1178" ;;
+os2-*) ccflags="\$ccflags -Zlinker /PM:VIO" ;;
 esac
 $cc $optimize \$ccflags $ldflags -o try try.c $libs && ./try$exe_ext
 EOSH
@@ -256,7 +262,7 @@ if $test -z ccsym.raw; then
 else
 	if $test -s ccsym.com; then
 		echo "Your C compiler and pre-processor define these symbols:"
-		$sed -e 's/\(.*\)=.*/\1/' ccsym.com
+		$sed -e 's/\(..*\)=.*/\1/' ccsym.com
 		also='also '
 		symbols='ones'
 		cppccsymbols=`$cat ccsym.com`
@@ -266,7 +272,7 @@ else
 	if $test -s ccsym.cpp; then
 		$test "$also" && echo " "
 		echo "Your C pre-processor ${also}defines the following symbols:"
-		$sed -e 's/\(.*\)=.*/\1/' ccsym.cpp
+		$sed -e 's/\(..*\)=.*/\1/' ccsym.cpp
 		also='further '
 		cppsymbols=`$cat ccsym.cpp`
 		cppsymbols=`echo $cppsymbols`
@@ -275,12 +281,12 @@ else
 	if $test -s ccsym.own; then
 		$test "$also" && echo " "
 		echo "Your C compiler ${also}defines the following cpp symbols:"
-		$sed -e 's/\(.*\)=1/\1/' ccsym.own
-		$sed -e 's/\(.*\)=.*/\1/' ccsym.own | $uniq >>Cppsym.true
+		$sed -e 's/\(..*\)=1/\1/' ccsym.own
+		$sed -e 's/\(..*\)=.*/\1/' ccsym.own | $uniq >>Cppsym.true
 	        ccsymbols=`$cat ccsym.own`
 	        ccsymbols=`echo $ccsymbols`
 		$test "$silent" || sleep 1
 	fi
 fi
-$rm -f ccsym*
+$rm -f ccsym* Cppsym.*
 
