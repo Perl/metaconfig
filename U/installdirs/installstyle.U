@@ -48,7 +48,7 @@ case "$installstyle" in
 		*) dflt='lib/perl5' ;;
 	esac
 	;;
-*)	dflt='lib/perl5' ;;
+*)	dflt="$installstyle" ;;
 esac
 : Probably not worth prompting for this since we prompt for all
 : the directories individually, and the prompt would be too long and
