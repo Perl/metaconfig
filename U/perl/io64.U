@@ -54,7 +54,7 @@ echo " "
 echo "Checking to see if your system supports fpos64_t..." >&4
 $cat >try.c <<EOCP
 #include <stdio.h>
-int main() { fpos64_t x x = 7; }
+int main() { fpos64_t x = 7; }
 EOCP
 set try
 if eval $compile; then
