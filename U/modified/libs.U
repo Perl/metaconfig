@@ -112,7 +112,7 @@ for thislib in $libswanted; do
 ?X:
 	libname="$thislib"
 	if xxx=`./loc lib$thislib.$so.[0-9]'*' X $libpth`; $test -f "$xxx"; then
-		if $test -a "X$ignore_versioned_solibs" = "X"; then
+		if $test "X$ignore_versioned_solibs" = "X"; then
 			xxx=/ignored$xxx
 		else
 			libstyle=shared
