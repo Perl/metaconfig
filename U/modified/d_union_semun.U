@@ -62,14 +62,13 @@ else
     echo "You do not have union semun in <sys/sem.h>." >&4
     val="$undef"
 fi
-$rm -f try try.c try.h
+$rm -f try try.c
 set d_union_semun
 eval $setvar
 
 : see how to do semctl IPC_STAT
 case "$d_sem" in
 $define)
-    : see whether semctl IPC_STAT can use union semun
     echo " "
     $cat > try.h <<END
 #ifndef S_IRUSR
@@ -95,8 +94,11 @@ $define)
 #   define S_IRWXO (S_IROTH|S_IWOTH|S_IXOTH)
 #endif
 END
-
-    $cat > try.c <<END
+    : see whether semctl IPC_STAT can use union semun
+    val="$undef"
+    case "$d_semctl_semun" in
+    '')
+      $cat > try.c <<END
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
@@ -142,15 +144,16 @@ int main() {
   return 0;
 }
 END
-    val="$undef"
-    set try
-    if eval $compile; then
-	xxx=`$run ./try`
-        case "$xxx" in
-        semun) val="$define" ;;
-        esac
-    fi
-    $rm -f try try.c
+      set try
+      if eval $compile; then
+	  xxx=`$run ./try`
+          case "$xxx" in
+          semun) val="$define" ;;
+          esac
+      fi
+      $rm -f try try.c
+      ;;
+    esac
     set d_semctl_semun
     eval $setvar
     case "$d_semctl_semun" in
@@ -164,7 +167,10 @@ END
     esac
 
     : see whether semctl IPC_STAT can use struct semid_ds pointer
-    $cat > try.c <<'END'
+    val="$undef"
+    case "$d_semctl_semid_ds" in
+    '')
+      $cat > try.c <<'END'
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
@@ -200,15 +206,16 @@ int main() {
     return 0;
 }
 END
-    val="$undef"
-    set try
-    if eval $compile; then
-        xxx=`$run ./try`
-        case "$xxx" in
-        semid_ds) val="$define" ;;
-        esac
-    fi
-    $rm -f try try.c
+      set try
+      if eval $compile; then
+          xxx=`$run ./try`
+          case "$xxx" in
+          semid_ds) val="$define" ;;
+          esac
+      fi
+      $rm -f try try.c
+      ;;
+    esac
     set d_semctl_semid_ds
     eval $setvar
     case "$d_semctl_semid_ds" in
