@@ -1,0 +1,24 @@
+?RCS: $Id: i_fp.U,v $
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_fp: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_fp:
+?S:	This variable conditionally defines the I_FP symbol, and indicates
+?S:	whether a C program should include <fp.h>.
+?S:.
+?C:I_FP:
+?C:	This symbol, if defined, indicates that <fp.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_fp	I_FP		/**/
+?H:.
+?LINT:set i_fp
+: see if this is a fp.h system
+set fp.h i_fp
+eval $inhdr
+

@@ -1,0 +1,36 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fpclassl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fpclassl:
+?S:	This variable conditionally defines the HAS_FPCLASSL symbol, which
+?S:	indicates to the C program that the fpclassl() routine is available.
+?S:.
+?C:HAS_FPCLASSL:
+?C:	This symbol, if defined, indicates that the fpclassl routine is
+?C:	available to classify long doubles.  Available for example in IRIX.
+?C:	The returned values are defined in <ieeefp.h> and are:
+?C:
+?C:	FP_SNAN		signaling NaN
+?C:	FP_QNAN		quiet NaN
+?C:	FP_NINF		negative infinity
+?C:	FP_PINF		positive infinity
+?C:	FP_NDENORM	negative denormalized non-zero
+?C:	FP_PDENORM	positive denormalized non-zero
+?C:	FP_NZERO	negative zero
+?C:	FP_PZERO	positive zero
+?C:	FP_NNORM	negative normalized non-zero
+?C:	FP_PNORM	positive normalized non-zero
+?C:.
+?H:#$d_fpclassl HAS_FPCLASSL		/**/
+?H:.
+?LINT:set d_fpclassl
+: see if fpclassl exists
+set fpclassl d_fpclassl
+eval $inlibc
+
