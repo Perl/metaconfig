@@ -1,0 +1,38 @@
+?RCS: $Id: d_sitecustomize.U,v $
+?RCS:
+?RCS: Copyright (c) 2005-2005 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: d_sitecustomize.U,v $
+?RCS:
+?MAKE:usesitecustomize d_sitecustomize: Oldconfig Setvar
+?MAKE:	-pick add $@ %<
+?S:usesitecustomize:
+?S:	This variable is set to true when the user requires a mechanism that
+?S:	allows the sysadmin to add entries to @INC at runtime.  This variable
+?S:	being set, makes perl run '$sitelib/sitecustomize.pl' at startup.
+?S:.
+?S:d_sitecustomize:
+?S:	This variable conditionally defines the USE_SITECUSTOMIZE symbol,
+?S:	and indicates whether sitecustomize is available (and should be used).
+?S:.
+?C:USE_SITECUSTOMIZE:
+?C:	This symbol, if defined, indicates that sitecustomize should
+?C:	be used.
+?C:.
+?H:#$d_sitecustomize	USE_SITECUSTOMIZE		/**/
+?H:.
+?LINT:set d_sitecustomize
+
+d_sitecustomize="$undef"
+case "$usesitecustomize" in
+    $define|true|[Yy]*)
+	usesitecustomize="$define"
+	d_sitecustomize="$define"
+	;;
+    *)
+	usesitecustomize="$undef"
+    esac
+
