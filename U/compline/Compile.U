@@ -46,7 +46,7 @@
 compile='
 mc_file=$1;
 shift;
-$cc -o ${mc_file} $optimize $ccflags $ldflags$* ${mc_file}.c $libs > /dev/null 2>&1;'
+$cc -o ${mc_file} $optimize $ccflags $ldflags $* ${mc_file}.c $libs > /dev/null 2>&1;'
 : define a shorthand compile call for compilations that should be ok.
 compile_ok='
 mc_file=$1;
