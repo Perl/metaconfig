@@ -661,3 +661,6 @@ none)  osvers='' ;;
 esac
 
 @end
+
+. ./posthint.sh
+
