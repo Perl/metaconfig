@@ -1,4 +1,4 @@
-?MAKE:d_getgrgid_r getgrgid_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_getgrgid_r getgrgid_r_proto: Inlibc Protochk i_systypes i_grp
 ?MAKE:  -pick add $@ %<
 ?S:d_getgrgid_r:
 ?S:     This variable conditionally defines the HAS_GETGRGID_R symbol,
@@ -26,7 +26,7 @@ set getgrgid_r d_getgrgid_r
 eval $inlibc
 case "$d_getgrgid_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_grp grp.h"
+	hdrs="$i_systypes sys/types.h $i_grp grp.h"
 	case "$getgrgid_r_proto" in
 	'')	try='extern int getgrgid_r(gid_t, struct group*, char*, size_t, struct group**);'
 		./protochk "$try" $hdrs && getgrgid_r_proto=I_TSBWR;

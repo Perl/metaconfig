@@ -1,4 +1,4 @@
-?MAKE:d_drand48_r drand48_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_drand48_r drand48_r_proto: Inlibc Protochk i_systypes i_stdlib
 ?MAKE:  -pick add $@ %<
 ?S:d_drand48_r:
 ?S:     This variable conditionally defines the HAS_DRAND48_R symbol,
@@ -26,7 +26,7 @@ set drand48_r d_drand48_r
 eval $inlibc
 case "$d_drand48_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_stdlib stdlib.h"
+	hdrs="$i_systypes sys/types.h $i_stdlib stdlib.h"
 	case "$drand48_r_proto" in
 	'')	try='extern int drand48_r(long, double*);'
 		./protochk "$try" $hdrs && drand48_r_proto=I_LT;

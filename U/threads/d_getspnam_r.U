@@ -1,4 +1,4 @@
-?MAKE:d_getspnam_r getspnam_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_getspnam_r getspnam_r_proto: Inlibc Protochk i_systypes i_shadow
 ?MAKE:  -pick add $@ %<
 ?S:d_getspnam_r:
 ?S:     This variable conditionally defines the HAS_GETSPNAM_R symbol,
@@ -26,7 +26,7 @@ set getspnam_r d_getspnam_r
 eval $inlibc
 case "$d_getspnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_shadow shadow.h"
+	hdrs="$i_systypes sys/types.h $i_shadow shadow.h"
 	case "$getspnam_r_proto" in
 	'')	try='extern int getspnam_r(const char*, struct spwd*, char*, size_t, struct spwd**);'
 		./protochk "$try" $hdrs && getspnam_r_proto=I_CSBWR;

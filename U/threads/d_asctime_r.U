@@ -1,4 +1,4 @@
-?MAKE:d_asctime_r asctime_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_asctime_r asctime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:  -pick add $@ %<
 ?S:d_asctime_r:
 ?S:     This variable conditionally defines the HAS_ASCTIME_R symbol,
@@ -26,7 +26,7 @@ set asctime_r d_asctime_r
 eval $inlibc
 case "$d_asctime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_time time.h"
+	hdrs="$i_systypes sys/types.h $i_time time.h"
 	case "$asctime_r_proto" in
 	'')	try='extern char* asctime_r(const struct tm*, char*);'
 		./protochk "$try" $hdrs && asctime_r_proto=B_SB;

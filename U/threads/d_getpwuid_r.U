@@ -1,4 +1,4 @@
-?MAKE:d_getpwuid_r getpwuid_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_getpwuid_r getpwuid_r_proto: Inlibc Protochk i_systypes i_pwd
 ?MAKE:  -pick add $@ %<
 ?S:d_getpwuid_r:
 ?S:     This variable conditionally defines the HAS_GETPWUID_R symbol,
@@ -26,7 +26,7 @@ set getpwuid_r d_getpwuid_r
 eval $inlibc
 case "$d_getpwuid_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_pwd pwd.h"
+	hdrs="$i_systypes sys/types.h $i_pwd pwd.h"
 	case "$getpwuid_r_proto" in
 	'')	try='extern int getpwuid_r(uid_t, struct passwd*, char*, size_t, struct passwd**);'
 		./protochk "$try" $hdrs && getpwuid_r_proto=I_TSBWR;

@@ -1,4 +1,4 @@
-?MAKE:d_getgrent_r getgrent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_getgrent_r getgrent_r_proto: Inlibc Protochk i_systypes i_grp
 ?MAKE:  -pick add $@ %<
 ?S:d_getgrent_r:
 ?S:     This variable conditionally defines the HAS_GETGRENT_R symbol,
@@ -26,7 +26,7 @@ set getgrent_r d_getgrent_r
 eval $inlibc
 case "$d_getgrent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_grp grp.h"
+	hdrs="$i_systypes sys/types.h $i_grp grp.h"
 	case "$getgrent_r_proto" in
 	'')	try='extern int getgrent_r(struct group*, char*, size_t, struct group**);'
 		./protochk "$try" $hdrs && getgrent_r_proto=I_SBWR;

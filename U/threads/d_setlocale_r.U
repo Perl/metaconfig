@@ -1,4 +1,4 @@
-?MAKE:d_setlocale_r setlocale_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_setlocale_r setlocale_r_proto: Inlibc Protochk i_systypes i_locale
 ?MAKE:  -pick add $@ %<
 ?S:d_setlocale_r:
 ?S:     This variable conditionally defines the HAS_SETLOCALE_R symbol,
@@ -26,7 +26,7 @@ set setlocale_r d_setlocale_r
 eval $inlibc
 case "$d_setlocale_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_locale locale.h"
+	hdrs="$i_systypes sys/types.h $i_locale locale.h"
 	case "$setlocale_r_proto" in
 	'')	try='extern int setlocale_r(int, const char*, char*, int);'
 		./protochk "$try" $hdrs && setlocale_r_proto=I_ICBI;

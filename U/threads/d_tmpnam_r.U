@@ -1,4 +1,4 @@
-?MAKE:d_tmpnam_r tmpnam_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_tmpnam_r tmpnam_r_proto: Inlibc Protochk i_systypes i_stdio
 ?MAKE:  -pick add $@ %<
 ?S:d_tmpnam_r:
 ?S:     This variable conditionally defines the HAS_TMPNAM_R symbol,
@@ -26,7 +26,7 @@ set tmpnam_r d_tmpnam_r
 eval $inlibc
 case "$d_tmpnam_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_stdio stdio.h"
+	hdrs="$i_systypes sys/types.h $i_stdio stdio.h"
 	case "$tmpnam_r_proto" in
 	'')	try='extern char* tmpnam_r(char*);'
 		./protochk "$try" $hdrs && tmpnam_r_proto=B_B;

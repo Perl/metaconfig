@@ -26,7 +26,7 @@ set readdir64_r d_readdir64_r
 eval $inlibc
 case "$d_readdir64_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_dirent dirent.h"
+	hdrs="$i_systypes sys/types.h $i_dirent dirent.h"
 	case "$readdir64_r_proto" in
 	'')	try='extern int readdir64_r(DIR*, struct dirent64*, struct dirent64**);'
 		./protochk "$try" $hdrs && readdir64_r_proto=I_TSR;

@@ -1,4 +1,4 @@
-?MAKE:d_getprotobyname_r getprotobyname_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_getprotobyname_r getprotobyname_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:  -pick add $@ %<
 ?S:d_getprotobyname_r:
 ?S:     This variable conditionally defines the HAS_GETPROTOBYNAME_R symbol,
@@ -26,7 +26,7 @@ set getprotobyname_r d_getprotobyname_r
 eval $inlibc
 case "$d_getprotobyname_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	hdrs="$i_systypes sys/types.h $i_netdb netdb.h"
 	case "$getprotobyname_r_proto" in
 	'')	try='extern int getprotobyname_r(const char*, struct protoent*, size_t, char*, struct protoent**);'
 		./protochk "$try" $hdrs && getprotobyname_r_proto=I_CSWBR;

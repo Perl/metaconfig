@@ -1,4 +1,4 @@
-?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_gmtime_r gmtime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:  -pick add $@ %<
 ?S:d_gmtime_r:
 ?S:     This variable conditionally defines the HAS_GMTIME_R symbol,
@@ -26,7 +26,7 @@ set gmtime_r d_gmtime_r
 eval $inlibc
 case "$d_gmtime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_time time.h"
+	hdrs="$i_systypes sys/types.h $i_time time.h"
 	case "$gmtime_r_proto" in
 	'')	try='extern struct tm* gmtime_r(const time_t*, struct tm*);'
 		./protochk "$try" $hdrs && gmtime_r_proto=S_TS;

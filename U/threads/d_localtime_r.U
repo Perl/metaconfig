@@ -1,4 +1,4 @@
-?MAKE:d_localtime_r localtime_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_localtime_r localtime_r_proto: Inlibc Protochk i_systypes i_time
 ?MAKE:  -pick add $@ %<
 ?S:d_localtime_r:
 ?S:     This variable conditionally defines the HAS_LOCALTIME_R symbol,
@@ -26,7 +26,7 @@ set localtime_r d_localtime_r
 eval $inlibc
 case "$d_localtime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_time time.h"
+	hdrs="$i_systypes sys/types.h $i_time time.h"
 	case "$localtime_r_proto" in
 	'')	try='extern struct tm* localtime_r(const time_t*, struct tm*);'
 		./protochk "$try" $hdrs && localtime_r_proto=S_TS;

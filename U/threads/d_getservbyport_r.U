@@ -1,4 +1,4 @@
-?MAKE:d_getservbyport_r getservbyport_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_getservbyport_r getservbyport_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:  -pick add $@ %<
 ?S:d_getservbyport_r:
 ?S:     This variable conditionally defines the HAS_GETSERVBYPORT_R symbol,
@@ -26,7 +26,7 @@ set getservbyport_r d_getservbyport_r
 eval $inlibc
 case "$d_getservbyport_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	hdrs="$i_systypes sys/types.h $i_netdb netdb.h"
 	case "$getservbyport_r_proto" in
 	'')	try='extern int getservbyport_r(int, const char*, struct servent*, size_t, struct servent**);'
 		./protochk "$try" $hdrs && getservbyport_r_proto=I_ICSWR;

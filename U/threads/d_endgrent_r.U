@@ -1,4 +1,4 @@
-?MAKE:d_endgrent_r endgrent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_endgrent_r endgrent_r_proto: Inlibc Protochk i_systypes i_grp
 ?MAKE:  -pick add $@ %<
 ?S:d_endgrent_r:
 ?S:     This variable conditionally defines the HAS_ENDGRENT_R symbol,
@@ -26,7 +26,7 @@ set endgrent_r d_endgrent_r
 eval $inlibc
 case "$d_endgrent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_grp grp.h"
+	hdrs="$i_systypes sys/types.h $i_grp grp.h"
 	case "$endgrent_r_proto" in
 	'')	try='extern int endgrent_r(FILE**);'
 		./protochk "$try" $hdrs && endgrent_r_proto=I_H;

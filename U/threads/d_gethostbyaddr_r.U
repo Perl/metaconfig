@@ -1,4 +1,4 @@
-?MAKE:d_gethostbyaddr_r gethostbyaddr_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_gethostbyaddr_r gethostbyaddr_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:  -pick add $@ %<
 ?S:d_gethostbyaddr_r:
 ?S:     This variable conditionally defines the HAS_GETHOSTBYADDR_R symbol,
@@ -26,7 +26,7 @@ set gethostbyaddr_r d_gethostbyaddr_r
 eval $inlibc
 case "$d_gethostbyaddr_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	hdrs="$i_systypes sys/types.h $i_netdb netdb.h"
 	case "$gethostbyaddr_r_proto" in
 	'')	try='extern int gethostbyaddr_r(const char*, size_t, int, struct hostent*, char*, struct hostent**, int*);'
 		./protochk "$try" $hdrs && gethostbyaddr_r_proto=I_CWISBRE;

@@ -1,4 +1,4 @@
-?MAKE:d_getservent_r getservent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:d_getservent_r getservent_r_proto: Inlibc Protochk i_systypes i_netdb
 ?MAKE:  -pick add $@ %<
 ?S:d_getservent_r:
 ?S:     This variable conditionally defines the HAS_GETSERVENT_R symbol,
@@ -26,7 +26,7 @@ set getservent_r d_getservent_r
 eval $inlibc
 case "$d_getservent_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	hdrs="$i_systypes sys/types.h $i_netdb netdb.h"
 	case "$getservent_r_proto" in
 	'')	try='extern int getservent_r(struct servent*, char*, size_t, struct servent**);'
 		./protochk "$try" $hdrs && getservent_r_proto=I_SBWR;
