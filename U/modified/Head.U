@@ -175,13 +175,17 @@ fi
 ?X: We only add directories that are not already in the PATH of the
 ?X: user and the directories must exist also.
 ?X:
+?X: 20040627, Merijn, HP-UX's ANSI compiler is in /opt/ansic/bin if present
+?X:  and should be before /usr/ccs/bin, where the braindead bundled compiler
+?X:  can be found. The .usr/ccs/bin compiler cannot be used to build perl.
+?X:
 : Proper PATH setting
 paths='/bin /usr/bin /usr/local/bin /usr/ucb /usr/local /usr/lbin'
 paths="$paths /opt/bin /opt/local/bin /opt/local /opt/lbin"
 paths="$paths /usr/5bin /etc /usr/gnu/bin /usr/new /usr/new/bin /usr/nbin"
 paths="$paths /opt/gnu/bin /opt/new /opt/new/bin /opt/nbin"
 paths="$paths /sys5.3/bin /sys5.3/usr/bin /bsd4.3/bin /bsd4.3/usr/ucb"
-paths="$paths /bsd4.3/usr/bin /usr/bsd /bsd43/bin /usr/ccs/bin"
+paths="$paths /bsd4.3/usr/bin /usr/bsd /bsd43/bin /opt/ansic/bin /usr/ccs/bin"
 paths="$paths /etc /usr/lib /usr/ucblib /lib /usr/ccs/lib"
 paths="$paths /sbin /usr/sbin /usr/libexec"
 paths="$paths /system/gnu_library/bin"
