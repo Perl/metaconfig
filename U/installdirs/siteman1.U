@@ -33,6 +33,7 @@
 ?S:	man1direxp only points to the read-only access location. For extra
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
+?INIT:siteman1=''
 : determine where add-on manual pages go
 case "$siteman1" in
 '')	dflt=`echo "$man1dir" | $sed "s#^$prefix#$siteprefix#"` ;;

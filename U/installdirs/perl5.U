@@ -13,7 +13,7 @@
 ?X:	We check for 5.005 and later because inc_version_list is
 ?X:	irrelevant for earlier versions.
 ?X:
-?MAKE:perl5: path_sep binexp test sed
+?MAKE:perl5: path_sep binexp test sed exe_ext
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:perl5:
@@ -25,13 +25,13 @@
 : Find perl5.005 or later.
 echo "Looking for a previously installed perl5.005 or later... "
 case "$perl5" in
-'')	for tdir in `echo "$binexp:$PATH" | $sed "s/$path_sep/ /g"`; do
+'')	for tdir in `echo "$binexp$path_sep$PATH" | $sed "s/$path_sep/ /g"`; do
 		: Check if this perl is recent and can load a simple module
-		if $test -x $tdir/perl && $tdir/perl -Mless -e 'use 5.005;' >/dev/null 2>&1; then
+		if $test -x $tdir/perl$exe_ext && $tdir/perl -Mless -e 'use 5.005;' >/dev/null 2>&1; then
 			perl5=$tdir/perl
 			break;
-		elif $test -x $tdir/perl5 && $tdir/perl5 -Mless -e 'use 5.005;' >/dev/null 2>&1; then
-			perl5=$tdir/perl
+		elif $test -x $tdir/perl5$exe_ext && $tdir/perl5 -Mless -e 'use 5.005;' >/dev/null 2>&1; then
+			perl5=$tdir/perl5
 			break;
 		fi
 	done

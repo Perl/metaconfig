@@ -34,6 +34,7 @@
 ?S:	a system running AFS, in which case they may differ slightly. You
 ?S:	should always use this variable within your makefiles for portability.
 ?S:.
+?INIT:sitescript=''
 : determine where add-on public executable scripts go
 case "$sitescript" in
 '')	dflt=$siteprefix/script

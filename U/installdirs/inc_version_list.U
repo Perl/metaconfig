@@ -12,7 +12,7 @@
 ?RCS:
 ?MAKE:inc_version_list inc_version_list_init: cat sed Getfile perl5 \
 	version api_versionstring rm Myread archname prefix sitelib_stem \
-	bincompat5005
+	bincompat5005 exe_ext
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:inc_version_list:
@@ -97,7 +97,7 @@ else {
 EOPL
 chmod +x getverlist
 case "$inc_version_list" in
-'')	if test -x "$perl5"; then
+'')	if test -x "$perl5$exe_ext"; then
 		dflt=`$perl5 getverlist`
 	else
 		dflt='none'
