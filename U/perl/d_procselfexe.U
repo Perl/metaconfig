@@ -1,29 +1,30 @@
-?MAKE:d_procselfexe: Oldconfig Setvar rm ls test contains issymlink d_readlink
+?MAKE:d_procselfexe: Oldconfig Setvar rm ls contains issymlink d_readlink
 ?MAKE:	-pick add $@ %<
 ?S:d_procselfexe:
-?S:	Defined if /proc/self/exe is symlink to executing program
+?S:	Defined if /proc/self/exe is symlink to executing program.
 ?S:.
 ?C:HAS_PROCSELFEXE:
 ?C:	This symbol is defined if /proc/self/exe is a symlink
-?C:	to the executing program
+?C:	to the executing program.
 ?C:.
 ?H:#$d_procselfexe HAS_PROCSELFEXE	/**/
 ?H:.
 ?LINT: set d_procselfexe
 echo " "
-echo "Checking for /proc/self/exe ..." >&4
+echo "Checking for /proc/self/exe..." >&4
 val="$undef"
-if $test "$d_readlink" = "$define" ; then
+case "$d_readlink" in
+"$define")
 	if $issymlink /proc/self/exe ; then
 		$ls -l /proc/self/exe > reflect
-		if $contains $ls reflect >/dev/null; then
+		if $contains $ls reflect >/dev/null 2>&1; then
 			val="$define"
-			echo "You have linux-like /proc/self/exe"
+			echo "You have Linux-like /proc/self/exe."
 		fi
 		$rm reflect
 	fi
-fi
+	;;
+esac
 set d_procselfexe
 eval $setvar
-
 
