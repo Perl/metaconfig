@@ -10,11 +10,11 @@
 ?S:d_getmntent:
 ?S:	This variable conditionally defines the HAS_GETMNTENT symbol, which
 ?S:	indicates to the C program that the getmntent() routine is available
-?S:	to iterate through mounted files.
+?S:	to iterate through mounted files to get their mount info.
 ?S:.
 ?C:HAS_GETMNTENT:
 ?C:	This symbol, if defined, indicates that the getmntent routine is
-?C:	available to iterate through mounted file systems.
+?C:	available to iterate through mounted file systems to get their info.
 ?C:.
 ?H:#$d_getmntent HAS_GETMNTENT		/**/
 ?H:.

@@ -17,11 +17,11 @@
 ?S:.
 ?C:HAS_STATVFS:
 ?C:	This symbol, if defined, indicates that the statvfs routine is
-?C:	available to stat filesystems of files.
+?C:	available to stat filesystems by filenames.
 ?C:.
 ?C:HAS_FSTATVFS:
 ?C:	This symbol, if defined, indicates that the fstatvfs routine is
-?C:	available to stat filesystems of file descriptors.
+?C:	available to stat filesystems by file descriptors.
 ?C:.
 ?H:#$d_statvfs HAS_STATVFS		/**/
 ?H:#$d_fstatvfs HAS_FSTATVFS		/**/

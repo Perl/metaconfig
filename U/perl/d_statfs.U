@@ -24,18 +24,19 @@
 ?S:.
 ?C:HAS_STATFS:
 ?C:	This symbol, if defined, indicates that the statfs routine is
-?C:	available to stat filesystems of files.
+?C:	available to stat filesystems by filenames.
 ?C:.
 ?C:HAS_FSTATFS:
 ?C:	This symbol, if defined, indicates that the fstatfs routine is
-?C:	available to stat filesystems of file descriptors.
+?C:	available to stat filesystems by file descriptors.
 ?C:.
 ?C:HAS_STRUCT_STATFS_FLAGS:
 ?C:	This symbol, if defined, indicates that the struct statfs
 ?C:	does have the f_flags member containing the mount flags of
 ?C:	the filesystem holding the file.
-?C:	This kind of struct statfs is coming from sys/mount.h (BSD),
-?C:	not from sys/statfs.h (SYSV).
+?C:	This kind of struct statfs is coming from <sys/mount.h> (BSD 4.3),
+?C:	not from <sys/statfs.h> (SYSV).  Older BSDs (like Ultrix) do not
+?C:	have statfs() and struct statfs, they have getmnt().
 ?C:.
 ?H:#$d_statfs HAS_STATFS		/**/
 ?H:#$d_fstatfs HAS_FSTATFS		/**/

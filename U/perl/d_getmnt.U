@@ -14,7 +14,7 @@
 ?S:.
 ?C:HAS_GETMNT:
 ?C:	This symbol, if defined, indicates that the getmnt routine is
-?C:	available.
+?C:	available to get filesystem mount info by filename.
 ?C:.
 ?H:#$d_getmnt HAS_GETMNT		/**/
 ?H:.
