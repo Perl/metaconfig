@@ -128,7 +128,7 @@ true)
 			dflt=libperl.5.$so
 			# XXX How handle the --version stuff for MAB?
 			;;
-		linux*)  # ld won't link with a bare -lperl otherwise.
+		linux*|gnu*)  # ld won't link with a bare -lperl otherwise.
 			dflt=libperl.$so
 			;;
 		cygwin*) # ld links against an importlib
@@ -215,7 +215,7 @@ if "$useshrplib"; then
 	freebsd|netbsd|openbsd|interix)
 		xxx="-Wl,-R$shrpdir"
 		;;
-	bsdos|linux|irix*|dec_osf)
+	bsdos|linux|irix*|dec_osf|gnu*)
 		xxx="-Wl,-rpath,$shrpdir"
 		;;
 	next)

@@ -129,7 +129,7 @@ esac
 : for archive libraries.  Thank you, Linux.
 case "$nm_so_opt" in
 '')	case "$myuname" in
-	*linux*)
+	*linux*|gnu*)
 		if $nm --help | $grep 'dynamic' > /dev/null 2>&1; then
 			nm_so_opt='--dynamic'
 		fi

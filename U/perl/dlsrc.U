@@ -212,7 +212,7 @@ EOM
 			      '') dflt="$dflt +vnocompatwarnings" ;;
 			      esac
 			      ;;	
-			linux|irix*)	dflt='-shared' ;;
+			linux|irix*|gnu*)	dflt='-shared' ;;
 			next)  dflt='none' ;;
 			solaris) dflt='-G' ;;
 			sunos) dflt='-assert nodefinitions' ;;
@@ -260,7 +260,7 @@ say "none".
 EOM
     case "$ccdlflags" in
     '') case "$osname" in
-	    linux|hpux)	dflt='-Wl,-E' ;;
+	    linux|hpux|gnu*)	dflt='-Wl,-E' ;;
 	    next|sunos)	dflt='none' ;;
 	    *)		dflt='none' ;;
 	    esac ;;
