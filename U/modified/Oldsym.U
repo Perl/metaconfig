@@ -21,9 +21,9 @@
 ?X: which is set to true. Then, we try to keep all the new symbols that
 ?X: may come from a hint file or a previous config.sh file.
 ?X: 
-?MAKE:Oldsym: Config_sh cat test hint src sort uniq
+?MAKE:Oldsym: Config_sh cat test hint src sort uniq perl_patchlevel
 ?MAKE:	-pick add $@ %<
-?T:PERL_CONFIG_SH sym tmp s
+?T:PERL_CONFIG_SH PERL_PATCHLEVEL sym tmp s
 ?X: Command line options can be saved by the Options.U unit in the
 ?X: temporary file UU/cmdline.opt.
 : Add in command line options if available
@@ -32,6 +32,7 @@ $test -f UU/cmdline.opt && $cat UU/cmdline.opt >> config.sh
 : add special variables
 $test -f $src/patchlevel.h && \
 awk '/^#define[ 	]+PERL_/ {printf "%s=%s\n",$2,$3}' $src/patchlevel.h >>config.sh
+echo "PERL_PATCHLEVEL=$perl_patchlevel" >>config.sh
 echo "PERL_CONFIG_SH=true" >>config.sh
 
 : propagate old symbols
