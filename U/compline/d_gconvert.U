@@ -21,7 +21,8 @@
 ?RCS: Revision 3.0.1.1	1994/10/29  16:12:51  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_Gconvert: Compile cat Inlibc rm _o i_stdlib d_qgcvt run \
+?MAKE:d_Gconvert: \
+	Compile cat Inlibc rm _o i_stdlib d_qgcvt run \
 	uselongdouble d_longdbl d_PRIgldbl sPRIgldbl
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
@@ -32,6 +33,10 @@
 ?S:		d_Gconvert='gconvert((x),(n),(t),(b))'
 ?S:		d_Gconvert='gcvt((x),(n),(b))'
 ?S:		d_Gconvert='sprintf((b),"%.*g",(n),(x))'
+?S:	If you are not content with these choices, use gconvert_preference
+?S:	and gconvert_ld_preference, which if present are space-separated
+?S:	lists of functions to try with calling convention of gcvt,
+?S:	respectively for doubles and long doubles.
 ?S:.
 ?C:Gconvert:
 ?C:	This preprocessor macro is defined to convert a floating point
@@ -42,7 +47,7 @@
 ?C:	a macro using sprintf("%g") is used. Arguments for the Gconvert
 ?C:	macro are: value, number of digits, whether trailing zeros should
 ?C:	be retained, and the output buffer.
-?C:	Possible values are:
+?C:	The usual values are:
 ?C:		d_Gconvert='gconvert((x),(n),(t),(b))'
 ?C:		d_Gconvert='gcvt((x),(n),(b))'
 ?C:		d_Gconvert='sprintf((b),"%.*g",(n),(x))'
@@ -50,9 +55,14 @@
 ?C:.
 ?H:#define Gconvert(x,n,t,b) $d_Gconvert
 ?H:.
-?T: xxx_list xxx_convert
+?T: xxx_list xxx_convert xxx_ld_list
+?LINT:extern gconvert_preference
+?LINT:extern gconvert_ld_preference
 ?X: 
 : Check how to convert floats to strings.
+
+if test "X$d_Gconvert" = X; then
+
 echo " "
 echo "Checking for an efficient way to convert floats to strings."
 echo " " > try.c
@@ -80,8 +90,12 @@ char *myname = "qgcvt";
 #define DOUBLETYPE long double
 #endif
 #ifdef TRY_sprintf
-#if defined(USE_LONG_DOUBLE) && defined(HAS_LONG_DOUBLE) && defined(HAS_PRIgldbl)
+#if defined(USE_LONG_DOUBLE) && defined(HAS_LONG_DOUBLE)
+#ifdef HAS_PRIgldbl
 #define Gconvert(x,n,t,b) sprintf((b),"%.*"$sPRIgldbl,(n),(x))
+#else
+#define Gconvert(x,n,t,b) sprintf((b),"%.*g",(n),(double)(x))
+#endif
 #else
 #define Gconvert(x,n,t,b) sprintf((b),"%.*g",(n),(x))
 #endif
@@ -125,6 +139,21 @@ int main()
 	Gconvert((DOUBLETYPE)0.1, 8, 0, buf);
 	checkit("0.1", buf);
 
+	Gconvert((DOUBLETYPE)0.01, 8, 0, buf); 
+	checkit("0.01", buf);
+
+	Gconvert((DOUBLETYPE)0.001, 8, 0, buf); 
+	checkit("0.001", buf);
+
+	Gconvert((DOUBLETYPE)0.0001, 8, 0, buf); 
+	checkit("0.0001", buf);
+
+	Gconvert((DOUBLETYPE)0.00009, 8, 0, buf);
+	if (strlen(buf) > 5)
+	    checkit("9e-005", buf); /* for Microsoft ?? */
+	else
+	    checkit("9e-05", buf);
+
 	Gconvert((DOUBLETYPE)1.0, 8, 0, buf); 
 	checkit("1", buf);
 
@@ -163,12 +192,12 @@ int main()
 	Gconvert((DOUBLETYPE)123.456, 8, 0, buf); 
 	checkit("123.456", buf);
 
-        /* Testing of 1e+129 in bigintpm.t must not get extra '.' here. */
-        Gconvert((DOUBLETYPE)1e30, 8, 0, buf);
-        if (strlen(buf) > 5)
-            checkit("1e+030", buf); /* for Microsoft */
-        else
-            checkit("1e+30", buf);
+	/* Testing of 1e+129 in bigintpm.t must not get extra '.' here. */
+	Gconvert((DOUBLETYPE)1e30, 8, 0, buf);
+	if (strlen(buf) > 5)
+	    checkit("1e+030", buf); /* for Microsoft */
+	else
+	    checkit("1e+30", buf);
 
 	exit(0);
 }
@@ -180,21 +209,49 @@ EOP
 ?X: (e.g. that function may be in a problematic /usr/ucblib library, and
 ?X: the user may or may not choose to use -lucb stuff.)
 ?X: Any other hint file (or previous config.sh) setting is left intact.
-case "$d_Gconvert" in
-gconvert*) xxx_list='gconvert gcvt sprintf' ;;
-gcvt*) xxx_list='gcvt gconvert sprintf' ;;
-sprintf*) xxx_list='sprintf gconvert gcvt' ;;
-*) xxx_list='gconvert gcvt sprintf' ;;
-esac
+: first add preferred functions to our list
+xxx_list=""
+for xxx_convert in $gconvert_preference; do
+    case $xxx_convert in
+    gcvt|gconvert|sprintf) xxx_list="$xxx_list $xxx_convert" ;;
+    *) echo "Discarding unrecognized gconvert_preference $xxx_convert" >&4 ;;
+    esac 
+done
+: then add any others
+for xxx_convert in gconvert gcvt sprintf; do
+    case "$xxx_list" in
+    *$xxx_convert*) ;;
+    *) xxx_list="$xxx_list $xxx_convert" ;;
+    esac 
+done
 
-case "$d_longdbl$uselongdouble$d_PRIgldbl" in
-"$define$define$define")
-    # for long doubles prefer first qgcvt, then sprintf
-    xxx_list="`echo $xxx_list|sed s/sprintf//`" 
-    xxx_list="sprintf $xxx_list"
-    case "$d_qgcvt" in
-    "$define") xxx_list="qgcvt $xxx_list" ;;
-    esac
+case "$d_longdbl$uselongdouble" in
+"$define$define")
+    : again, add prefered functions to our list first
+    xxx_ld_list=""
+    for xxx_convert in $gconvert_ld_preference; do
+        case $xxx_convert in
+        qgcvt|gcvt|gconvert|sprintf) xxx_ld_list="$xxx_ld_list $xxx_convert" ;;
+        *) echo "Discarding unrecognized gconvert_ld_preference $xxx_convert" ;;
+        esac
+    done
+    : then add qgcvt, sprintf--then, in xxx_list order, gconvert and gcvt
+    for xxx_convert in qgcvt sprintf $xxx_list; do
+        case "$xxx_ld_list" in
+        $xxx_convert*|*" $xxx_convert"*) ;;
+        *) xxx_ld_list="$xxx_ld_list $xxx_convert" ;;
+        esac
+    done
+    : if sprintf cannot do long doubles, move it to the end
+    if test "$d_PRIgldbl" != "$define"; then
+        xxx_ld_list="`echo $xxx_ld_list|sed s/sprintf//` sprintf"
+    fi
+    : if no qgcvt, remove it
+    if test "$d_qgcvt" != "$define"; then
+        xxx_ld_list="`echo $xxx_ld_list|sed s/qgcvt//`"
+    fi
+    : use the ld_list
+    xxx_list="$xxx_ld_list"
     ;;
 esac
 
@@ -209,12 +266,19 @@ for xxx_convert in $xxx_list; do
 			break;
 		else
 			echo "...But $xxx_convert didn't work as I expected."
+			xxx_convert=''
 		fi
 	else
 		echo "$xxx_convert NOT found." >&4
 	fi
 done
-	
+
+if test X$xxx_convert = X; then
+    echo "*** WHOA THERE!!! ***" >&4
+    echo "None of ($xxx_list)  seemed to work properly.  I'll use sprintf." >&4
+    xxx_convert=sprintf
+fi
+
 case "$xxx_convert" in
 gconvert) d_Gconvert='gconvert((x),(n),(t),(b))' ;;
 gcvt) d_Gconvert='gcvt((x),(n),(b))' ;;
@@ -222,8 +286,12 @@ qgcvt) d_Gconvert='qgcvt((x),(n),(b))' ;;
 *) case "$uselongdouble$d_longdbl$d_PRIgldbl" in
    "$define$define$define")
       d_Gconvert="sprintf((b),\"%.*\"$sPRIgldbl,(n),(x))" ;;
+   "$define$define$undef")
+      d_Gconvert='sprintf((b),"%.*g",(n),(double)(x))' ;;
    *) d_Gconvert='sprintf((b),"%.*g",(n),(x))' ;;
    esac
    ;;  
 esac
+
+fi
 
