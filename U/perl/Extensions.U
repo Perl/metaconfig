@@ -190,6 +190,19 @@ for xxx in $known_extensions ; do
                         esac
 		esac
 		;;
+	XS/APItest|xs/apitest)
+		# This is just for testing.  Skip it unless we have dynamic loading.
+
+		case "$usedl" in
+		$define) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	XS/Typemap|xs/typemap)
+		# This is just for testing.  Skip it unless we have dynamic loading.
+		case "$usedl" in
+		$define) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
 	threads|threads/shared)
 		# threads and threads::shared are special cases.
 		# To stop people from asking "Perl 5.8.0 was supposed
