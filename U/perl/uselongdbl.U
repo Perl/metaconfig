@@ -37,13 +37,8 @@ esac
 rp='Try to use long doubles if available?'
 . ./myread
 case "$ans" in
-y|Y) 
-	val="$define"
-	ccflags="$ccflags -DUSE_LONG_DOUBLE"
-	;;     
-*)      
-	val="$undef"
-	;;
+y|Y) 	val="$define"	;;
+*)      val="$undef"	;;
 esac
 set uselongdouble
 eval $setvar
