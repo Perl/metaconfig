@@ -181,6 +181,14 @@ for xxx in $known_extensions ; do
                         esac
 		esac
 		;;
+	threads)
+                case "$usethreads" in
+                true|$define|y)
+                        case "$useithreads" in
+                        $define|true|[yY]*) avail_ext="$avail_ext $xxx" ;;
+                        esac
+		esac
+		;;
 	IPC/SysV|ipc/sysv)
 		: XXX Do we need a useipcsysv variable here
 		case "${d_msg}${d_sem}${d_shm}" in 
