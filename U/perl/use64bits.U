@@ -214,15 +214,15 @@ EOM
 	;;
 esac
 
-case "$use64bitint" in
-"$define"|true|[yY]*)
 : Look for a hint-file generated 'call-back-unit'.  If the
 : user has specified that a 64-bit perl is to be built,
 : we may need to set or change some other defaults.
-	if $test -f use64bitint.cbu; then
-		echo "Your platform has some specific hints for 64-bit integers, using them..."
-		. ./use64bitint.cbu
-	fi
+if $test -f use64bitint.cbu; then
+	echo "Your platform has some specific hints regarding 64-bit integers, using them..."
+	. ./use64bitint.cbu
+fi
+case "$use64bitint" in
+"$define"|true|[yY]*)
 	case "$longsize" in
 	4) case "$archname64" in
 	   '') archname64=64int ;;
@@ -232,15 +232,15 @@ case "$use64bitint" in
 	;;
 esac
 
-case "$use64bitall" in
-"$define"|true|[yY]*)
 : Look for a hint-file generated 'call-back-unit'.  If the
 : user has specified that a maximally 64-bit perl is to be built,
 : we may need to set or change some other defaults.
-	if $test -f use64bitall.cbu; then
-		echo "Your platform has some specific hints for 64-bit builds, using them..."
-		. ./use64bitall.cbu
-	fi
+if $test -f use64bitall.cbu; then
+	echo "Your platform has some specific hints regarding 64-bit builds, using them..."
+	. ./use64bitall.cbu
+fi
+case "$use64bitall" in
+"$define"|true|[yY]*)
 	case "$longsize" in
 	4) case "$archname64" in
 	   ''|64int) archname64=64all ;;
