@@ -135,7 +135,7 @@
 ?F:!ccsym.own
 : get C preprocessor symbols handy
 echo " "
-$echo $n "Guessing which symbols your C compiler and preprocessor define... $c" >&4 
+$echo "Guessing which symbols your C compiler and preprocessor define..." >&4 
 ?X: The following used to be tr '[ - ]' ... but this was rejected by AIX 3.2
 ?X: since the endpoints where the same (from patch 12u8 to patch).
 echo $al $osname | $tr ' ' $trnl >Cppsym.know

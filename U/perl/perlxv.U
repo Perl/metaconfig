@@ -8,7 +8,7 @@
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size \
-	d_nvpresuv: \
+	d_nv_preserves_uv: \
 	echo rm use64bits d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
@@ -80,7 +80,7 @@
 ?S:nvsize:
 ?S:	This variable is the size of an NV in bytes.
 ?S:.
-?S:d_nvpresuv:
+?S:d_nv_preserves_uv:
 ?S:	This variable indicates whether a variable of type nvtype
 ?S:	can preserve all the bits a variable of type uvtype.
 ?S:.
@@ -180,7 +180,7 @@
 ?H:?%<:#define	U64SIZE		$u64size	/**/
 ?H:?%<:#endif
 ?H:#define	NVSIZE		$nvsize		/**/
-?H:#$d_nvpresuv	NV_PRESERVES_UV
+?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
 ?H:.
 ?F:!try
 
@@ -378,13 +378,13 @@ EOP
 set try
 if eval $compile; then
 	case "`./try$exe_ext`" in
-	preserve) d_nvpresuv="$define" ;;
+	preserve) d_nv_preserves_uv="$define" ;;
 	esac
 fi	
-case "$d_nvpresuv" in
+case "$d_nv_preserves_uv" in
 $define) $echo "Yes, they can."  2>&1 ;;
 *)	 $echo "No, they can't." 2>&1
-	 d_nvpresuv="$undef"
+	 d_nv_preserves_uv="$undef"
 	 ;;
 esac
 
