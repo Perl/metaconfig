@@ -93,7 +93,7 @@ echo "If you don't want the manual sources installed, answer 'none'."
 ?X: remove any trailing -3.0 or other version indification from $package
 prog=`echo $package | $sed 's/-*[0-9.]*$//'`
 case "$man3dir" in
-'')	dflt=`echo $man1dir | $sed -e 's/man1/man3/g' -e 's/man\.1/man\.3/g'`
+'')	dflt=`echo "$man1dir" | $sed -e 's/man1/man3/g' -e 's/man\.1/man\.3/g'`
 	if $test -d "$privlib/man/man3"; then
 		cat <<EOM >&4
 
@@ -111,8 +111,10 @@ EOM
 		esac
     fi
 	;;
-' ') dflt=none;;
 *)	dflt="$man3dir" ;;
+esac
+case "$dflt" in
+' ') dflt=none ;;
 esac
 echo " "
 fn=dn+~
@@ -120,7 +122,7 @@ rp="Where do the $package library man pages (source) go?"
 . ./getfile
 man3dir="$ans"
 man3direxp="$ansexp"
-case "$man1dir" in
+case "$man3dir" in
 '')	man3dir=' '
 	installman3dir='';;
 esac
