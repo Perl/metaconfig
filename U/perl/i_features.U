@@ -1,0 +1,24 @@
+?RCS: $Id: i_features.U,v $
+?RCS:
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_features: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_features:
+?S:	This variable conditionally defines the I_FEATURES symbol,
+?S:	and indicates whether a C program should include <features.h>.
+?S:.
+?C:I_FEATURES:
+?C:	This symbol, if defined, indicates that <features.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_features	I_FEATURES		/**/
+?H:.
+?LINT:set i_features
+: see if this is a features.h system
+set features.h i_features
+eval $inhdr
+
