@@ -18,11 +18,27 @@
 ?X: To force any unit to be included, copy this unit to your private U directory
 ?X: and add the name of the unit desired to the ?MAKE: dependency line.
 ?X: 
-?MAKE:End: $W cppstdin gzip zip
+?MAKE:End perllibs: cppstdin gzip zip libs usedl
 ?MAKE:	-pick add $@ %<
-?LINT:use $W
+?S:perllibs:
+?S:	The list of libraries needed by Perl only (any libraries needed
+?S:	by extensions only will by dropped, if using dynamic loading).
+?S:.
+?INIT:perllibs=''
 ?LINT:use gzip zip
 ?LINT:change cppstdin
+: Remove libraries needed only for extensions
+: The appropriate ext/Foo/Makefile.PL will add them back in, if necessary.
+case "$usedl" in
+$define|true|[yY]*)
+	set X `echo " $libs " | sed -e 's@ -lndbm @ @' -e 's@ -lgdbm @ @' -e 's@ -ldbm @ @' -e 's@ -ldb @ @'` 
+	shift
+	perllibs="$*"
+	;;
+*)	perllibs="$libs"
+	;;
+esac
+
 ?X: If the user has the cppstdin wrapper, perl.c will try to call
 ?X: CPPSTDIN, but that will point to a location in the build
 ?X: directory, not the installed version!.  Here, we'll just strip the
