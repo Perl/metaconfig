@@ -32,7 +32,6 @@ $cat >try.c <<EOCP
 #endif
 int main() { int64_t x = 7; }
 EOCP
-	echo " " >&4
 set try
 if eval $compile; then
 	val="$define"
@@ -40,6 +39,7 @@ if eval $compile; then
 	echo "You have int64_t."
 else
 	val="$undef"
+	echo " " >&4
 	echo "You do not have int64_t."
 fi
 $rm -f try try.*
