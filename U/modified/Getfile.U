@@ -219,6 +219,7 @@ while test "$type"; do
 ?X: Always expand ~user if '/' was requested 
 			case "$ansexp" in
 			/*) value="$ansexp" ;;
+			[a-zA-Z]:/*) value="$ansexp" ;;
 			*)
 				redo=true
 				case "$already" in
