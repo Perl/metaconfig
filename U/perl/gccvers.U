@@ -84,6 +84,10 @@ case "$gccversion" in
 *) gccshortvers=`echo "$gccversion"|sed 's/ .*//'`
    gccosandvers=`$cc -v 2>&1|grep '/specs$'|sed "s!.*/[^-/]*-[^-/]*-\([^-/]*\)/$gccshortvers/specs!\1!"`
    gccshortvers=''
+?X: -pipe has shown a compile time speedup of about 40% on Linux and HP-UX
+?X: and also worked on cygwin-1.5.9
+?X: If a system fails, disable it in the hints. 99% of gcc uses binutils
+   ccflags="$ccflags -pipe"
    case "$gccosandvers" in
    $osname) gccosandvers='' ;; # linux gccs seem to have no linux osvers, grr
    $osname$osvers) ;; # looking good
