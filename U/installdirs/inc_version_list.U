@@ -130,7 +130,7 @@ EOM
 rp='List of earlier versions to include in @INC?'
 . ./myread
 case "$ans" in
-[Nn]one|''|' ') inc_version_list=' ' ;;
+[Nn]one|''|' '|$undef) inc_version_list=' ' ;;
 *) inc_version_list="$ans" ;;
 esac
 case "$inc_version_list" in
