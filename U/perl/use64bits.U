@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:use64bitint use64bitall archname64: Myread Oldconfig Setvar test \
-	usemorebits longsize ccflags ptrsize d_quad
+	usemorebits longsize ccflags d_quad
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bitint:
@@ -210,31 +210,6 @@ Since you have chosen a maximally 64-bit build, I'm also turning on
 the use of 64-bit integers.
 EOM
 		use64bitint="$define" ;;
-	esac
-	;;
-esac
-
-case "$use64bitall" in
-"$define"|true|[yY]*)
-	case "$ptrsize" in
-	4)	cat <<EOM >&4
-
-*** You have chosen a maximally 64-bit build, but your pointers
-*** are only 4 bytes wide, disabling maximal 64-bitness.
-
-EOM
-		use64bitall="$undef"
-		case "$use64bitint" in
-		"$define"|true|[yY]*) ;;
-		*)	cat <<EOM >&4
-
-*** Downgrading from maximal 64-bitness to using 64-bit integers.
-
-EOM
-			use64bitint="$define"
-			;;
-		esac
-		;;
 	esac
 	;;
 esac

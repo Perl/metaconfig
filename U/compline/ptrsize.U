@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:37  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:ptrsize: cat rm Myread Compile voidflags run
+?MAKE:ptrsize: cat rm Myread Compile voidflags run use64bitall
 ?MAKE:	-pick add $@ %<
 ?S:ptrsize:
 ?S:	This variable contains the value of the PTRSIZE symbol, which
@@ -29,6 +29,8 @@
 ?C:.
 ?H:#define PTRSIZE $ptrsize		/**/
 ?H:.
+?LINT:extern use64bitint
+?LINT:change use64bitint
 : check for length of pointer
 echo " "
 case "$ptrsize" in
@@ -61,4 +63,29 @@ EOCP
 	;;
 esac
 $rm -f try.c try
+case "$use64bitall" in
+"$define"|true|[yY]*)
+	case "$ptrsize" in
+	4)	cat <<EOM >&4
+
+*** You have chosen a maximally 64-bit build, but your pointers
+*** are only 4 bytes wide, disabling maximal 64-bitness.
+
+EOM
+		use64bitall="$undef"
+		case "$use64bitint" in
+		"$define"|true|[yY]*) ;;
+		*)	cat <<EOM >&4
+
+*** Downgrading from maximal 64-bitness to using 64-bit integers.
+
+EOM
+			use64bitint="$define"
+			;;
+		esac
+		;;
+	esac
+	;;
+esac
+
 
