@@ -13,7 +13,7 @@
 ?S:.
 ?C:I_POLL:
 ?C:	This symbol, if defined, indicates that <poll.h> exists and
-?C:	should be included.
+?C:	should be included. (see also HAS_POLL)
 ?C:.
 ?H:#$i_poll	I_POLL		/**/
 ?H:.
