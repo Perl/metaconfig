@@ -44,8 +44,9 @@ if $test -f UU/config.sh; then
 ?X: the uniq -u command. The oldsyms file thus contains all the symbols
 ?X: that did not appear in the produced config.sh (Larry Wall).
 ?X:
+?X: Do not touch the -u flag of uniq.  This means you too, Jarkko. 
 	sed -n 's/^\([a-zA-Z_0-9]*\)=.*/\1/p' config.sh config.sh UU/oldconfig.sh |\
-	$sort | $uniq >UU/oldsyms
+	$sort | $uniq -u >UU/oldsyms
 	set X `cat UU/oldsyms`
 	shift
 	case $# in
