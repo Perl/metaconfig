@@ -96,7 +96,7 @@
 ?H:?SCAT5:#  define SCAT5(a,b,c,d,e)	PeRl_StGiFy(a) PeRl_StGiFy(b) PeRl_StGiFy(c) PeRl_StGiFy(d) PeRl_StGiFy(e)
 ?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff != 1 && $cpp_stuff != 42
-?H:?%<:#include "Bletch: How does this C preprocessor catenate tokens?"
+?H:?%<:#   include "Bletch: How does this C preprocessor catenate tokens?"
 ?H:?%<:#endif
 ?H:.
 ?W:%<:CAT2 CAT3 CAT4 CAT5 STRINGIFY SCAT2 SCAT3 SCAT4 SCAT5
