@@ -26,6 +26,8 @@
 ?S:.
 ?LINT:extern inc_version_list
 ?LINT:change inc_version_list
+?LINT:extern inc_version_list_init
+?LINT:change inc_version_list_init
 : determine whether to only install version-specific parts.
 echo " "
 $cat <<EOM
