@@ -51,7 +51,7 @@ case "$d_readlink" in
 	fi
 	;;
 esac
-$rm reflect
+$rm -f reflect
 set d_procselfexe
 eval $setvar
 
