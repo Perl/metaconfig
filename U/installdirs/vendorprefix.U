@@ -13,8 +13,12 @@
 ?RCS: Initial revision
 ?RCS:
 ?MAKE:usevendorprefix vendorprefix vendorprefixexp +oldvendorprefix: \
-	Getfile Loc Oldconfig cat prefix
+	Getfile Loc Oldconfig cat prefix Myread
 ?MAKE:	-pick add $@ %<
+?S:usevendorprefix:
+?S:	This variable tells whether the vendorprefix
+?S:	and consequently other vendor* paths are in use.
+?S:.
 ?S:vendorprefix:
 ?S:	This variable holds the full absolute path of the directory below
 ?S:	which the vendor will install add-on packages.
