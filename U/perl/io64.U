@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_llseek d_fpos64_t d_off64_t: \
-	Inlibc Setvar n c cc optimize ccflags rm cat
+	Inlibc Setvar n c cc optimize ccflags rm cat echo
 ?MAKE:	-pick add $@ %<
 ?S:d_llseek:
 ?S:	This variable conditionally defines the HAS_LLSEEK symbol, which

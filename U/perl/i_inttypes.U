@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:i_inttypes d_int64t: Inhdr n c cat cc optimize ccflags \
-	rm Setvar Compile use64bits
+	rm Setvar Compile use64bits echo
 ?MAKE:	-pick add $@ %<
 ?S:i_inttypes:
 ?S:     This variable conditionally defines the I_INTTYPES symbol,

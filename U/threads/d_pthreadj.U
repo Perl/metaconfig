@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_pthreads_created_joinable: cat Compile rm n c \
-	usethreads Setvar i_pthread
+	usethreads Setvar i_pthread echo
 ?MAKE:	-pick add $@ %<
 ?S:d_pthreads_created_joinable:
 ?S:	This variable conditionally defines the PTHREADS_CREATED_JOINABLE
