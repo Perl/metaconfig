@@ -154,10 +154,13 @@ esac
 case "$useperlio" in
 $define)
 	echo "Perlio selected." >&4
+	;;
+*)
+	echo "Perlio not selected, using stdio." >&4
 	case "$archname" in
-        *-perlio*) echo "...and architecture name already has -perlio." >&4
+        *-stdio*) echo "...and architecture name already has -stdio." >&4
                 ;;
-        *)      archname="$archname-perlio"
+        *)      archname="$archname-stdio"
                 echo "...setting architecture name to $archname." >&4
                 ;;
         esac
