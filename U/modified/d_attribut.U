@@ -43,6 +43,8 @@
 ?LINT:set d_attribut
 ?LINT:known __attribute__
 : Look for GNU-cc style attribute checking
+case "$d_attribut" in
+'')
 echo " "
 echo "Checking whether your compiler can handle __attribute__ ..." >&4
 $cat >attrib.c <<'EOCP'
@@ -61,6 +63,9 @@ else
 	echo "Your C compiler doesn't seem to understand __attribute__ at all."
 	val="$undef"
 fi
+;;
+*) val="$d_attribut" ;;
+esac
 set d_attribut
 eval $setvar
 $rm -f attrib*
