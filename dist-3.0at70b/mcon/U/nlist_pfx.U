@@ -46,7 +46,7 @@ $cat >nlisttest.c <<'EOCP'
 #include <stdio.h>
 #include <nlist.h>
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 char **argv;
 {

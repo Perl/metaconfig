@@ -95,7 +95,7 @@ sub() {
 #endif
 	exit(0);
 }
-main() { sub(); }
+int main() { sub(); }
 EOCP
 ?X: This unit used to use cc -S in those tests to try to speed up things, but
 ?X: unfortunately, AIX 3.2 does not support this option.

@@ -107,7 +107,7 @@ while $test "$cont"; do
 echo "Checking to see how many bits your $randfunc() function produces..." >&4
 			$cat >try.c <<EOCP
 #include <stdio.h>
-main()
+int main()
 {
 	register int i;
 	register unsigned long tmp;

@@ -37,7 +37,7 @@
 echo " "
 echo "Checking to see if your C compiler can do signed chars..." >&4
 $cat >try.c <<'EOCP'
-main()
+int main()
 {
 	char c = 0;
 

@@ -48,7 +48,7 @@ if set vprintf val -f d_vprintf; eval $csym; $val; then
 	$cat >vprintf.c <<'EOF'
 #include <varargs.h>
 
-main() { xxx("foo"); }
+int main() { xxx("foo"); }
 
 xxx(va_alist)
 va_dcl

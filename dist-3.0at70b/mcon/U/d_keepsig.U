@@ -45,7 +45,7 @@ echo "Checking to see if signal handlers stick around..." >&4
 $cat >try.c <<'EOCP'
 foo() {}
 
-main()
+int main()
 {
 	signal(2, foo);
 	kill(getpid(), 2);

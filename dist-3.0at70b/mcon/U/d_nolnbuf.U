@@ -36,7 +36,7 @@ case "$d_nolnbuf" in
 '')
 	$cat <<'EOT' >blurfl.c
 #include <stdio.h>
-main()
+int main()
 {
 	int i;
 

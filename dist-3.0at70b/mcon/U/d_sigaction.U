@@ -45,7 +45,7 @@ $cat > set.c <<'EOP'
 #include <stdio.h>
 #include <sys/types.h>
 #include <signal.h>
-main()
+int main()
 {
     struct sigaction act, oact;
 }

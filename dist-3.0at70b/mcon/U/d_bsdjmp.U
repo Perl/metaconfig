@@ -43,7 +43,7 @@ case "$d_bsdjmp" in
 #include <setjmp.h>
 jmp_buf env;
 int set = 1;
-main()
+int main()
 {
 	if (_setjmp(env))
 		exit(set);

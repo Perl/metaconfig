@@ -46,7 +46,7 @@ $cat >const.c <<'EOCP'
 ?X: handle typedefs properly if they're declared const. To guard
 ?X: against this, boost up the test by using an explicit typedef...
 typedef struct spug { int drokk; } spug;
-main()
+int main()
 {
 	const char *foo;
 	const spug y;

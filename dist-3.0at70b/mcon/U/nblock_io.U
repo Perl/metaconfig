@@ -91,7 +91,7 @@ case "$o_nonblock" in
 '')
 	$cat head.c > try.c
 	$cat >>try.c <<'EOCP'
-main() {
+int main() {
 #ifdef O_NONBLOCK
 	printf("O_NONBLOCK\n");
 	exit(0);

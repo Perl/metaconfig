@@ -40,7 +40,7 @@ case "$abortsig" in
 		'') $cat >abort.c <<EOP
 #include <signal.h>
 caught() { exit(0); }
-main()
+int main()
 {
 #ifdef $signal
 	signal($signal, caught);

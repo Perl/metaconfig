@@ -51,7 +51,7 @@ $cat > ssize.c <<EOM
 #include <sys/types.h>
 #define Size_t $sizetype
 #define SSize_t $dflt
-main()
+int main()
 {
 	if (sizeof(Size_t) == sizeof(SSize_t))
 		printf("$dflt\n");

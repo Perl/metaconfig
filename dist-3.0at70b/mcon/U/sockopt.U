@@ -43,7 +43,7 @@ case "$d_oldsock" in
 #include <netinet/in.h>
 #include <netdb.h>
 
-main()
+int main()
 {
 	int s = socket(AF_INET, SOCK_STREAM, 0);
 	if (s == -1)

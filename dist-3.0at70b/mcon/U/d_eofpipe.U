@@ -36,7 +36,7 @@ case "$d_eofpipe" in
 '')
 	echo "Let's see if your pipes return EOF to select() upon closing..." >&4
 	$cat >pipe.c <<'EOP'
-main()
+int main()
 {
 	int pd[2];
 	int mask;

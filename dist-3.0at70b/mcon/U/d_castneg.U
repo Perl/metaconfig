@@ -64,7 +64,7 @@ $signal_t blech_in_list() { exit(4); }
 unsigned long dummy_long(p) unsigned long p; { return p; }
 unsigned int dummy_int(p) unsigned int p; { return p; }
 unsigned short dummy_short(p) unsigned short p; { return p; }
-main()
+int main()
 {
 	double f = -123.;
 	unsigned long along;

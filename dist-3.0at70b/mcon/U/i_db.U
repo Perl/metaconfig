@@ -79,7 +79,7 @@ size_t size;
 {
 }
 HASHINFO info;
-main()
+int main()
 {
 	info.hash = hash_cb;
 }

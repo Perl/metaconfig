@@ -177,7 +177,7 @@ $cat > tcio.c <<EOM
 #include <sys/types.h>	/* Just in case */
 #include <$xxx>
 
-main()
+int main()
 {
 #ifdef TIOCNOTTY
 	exit(0);

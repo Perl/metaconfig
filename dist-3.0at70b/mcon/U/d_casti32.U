@@ -49,7 +49,7 @@ $cat >try.c <<EOCP
 #include <sys/types.h>
 #include <signal.h>
 $signal_t blech() { exit(3); }
-main()
+int main()
 {
 	$xxx i32;
 	double f;

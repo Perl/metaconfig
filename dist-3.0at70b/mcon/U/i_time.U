@@ -73,7 +73,7 @@ $cat >try.c <<'EOCP'
 #ifdef I_SYSSELECT
 #include <sys/select.h>
 #endif
-main()
+int main()
 {
 	struct tm foo;
 #ifdef S_TIMEVAL

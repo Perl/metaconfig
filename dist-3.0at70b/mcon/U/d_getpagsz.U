@@ -54,7 +54,7 @@ case "$pagesize" in
 '')
 	$cat >page.c <<EOP
 extern int getpagesize();
-main()
+int main()
 {
 	printf("%d\n", getpagesize());
 }

@@ -67,7 +67,7 @@ case "$d_sigsetjmp" in
 #include <setjmp.h>
 sigjmp_buf env;
 int set = 1;
-main()
+int main()
 {
 	if (sigsetjmp(env,1))
 		exit(set);

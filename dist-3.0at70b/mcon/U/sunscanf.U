@@ -29,7 +29,7 @@
 echo " "
 echo "Checking to see what flavor of scanf you have..." >&4
 $cat >scanf.c <<'EOCP'
-main()
+int main()
 {
 	float value;
 

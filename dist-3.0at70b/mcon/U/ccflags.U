@@ -354,7 +354,7 @@ and I got the following output:
 EOM
 $cat > try.c <<'EOF'
 #include <stdio.h>
-main() { exit(0); }
+int main() { exit(0); }
 EOF
 dflt=y
 ?X: Use "sh -c" to avoid error messages tagged with leading "Configure:".

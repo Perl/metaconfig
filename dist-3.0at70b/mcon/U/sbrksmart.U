@@ -39,7 +39,7 @@ case "$d_sbrk" in
 	$cat > sbrk.c <<'EOC'
 #define INC 256		/* Small enough to be less than a page size */
 
-main()
+int main()
 {
 	char *obrk = (char *) sbrk(0);
 	char *nbrk;

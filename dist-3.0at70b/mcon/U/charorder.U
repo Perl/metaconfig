@@ -52,7 +52,7 @@ echo "Checking out byte order..." >&4
 $cat >byteorder.c <<'EOCP'
 #include <stdio.h>
 
-main(argc, argv)
+int main(argc, argv)
 	int argc;
 	char *argv[]; {
 	int i;

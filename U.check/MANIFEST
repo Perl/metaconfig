@@ -1,5 +1,6 @@
 MANIFEST		This file.
 Makefile.SH
+README
 dummy.SH
 Configure
 config_h.SH

@@ -48,7 +48,7 @@ I'm now running the test program...
 EOM
 	$cat >try.c <<'EOCP'
 #include <stdio.h>
-main()
+int main()
 {
 	int i;
 	union {

@@ -59,7 +59,7 @@ case "$intsize" in
 	echo "Checking to see how big your integers are..." >&4
 	$cat >intsize.c <<'EOCP'
 #include <stdio.h>
-main()
+int main()
 {
 @if INTSIZE || intsize
 	printf("intsize=%d;\n", sizeof(int));

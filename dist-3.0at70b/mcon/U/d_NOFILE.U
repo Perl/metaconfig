@@ -58,7 +58,7 @@ if set getdtablesize val -f d_gettblsz; eval $csym; $val; then
 @if VAL_NOFILE || nofile
 	$cat >nofile.c <<'EOCP'
 #include <stdio.h>
-main()
+int main()
 {
 	printf("%d\n", getdtablesize());
 }

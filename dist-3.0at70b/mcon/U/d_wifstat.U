@@ -56,7 +56,7 @@ case "$d_wifstat" in
 #include <sys/types.h>
 #include <sys/wait.h>
 
-main()
+int main()
 {
 	$type status;
 	int e = 0;

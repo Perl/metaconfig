@@ -50,7 +50,7 @@ case "$randbits" in
 #endif
 EOCP
 	$cat >>try.c <<'EOCP'
-main()
+int main()
 {
 	register int i;
 	register unsigned long tmp;

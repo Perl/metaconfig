@@ -81,7 +81,7 @@ Checking to see if your C library provides us with sys_errnolist[]...
 EOM
 $cat >errnolist.c <<'EOCP'
 extern char *sys_errnolist[];
-main() {
+int main() {
     char *p0 = sys_errnolist[0];
     char *p1 = sys_errnolist[1];
 

@@ -42,7 +42,7 @@ struct foobar {
 	char foo;
 	double bar;
 } try;
-main()
+int main()
 {
 	printf("%d\n", (char *)&try.bar - (char *)&try.foo);
 }

@@ -45,7 +45,7 @@ val="$define"
 ?X:	to the string given as argument to scanf().
 echo 'Let'"'"'s see if scanf() handles "\\n" correctly...' >&4
 $cat >try.c <<'EOCP'
-main()
+int main()
 {
 	int i = 0, j = 0;
 	scanf("%d\n%d", &i, &j);

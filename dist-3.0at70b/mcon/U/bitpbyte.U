@@ -51,7 +51,7 @@ case "$bitpbyte" in
 #define BITSPERBYTE 8
 #endif
 #endif
-main()
+int main()
 {
 	printf("%d\n", BITSPERBYTE);
 }

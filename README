@@ -104,5 +104,6 @@ Contents of this directory:
 (k) p4 add ../metaconfig/foo/bar.U when you are ready ...
 
 (l) p4 submit
-    Be sure to have EDITOR set to something that does NOT start
-    in the background like 'elvis -fork' or 'gvim'
+    IF your $EDITOR and/or $VISUAL start a background edit session
+    ('elvis -fork' or 'gvim'), be sure to set $P4EDITOR to an
+    editor call that is waited for.

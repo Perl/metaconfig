@@ -31,7 +31,7 @@
 echo " "
 echo "Checking to see if your C compiler can copy structs..." >&4
 $cat >try.c <<'EOCP'
-main()
+int main()
 {
 	struct blurfl {
 		int dyick;

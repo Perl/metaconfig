@@ -41,7 +41,7 @@
 echo " "
 echo 'Checking to see if your C compiler knows about "volatile"...' >&4
 $cat >try.c <<'EOCP'
-main()
+int main()
 {
 ?X:
 ?X: The following seven lines added by Bill Campbell <billc@sierra.com>

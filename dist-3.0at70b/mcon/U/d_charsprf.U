@@ -31,7 +31,7 @@
 : see if sprintf is declared as int or pointer to char
 echo " "
 $cat >ucbsprf.c <<'EOF'
-main()
+int main()
 {
 	int sprintf();
 	char buf[10];

@@ -42,7 +42,7 @@ echo "We both know your system does not support signal #0 for pid checks." >&4
 *)
 	echo "Checking to see if kill(pid, 0) works..." >&4
 	$cat >try.c <<'EOCP'
-main()
+int main()
 	{
 	int	pid, status0, status9;
 

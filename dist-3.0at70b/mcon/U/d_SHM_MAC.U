@@ -86,7 +86,7 @@ EOM
 #include <sys/seg.h>
 #endif
 
-main() {
+int main() {
 	int foo = SHMLBA ;
 	}
 EOCP

@@ -82,7 +82,7 @@ $cat >fd_set.c <<EOCP
 #ifdef I_SYS_SELECT
 #include <sys/select.h>
 #endif
-main() {
+int main() {
 	fd_set fds;
 
 #ifdef TRYBITS

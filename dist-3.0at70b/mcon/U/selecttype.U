@@ -78,7 +78,7 @@ EOM
 #ifdef I_SYS_SELECT
 #include <sys/select.h>
 #endif
-main()
+int main()
 {
 	int width;
 	Select_fd_set_t readfds;

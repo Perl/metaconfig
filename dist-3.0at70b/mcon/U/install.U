@@ -53,7 +53,7 @@ case "$install" in
 		done
 	done
 	$cat >try.c <<EOC
-main()
+int main()
 {
 	printf("OK\n");
 	exit(0);

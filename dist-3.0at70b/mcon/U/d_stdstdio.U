@@ -196,7 +196,7 @@ $cat >try.c <<EOP
 #include <stdio.h>
 #define FILE_ptr(fp)	$stdio_ptr
 #define FILE_cnt(fp)	$stdio_cnt
-main() {
+int main() {
 	FILE *fp = fopen("try.c", "r");
 	char c = getc(fp);
 	if (
