@@ -127,7 +127,7 @@ EOCP
 esac
 
 if $test "$uselongdouble" = "$define"; then
-    message="No more information."
+    message=none
     case "$d_sqrtl:$d_modfl" in
     $define:$define)
 	: You have both
@@ -147,7 +147,7 @@ if $test "$uselongdouble" = "$define"; then
 	;;
     esac
 
-    if $test "$message" != X; then
+    if $test "$message" != none; then
 	$cat <<EOM >&4
 
 *** You requested the use of long doubles but you do not seem to have
