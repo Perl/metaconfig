@@ -58,7 +58,7 @@
 ?INIT:useopcode=true
 ?LINT:extern noextensions
 ?LINT:extern onlyextensions
-?T:keepextensions
+?T:keepextensions i
 echo " "
 echo "Looking for extensions..." >&4
 : If we are using the old config.sh, known_extensions may contain
