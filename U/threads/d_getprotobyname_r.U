@@ -15,6 +15,9 @@
 ?S:.
 ?S:getprotobyname_r_proto:
 ?S:	This variable encodes the prototype of getprotobyname_r.
+?S:	It is zero if d_getprotobyname_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getprotobyname_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETPROTOBYNAME_R:
 ?C:	This symbol, if defined, indicates that the getprotobyname_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETPROTOBYNAME_R_PROTO:
 ?C:	This symbol encodes the prototype of getprotobyname_r.
+?C:	It is zero if d_getprotobyname_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getprotobyname_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getprotobyname_r HAS_GETPROTOBYNAME_R	   /**/
 ?H:#define GETPROTOBYNAME_R_PROTO $getprotobyname_r_proto	   /**/

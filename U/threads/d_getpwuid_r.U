@@ -15,6 +15,9 @@
 ?S:.
 ?S:getpwuid_r_proto:
 ?S:	This variable encodes the prototype of getpwuid_r.
+?S:	It is zero if d_getpwuid_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwuid_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETPWUID_R:
 ?C:	This symbol, if defined, indicates that the getpwuid_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETPWUID_R_PROTO:
 ?C:	This symbol encodes the prototype of getpwuid_r.
+?C:	It is zero if d_getpwuid_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwuid_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getpwuid_r HAS_GETPWUID_R	   /**/
 ?H:#define GETPWUID_R_PROTO $getpwuid_r_proto	   /**/

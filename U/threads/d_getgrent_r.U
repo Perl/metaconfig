@@ -15,6 +15,9 @@
 ?S:.
 ?S:getgrent_r_proto:
 ?S:	This variable encodes the prototype of getgrent_r.
+?S:	It is zero if d_getgrent_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getgrent_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETGRENT_R:
 ?C:	This symbol, if defined, indicates that the getgrent_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETGRENT_R_PROTO:
 ?C:	This symbol encodes the prototype of getgrent_r.
+?C:	It is zero if d_getgrent_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getgrent_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getgrent_r HAS_GETGRENT_R	   /**/
 ?H:#define GETGRENT_R_PROTO $getgrent_r_proto	   /**/

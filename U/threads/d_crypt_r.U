@@ -15,6 +15,9 @@
 ?S:.
 ?S:crypt_r_proto:
 ?S:	This variable encodes the prototype of crypt_r.
+?S:	It is zero if d_crypt_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_crypt_r
+?S:	is defined.
 ?S:.
 ?C:HAS_CRYPT_R:
 ?C:	This symbol, if defined, indicates that the crypt_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:CRYPT_R_PROTO:
 ?C:	This symbol encodes the prototype of crypt_r.
+?C:	It is zero if d_crypt_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_crypt_r
+?C:	is defined.
 ?C:.
 ?H:#$d_crypt_r HAS_CRYPT_R	   /**/
 ?H:#define CRYPT_R_PROTO $crypt_r_proto	   /**/

@@ -15,6 +15,9 @@
 ?S:.
 ?S:gethostent_r_proto:
 ?S:	This variable encodes the prototype of gethostent_r.
+?S:	It is zero if d_gethostent_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_gethostent_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETHOSTENT_R:
 ?C:	This symbol, if defined, indicates that the gethostent_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETHOSTENT_R_PROTO:
 ?C:	This symbol encodes the prototype of gethostent_r.
+?C:	It is zero if d_gethostent_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_gethostent_r
+?C:	is defined.
 ?C:.
 ?H:#$d_gethostent_r HAS_GETHOSTENT_R	   /**/
 ?H:#define GETHOSTENT_R_PROTO $gethostent_r_proto	   /**/

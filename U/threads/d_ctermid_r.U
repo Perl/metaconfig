@@ -15,6 +15,9 @@
 ?S:.
 ?S:ctermid_r_proto:
 ?S:	This variable encodes the prototype of ctermid_r.
+?S:	It is zero if d_ctermid_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_ctermid_r
+?S:	is defined.
 ?S:.
 ?C:HAS_CTERMID_R:
 ?C:	This symbol, if defined, indicates that the ctermid_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:CTERMID_R_PROTO:
 ?C:	This symbol encodes the prototype of ctermid_r.
+?C:	It is zero if d_ctermid_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_ctermid_r
+?C:	is defined.
 ?C:.
 ?H:#$d_ctermid_r HAS_CTERMID_R	   /**/
 ?H:#define CTERMID_R_PROTO $ctermid_r_proto	   /**/

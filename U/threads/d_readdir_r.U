@@ -15,6 +15,9 @@
 ?S:.
 ?S:readdir_r_proto:
 ?S:	This variable encodes the prototype of readdir_r.
+?S:	It is zero if d_readdir_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_readdir_r
+?S:	is defined.
 ?S:.
 ?C:HAS_READDIR_R:
 ?C:	This symbol, if defined, indicates that the readdir_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:READDIR_R_PROTO:
 ?C:	This symbol encodes the prototype of readdir_r.
+?C:	It is zero if d_readdir_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_readdir_r
+?C:	is defined.
 ?C:.
 ?H:#$d_readdir_r HAS_READDIR_R	   /**/
 ?H:#define READDIR_R_PROTO $readdir_r_proto	   /**/

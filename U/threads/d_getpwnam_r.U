@@ -15,6 +15,9 @@
 ?S:.
 ?S:getpwnam_r_proto:
 ?S:	This variable encodes the prototype of getpwnam_r.
+?S:	It is zero if d_getpwnam_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwnam_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETPWNAM_R:
 ?C:	This symbol, if defined, indicates that the getpwnam_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETPWNAM_R_PROTO:
 ?C:	This symbol encodes the prototype of getpwnam_r.
+?C:	It is zero if d_getpwnam_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwnam_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getpwnam_r HAS_GETPWNAM_R	   /**/
 ?H:#define GETPWNAM_R_PROTO $getpwnam_r_proto	   /**/

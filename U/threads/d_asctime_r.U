@@ -15,6 +15,9 @@
 ?S:.
 ?S:asctime_r_proto:
 ?S:	This variable encodes the prototype of asctime_r.
+?S:	It is zero if d_asctime_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_asctime_r
+?S:	is defined.
 ?S:.
 ?C:HAS_ASCTIME_R:
 ?C:	This symbol, if defined, indicates that the asctime_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:ASCTIME_R_PROTO:
 ?C:	This symbol encodes the prototype of asctime_r.
+?C:	It is zero if d_asctime_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_asctime_r
+?C:	is defined.
 ?C:.
 ?H:#$d_asctime_r HAS_ASCTIME_R	   /**/
 ?H:#define ASCTIME_R_PROTO $asctime_r_proto	   /**/

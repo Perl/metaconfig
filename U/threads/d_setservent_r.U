@@ -15,6 +15,9 @@
 ?S:.
 ?S:setservent_r_proto:
 ?S:	This variable encodes the prototype of setservent_r.
+?S:	It is zero if d_setservent_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_setservent_r
+?S:	is defined.
 ?S:.
 ?C:HAS_SETSERVENT_R:
 ?C:	This symbol, if defined, indicates that the setservent_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:SETSERVENT_R_PROTO:
 ?C:	This symbol encodes the prototype of setservent_r.
+?C:	It is zero if d_setservent_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_setservent_r
+?C:	is defined.
 ?C:.
 ?H:#$d_setservent_r HAS_SETSERVENT_R	   /**/
 ?H:#define SETSERVENT_R_PROTO $setservent_r_proto	   /**/

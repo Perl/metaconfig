@@ -15,6 +15,9 @@
 ?S:.
 ?S:getprotobynumber_r_proto:
 ?S:	This variable encodes the prototype of getprotobynumber_r.
+?S:	It is zero if d_getprotobynumber_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getprotobynumber_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETPROTOBYNUMBER_R:
 ?C:	This symbol, if defined, indicates that the getprotobynumber_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETPROTOBYNUMBER_R_PROTO:
 ?C:	This symbol encodes the prototype of getprotobynumber_r.
+?C:	It is zero if d_getprotobynumber_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getprotobynumber_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getprotobynumber_r HAS_GETPROTOBYNUMBER_R	   /**/
 ?H:#define GETPROTOBYNUMBER_R_PROTO $getprotobynumber_r_proto	   /**/

@@ -15,6 +15,9 @@
 ?S:.
 ?S:localtime_r_proto:
 ?S:	This variable encodes the prototype of localtime_r.
+?S:	It is zero if d_localtime_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_localtime_r
+?S:	is defined.
 ?S:.
 ?C:HAS_LOCALTIME_R:
 ?C:	This symbol, if defined, indicates that the localtime_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:LOCALTIME_R_PROTO:
 ?C:	This symbol encodes the prototype of localtime_r.
+?C:	It is zero if d_localtime_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_localtime_r
+?C:	is defined.
 ?C:.
 ?H:#$d_localtime_r HAS_LOCALTIME_R	   /**/
 ?H:#define LOCALTIME_R_PROTO $localtime_r_proto	   /**/

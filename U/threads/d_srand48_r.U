@@ -15,6 +15,9 @@
 ?S:.
 ?S:srand48_r_proto:
 ?S:	This variable encodes the prototype of srand48_r.
+?S:	It is zero if d_srand48_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_srand48_r
+?S:	is defined.
 ?S:.
 ?C:HAS_SRAND48_R:
 ?C:	This symbol, if defined, indicates that the srand48_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:SRAND48_R_PROTO:
 ?C:	This symbol encodes the prototype of srand48_r.
+?C:	It is zero if d_srand48_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_srand48_r
+?C:	is defined.
 ?C:.
 ?H:#$d_srand48_r HAS_SRAND48_R	   /**/
 ?H:#define SRAND48_R_PROTO $srand48_r_proto	   /**/

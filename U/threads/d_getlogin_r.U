@@ -15,6 +15,9 @@
 ?S:.
 ?S:getlogin_r_proto:
 ?S:	This variable encodes the prototype of getlogin_r.
+?S:	It is zero if d_getlogin_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getlogin_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETLOGIN_R:
 ?C:	This symbol, if defined, indicates that the getlogin_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETLOGIN_R_PROTO:
 ?C:	This symbol encodes the prototype of getlogin_r.
+?C:	It is zero if d_getlogin_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getlogin_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getlogin_r HAS_GETLOGIN_R	   /**/
 ?H:#define GETLOGIN_R_PROTO $getlogin_r_proto	   /**/

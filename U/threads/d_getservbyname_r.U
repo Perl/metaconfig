@@ -15,6 +15,9 @@
 ?S:.
 ?S:getservbyname_r_proto:
 ?S:	This variable encodes the prototype of getservbyname_r.
+?S:	It is zero if d_getservbyname_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getservbyname_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETSERVBYNAME_R:
 ?C:	This symbol, if defined, indicates that the getservbyname_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETSERVBYNAME_R_PROTO:
 ?C:	This symbol encodes the prototype of getservbyname_r.
+?C:	It is zero if d_getservbyname_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getservbyname_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getservbyname_r HAS_GETSERVBYNAME_R	   /**/
 ?H:#define GETSERVBYNAME_R_PROTO $getservbyname_r_proto	   /**/

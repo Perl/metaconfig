@@ -15,6 +15,9 @@
 ?S:.
 ?S:endservent_r_proto:
 ?S:	This variable encodes the prototype of endservent_r.
+?S:	It is zero if d_endservent_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_endservent_r
+?S:	is defined.
 ?S:.
 ?C:HAS_ENDSERVENT_R:
 ?C:	This symbol, if defined, indicates that the endservent_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:ENDSERVENT_R_PROTO:
 ?C:	This symbol encodes the prototype of endservent_r.
+?C:	It is zero if d_endservent_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_endservent_r
+?C:	is defined.
 ?C:.
 ?H:#$d_endservent_r HAS_ENDSERVENT_R	   /**/
 ?H:#define ENDSERVENT_R_PROTO $endservent_r_proto	   /**/

@@ -15,6 +15,9 @@
 ?S:.
 ?S:setlocale_r_proto:
 ?S:	This variable encodes the prototype of setlocale_r.
+?S:	It is zero if d_setlocale_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_setlocale_r
+?S:	is defined.
 ?S:.
 ?C:HAS_SETLOCALE_R:
 ?C:	This symbol, if defined, indicates that the setlocale_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:SETLOCALE_R_PROTO:
 ?C:	This symbol encodes the prototype of setlocale_r.
+?C:	It is zero if d_setlocale_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_setlocale_r
+?C:	is defined.
 ?C:.
 ?H:#$d_setlocale_r HAS_SETLOCALE_R	   /**/
 ?H:#define SETLOCALE_R_PROTO $setlocale_r_proto	   /**/

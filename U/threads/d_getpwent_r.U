@@ -15,6 +15,9 @@
 ?S:.
 ?S:getpwent_r_proto:
 ?S:	This variable encodes the prototype of getpwent_r.
+?S:	It is zero if d_getpwent_r is undef, and one of the
+?S:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwent_r
+?S:	is defined.
 ?S:.
 ?C:HAS_GETPWENT_R:
 ?C:	This symbol, if defined, indicates that the getpwent_r routine
@@ -22,6 +25,9 @@
 ?C:.
 ?C:GETPWENT_R_PROTO:
 ?C:	This symbol encodes the prototype of getpwent_r.
+?C:	It is zero if d_getpwent_r is undef, and one of the
+?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwent_r
+?C:	is defined.
 ?C:.
 ?H:#$d_getpwent_r HAS_GETPWENT_R	   /**/
 ?H:#define GETPWENT_R_PROTO $getpwent_r_proto	   /**/
