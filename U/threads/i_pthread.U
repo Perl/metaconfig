@@ -11,14 +11,14 @@
 ?MAKE:i_pthread: Inhdr usethreads
 ?MAKE:	-pick add $@ %<
 ?S:i_pthread:
-?S:     This variable conditionally defines the I_PTHREADEAD symbol,
+?S:     This variable conditionally defines the I_PTHREAD symbol,
 ?S:     and indicates whether a C program should include <pthread.h>.
 ?S:.
-?C:I_PTHREADEAD:
+?C:I_PTHREAD:
 ?C:     This symbol, if defined, indicates to the C program that it should
 ?C:     include <pthread.h>.
 ?C:.
-?H:#$i_pthread   I_PTHREADEAD	/**/
+?H:#$i_pthread   I_PTHREAD	/**/
 ?H:.
 ?LINT:set i_pthread
 : see if POSIX threads are available
