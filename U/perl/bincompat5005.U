@@ -6,6 +6,7 @@
 ?MAKE:bincompat5005 d_bincompat5005: Oldconfig Myread Setvar cat \
 	usethreads usemultiplicity
 ?MAKE:	-pick add $@ %<
+?Y:TOP
 ?S:bincompat5005:
 ?S:	This variable contains y if this version of Perl should be
 ?S:	binary-compatible with Perl 5.005.
