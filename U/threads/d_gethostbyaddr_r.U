@@ -35,11 +35,6 @@ eval $inlibc
 case "$d_gethostbyaddr_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
-	case "netdb" in
-	time)
-		hdrs="$hdrs $i_systime sys/time.h"
-		;;
-	esac
 	case "$d_gethostbyaddr_r_proto:$usethreads" in
 	":define")	d_gethostbyaddr_r_proto=define
 		set d_gethostbyaddr_r_proto gethostbyaddr_r $hdrs

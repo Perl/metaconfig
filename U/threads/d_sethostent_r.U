@@ -35,11 +35,6 @@ eval $inlibc
 case "$d_sethostent_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_netdb netdb.h"
-	case "netdb" in
-	time)
-		hdrs="$hdrs $i_systime sys/time.h"
-		;;
-	esac
 	case "$d_sethostent_r_proto:$usethreads" in
 	":define")	d_sethostent_r_proto=define
 		set d_sethostent_r_proto sethostent_r $hdrs

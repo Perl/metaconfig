@@ -35,11 +35,6 @@ eval $inlibc
 case "$d_srand48_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_stdlib stdlib.h"
-	case "stdlib" in
-	time)
-		hdrs="$hdrs $i_systime sys/time.h"
-		;;
-	esac
 	case "$d_srand48_r_proto:$usethreads" in
 	":define")	d_srand48_r_proto=define
 		set d_srand48_r_proto srand48_r $hdrs

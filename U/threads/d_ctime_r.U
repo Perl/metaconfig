@@ -34,12 +34,7 @@ set ctime_r d_ctime_r
 eval $inlibc
 case "$d_ctime_r" in
 "$define")
-	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h"
-	case "time" in
-	time)
-		hdrs="$hdrs $i_systime sys/time.h"
-		;;
-	esac
+	hdrs="$i_systypes sys/types.h define stdio.h $i_time time.h $i_systime sys/time.h"
 	case "$d_ctime_r_proto:$usethreads" in
 	":define")	d_ctime_r_proto=define
 		set d_ctime_r_proto ctime_r $hdrs

@@ -35,11 +35,6 @@ eval $inlibc
 case "$d_readdir_r" in
 "$define")
 	hdrs="$i_systypes sys/types.h define stdio.h $i_dirent dirent.h"
-	case "dirent" in
-	time)
-		hdrs="$hdrs $i_systime sys/time.h"
-		;;
-	esac
 	case "$d_readdir_r_proto:$usethreads" in
 	":define")	d_readdir_r_proto=define
 		set d_readdir_r_proto readdir_r $hdrs
