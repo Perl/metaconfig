@@ -8,7 +8,7 @@
 ?RCS: $Log: usethreads.U,v $
 ?RCS:
 ?MAKE:usethreads useithreads use5005threads d_oldpthreads usereentrant: \
-	Myread Oldconfig Setvar test cat
+	Myread Oldconfig Setvar test cat useperlio
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usethreads:
@@ -83,8 +83,13 @@ $define|true|[yY]*)     dflt='y';;
 *)     # Catch case where user specified ithreads or 5005threads but
        # forgot -Dusethreads (A.D. 4/2002)
        case "$useithreads$use5005threads" in
-       *$define*)      dflt='y' ;;
-       *)      dflt='n';;
+       *$define*)      
+		case "$useperlio" in
+		"$define")	dflt='y' ;;
+		*)		dflt='n' ;;
+		esac
+		;;
+       *)	dflt='n';;
        esac
        ;;
 esac
@@ -166,6 +171,16 @@ EOM
 	use5005threads="$undef"
 	;;
 esac
+
+if test X"$usethreads" = "X$define" -a "X$useperlio" = "Xundef"; then
+	cat >&4 <<EOF
+***
+*** To build with ithreads you must also use the PerlIO layer.
+*** Cannot continue, aborting.
+***
+EOF
+	exit 1
+fi
 
 ?X: Check out what kind of threads api we have
 case "$d_oldpthreads" in
