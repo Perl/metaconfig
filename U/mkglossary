@@ -1,10 +1,11 @@
 #!/usr/local/bin/perl -w
+
 use File::Basename;
 
 # WARNING:  This is site-specific.  Change to the location
 # where you have installed dist-3.0PL70.
-@std_units = glob('/u/vieraat/vieraat/jhi/Perl/lib/dist/U/*.U');
-$PWD       =      '/u/vieraat/vieraat/jhi/pp4/perl';
+@std_units = glob('/pro/3gl/CPAN/lib/dist/U/*.U');
+$PWD       =      '/pro/3gl/CPAN/perl';
 # @std_units = glob('/opt/dist/lib/U/*.U');
 # $PWD       = '/export/home/doughera/src/perl/p4perl';
 
@@ -14,7 +15,10 @@ push(@perl_units, @std_units);
 
 # Get the list of config.sh symbols.  Be sure this is up to date!
 # (I run the U/mksample script first to be sure.)
-open(WANTED, "sort $PWD/Porting/config.sh|") || die "$0: open $PWD/Wanted: $!\n";
+open (WANTED, "< $PWD/Porting/config.sh") || die "$0: open $PWD/Wanted: $!\n";
+my @WANTED = map  { $_->[0] }
+	     sort { $a->[1] cmp $b->[1] }
+	     map  { [ $_, lc $_ ] } <WANTED>;
 
 print <<'EOM';
 
@@ -64,7 +68,7 @@ while (<FH>) {
 }
 close(FH) || die "$0: close $Loc: $!";
 
-symbol:  while (defined($var = <WANTED>)) {
+symbol: foreach my $var (@WANTED) {
     chomp $var;
     next symbol if $var =~ /^#/;   # Skip comments
     next symbol if $var =~ /^$/;
