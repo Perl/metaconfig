@@ -17,8 +17,9 @@
 ?X: program, we also try to find which header should be included. Eventually,
 ?X: we look for <sys/select.h> if I_SYSSELECT is used, to get struct timeval.
 ?X:
-?MAKE:i_time i_systime i_systimek timeincl: Compile cat \
-	contains rm echo n c +i_sysselct Findhdr
+?MAKE:i_time i_systime i_systimek timeincl d_tm_tm_zone d_tm_tm_gmtoff: \
+	Compile cat \
+	contains rm echo n c +i_sysselct Findhdr Hasfield
 ?MAKE:	-pick add $@ %<
 ?S:i_time:
 ?S:	This variable conditionally defines I_TIME, which indicates
@@ -36,6 +37,14 @@
 ?S:timeincl:
 ?S:	This variable holds the full path of the included time header(s).
 ?S:.
+?S:d_tm_tm_zone:
+?S:	This variable conditionally defines HAS_TM_TM_ZONE, which indicates
+?S:	indicates to the C program that the struct tm has the tm_zone field.
+?S:.
+?S:d_tm_tm_gmtoff:
+?S:	This variable conditionally defines HAS_TM_TM_GMTOFF, which indicates
+?S:	indicates to the C program that the struct tm has the tm_gmtoff field.
+?S:.
 ?C:I_TIME (USE_TIME_H):
 ?C:	This symbol, if defined, indicates to the C program that it should
 ?C:	include <time.h>.
@@ -48,9 +57,19 @@
 ?C:	This symbol, if defined, indicates to the C program that it should
 ?C:	include <sys/time.h> with KERNEL defined.
 ?C:.
+?C:HAS_TM_TM_ZONE:
+?C:	This symbol, if defined, indicates to the C program that
+?C:	the struct tm has a tm_zone field.
+?C:.
+?C:HAS_TM_TM_GMTOFF:
+?C:	This symbol, if defined, indicates to the C program that
+?C:	the struct tm has a tm_gmtoff field.
+?C:.
 ?H:#$i_time I_TIME		/**/
 ?H:#$i_systime I_SYS_TIME		/**/
 ?H:#$i_systimek I_SYS_TIME_KERNEL		/**/
+?H:#$d_tm_tm_zone HAS_TM_TM_ZONE		/**/
+?H:#$d_tm_tm_gmtoff HAS_TM_TM_GMTOFF		/**/
 ?H:.
 ?W::timezone
 ?T:xselect flags sysselect s_timeval s_timezone
@@ -169,4 +188,38 @@ EOCP
 @end
 	$rm -f try.c try
 fi
+: see if struct tm knows about tm_zone
+case "$i_systime$i_time" in
+*$define*) 
+        echo " "
+        echo "Checking to see if your struct tm has tm_zone field..." >&4
+        set d_tm_tm_zone tm tm_zone $i_systime sys/time.h $i_time time.h
+        eval $hasfield
+        ;;
+*)      val="$undef"
+        set d_tm_tm_zone
+        eval $setvar
+        ;;
+esac
+case "$d_tm_tm_zone" in
+"$define")      echo "Yes, it does."   ;;
+*)              echo "No, it doesn't." ;;
+esac
+: see if struct tm knows about tm_gmtoff
+case "$i_systime$i_time" in
+*$define*) 
+        echo " "
+        echo "Checking to see if your struct tm has tm_gmtoff field..." >&4
+        set d_tm_tm_gmtoff tm tm_gmtoff $i_systime sys/time.h $i_time time.h
+        eval $hasfield
+        ;;
+*)      val="$undef"
+        set d_tm_tm_gmtoff
+        eval $setvar
+        ;;
+esac
+case "$d_tm_tm_gmtoff" in
+"$define")      echo "Yes, it does."   ;;
+*)              echo "No, it doesn't." ;;
+esac
 
