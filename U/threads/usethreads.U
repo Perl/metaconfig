@@ -115,8 +115,9 @@ experimental.  This arrangement exists to help developers work out
 which one is better.
 
 If you're a casual user, you probably don't want interpreter-threads
-at this time.  There doesn't yet exist a way to create threads from
-within Perl in this model, i.e., "use Thread;" will NOT work.
+at this time.  But if you do, the 'threads' module allows their use,
+and the 'Thread' module offers an interface to both 5005threads and
+ithreads (whichever has been configured).
 EOM
 	: Default to ithreads unless overridden on command line or with
 	: old config.sh
