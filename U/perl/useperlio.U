@@ -7,7 +7,7 @@
 ?RCS:
 ?RCS: $Log: d_perlio.U,v $
 ?RCS:
-?MAKE:useperlio: Myread Oldconfig Setvar package
+?MAKE:useperlio: Myread Oldconfig Setvar package usesocks
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:useperlio:
@@ -31,13 +31,12 @@ $define|true|[yY]*)	dflt='y';;
 esac
 cat <<EOM
 
-Previous version of $package used the standard IO mechanisms as defined
-in <stdio.h>.  Versions 5.003_02 and later of perl allow alternate IO
-mechanisms via a "PerlIO" abstraction, but the stdio mechanism is still
-the default.  This abstraction layer can use AT&T's sfio (if you already
-have sfio installed) or regular stdio.  Using PerlIO with sfio may cause
-problems with some extension modules.  Using PerlIO with stdio is safe,
-but it is slower than plain stdio and therefore is not the default.
+Previous version of $package used the standard IO mechanisms as
+defined in <stdio.h>.  Versions 5.003_02 and later of perl allow
+alternate IO mechanisms via the PerlIO abstraction layer, but the
+stdio mechanism is still the default.  This abstraction layer can
+use AT&T's sfio (if you already have sfio installed) or regular stdio.
+Using PerlIO with sfio may cause problems with some extension modules.
 
 If this doesn't make any sense to you, just accept the default '$dflt'.
 EOM
@@ -48,10 +47,26 @@ y|Y)
 	val="$define"
 	;;     
 *)      
-	echo "Ok, doing things the stdio way"
+	echo "Ok, doing things the stdio way."
 	val="$undef"
 	;;
 esac
 set useperlio
 eval $setvar 
 
+case "$usesocks" in
+$define|true|[yY]*)
+	case "$useperlio" in
+	$define|true|[yY]*) ;;
+	*)	cat >&4 <<EOM
+
+You are using the SOCKS proxy protocol library which means that you
+should also use the PerlIO layer.  You may be headed for trouble.
+
+EOM
+		;;
+	esac
+	;;
+esac
+
+	
