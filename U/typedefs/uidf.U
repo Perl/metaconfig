@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:uidformat: uidsize uidsign ivsize uvsize longsize intsize shortsize \
-	ivdformat uvuformat test
+	ivdformat uvuformat test echo
 ?MAKE:	-pick add $@ %<
 ?S:uidformat:
 ?S:	This variable contains the format string used for printing a Uid_t.

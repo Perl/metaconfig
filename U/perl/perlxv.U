@@ -8,7 +8,7 @@
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size: \
-	echo rm use64bits quadtype uquadtype \
+	echo rm use64bits d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
 	cat Compile i_inttypes exe_ext test
@@ -153,7 +153,7 @@
 ?H:#define	U16TYPE		$u16type	/**/
 ?H:#define	I32TYPE		$i32type	/**/
 ?H:#define	U32TYPE		$u32type	/**/
-?H:?%<:#ifdef Quad_t
+?H:?%<:#ifdef HAS_QUAD
 ?H:?%<:#define	I64TYPE		$i64type	/**/
 ?H:?%<:#define	U64TYPE		$u64type	/**/
 ?H:?%<:#endif
@@ -166,7 +166,7 @@
 ?H:#define	U16SIZE		$u16size	/**/
 ?H:#define	I32SIZE		$i32size	/**/
 ?H:#define	U32SIZE		$u32size	/**/
-?H:?%<:#ifdef Quad_t
+?H:?%<:#ifdef HAS_QUAD
 ?H:?%<:#define	I64SIZE		$i64size	/**/
 ?H:?%<:#define	U64SIZE		$u64size	/**/
 ?H:?%<:#endif
@@ -177,8 +177,8 @@
 echo " "
 $echo "Choosing the C types to be used for Perl's internal types..." >&4
 
-case "$use64bits:$quadtype" in
-define:?*)
+case "$use64bits:$d_quad:$quadtype" in
+define:define:?*)
 	ivtype="$quadtype"
 	uvtype="$uquadtype"
 	ivsize=8
@@ -340,9 +340,9 @@ case "$i32type" in
 esac
 
 case "$i64type" in
-'')	case "$quadtype" in
-	'')	;;
-	*)	i64type="$quadtype"
+'')	case "$d_quad:$quadtype" in
+	define:?*)
+		i64type="$quadtype"
 		u64type="$uquadtype"
 		i64size=8
 		u64size=8

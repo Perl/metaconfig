@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:gidformat: gidsize gidsign ivsize uvsize longsize intsize shortsize \
-	ivdformat uvuformat test
+	ivdformat uvuformat test echo
 ?MAKE:	-pick add $@ %<
 ?S:gidformat:
 ?S:	This variable contains the format string used for printing a Gid_t.

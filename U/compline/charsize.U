@@ -32,7 +32,7 @@
 echo " "
 case "$charsize" in
 '')
-	echo "Checking to see how big your characters are..." >&4
+	echo "Checking to see how big your characters are (hey, you never know)..." >&4
 	$cat >try.c <<'EOCP'
 #include <stdio.h>
 int main()
