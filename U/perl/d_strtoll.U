@@ -17,6 +17,7 @@
 ?C:.
 ?H:#$d_strtoll HAS_STRTOLL		/**/
 ?H:.
+?T:yyy
 ?F:!try
 ?LINT:set d_strtoll
 : see if strtoll exists
@@ -32,6 +33,9 @@ EOM
 #include <errno.h>
 #ifdef __hpux
 #define strtoll __strtoll
+#endif
+#ifdef __EMX__
+#define strtoll _strtoll
 #endif
 #include <stdio.h>
 extern long long int strtoll(char *s, char **, int); 
@@ -59,13 +63,17 @@ int main() {
 EOCP
 	set try
 	if eval $compile; then
-		case "`./try`" in
+		yyy=`./try`
+		case "$yyy" in
 		ok) echo "Your strtoll() seems to be working okay." ;;
 		*) cat <<EOM >&4
 Your strtoll() doesn't seem to be working okay.
 EOM
 		   d_strtoll="$undef"
 		   ;;
+	else
+		echo "(I can't seem to compile the test program--assuming it doesn't)"
+		d_strtoll="$undef"
 		esac
 	fi
 	;;
