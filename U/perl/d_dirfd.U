@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS:
-?MAKE:d_dirfd: Compile cat rm Setvar i_dirent i_sysdir i_sysndir i_systypes
+?MAKE:d_dirfd: Compile cat rm Setvar i_dirent i_sysdir i_sysndir i_systypes i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_dirfd:
 ?S:	This variable conditionally defines the HAS_DIRFD constant,
@@ -28,6 +28,10 @@
 echo " "
 $cat >dirfd.c <<EOM
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #$i_dirent I_DIRENT		/**/
 #$i_sysdir I_SYS_DIR		/**/
 #$i_sysndir I_SYS_NDIR		/**/

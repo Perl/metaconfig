@@ -22,7 +22,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:d_fd_set d_fd_macros d_fds_bits: Compile cat rm Oldconfig \
-	d_socket i_systime i_sysselct run
+	d_socket i_systime i_sysselct i_stdlib run
 ?MAKE:	-pick add $@ %<
 ?S:d_fd_set:
 ?S:	This variable contains the eventual value of the HAS_FD_SET symbol,
@@ -68,6 +68,10 @@ EOM
 ?X: <sys/bsdtypes.h> because it might introduce other
 ?X: incompatibilities.
 $cat >try.c <<EOCP
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #$i_systime I_SYS_TIME
 #$i_sysselct I_SYS_SELECT
 #$d_socket HAS_SOCKET

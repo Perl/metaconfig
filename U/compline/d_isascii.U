@@ -17,7 +17,7 @@
 ?RCS: Revision 3.0.1.1  1994/08/29  16:09:32  ram
 ?RCS: patch32: created by ADO
 ?RCS:
-?MAKE:d_isascii: Compile cat rm Setvar
+?MAKE:d_isascii: Compile cat rm Setvar i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_isascii:
 ?S:	This variable conditionally defines the HAS_ISASCII constant,
@@ -33,9 +33,13 @@
 ?X: Can't use Inlibc because isascii() might be a macro.
 : Look for isascii
 echo " "
-$cat >isascii.c <<'EOCP'
+$cat >isascii.c <<EOCP
 #include <stdio.h>
 #include <ctype.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 int main() {
 	int c = 'A';
 	if (isascii(c))

@@ -1,0 +1,54 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?X: 
+?X: Verify whether long double is realistic.
+?X:
+?MAKE:sanelongdbl: uselongdouble d_sqrtl d_modfl d_aintl d_copysignl test cat
+?LINT:set sanelongdbl
+?LINT:describe sanelongdbl
+?LINT:change uselongdouble
+?T: message
+
+if $test "$uselongdouble" = "$define"; then
+    message="No more information."
+    case "$d_sqrtl:$d_modfl" in
+    $define:$define)
+	: You have both
+	;;
+    $define:$undef)
+	if $test "$d_aintl:$d_copysignl" = "$define:$define"; then
+	    echo "You have both aintl and copysignl, so I can emulate modfl."
+	else
+	    message="I could not find modfl."
+	fi
+	;;
+    $undef:$define)
+	message="I could not find sqrtl."
+	;;
+    $undef:$undef)
+	message="I found neither sqrtl nor modfl."
+	;;
+    esac
+
+    if $test "$message" != X; then
+	$cat <<EOM >&4
+
+*** You requested the use of long doubles but you do not seem to have
+*** the mathematic functions for long doubles.
+*** ($message)
+*** I'm disabling the use of long doubles.
+
+EOM
+
+	uselongdouble=$undef
+    fi
+fi
+

@@ -19,7 +19,7 @@
 ?X:
 ?MAKE:i_time i_systime i_systimek timeincl d_tm_tm_zone d_tm_tm_gmtoff: \
 	Compile cat \
-	contains rm echo n c +i_sysselct Findhdr Hasfield
+	contains rm echo n c +i_sysselct Findhdr Hasfield i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:i_time:
 ?S:	This variable conditionally defines I_TIME, which indicates
@@ -81,7 +81,7 @@ echo " "
 if test "X$timeincl" = X; then
 	echo "Testing to see if we should include <time.h>, <sys/time.h> or both." >&4
 	$echo $n "I'm now running the test program...$c"
-	$cat >try.c <<'EOCP'
+	$cat >try.c <<EOCP
 #include <sys/types.h>
 #ifdef I_TIME
 #include <time.h>
@@ -94,6 +94,10 @@ if test "X$timeincl" = X; then
 #endif
 #ifdef I_SYSSELECT
 #include <sys/select.h>
+#endif
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
 #endif
 int main()
 {

@@ -8,7 +8,7 @@
 ?RCS: $Log: d_dlsymun.U,v $
 ?RCS:
 ?RCS:
-?MAKE:d_dlsymun: cat cc ccflags ldflags ld rm Setvar dlsrc i_dlfcn \
+?MAKE:d_dlsymun: cat cc ccflags ldflags ld rm Setvar dlsrc i_dlfcn i_stdlib \
 	cccdlflags ccdlflags lddlflags libs dlext _o run to
 ?MAKE:	-pick add $@ %<
 ?X: This is specific to perl5.
@@ -41,6 +41,10 @@ EOM
 $cat >fred.c<<EOM
 
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #$i_dlfcn I_DLFCN
 #ifdef I_DLFCN
 #include <dlfcn.h>      /* the dynamic linker include file for SunOS/Solaris */

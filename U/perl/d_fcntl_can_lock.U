@@ -7,7 +7,7 @@
 ?RCS:
 ?RCS: $Log: d_fcntl_can_lock.U,v $
 ?RCS:
-?MAKE:d_fcntl_can_lock: d_fcntl Compile Setvar cat rm run signal_t
+?MAKE:d_fcntl_can_lock: d_fcntl Compile Setvar cat rm run signal_t i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_fcntl_can_lock:
 ?S:	This variable conditionally defines the FCNTL_CAN_LOCK symbol
@@ -27,7 +27,10 @@
 echo " "
 : See if fcntl-based locking works.
 $cat >try.c <<EOCP
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
 #include <stdlib.h>
+#endif
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>

@@ -12,7 +12,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:42  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_access: test +cc cat +cppflags h_fcntl h_sysfile rm Inlibc Findhdr
+?MAKE:d_access: test +cc cat +cppflags h_fcntl h_sysfile i_stdlib rm Inlibc Findhdr
 ?MAKE:	-pick add $@ %<
 ?S:d_access:
 ?S:	This variable conditionally defines HAS_ACCESS if the access() system
@@ -36,7 +36,7 @@ eval $inlibc
 case "$d_access" in
 "$define")
 	echo " "
-	$cat >access.c <<'EOCP'
+	$cat >access.c <<EOCP
 #include <sys/types.h>
 #ifdef I_FCNTL
 #include <fcntl.h>
@@ -46,6 +46,10 @@ case "$d_access" in
 #endif
 #ifdef I_UNISTD
 #include <unistd.h>
+#endif
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
 #endif
 int main() {
 	exit(R_OK);

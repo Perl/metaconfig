@@ -12,7 +12,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:59  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_vprintf d_charvspr: Compile Guess cat Csym Setvar run rm
+?MAKE:d_vprintf d_charvspr: Compile Guess cat Csym Setvar run rm i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_vprintf:
 ?S:	This variable conditionally defines the HAS_VPRINTF symbol, which
@@ -45,8 +45,12 @@ echo " "
 if set vprintf val -f d_vprintf; eval $csym; $val; then
 	echo 'vprintf() found.' >&4
 	val="$define"
-	$cat >try.c <<'EOF'
+	$cat >try.c <<EOF
 #include <varargs.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 
 int main() { xxx("foo"); }
 

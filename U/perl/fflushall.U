@@ -10,7 +10,7 @@
 ?RCS:
 ?MAKE:fflushNULL fflushall: Compile cat rm test osname run to from \
 	Oldconfig Myread Setvar exe_ext echo \
-	d_sysconf i_unistd d_stdio_stream_array stdio_stream_array
+	d_sysconf i_unistd d_stdio_stream_array stdio_stream_array i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:fflushNULL:
 ?S:	This symbol, if defined, tells that fflush(NULL) does flush
@@ -50,6 +50,10 @@ sunos) $echo '#define PERL_FFLUSH_ALL_FOPEN_MAX 32' > try.c ;;
 esac
 $cat >>try.c <<EOCP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #$i_unistd I_UNISTD
 #ifdef I_UNISTD
 # include <unistd.h>

@@ -18,7 +18,7 @@
 ?X:
 ?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags: \
 	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar \
-	cc ccflags ldflags ls gccversion cat rsrc src run
+	cc ccflags ldflags ls gccversion cat rsrc src run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:usedl:
@@ -158,10 +158,13 @@ while other systems (such as those using ELF) use $cc.
 
 EOM
 	case "$ld" in
-	'')	$cat >try.c <<'EOM'
+	'')	$cat >try.c <<EOM
 /* Test for whether ELF binaries are produced */
 #include <fcntl.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
 #include <stdlib.h>
+#endif
 int main() {
 	char b[4];
 	int i = open("a.out",O_RDONLY);

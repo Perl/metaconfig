@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:44  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_open3: Compile test cat h_fcntl h_sysfile rm Setvar Findhdr run
+?MAKE:d_open3: Compile test cat h_fcntl h_sysfile rm Setvar Findhdr run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?X:	It would be easy to separate the h_O_stuff from this.
 ?X:	Is there a reason to do so? -- HMS
@@ -39,13 +39,17 @@
 ?LINT:change h_fcntl h_sysfile
 : Locate the flags for 'open()'
 echo " "
-$cat >try.c <<'EOCP'
+$cat >try.c <<EOCP
 #include <sys/types.h>
 #ifdef I_FCNTL
 #include <fcntl.h>
 #endif
 #ifdef I_SYS_FILE
 #include <sys/file.h>
+#endif
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
 #endif
 int main() {
 	if(O_RDONLY);

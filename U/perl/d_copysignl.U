@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_copysignl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_copysignl:
+?S:	This variable conditionally defines the HAS_COPYSIGNL symbol, which
+?S:	indicates to the C program that the copysignl() routine is available.
+?S:	If aintl is also present we can emulate modfl.
+?S:.
+?C:HAS_COPYSIGNL:
+?C:	This symbol, if defined, indicates that the copysignl routine is
+?C:	available.  If aintl is also present we can emulate modfl.
+?C:.
+?H:#$d_copysignl HAS_COPYSIGNL		/**/
+?H:.
+?LINT:set d_copysignl
+: see if copysignl exists
+set copysignl d_copysignl
+eval $inlibc
+

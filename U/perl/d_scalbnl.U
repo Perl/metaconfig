@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_scalbnl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_scalbnl:
+?S:	This variable conditionally defines the HAS_SCALBNL symbol, which
+?S:	indicates to the C program that the scalbnl() routine is available.
+?S:	If ilogbl is also present we can emulate frexpl.
+?S:.
+?C:HAS_SCALBNL:
+?C:	This symbol, if defined, indicates that the scalbnl routine is
+?C:	available.  If ilogbl is also present we can emulate frexpl.
+?C:.
+?H:#$d_scalbnl HAS_SCALBNL		/**/
+?H:.
+?LINT:set d_scalbnl
+: see if scalbnl exists
+set scalbnl d_scalbnl
+eval $inlibc
+

@@ -23,7 +23,7 @@
 ?MAKE:i_db db_hashtype db_prefixtype \
 	db_version_major db_version_minor db_version_patch : \
 	Inhdr +cc +ccflags rm contains cat \
-	Compile d_const libs sed run
+	Compile d_const libs sed run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:i_db:
 ?S:	This variable conditionally defines the I_DB symbol, and indicates
@@ -106,6 +106,10 @@ $define)
 #endif
 #include <sys/types.h>
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #include <db.h>
 int main(int argc, char *argv[])
 {

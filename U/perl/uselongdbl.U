@@ -5,8 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:uselongdouble: Myread Oldconfig Setvar cat test usemorebits \
-	d_sqrtl d_modfl
+?MAKE:uselongdouble: Myread Oldconfig Setvar cat test usemorebits
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselongdouble:
@@ -26,7 +25,6 @@
 ?LINT:change ccflags
 ?LINT:use usemorebits
 ?LINT:use uselargefiles
-?T:message
 ?F:!uselongdouble.cbu
 case "$ccflags" in
 *-DUSE_LONG_DOUBLE*|*-DUSE_MORE_BITS*) uselongdouble="$define" ;;
@@ -71,33 +69,4 @@ EOM
 	fi
 	;;
 esac
-
-message=X
-case "$uselongdouble:$d_sqrtl:$d_modfl" in
-$define:$define:$define)
-	: You have both
-	;;
-$define:$define:$undef)
-	message="I could not find modfl"
-	;;
-$define:$undef:$define)
-	message="I could not find sqrtl"
-	;;
-$define:$undef:$undef)
-	message="I found neither sqrtl nor modfl"
-	;;
-esac
-
-if $test "$message" != X; then
-	$cat <<EOM >&4
-
-*** You requested the use of long doubles but you do not seem to have
-*** the mathematic functions for long doubles.
-*** ($message)
-*** I'm disabling the use of long doubles.
-
-EOM
-
-	uselongdouble=$undef
-fi
 

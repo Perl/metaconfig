@@ -28,7 +28,7 @@
 ?MAKE:d_stdstdio d_stdiobase stdio_ptr stdio_cnt \
 	d_stdio_ptr_lval_sets_cnt d_stdio_ptr_lval_nochange_cnt stdio_base \
 	stdio_bufsiz d_stdio_cnt_lval d_stdio_ptr_lval stdio_filbuf: cat \
-	Compile contains rm d_gnulibc gnulibc_version \
+	Compile contains rm d_gnulibc gnulibc_version i_stdlib \
 	Setvar Findhdr Oldconfig run to
 ?MAKE:	-pick weed $@ %<
 ?S:d_stdstdio:
@@ -236,6 +236,10 @@ fi
 echo "Checking how std your stdio is..." >&4
 $cat >try.c <<EOP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #define FILE_ptr(fp)	$stdio_ptr
 #define FILE_cnt(fp)	$stdio_cnt
 int main() {
@@ -318,6 +322,10 @@ ${define}${define})
 	for filbuf in $stdio_filbuf '_filbuf(fp)' '__filbuf(fp) ' '_fill(fp)' ; do
 		$cat >try.c <<EOP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #define FILE_ptr(fp)	$stdio_ptr
 #define FILE_cnt(fp)	$stdio_cnt
 #define FILE_filbuf(fp)	$filbuf
@@ -363,6 +371,10 @@ $cat >try.c <<EOP
 /* Can we scream? */
 /* Eat dust sed :-) */
 /* In the buffer space, no one can hear you scream. */
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #define FILE_ptr(fp)	$stdio_ptr
 #define FILE_cnt(fp)	$stdio_cnt
 #include <sys/types.h>
@@ -446,6 +458,10 @@ case "$d_stdstdio" in
 $define)
 	$cat >try.c <<EOP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #define FILE_base(fp)	$stdio_base
 #define FILE_bufsiz(fp)	$stdio_bufsiz
 int main() {

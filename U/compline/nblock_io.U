@@ -23,7 +23,7 @@
 ?X:
 ?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm Compile run \
 	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar \
-	startsh i_unistd i_string i_fcntl
+	startsh i_unistd i_string i_fcntl i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:o_nonblock:
 ?S:	This variable bears the symbol value to be used during open() or fcntl()
@@ -93,7 +93,10 @@ case "$o_nonblock" in
 	$cat head.c > try.c
 	$cat >>try.c <<EOCP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
 #include <stdlib.h>
+#endif
 #$i_fcntl I_FCNTL
 #ifdef I_FCNTL
 #include <fcntl.h>
@@ -141,7 +144,10 @@ case "$eagain" in
 #include <sys/types.h>
 #include <signal.h>
 #include <stdio.h> 
-#include <stdlib.h> 
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #$i_fcntl I_FCNTL
 #ifdef I_FCNTL
 #include <fcntl.h>

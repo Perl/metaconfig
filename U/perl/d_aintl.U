@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_aintl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_aintl:
+?S:	This variable conditionally defines the HAS_AINTL symbol, which
+?S:	indicates to the C program that the aintl() routine is available.
+?S:	If copysignl is also present we can emulate modfl.
+?S:.
+?C:HAS_AINTL:
+?C:	This symbol, if defined, indicates that the aintl routine is
+?C:	available.  If copysignl is also present we can emulate modfl.
+?C:.
+?H:#$d_aintl HAS_AINTL		/**/
+?H:.
+?LINT:set d_aintl
+: see if aintl exists
+set aintl d_aintl
+eval $inlibc
+

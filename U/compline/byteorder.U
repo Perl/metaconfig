@@ -19,7 +19,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:byteorder: cat Myread Oldconfig Loc Compile rm run \
-	usecrosscompile multiarch uvtype uvsize
+	usecrosscompile multiarch uvtype uvsize i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:byteorder:
 ?S:	This variable holds the byte order in a UV. In the following,
@@ -96,6 +96,10 @@ I'm now running the test program...
 EOM
 		$cat >try.c <<EOCP
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 #include <sys/types.h>
 typedef $uvtype UV;
 int main()

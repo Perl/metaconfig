@@ -11,7 +11,7 @@
 	libswanted_uselargefiles: \
 	Myread Oldconfig Setvar test lseeksize fpossize \
 	fpostype Compile echo n c cat lseektype rm run \
-	use64bitint use64bitall
+	use64bitint use64bitall i_stdlib
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselargefiles:
@@ -53,7 +53,6 @@
 ?LINT:use uselfs
 ?LINT:use use64bitint
 ?LINT:use use64bitall
-
 # Backward compatibility (uselfs is deprecated).
 case "$uselfs" in
 "$define"|true|[yY]*)
@@ -131,6 +130,10 @@ EOCP
 		$cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 int main() {
     printf("%d\n", (int)sizeof($fpostype));
     return(0);

@@ -25,7 +25,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:d_setpgrp d_bsdsetpgrp: cat rm +cc +libs +ccflags \
-	+ldflags Inlibc Guess Setvar i_unistd run
+	+ldflags Inlibc Guess Setvar i_unistd i_stdlib run
 ?MAKE:	-pick add $@ %<
 ?S:d_setpgrp:
 ?S:	This variable conditionally defines HAS_SETPGRP if setpgrp() is
@@ -64,6 +64,10 @@ case "$d_setpgrp" in
 #include <sys/types.h>
 #ifdef I_UNISTD
 #  include <unistd.h>
+#endif
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
 #endif
 int main()
 {

@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2003 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_ilogbl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_ilogbl:
+?S:	This variable conditionally defines the HAS_ILOGBL symbol, which
+?S:	indicates to the C program that the ilogbl() routine is available.
+?S:	If scalbnl is also present we can emulate frexpl.
+?S:.
+?C:HAS_ILOGBL:
+?C:	This symbol, if defined, indicates that the ilogbl routine is
+?C:	available.  If scalbnl is also present we can emulate frexpl.
+?C:.
+?H:#$d_ilogbl HAS_ILOGBL		/**/
+?H:.
+?LINT:set d_ilogbl
+: see if ilogbl exists
+set ilogbl d_ilogbl
+eval $inlibc
+

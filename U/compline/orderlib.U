@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:26  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:orderlib ranlib: Loc ar cat test rm +cc +ccflags +ldflags +libs _a _o run
+?MAKE:orderlib ranlib: Loc ar cat test rm +cc +ccflags +ldflags +libs i_stdlib _a _o run
 ?MAKE:	-pick add $@ %<
 ?S:orderlib:
 ?S:	This variable is "true" if the components of libraries must be ordered
@@ -49,7 +49,11 @@ echo "Checking how to generate random libraries on your machine..." >&4
 ?X: will fail.  (Otherwise it complains, but gives an exit status of 0.)
 echo 'int bar1() { return bar2(); }' > bar1.c
 echo 'int bar2() { return 2; }' > bar2.c
-$cat > foo.c <<'EOP'
+$cat > foo.c <<EOP
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
 int main() { printf("%d\n", bar1()); exit(0); }
 EOP
 $cc $ccflags -c bar1.c >/dev/null 2>&1

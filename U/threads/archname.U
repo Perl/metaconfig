@@ -20,7 +20,7 @@
 ?RCS:
 ?MAKE:archname myarchname: sed Loc Myread Oldconfig osname test rm \
 	usethreads usemultiplicity use64bitint use64bitall archname64 \
-	uselongdouble longdblsize doublesize useperlio targetarch
+	uselongdouble longdblsize doublesize useperlio targetarch sanelongdbl
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current
@@ -40,6 +40,7 @@
 ?H:#define ARCHNAME "$archname"		/**/
 ?H:.
 ?T:xxx tarch
+?LINT:use sanelongdbl
 ?INIT:archname=''
 : determine the architecture name
 echo " "
