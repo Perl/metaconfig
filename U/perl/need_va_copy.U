@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:need_va_copy: +ccflags rm cat Compile i_stdarg
+?MAKE:need_va_copy: +ccflags rm cat Compile i_stdarg i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:need_va_copy:
 ?S:	This symbol, if defined, indicates that the system stores
@@ -40,6 +40,11 @@ case "$i_stdarg" in
 	$cat >try.c <<EOCP
 #include <stdarg.h>
 #include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
+#include <signal.h>
 
 int
 ivfprintf(FILE *f, const char *fmt, va_list *valp)
@@ -64,6 +69,8 @@ myprintf(char *fmt, ...)
 int
 main(int ac, char **av)
 {
+  signal(SIGSEGV, exit);
+
   myprintf("%s%cs all right, then\n", "that", '\'');                            
   exit(0);      
 }
