@@ -215,7 +215,7 @@ case "$use64bitall" in
       	   *) ccflags="$ccflags -DUSE_64_BIT_ALL";;
 	   esac
 	   case "$archname64" in
-	   ''|64) archname64=64all ;;
+	   ''|64int) archname64=64all ;;
 	   esac
 	   ;;
 	esac
