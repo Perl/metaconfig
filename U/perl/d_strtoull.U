@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_strtoull: Inlibc
+?MAKE:d_strtoull: Inlibc d_longlong Compile cat
 ?MAKE:	-pick add $@ %<
 ?S:d_strtoull:
 ?S:	This variable conditionally defines the HAS_STRTOULL symbol, which
@@ -17,8 +17,52 @@
 ?C:.
 ?H:#$d_strtoull HAS_STRTOULL		/**/
 ?H:.
+?F:!try
 ?LINT:set d_strtoull
 : see if strtoull exists
 set strtoull d_strtoull
 eval $inlibc
+
+case "$d_longlong-$d_strtoull" in
+"$define-$define")
+	$cat <<EOM
+Checking whether your strtoull() works okay...
+EOM
+	$cat >try.c <<'EOCP'
+#include <errno.h>
+#ifdef __hpux
+#define strtoull __strtoull
+#endif
+#include <stdio.h>
+extern unsigned long long int strtoull(char *s, char **, int); 
+static int bad = 0;
+int check(char *s, long long eull, int een) {
+	long long gull;
+	errno = 0;
+	gull = strtoull(s, 0, 10);
+	if (!((gull == eull) && (errno == een)))
+		bad++;
+}
+int main() {
+	check(" 1",                                       1LL, 0);
+	check(" 0",                                       0LL, 0);
+	check("18446744073709551615", 18446744073709551615ULL, 0);
+	check("18446744073709551616", 18446744073709551615ULL, ERANGE);
+	if (!bad)
+		printf("ok\n");
+}
+EOCP
+	set try
+	if eval $compile; then
+		case "`./try`" in
+		ok) echo "Your strtoull() seems to be working okay." ;;
+		*) cat <<EOM >&4
+Your strtoull() doesn't seem to be working okay.
+EOM
+		   d_strtoull="$undef"
+		   ;;
+		esac
+	fi
+	;;
+esac
 
