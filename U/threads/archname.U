@@ -40,6 +40,7 @@
 ?H:#define ARCHNAME "$archname"		/**/
 ?H:.
 ?T:xxx tarch
+?INIT:archname=''
 : determine the architecture name
 echo " "
 ?X: We always recompute archname in case osname changes. However, we need

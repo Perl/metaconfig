@@ -56,6 +56,7 @@
 ?H:?%<:#$use64bitall	USE_64_BIT_ALL		/**/
 ?H:?%<:#endif
 ?H:.
+?INIT:archname64=''
 ?LINT:set use64bitint
 ?LINT:extern ccflags
 ?LINT:change ccflags
