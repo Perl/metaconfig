@@ -206,6 +206,7 @@ EOM
 	$test -d /usr/apollo/bin && osname=apollo
 	$test -f /etc/saf/_sactab && osname=svr4
 	$test -d /usr/include/minix && osname=minix
+	$test -d /system && osname=vos
 	if $test -d /MachTen -o -d /MachTen_Folder; then
 ?X:		MachTen uname -a output looks like
 ?X:		xxx 4 0.0 Macintosh
@@ -412,8 +413,10 @@ EOM
 		unixware) osname=svr5
 			osvers="$4"
 			;;
-		uts) osname=uts
+		uts)	osname=uts
 			osvers="$3"
+			;;
+		vos) osvers="$3"
 			;;
 		$2) case "$osname" in
 			*isc*) ;;
