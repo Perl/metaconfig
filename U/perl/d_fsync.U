@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fsync: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fsync:
+?S:	This variable conditionally defines the HAS_FSYNC symbol, which
+?S:	indicates to the C program that the fsync() routine is available.
+?S:.
+?C:HAS_FSYNC:
+?C:	This symbol, if defined, indicates that the fsync routine is
+?C:	available to write a file's modified data and attributes to
+?C:	permanent storage.
+?C:.
+?H:#$d_fsync HAS_FSYNC		/**/
+?H:.
+?LINT:set d_fsync
+: see if fsync exists
+set fsync d_fsync
+eval $inlibc
+
