@@ -27,16 +27,24 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
 ?S:	This variable holds what Gconvert is defined as to convert
-?S:	floating point numbers into strings. It could be 'gconvert'
-?S:	or a more complex macro emulating gconvert with gcvt() or sprintf.
-?S:	Possible values are:
-?S:		d_Gconvert='gconvert((x),(n),(t),(b))'
-?S:		d_Gconvert='gcvt((x),(n),(b))'
-?S:		d_Gconvert='sprintf((b),"%.*g",(n),(x))'
-?S:	If you are not content with these choices, use gconvert_preference
-?S:	and gconvert_ld_preference, which if present are space-separated
-?S:	lists of functions to try with calling convention of gcvt,
-?S:	respectively for doubles and long doubles.
+?S:	floating point numbers into strings.  By default, Configure
+?S:	sets this macro to use the first of gconvert, gcvt, or sprintf
+?S:	that pass sprintf-%g-like behaviour tests.  If perl is using
+?S:	long doubles, the macro uses the first of the following
+?S:	functions that pass Configure's tests: qgcvt, sprintf (if
+?S:	Configure knows how to make sprintf format long doubles--see
+?S:	sPRIgldbl), gconvert, gcvt, and sprintf (casting to double).  
+?S:	The gconvert_preference and gconvert_ld_preference variables   
+?S:	can be used to alter Configure's preferences, for doubles and
+?S:	long doubles, respectively.  If present, they contain a       
+?S:	space-separated list of one or more of the above function       
+?S:	names in the order they should be tried.
+?S:
+?S:	d_Gconvert may be set to override Configure with a platform-
+?S:	specific function.  If this function expects a double, a
+?S:	different value may need to be set by the uselongdouble.cbu
+?S:	call-back unit so that long doubles can be formatted without
+?S:	loss of precision.
 ?S:.
 ?C:Gconvert:
 ?C:	This preprocessor macro is defined to convert a floating point
