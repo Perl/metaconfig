@@ -1,0 +1,75 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2001, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS:
+?MAKE:d_dirfd: Compile cat rm Setvar i_dirent i_sysdir i_sysndir i_systypes
+?MAKE:	-pick add $@ %<
+?S:d_dirfd:
+?S:	This variable conditionally defines the HAS_DIRFD constant,
+?S:	which indicates to the C program that dirfd() is available
+?S:	to return the file descriptor of a directory stream.
+?S:.
+?C:HAS_DIRFD:
+?C:	This manifest constant lets the C program know that dirfd
+?C:	is available.
+?C:.
+?H:#$d_dirfd HAS_DIRFD		/**/
+?H:.
+?LINT:set d_dirfd
+?X: Can't use Inlibc because dirfd() might be a macro.
+: Look for dirfd
+echo " "
+$cat >dirfd.c <<EOM
+#include <stdio.h>
+#$i_dirent I_DIRENT		/**/
+#$i_sysdir I_SYS_DIR		/**/
+#$i_sysndir I_SYS_NDIR		/**/
+#$i_systypes I_SYS_TYPES	/**/
+#if defined(I_SYS_TYPES)
+#include <sys/types.h>
+#endif
+#if defined(I_DIRENT)
+#include <dirent.h>
+#if defined(NeXT) && defined(I_SYS_DIR) /* NeXT needs dirent + sys/dir.h */
+#include <sys/dir.h>
+#endif
+#else
+#ifdef I_SYS_NDIR
+#include <sys/ndir.h>
+#else
+#ifdef I_SYS_DIR
+#ifdef hp9000s500
+#include <ndir.h>	/* may be wrong in the future */
+#else
+#include <sys/dir.h>
+#endif
+#endif
+#endif
+#endif 
+int main() {
+	DIR *dirp = opendir(".");
+	if (dirfd(dirp) >= 0)
+		exit(0);
+	else
+		exit(1);
+}
+EOM
+set dirfd
+if eval $compile; then
+	val="$define"
+fi
+case "$val" in
+$define)	echo "dirfd() found." >&4	;;
+*)		echo "dirfd() NOT found." >&4	;;
+esac
+set d_dirfd
+eval $setvar
+$rm -f dirfd*
+
