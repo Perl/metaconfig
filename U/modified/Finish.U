@@ -39,6 +39,7 @@
 	test package make
 ?MAKE:	-pick add $@ %<
 ?F:!config.sh
+?T:pwd
 : Finish up by extracting the .SH files
 case "$alldone" in
 exit)
@@ -78,7 +79,9 @@ esac
 ?X:
 echo " "
 exec 1>&4
+pwd=`pwd`
 . ./UU/extract
+cd $pwd
 
 if $contains '^depend:' [Mm]akefile >/dev/null 2>&1; then
 	dflt=y
