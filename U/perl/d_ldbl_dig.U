@@ -1,0 +1,54 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_ldbl_dig: Myread contains cat rm Setvar i_limits i_float \
+	cppstdin cppflags cppminus
+?MAKE:	-pick add $@ %<
+?S:d_ldbl_dig:
+?S:	This variable conditionally defines d_ldbl_dig if this system's
+?S:	header files provide LDBL_DIG, which is the number of significant
+?S:	digits in a long double precision number.
+?S:.
+?C:HAS_LDBL_DIG:
+?C:	This symbol, if defined, indicates that this system's <float.h>
+?C:	or <limits.h> defines the symbol LDBL_DIG, which is the number
+?C:	of significant digits in a long double precision number. Unlike
+?C:	for DBL_DIG, there's no good guess for LDBL_DIG if it is undefined.
+?C:.
+?H:#$d_ldbl_dig HAS_LDBL_DIG 	/* */
+?H:.
+?LINT:set d_ldbl_dig
+: See if number of significant digits in a double precision number is known
+echo " "
+$cat >ldbl_dig.c <<EOM
+#$i_limits I_LIMITS
+#$i_float I_FLOAT
+#ifdef I_LIMITS
+#include <limits.h>
+#endif
+#ifdef I_FLOAT
+#include <float.h>
+#endif
+#ifdef LDBL_DIG
+printf("Contains LDBL_DIG");
+#endif
+EOM
+$cppstdin $cppflags $cppminus < ldbl_dig.c >ldbl_dig.E 2>/dev/null
+if $contains 'LDBL_DIG' ldbl_dig.E >/dev/null 2>&1; then
+	echo "LDBL_DIG found." >&4
+	val="$define"
+else
+	echo "LDBL_DIG NOT found." >&4
+	val="$undef"
+fi
+$rm -f ldbl_dig.?
+set d_ldbl_dig
+eval $setvar
+
