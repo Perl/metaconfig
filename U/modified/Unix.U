@@ -24,8 +24,8 @@
 ?S:_exe:
 ?S:	This variable defines the extension used for executable files.
 ?S:	DJGPP, Cygwin and OS/2 use '.exe'.  Stratus VOS uses '.pm'.
-?S:	No other operating systems require an extension for executable
-?S:	files, so it is empty for all others.
+?S:	On operating systems which do not require a specific extension
+?S:	for executable files, this variable is empty.
 ?S:.
 ?S:_a:
 ?S:	This variable defines the extension used for ordinary library files.
