@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_modfl d_modflproto d_modfl_pow32_bug: Inlibc Compile Hasproto cat \
 	rm test sPRIfldbl d_longdbl osname gccversion ccflags run \
-	uselongdouble d_sqrtl d_aintl d_copysignl
+	uselongdouble d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl
 ?MAKE:	-pick add $@ %<
 ?S:d_modfl:
 ?S:	This variable conditionally defines the HAS_MODFL symbol, which
@@ -127,32 +127,31 @@ EOCP
 esac
 
 if $test "$uselongdouble" = "$define"; then
-    message=none
-    case "$d_sqrtl:$d_modfl" in
-    $define:$define)
-	: You have both
-	;;
-    $define:$undef)
+    message=""
+    if $test "$d_sqrtl" != "$define"; then
+	message="$message sqrtl"
+    fi
+    if $test "$d_modfl" != "$define"; then
 	if $test "$d_aintl:$d_copysignl" = "$define:$define"; then
 	    echo "You have both aintl and copysignl, so I can emulate modfl."
 	else
-	    message="I could not find modfl."
+	    message="$message modfl"
 	fi
-	;;
-    $undef:$define)
-	message="I could not find sqrtl."
-	;;
-    $undef:$undef)
-	message="I found neither sqrtl nor modfl."
-	;;
-    esac
+    fi
+    if $test "$d_frexpl" != "$define"; then
+	if $test "$d_ilogbl:$d_scalbnl" = "$define:$define"; then
+	    echo "You have both ilogbl and scalbnl, so I can emulate frexpl."
+	else
+	    message="$message frexpl"
+	fi
+    fi
 
-    if $test "$message" != none; then
+    if $test "$message" != ""; then
 	$cat <<EOM >&4
 
 *** You requested the use of long doubles but you do not seem to have
-*** the mathematic functions for long doubles.
-*** ($message)
+*** the following mathematical functions needed for long double support:
+***    $message
 *** Please rerun Configure without -Duselongdouble and/or -Dusemorebits.
 *** Cannot continue, aborting.
 
