@@ -104,7 +104,8 @@ case "$inc_version_list" in
 	fi
 	;;
 $undef) dflt='none' ;;
-*)  dflt="$inc_version_list" ;;
+?X:     Configure -Dinc_version_list='5.6.0/$archname 5.6.0' ...
+*)  eval dflt=\"$inc_version_list\" ;;
 esac
 case "$dflt" in
 ''|' ') dflt=none ;;
