@@ -162,14 +162,14 @@ END {
 $cat >signal.awk <<'EOP'
 BEGIN { ndups = 0 }
 $1 ~ /^NSIG$/ { nsig = $2 }
-($1 !~ /^NSIG$/) && (NF == 2) {
+($1 !~ /^NSIG$/) && (NF == 2) && ($2 ~ /^[0-9][0-9]*$/) {
     if ($2 > maxsig) { maxsig = $2 }
     if (sig_name[$2]) {
 	dup_name[ndups] = $1
 	dup_num[ndups] = $2
 	ndups++ 
     }
-    else if ($2 >= 0) {
+    else {
 	sig_name[$2] = $1
 	sig_num[$2] = $2
     }
