@@ -26,7 +26,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:cppstdin cppminus cpprun cpplast: contains test \
-	Myread Oldconfig Loc cpp +cc rm hint
+	Myread Oldconfig Loc cpp +cc rm hint osname gccversion
 ?MAKE:	-pick add $@ %<
 ?S:cppstdin:
 ?S:	This variable contains the command which will invoke the C
@@ -94,7 +94,13 @@ ABC.XYZ
 EOT
 cd ..
 if test ! -f cppstdin; then
-	echo 'cat >.$$.c; '"$cc"' -E ${1+"$@"} .$$.c; rm .$$.c' >cppstdin
+	if test "X$osname" = "Xaix" -a "X$gccversion" = X; then
+		# AIX cc -E doesn't show the absolute headerfile
+		# locations but we'll cheat by using the -M flag.
+		echo 'cat >.$$.c; rm -f .$$.u; '"$cc"' ${1+"$@"} -M -c .$$.c 2>/dev/null; test -s .$$.u && awk '"'"'$2 ~ /\.h$/ { print "# 0 \""$2"\"" }'"'"' .$$.u; rm -f .$$.o .$$.u; '"$cc"' -E ${1+"$@"} .$$.c; rm .$$.c' > cppstdin
+	else
+		echo 'cat >.$$.c; '"$cc"' -E ${1+"$@"} .$$.c; rm .$$.c' >cppstdin
+	fi
 else
 	echo "Keeping your $hint cppstdin wrapper."
 fi
