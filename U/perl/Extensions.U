@@ -327,16 +327,6 @@ EOM
 	: Exclude those that are not xs extensions
 	case "$dflt" in
 	'')	dflt=none;;
-        *)  case " $dflt " in
-            *" Encode "*) # Add the subextensions of Encode
-                cd "$rsrc/ext"
-                for xxx in `ls Encode/*/Makefile.PL|awk -F/ '{print $2}'`; do
-                        dflt="$dflt Encode/$xxx"
-                done
-                cd "$tdir"
-                ;;
-            esac
-            ;;
 	esac
 	rp="What extensions do you wish to include?"
 	. ./myread
@@ -345,6 +335,20 @@ EOM
 	none) static_ext=' ' ;;
 	*) static_ext="$ans" ;;
 	esac
+	;;
+esac
+#        
+# Encode is a special case.  If we are building Encode as a static
+# extension, we need to explicitly list its subextensions as well.
+# For other nested extensions, this is handled automatically by
+# the appropriate Makefile.PL.
+case " $static_ext " in
+	*" Encode "*) # Add the subextensions of Encode
+	cd "$rsrc/ext"
+	for xxx in `ls Encode/*/Makefile.PL|awk -F/ '{print $2}'`; do
+		static_ext="$static_ext Encode/$xxx"
+	done
+	cd "$tdir"
 	;;
 esac
 
