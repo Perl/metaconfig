@@ -215,7 +215,7 @@ if "$useshrplib"; then
 	freebsd|netbsd)
 		xxx="-Wl,-R$shrpdir"
 		;;
-	linux|irix*|dec_osf)
+	bsdos|linux|irix*|dec_osf)
 		xxx="-Wl,-rpath,$shrpdir"
 		;;
 	next)
