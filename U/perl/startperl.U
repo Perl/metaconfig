@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:50  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:startperl: cat Myread sharpbang binexp test
+?MAKE:startperl: cat Myread sharpbang binexp test versiononly
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?X: This is different from dist's standard startperl.U unit because
@@ -52,7 +52,10 @@ want to share those scripts and perl is not in a standard place
 a shell by starting the script with a single ':' character.
 
 EOH
-		dflt="$binexp/perl"
+		case "$versiononly" in
+		"$define")      dflt="$binexp/perl$version";;  
+		*)              dflt="$binexp/perl";;
+		esac
 		rp='What shall I put after the #! to start up perl ("none" to not use #!)?'
 		. ./myread
 		case "$ans" in
