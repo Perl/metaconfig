@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_off64_t: \
-	Inlibc Setvar Compile rm cat lseeksize
+	Inlibc Setvar Compile rm cat lseeksize i_features
 ?MAKE:	-pick add $@ %<
 ?S:d_off64_t:
 ?S:	This symbol will be defined if the C compiler supports off64_t.
@@ -22,6 +22,10 @@
 echo " "
 echo "Checking to see if you have off64_t..." >&4
 $cat >try.c <<EOCP
+#$i_features I_FEATURES
+#ifdef I_FEATURES
+#include <features.h>
+#endif
 #include <sys/types.h>
 #include <unistd.h>
 int main() { off64_t x = 7; }

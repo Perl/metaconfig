@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_fpos64_t: \
-	Inlibc Setvar Compile rm cat fpossize
+	Inlibc Setvar Compile rm cat fpossize i_features
 ?MAKE:	-pick add $@ %<
 ?S:d_fpos64_t:
 ?S:	This symbol will be defined if the C compiler supports fpos64_t.
@@ -22,6 +22,10 @@
 echo " "
 echo "Checking to see if you have fpos64_t..." >&4
 $cat >try.c <<EOCP
+#$i_features I_FEATURES
+#ifdef I_FEATURES
+#include <features.h>
+#endif
 #include <stdio.h>
 int main() { fpos64_t x = 7; }
 EOCP
