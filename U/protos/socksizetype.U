@@ -46,7 +46,7 @@ EOM
 	done
 : In case none of those worked, prompt the user.
 	case "$socksizetype" in
-	'')	rp='What is the type for the last argument to accept()?'
+	'')	rp='What is the type for socket address structure sizes?'
 		dflt='int'
 		. ./myread
 		socksizetype=$ans
