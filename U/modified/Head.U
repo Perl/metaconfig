@@ -243,6 +243,7 @@ EOM
 esac
 case "$changesh" in
 true)
+	export newsh
 	echo "(Feeding myself to $newsh $reason.)"
 ?X: Make sure they didn't say sh <Configure by checking whether $0 ends
 ?X: with Configure or not. If they did say sh <../../Configure, then too

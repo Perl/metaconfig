@@ -21,7 +21,9 @@
 ?S:	(if they are supported).  Typical values include 'test -h' and
 ?S:	'test -L'.
 ?S:.
+?T:pth p
 ?LINT:change PATH
+?LINT:change test
 : determine whether symbolic links are supported
 echo " "
 case "$lns" in
@@ -32,22 +34,43 @@ case "$lns" in
 ?X:
 ?X: In some AIX 4 versions the (ksh) builtin test (-h) is broken.
 ?X:
-		sh -c "PATH= test -h sym" >/dev/null 2>&1
+		case "$newsh" in
+		'') sh     -c "PATH= test -h sym" >/dev/null 2>&1 ;;
+		*)  $newsh -c "PATH= test -h sym" >/dev/null 2>&1 ;;
+		esac
 		if test $? = 0; then
 			issymlink="test -h"
+		else
+			echo "Your builtin 'test -h' may be broken." >&4
+			case "$test" in
+			/*)	;;
+			*)	pth=`echo $PATH | sed -e "s/$p_/ /g"`
+				for p in $pth
+				do
+					if test -f "$p/$test"; then
+						test="$p/$test"
+						break
+					fi
+				done
+				;;
+			esac
+			case "$test" in
+			/*)
+				echo "Trying external '$test -h'." >&4
+				issymlink="$test -h"
+				if $test ! -h sym >/dev/null 2>&1; then
+					echo "External '$test -h' is broken, too." >& 4
+					issymlink=''
+				fi
+				;;
+			*)	issymlink='' ;;
+			esac
 		fi		
 	fi
-	case "$issymlink" in
-	"test -h")
-		if $test -h >/dev/null 2>&1; then
-			issymlink="/bin/test -h"
-			echo "Your builtin 'test -h' may be broken, I'm using external '/bin/test -h'." >&4
-		fi
-		;;
-	esac
 	if $test "X$issymlink" = X; then
 		if $test -L sym 2>/dev/null; then
 			issymlink="$test -L"
+			echo "The builtin '$test -L' worked." >&4
 		fi
 	fi
 	if $test "X$issymlink" != X; then
