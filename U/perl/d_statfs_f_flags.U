@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_statfs_f_flags: \
 	Hasfield i_sysparam i_sysmount i_systypes \
-	i_sysvfs i_sysstatfs Setvar d_statfs_s echo n c
+	i_sysvfs i_sysstatfs Setvar d_statfs_s
 ?MAKE:	-pick add $@ %<
 ?S:d_statfs_f_flags:
 ?S:	This variable conditionally defines the HAS_STRUCT_STATFS_F_FLAGS
@@ -32,7 +32,7 @@
 case "$d_statfs_s" in
 define)	
 	echo " "
-	$echo $n "Checking to see if your struct statfs has f_flags field..." $c >&4
+	echo "Checking to see if your struct statfs has f_flags field..." >&4
 	set d_statfs_f_flags statfs f_flags $i_systypes sys/types.h $i_sysparam sys/param.h $i_sysmount sys/mount.h $i_sysvfs sys/vfs.h $i_sysstatfs sys/statfs.h
 	eval $hasfield
 	;;
