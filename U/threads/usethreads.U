@@ -80,7 +80,13 @@
 ?X: automatic setting of sensible defaults.
 case "$usethreads" in
 $define|true|[yY]*)     dflt='y';;
-*) dflt='n';;
+*)     # Catch case where user specified ithreads or 5005threads but
+       # forgot -Dusethreads (A.D. 4/2002)
+       case "$useithreads$use5005threads" in
+       *$define*)      dflt='y' ;;
+       *)      dflt='n';;
+       esac
+       ;;
 esac
 cat <<EOM
 
