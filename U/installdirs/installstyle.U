@@ -32,6 +32,22 @@
 ?S:	is useful if $prefix is shared by many packages, e.g. if
 ?S:	$prefix=/usr/local.
 ?S:
+?S:	Unfortunately, while this "style" variable is used to set
+?S:	defaults for all three directory hierarchies (core, vendor, and
+?S:	site), there is no guarantee that the same style is actually
+?S:	appropriate for all those directories.  For example, $prefix
+?S:	might be /opt/perl, but $siteprefix might be /usr/local.
+?S:	(Perhaps, in retrospect, the "lib" style should never have been
+?S:	supported, but it did seem like a nice idea at the time.)
+?S:
+?S:	The situation is even less clear for tools such as MakeMaker
+?S:	that can be used to install additional modules into
+?S:	non-standard places.  For example, if a user intends to install
+?S:	a module into a private directory (perhaps by setting PREFIX on
+?S:	the Makefile.PL command line), then there is no reason to
+?S:	assume that the Configure-time $installstyle setting will be
+?S:	relevant for that PREFIX.
+?S:
 ?S:	This may later be extended to include other information, so
 ?S:	be careful with pattern-matching on the results.
 ?S:
