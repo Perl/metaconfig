@@ -60,11 +60,12 @@
 ?S:	the output of nm and yield the list of defined symbols. It is used
 ?S:	internally by Configure.
 ?S:.
-?INIT:libnames=''
 ?T:thislib try libnames xxx xscan xrun thisname com tans file
 ?F:!libnames
+?LINT:extern libnames
 ?LINT:change libnames
 ?LINT:change nm_opt
+?INIT:libnames=''
 case "$runnm" in
 true)
 ?X: indentation is wrong on purpose--RAM
