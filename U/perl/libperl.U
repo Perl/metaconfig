@@ -35,7 +35,7 @@
 ?S:		shrpenv=''
 ?S:	See the main perl Makefile.SH for actual working usage.
 ?S: Alternatively, we might be able to use a command line option such
-?S:	as -R $archlibexp/CORE (Solaris, NetBSD) or -Wl,-rpath
+?S:	as -R $archlibexp/CORE (Solaris) or -Wl,-rpath
 ?S:	$archlibexp/CORE (Linux).
 ?S:.
 ?S:ldlibpthname:
@@ -209,10 +209,10 @@ if "$useshrplib"; then
 	aix)
 		# We'll set it in Makefile.SH...
 		;;
-	solaris|netbsd)
+	solaris)
 		xxx="-R $shrpdir"
 		;;
-	freebsd)
+	freebsd|netbsd)
 		xxx="-Wl,-R$shrpdir"
 		;;
 	linux|irix*|dec_osf)

@@ -19,6 +19,9 @@
 ?H:.
 ?LINT:set i_ieeefp
 : see if this is a ieeefp.h system
-set ieeefp.h i_ieeefp
-eval $inhdr
+case "$i_ieeefp" in
+'' ) set ieeefp.h i_ieeefp
+     eval $inhdr
+     ;;
+esac
 
