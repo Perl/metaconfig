@@ -131,8 +131,8 @@ true)
 		linux*)  # ld won't link with a bare -lperl otherwise.
 			dflt=libperl.$so
 			;;
-		cygwin*) # include version
-			dflt=`echo libperl$version | sed -e 's/\./_/g'`$lib_ext
+		cygwin*) # ld links against an importlib
+			dflt=libperl$lib_ext
 			;;
 		*)	# Try to guess based on whether libc has major.minor.
 			case "$libc" in
