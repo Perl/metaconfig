@@ -46,8 +46,12 @@
 ?X: This is the very first unit in the Configure script.  It is mostly just
 ?X: things to keep people from getting into a tizzy right off the bat.
 ?X: 
-?MAKE:Head:
+?MAKE:Head sh_c:
 ?MAKE:	-pick wipe $@ %<
+?S:sh_c:
+?S:	This variable holds the command to start new shells with.
+?S:	Usually 'sh -c'.
+?S:.	
 ?V:PATH p_ me
 ?T:argv Id p paths OS2_SHELL DJGPP
 ?T:inksh needksh avoidksh newsh changesh reason
@@ -251,6 +255,11 @@ true)
 	*) exec $newsh Configure "$@";;
 	esac
 	;;
+esac
+
+case "$newsh" in
+'') sh_c="sh -c" ;;
+*)  sh_c="$newsh -c" ;;
 esac
 
 ?X: Unset CDPATH to avoid surprises when using cd under some shells

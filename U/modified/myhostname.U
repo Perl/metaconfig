@@ -23,7 +23,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:myhostname phostname mydomain: contains sed test Myread Oldconfig \
-	Guess Loc awk echo sort uniq +usrinc rm hostcat Tr
+	Guess Loc awk echo sort uniq +usrinc rm hostcat Tr sh_c
 ?MAKE:	-pick add $@ %<
 ?S:myhostname (hostname):
 ?S:	This variable contains the eventual value of the MYHOSTNAME symbol,
@@ -67,7 +67,7 @@ echo "Figuring out host name..." >&4
 case "$myhostname" in
 '') cont=true
 	echo 'Maybe "hostname" will work...'
-	if tans=`sh -c hostname 2>&1` ; then
+	if tans=`$sh_c hostname 2>&1` ; then
 		myhostname=$tans
 		phostname=hostname
 		cont=''
@@ -90,17 +90,17 @@ if $test "$cont"; then
 fi
 if $test "$cont"; then
 	echo 'No, maybe "uuname -l" will work...'
-	if tans=`sh -c 'uuname -l' 2>&1` ; then
+	if tans=`$sh_c 'uuname -l' 2>&1` ; then
 		myhostname=$tans
 		phostname='uuname -l'
 	else
 		echo 'Strange.  Maybe "uname -n" will work...'
-		if tans=`sh -c 'uname -n' 2>&1` ; then
+		if tans=`$sh_c 'uname -n' 2>&1` ; then
 			myhostname=$tans
 			phostname='uname -n'
 		else
 			echo 'Oh well, maybe I can mine it out of whoami.h...'
-			if tans=`sh -c $contains' sysname $usrinc/whoami.h' 2>&1` ; then
+			if tans=`$sh_c $contains' sysname $usrinc/whoami.h' 2>&1` ; then
 				myhostname=`echo "$tans" | $sed 's/^.*"\(.*\)"/\1/'`
 				phostname="sed -n -e '"'/sysname/s/^.*\"\\(.*\\)\"/\1/{'"' -e p -e q -e '}' <$usrinc/whoami.h"
 			else
@@ -215,7 +215,7 @@ case "$myhostname" in
 		esac
 		case "$dflt" in
 		.) echo "(No help from resolv.conf either -- attempting clever guess)"
-			dflt=.`sh -c domainname 2>/dev/null`
+			dflt=.`$sh_c domainname 2>/dev/null`
 			case "$dflt" in
 			'') dflt='.';;
 			.nis.*|.yp.*|.main.*) dflt=`echo $dflt | $sed -e 's/^\.[^.]*//'`;;

@@ -14,31 +14,43 @@
 ?RCS: Revision 3.0.1.1  1994/06/20  07:05:52  ram
 ?RCS: patch30: created by ADO
 ?RCS:
-?MAKE:testsyml: lns test rm
+?MAKE:issymlink: lns test rm sh_c
 ?MAKE:	-pick add $@ %<
-?S:testsyml:
-?S:	This variable holds the switch of the test command to test
-?S:	for a symbolic link (if they are supported).  Typical values
-?S:	include '-h' and '-L'.
+?S:issymlink:
+?S:	This variable holds the test command to test for a symbolic link
+?S:	(if they are supported).  Typical values include 'test -h' and
+?S:	'test -L'.
 ?S:.
+?LINT:change PATH
 : determine whether symbolic links are supported
 echo " "
 case "$lns" in
 *"ln -s")
 	echo "Checking how to test for symbolic links..." >&4
 	$lns blurfl sym
-	if $test "X$testsyml" = X; then
-		if $test -h sym 2>/dev/null; then
-			testsyml=-h
-		fi
+	if $test "X$issymlink" = X; then
+?X:
+?X: In some AIX 4 versions the (ksh) builtin test (-h) is broken.
+?X:
+		$sh_c "PATH= test -h sym" >/dev/null 2>&1
+		if test $? = 0; then
+			issymlink="test -h"
+		fi		
 	fi
-	if $test "X$testsyml" = X; then
+	if $test "X$issymlink" = X; then
+		$sh_c "$test -h sym" >/dev/null 2>&1
+		if test $? = 0; then
+			issymlink="$test -h"
+			echo "Your builtin 'test -h' may be broken, I'm using external '$test -h'." >&4
+		fi		
+	fi
+	if $test "X$issymlink" = X; then
 		if $test -L sym 2>/dev/null; then
-			testsyml=-L
+			issymlink="$test -L"
 		fi
 	fi
-	if $test "X$testsyml" != X; then
-		echo "You can test for symbolic links with $testsyml." >&4
+	if $test "X$issymlink" != X; then
+		echo "You can test for symbolic links with '$issymlink'." >&4
 	else
 		echo "I do not know how you can test for symbolic links." >&4
 	fi

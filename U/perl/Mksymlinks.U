@@ -38,7 +38,7 @@ $define|true|[yY]*)
 				read filename
 				test -z "$filename" && break
 				if test -f $filename; then
-					if test $issymlink $filename; then
+					if $issymlink $filename; then
 						rm -f $filename
 					fi
 				fi

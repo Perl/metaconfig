@@ -67,7 +67,7 @@
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip:  eunicefix n c Instruct Myread \
-	startsh
+	startsh sh_c
 ?MAKE:	-pick weed $@ %<
 ?LINT:describe Loc Mcc awk ar bash bison byacc cat chgrp chmod chown \
 	comm compress cp cpio cpp csh date echo egrep emacs expr find flex \
@@ -76,7 +76,7 @@
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
 	uname uniq uuname vi zcat zip
 ?V::pth loclist trylist
-?F:./loc
+?F:./loc test_h
 ?T:thisthing thing xxx dir file say _test DJGPP
 ?LINT:change PATH
 : find out where common programs are
@@ -303,13 +303,14 @@ test)
 	echo "Hopefully test is built into your sh."
 	;;
 *)
-	if `sh -c "PATH= test true" >/dev/null 2>&1`; then
+	if `$sh_c "PATH= test true" >/dev/null 2>&1`; then
 		echo "Using the test built into your sh."
 ?X:
 ?X: We need to set both test and _test, since Oldconfig.U will use the _test
 ?X: value to systematically restore computed paths, which may be wrong if
 ?X: we choose to load an old config.sh generated on another platform.
 ?X:
+		echo "Using the test built into your sh."
 		test=test
 		_test=test
 	fi
