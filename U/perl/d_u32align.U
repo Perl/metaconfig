@@ -21,7 +21,6 @@
 ?C:.
 ?H:#$d_u32align U32_ALIGNMENT_REQUIRED	/**/
 ?H:.
-?F:!try
 $cat <<EOM
 
 Checking to see whether you can access character data unalignedly...
@@ -75,8 +74,8 @@ int main() {
 EOCP
 set try
 if eval $compile_ok; then
-	echo "(This test may dump core.)" >&4
-	./try >&2 >/dev/null
+	echo "(Testign for character data alignment may dump core.)" >&4
+	./try 2>&1 >/dev/null
 	case "$?" in
 	0)	cat >&4 <<EOM
 You can access character data pretty unalignedly.

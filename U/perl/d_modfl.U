@@ -35,9 +35,10 @@
 ?H:#$d_modfl_pow32_bug HAS_MODFL_POW32_BUG		/**/
 ?H:.
 ?T:foo saveccflags
+?F:!try
 ?LINT:set d_modfl
 ?LINT:set d_modfl_pow32_bug
-?LINT:set ccflags
+?LINT:change ccflags
 : see if modfl exists
 set modfl d_modfl
 eval $inlibc
