@@ -56,6 +56,9 @@
 ?INIT:useposix=true
 ?INIT:: set useopcode=false in your hint file to disable the Opcode extension.
 ?INIT:useopcode=true
+?LINT:extern noextensions
+?LINT:extern onlyextensions
+?T:keepextensions
 echo " "
 echo "Looking for extensions..." >&4
 : If we are using the old config.sh, known_extensions may contain
@@ -386,4 +389,44 @@ esac
 set X $dynamic_ext $static_ext $nonxs_ext
 shift
 extensions="$*"
+
+case "$onlyextensions" in
+'') ;;
+*)  keepextensions=''
+    echo "You have requested that only certains extensions be included..." >&4
+    for i in $onlyextensions; do
+        case " $extensions " in
+        *" $i "*)
+            echo "Keeping extension $i."
+            keepextensions="$keepextensions $i"
+            ;;
+        *) echo "Ignoring extension $i." ;;
+        esac
+    done
+    extensions="$keepextensions"
+    ;;
+esac
+
+case "$noextensions" in
+'') ;;
+*)  keepextensions=''
+    echo "You have requested that certain extensions be ignored..." >&4
+    for i in $extensions; do
+        case " $i " in
+        " $noextensions ") echo "Ignoring extension $i." ;;
+        *) echo "Keeping extension $i.";
+           keepextensions="$keepextensions $i"
+           ;;
+        esac
+    done
+    extensions="$keepextensions"
+    ;;
+esac
+
+case "$extensions" in
+*"_File "*" Fcntl "*" IO "*) ;;
+*) echo "WARNING: Extensions DB_File or *DBM_File, Fcntl, and IO not configured." >&4
+   echo "WARNING: The Perl you are building will be quite crippled." >& 4
+   ;;
+esac
 
