@@ -10,7 +10,7 @@
 ?RCS:
 ?MAKE:selectminbits: Compile cat rm Oldconfig d_select \
 	i_time i_systime i_systimek i_sysselct selecttype d_socket \
-	byteorder Myread Setvar run i_stdlib
+	byteorder Myread Setvar run i_stdlib ptrsize
 ?MAKE:	-pick add $@ %<
 ?S:selectminbits:
 ?S:	This variable holds the minimum number of bits operated by select.
@@ -29,9 +29,11 @@
 ?H:#define SELECT_MIN_BITS 	$selectminbits	/**/
 ?H:.
 ?T:bits
+?T:safebits
 : check for the select 'width'
 case "$selectminbits" in
-'') case "$d_select" in
+'') safebits=`expr $ptrsize \* 8`
+    case "$d_select" in
 	$define)
 		$cat <<EOM
 
@@ -73,19 +75,21 @@ $selecttype b;
 #define NBYTES (S * 8 > MINBITS ? S : MINBITS/8)
 #define NBITS  (NBYTES * 8)
 int main() {
-    char s[NBYTES];
+    char *s = malloc(NBYTES);
     struct timeval t;
     int i;
     FILE* fp;
     int fd;
 
+    if (!s)
+	exit(1);
     fclose(stdin);
     fp = fopen("try.c", "r");
     if (fp == 0)
-      exit(1);
+      exit(2);
     fd = fileno(fp);
     if (fd < 0)
-      exit(2);
+      exit(3);
     b = ($selecttype)s;
     for (i = 0; i < NBITS; i++)
 	FD_SET(i, b);
@@ -93,6 +97,7 @@ int main() {
     t.tv_usec = 0;
     select(fd + 1, b, 0, 0, &t);
     for (i = NBITS - 1; i > fd && FD_ISSET(i, b); i--);
+    free(s);
     printf("%d\n", i + 1);
     return 0;
 }
@@ -103,10 +108,10 @@ EOCP
 			case "$selectminbits" in
 			'')	cat >&4 <<EOM
 Cannot figure out on how many bits at a time your select() operates.
-I'll play safe and guess it is 32 bits.
+I'll play safe and guess it is $safebits bits.
 EOM
-				selectminbits=32
-				bits="32 bits"
+				selectminbits=$safebits
+				bits="$safebits bits"
 				;;
 			1)	bits="1 bit" ;;
 			*)	bits="$selectminbits bits" ;;
@@ -115,7 +120,8 @@ EOM
 		else
 			rp='What is the minimum number of bits your select() operates on?'
 			case "$byteorder" in
-			1234|12345678)	dflt=32 ;;
+			12345678)	dflt=64 ;;
+			1234)		dflt=32 ;;
 			*)		dflt=1	;;
 			esac
 			. ./myread
@@ -125,7 +131,7 @@ EOM
 		$rm -f try.* try
 		;;
 	*)	: no select, so pick a harmless default
-		selectminbits='32'
+		selectminbits=$safebits
 		;;
 	esac
 	;;
