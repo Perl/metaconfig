@@ -92,7 +92,7 @@ EOCP
 		d_modfl="$undef"
 	fi
 	case "$osname:$gccversion" in
-	aix:)	$ccflags="saveccflags" ;; # restore
+	aix:)	$ccflags="$saveccflags" ;; # restore
 	esac
 	;;
 esac
