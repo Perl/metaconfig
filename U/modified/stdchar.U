@@ -24,7 +24,7 @@
 ?C:.
 ?H:#define STDCHAR $stdchar	/**/
 ?H:.
-?F:!stdioh
+?F:stdioh
 : see what type of char stdio uses.
 echo " "
 ?X: untangle the #include nest
