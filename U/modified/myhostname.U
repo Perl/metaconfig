@@ -222,6 +222,11 @@ case "$myhostname" in
 			esac
 			;;
 		esac
+		case "$dflt$osname" in
+		.os390) echo "(Attempting domain name extraction from //'SYS1.TCPPARMS(TCPDATA)')"
+			dflt=.``awk '/^DOMAINORIGIN/ {print $2}' "//'SYS1.TCPPARMS(TCPDATA)'" 2>/dev/null`
+			;;
+		esac
 		case "$dflt" in
 		.) echo "(Lost all hope -- silly guess then)"
 			dflt='.uucp'
