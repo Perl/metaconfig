@@ -98,7 +98,7 @@ EOM
 	. UU/myread
 	case "$ans" in
 	y*)
-		$make depend && echo "Now you must run a $make."
+		$make depend && echo "Now you must run '$make'."
 		;;
 	*)
 		echo "You must run '$make depend' then '$make'."

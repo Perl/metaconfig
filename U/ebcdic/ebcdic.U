@@ -38,14 +38,14 @@ val=$undef
 set tebcdic
 if eval $compile_ok; then
 	if ./tebcdic; then
-		echo "You have EBCDIC." >&4
+		echo "You seem to speak EBCDIC." >&4
 		val="$define"
 	else
-		echo "Nope, no EBCDIC, probably ASCII or some ISO Latin." >&4
+		echo "Nope, no EBCDIC, probably ASCII or some ISO Latin. Or UTF8." >&4
 	fi
 else
 	echo "I'm unable to compile the test program." >&4
-	echo "I'll assume ASCII or some ISO Latin." >&4
+	echo "I'll assume ASCII or some ISO Latin. Or UTF8." >&4
 fi
 $rm -f tebcdic.c tebcdic
 set ebcdic

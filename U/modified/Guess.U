@@ -139,12 +139,15 @@ EOI
 	;;
 esac
 : Detect OS2.  The p_ variable is set above in the Head.U unit.
+: Note that this also -- wrongly -- detects e.g. dos-djgpp, which also uses
+: semicolon as a patch separator
 case "$p_" in
 :) ;;
 *)
 	$cat <<'EOI'
 I have the feeling something is not exactly right, however...don't tell me...
 lemme think...does HAL ring a bell?...no, of course, you're only running OS/2!
+(Or you may be running DOS with DJGPP.)
 EOI
 	echo exit 0 >os2
 	;;

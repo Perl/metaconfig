@@ -173,7 +173,7 @@ if $test X"$sPRId64" = X -a X"$quadtype" = X"long long"; then
 #include <sys/types.h>
 #include <stdio.h>
 int main() {
-  long long q = 12345678901LL; /* AIX cc requires the LL prefix. */
+  long long q = 12345678901LL; /* AIX cc requires the LL suffix. */
   printf("%lld\n", q);
 }
 EOCP

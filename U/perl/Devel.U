@@ -24,7 +24,7 @@ $define|true|[yY]*) ;;
     This is an UNSTABLE DEVELOPMENT release.
     The version of this $package distribution is $xversion, that is, odd,
     (as opposed to even) and that signifies a development release.
-    If you want a maintenance release, you want an even-numbered version.)
+    If you want a maintenance release, you want an even-numbered version.
 
     Do ***NOT*** install this into production use.
     Data corruption and crashes are possible.
