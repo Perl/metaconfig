@@ -1,0 +1,69 @@
+?RCS: $Id: vendorhtml3dir.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
+?RCS:
+?RCS: Copyright (c) 1999, Andy Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS: 
+?RCS: $Log: vendorhtml3dir.U,v $
+?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
+?RCS: Initial revision
+?RCS:
+?RCS:
+?MAKE:vendorhtml3dir vendorhtml3direxp installvendorhtml3dir: html3dir Getfile \
+	Oldconfig Prefixit test vendorprefix prefix sed \
+	installprefix
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:vendorhtml3dir:
+?S:	This variable contains the name of the directory for html 
+?S:	library pages.  It may have a ~ on the front.
+?S:	The standard distribution will put nothing in this directory.
+?S:	Vendors who distribute perl may wish to place their own
+?S:	html pages for modules and extensions in this directory with
+?S:		MakeMaker Makefile.PL INSTALLDIRS=vendor 
+?S:	or equivalent.  See INSTALL for details.
+?S:.
+?S:vendorhtml3direxp:
+?S:	This variable is the ~name expanded version of vendorhtml3dir, so that you
+?S:	may use it directly in Makefiles or shell scripts.
+?S:.
+?S:installvendorhtml3dir:
+?S:	This variable is really the same as vendorhtml3direxp but may differ on
+?S:	those systems using AFS. For extra portability, only this variable
+?S:	should be used in makefiles.
+?S:.
+case "$vendorprefix" in
+'')	vendorhtml3dir=''
+	vendorhtml3direxp=''
+	;;
+*)	: determine where vendor-supplied module html pages go.
+	: There is no standard location, so try to copy the previously-selected
+	: directory structure for the core html pages.
+	: XXX Better default suggestions would be welcome.
+	case "$vendorhtml3dir" in
+	'')	dflt=`echo "$html3dir" | $sed "s#^$prefix#$vendorprefix#"` ;;
+	*)	dflt=$vendorhtml3dir ;;
+	esac
+	case "$dflt" in
+	''|' ') dflt=none ;;
+	esac
+	fn=dn+~
+	rp='Pathname for the vendor-supplied html pages?'
+	. ./getfile
+	vendorhtml3dir="$ans"
+	vendorhtml3direxp="$ansexp"
+	;;
+esac
+: Use ' ' for none so value is preserved next time through Configure
+$test X"$vendorhtml3dir" = "X" && vendorhtml3dir=' '
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+	installvendorhtml3dir=`echo $vendorhtml3direxp | $sed "s#^$prefix#$installprefix#"`
+else
+	installvendorhtml3dir="$vendorhtml3direxp"
+fi
+
