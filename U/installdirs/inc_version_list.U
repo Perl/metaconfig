@@ -113,7 +113,7 @@ esac
 case "$dflt" in
 5.005) dflt=none ;;
 esac
-$cat <<'EOM'
+$cat <<EOM
 
 In order to ease the process of upgrading, this version of perl 
 can be configured to use modules built and installed with earlier 
