@@ -1,0 +1,41 @@
+?MAKE:d_setprotoent_r setprotoent_r_proto: Inlibc Protochk i_systypes i_dirent
+?MAKE:  -pick add $@ %<
+?S:d_setprotoent_r:
+?S:     This variable conditionally defines the HAS_SETPROTOENT_R symbol,
+?S:     which indicates to the C program that the setprotoent_r()
+?S:     routine is available.
+?S:.
+?S:setprotoent_r_proto:
+?S:     This variable encodes the prototype of setprotoent_r.
+?S:.
+?C:HAS_SETPROTOENT_R:
+?C:     This symbol, if defined, indicates that the setprotoent_r routine
+?C:     is available to setprotoent re-entrantly.
+?C:.
+?C:SETPROTOENT_R_PROTO:
+?C:     This symbol encodes the prototype of setprotoent_r.
+?C:.
+?H:#$d_setprotoent_r HAS_SETPROTOENT_R          /**/
+?H:#define SETPROTOENT_R_PROTO $setprotoent_r_proto     /**/
+?H:.
+?T:try hdrs
+?LINT:set d_setprotoent_r
+?LINT:set setprotoent_r_proto
+: see if setprotoent_r exists
+set setprotoent_r d_setprotoent_r
+eval $inlibc
+case "$d_setprotoent_r" in
+"$define")
+	hdrs="$i_systypes sys/types.h ${i}_netdb netdb.h"
+	case "$setprotoent_r_proto" in
+	'')	try='extern int setprotoent_r(int, struct protoent_data*);'
+		./protochk "$try" $hdrs && setprotoent_r_proto=I_IS;
+	;;
+	esac
+	case "$setprotoent_r_proto" in
+	'') d_setprotoent_r=undef ; echo "Disabling setprotoent_r, cannot find prototype." ;;
+	* ) setprotoent_r_proto="REENTRANT_$setprotoent_r_proto" ; echo "$try" ;;
+	esac
+	;;
+esac
+

@@ -29,7 +29,7 @@ case "$d_tmpnam_r" in
 	hdrs="$i_systypes sys/types.h ${i}_stdio stdio.h"
 	case "$tmpnam_r_proto" in
 	'')	try='extern char* tmpnam_r(char*);'
-		./protochk "$try" $hdrs && tmpnam_r_proto=B_A;
+		./protochk "$try" $hdrs && tmpnam_r_proto=B_B;
 	;;
 	esac
 	case "$tmpnam_r_proto" in

@@ -29,7 +29,7 @@ case "$d_ctermid_r" in
 	hdrs="$i_systypes sys/types.h ${i}_stdio stdio.h"
 	case "$ctermid_r_proto" in
 	'')	try='extern char* ctermid_r(char*);'
-		./protochk "$try" $hdrs && ctermid_r_proto=B_A;
+		./protochk "$try" $hdrs && ctermid_r_proto=B_B;
 	;;
 	esac
 	case "$ctermid_r_proto" in
