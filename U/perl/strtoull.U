@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_strtoull: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_strtoull:
+?S:	This variable conditionally defines the HAS_STRTOULL symbol, which
+?S:	indicates to the C program that the strtoull() routine is available.
+?S:.
+?C:HAS_STRTOULL:
+?C:	This symbol, if defined, indicates that the strtoull routine is
+?C:	available to convert strings into unsigned long longs.
+?C:.
+?H:#$d_strtoull HAS_STRTOULL		/**/
+?H:.
+?LINT:set d_strtoull
+: see if strtoull exists
+set strtoull d_strtoull
+eval $inlibc
+

@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_atolf: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_atolf:
+?S:	This variable conditionally defines the HAS_ATOLF symbol, which
+?S:	indicates to the C program that the atolf() routine is available.
+?S:.
+?C:HAS_ATOLF:
+?C:	This symbol, if defined, indicates that the atolf routine is
+?C:	available to convert strings into long doubles.
+?C:.
+?H:#$d_atolf HAS_ATOLF		/**/
+?H:.
+?LINT:set d_atolf
+: see if atolf exists
+set atolf d_atolf
+eval $inlibc
+

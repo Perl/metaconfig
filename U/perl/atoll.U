@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_atoll: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_atoll:
+?S:	This variable conditionally defines the HAS_ATOLL symbol, which
+?S:	indicates to the C program that the atoll() routine is available.
+?S:.
+?C:HAS_ATOLL:
+?C:	This symbol, if defined, indicates that the atoll routine is
+?C:	available to convert strings into long longs.
+?C:.
+?H:#$d_atoll HAS_ATOLL		/**/
+?H:.
+?LINT:set d_atoll
+: see if atoll exists
+set atoll d_atoll
+eval $inlibc
+

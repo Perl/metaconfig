@@ -1,0 +1,256 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_PRId64 d_PRIi64 d_PRIu64 d_PRIo64 d_PRIx64 d_PRIX64 \
+	sPRId64 sPRIi64 sPRIu64 sPRIo64 sPRIx64 sPRIX64: \
+	i_inttypes d_int64t d_longlong longlongsize longsize intsize \
+	test cat rm Setvar Compile exe_ext
+?MAKE:	-pick add $@ %<
+?S:d_PRId64:
+?S:	This variable conditionally defines the PERL_PRId64 symbol, which
+?S:	indiciates that stdio has a symbol to print 64-bit decimal numbers.
+?S:.
+?S:d_PRIi64:
+?S:	This variable conditionally defines the PERL_PRIi64 symbol, which
+?S:	indiciates that stdio has a symbol to print 64-bit decimal numbers.
+?S:.
+?S:d_PRIu64:
+?S:	This variable conditionally defines the PERL_PRIu64 symbol, which
+?S:	indiciates that stdio has a symbol to print 64-bit unsigned decimal
+?S:	numbers.
+?S:.
+?S:d_PRIo64:
+?S:	This variable conditionally defines the PERL_PRIo64 symbol, which
+?S:	indiciates that stdio has a symbol to print 64-bit octal numbers.
+?S:.
+?S:d_PRIx64:
+?S:	This variable conditionally defines the PERL_PRIx64 symbol, which
+?S:	indiciates that stdio has a symbol to print 64-bit hexadecimal numbers.
+?S:.
+?S:d_PRIX64:
+?S:	This variable conditionally defines the PERL_PRIX64 symbol, which
+?S:	indiciates that stdio has a symbol to print 64-bit hExADECimAl numbers.
+?S:.
+?S:sPRId64:
+?S:	This variable, if defined, contains the string used by stdio to
+?S:	format 64-bit decimal numbers (format 'd') for output.
+?S:.
+?S:sPRIi64:
+?S:	This variable, if defined, contains the string used by stdio to
+?S:	format 64-bit decimal numbers (format 'i') for output.
+?S:.
+?S:sPRIu64:
+?S:	This variable, if defined, contains the string used by stdio to
+?S:	format 64-bit unsigned decimal numbers (format 'u') for output.
+?S:.
+?S:sPRIo64:
+?S:	This variable, if defined, contains the string used by stdio to
+?S:	format 64-bit octal numbers (format 'o') for output.
+?S:.
+?S:sPRIx64:
+?S:	This variable, if defined, contains the string used by stdio to
+?S:	format 64-bit hexadecimal numbers (format 'x') for output.
+?S:.
+?S:sPRIX64:
+?S:	This variable, if defined, contains the string used by stdio to
+?S:	format 64-bit hExADECimAl numbers (format 'X') for output.
+?S:.
+?C:PERL_PRId64:
+?C:	This symbol, if defined, contains the string used by stdio to
+?C:	format 64-bit decimal numbers (format 'd') for output.
+?C:.
+?C:PERL_PRIi64:
+?C:	This symbol, if defined, contains the string used by stdio to
+?C:	format 64-bit decimal numbers (format 'i') for output.
+?C:.
+?C:PERL_PRIu64:
+?C:	This symbol, if defined, contains the string used by stdio to
+?C:	format 64-bit unsigned decimal numbers (format 'u') for output.
+?C:.
+?C:PERL_PRIo64:
+?C:	This symbol, if defined, contains the string used by stdio to
+?C:	format 64-bit octal numbers (format 'o') for output.
+?C:.
+?C:PERL_PRIx64:
+?C:	This symbol, if defined, contains the string used by stdio to
+?C:	format 64-bit hexadecimal numbers (format 'x') for output.
+?C:.
+?C:PERL_PRIX64:
+?C:	This symbol, if defined, contains the string used by stdio to
+?C:	format 64-bit hExADECimAl numbers (format 'X') for output.
+?C:.
+?H:#$d_PRId64 PERL_PRId64	$sPRId64	/**/
+?H:#$d_PRIi64 PERL_PRIi64	$sPRIi64	/**/
+?H:#$d_PRIu64 PERL_PRIu64	$sPRIu64	/**/
+?H:#$d_PRIo64 PERL_PRIo64	$sPRIo64	/**/
+?H:#$d_PRIx64 PERL_PRIx64	$sPRIx64	/**/
+?H:#$d_PRIx64 PERL_PRIX64	$sPRIX64	/**/
+?H:.
+?F:!try
+?T:yyy quad
+echo " "
+
+case "$d_longlong" in
+$define)
+
+echo "Checking how to print 64-bit integers..." >&4
+
+if $test X"$sPRId64" = X -a X"$intsize" = X8; then
+        quad=int
+	$cat >try.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+  int q = 12345678901;
+  printf("%ld\n", q);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try$exe_ext`
+		case "$yyy" in
+		12345678901)
+			sPRId64='"d"'; sPRIi64='"i"'; sPRIu64='"u"';
+                	sPRIo64='"o"'; sPRIx64='"x"'; sPRIX64='"X"';
+			echo "We will use %d."
+			;;
+		esac
+	fi
+fi
+
+if $test X"$sPRId64" = X -a X"$longsize" = X8; then
+        quad=long
+	$cat >try.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+  long q = 12345678901;
+  printf("%ld\n", q);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try$exe_ext`
+		case "$yyy" in
+		12345678901)
+			sPRId64='"ld"'; sPRIi64='"li"'; sPRIu64='"lu"';
+                	sPRIo64='"lo"'; sPRIx64='"lx"'; sPRIX64='"lX"';
+			echo "We will use %ld."
+			;;
+		esac
+	fi
+fi
+
+if $test X"$sPRId64" = X -a X"$i_inttypes.h" = X"$define" -a X"$d_int64t" = X"$define"; then
+        quad=int64_t
+	$cat >try.c <<'EOCP'
+#include <sys/types.h>
+#include <inttypes.h>
+#include <stdio.h>
+int main() {
+  int64_t q = 12345678901;
+  printf("%" PRId64 "\n", q);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try$exe_ext`
+		case "$yyy" in
+		12345678901)
+			sPRId64=PRId64; sPRIi64=PRIi64; sPRIu64=PRIu64;
+                	sPRIo64=PRIo64; sPRIx64=PRIx64; sPRIX64=PRIX64;
+			echo "We will use the C9X style."
+			;;
+		esac
+	fi
+fi
+
+if $test X"$sPRId64" = X -a X"$d_longlong" = X"$define" -a X"$longlongsize" = X8; then
+        quad="long long"
+	$cat >try.c <<'EOCP'
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+  long long q = 12345678901;
+  printf("%lld\n", q);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try$exe_ext`
+		case "$yyy" in
+		12345678901)
+			sPRId64='"lld"'; sPRIi64='"lli"'; sPRIu64='"llu"';
+                	sPRIo64='"llo"'; sPRIx64='"llx"'; sPRIX64='"llX"';
+			echo "We will use the %lld style."
+			;;
+		esac
+	fi
+fi
+
+if $test X"$sPRId64" = X -a X"$quad" != X; then
+	$cat >try.c <<EOCP
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+  $quad q = 12345678901;
+  printf("%Ld\n", q);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try$exe_ext`
+		case "$yyy" in
+		12345678901)
+			sPRId64='"Ld"'; sPRIi64='"Li"'; sPRIu64='"Lu"';
+                	sPRIo64='"Lo"'; sPRIx64='"Lx"'; sPRIX64='"LX"';
+			echo "We will use %lld."
+			;;
+		esac
+	fi
+fi
+
+if $test X"$sPRId64" = X -a X"$quad" != X; then
+	$cat >try.c <<EOCP
+#include <sys/types.h>
+#include <stdio.h>
+int main() {
+  $quad q = 12345678901;
+  printf("%qd\n", q);
+}
+EOCP
+	set try
+	if eval $compile; then
+		yyy=`./try$exe_ext`
+		case "$yyy" in
+		12345678901)
+			sPRId64='"qd"'; sPRIi64='"qi"'; sPRIu64='"qu"';
+                	sPRIo64='"qo"'; sPRIx64='"qx"'; sPRIX64='"qX"';
+			echo "We will use %qd."
+			;;
+		esac
+	fi
+fi
+
+if $test X"$sPRId64" = X; then
+	echo "Cannot figure out how to print 64-bit integers." >&4
+fi
+
+;;
+esac # case "$d_longlong"
+
+case "$sPRId64" in
+'')	d_PRId64="$undef"; d_PRIi64="$undef"; d_PRIu64="$undef"; 
+	d_PRIo64="$undef"; d_PRIx64="$undef"; d_PRIX64="$undef"; 
+	;;
+*)	d_PRId64="$define"; d_PRIi64="$define"; d_PRIu64="$define"; 
+	d_PRIo64="$define"; d_PRIx64="$define"; d_PRIX64="$define"; 
+	;;
+esac
+
+$rm -f try try.*
+
