@@ -20,7 +20,7 @@
 ?RCS:
 ?MAKE:archname myarchname: sed Loc Myread Oldconfig osname test rm \
 	usethreads usemultiplicity use64bitint use64bitall archname64 \
-	uselongdouble longdblsize doublesize
+	uselongdouble longdblsize doublesize useperlio
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current
@@ -147,6 +147,20 @@ $define)
 	        esac
 		;;
 	esac
+	;;
+esac
+@end
+@if useperlio
+case "$useperlio" in
+$define)
+	echo "Perlio selected." >&4
+	case "$archname" in
+        *-perlio*) echo "...and architecture name already has -perlio." >&4
+                ;;
+        *)      archname="$archname-perlio"
+                echo "...setting architecture name to $archname." >&4
+                ;;
+        esac
 	;;
 esac
 @end
