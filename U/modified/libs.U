@@ -80,7 +80,7 @@
 ?X: Set proper libswanted in your private Myinit.U if needed.
 ?X:
 ?X:: default ordered library list
-?X:libswanted='net socket inet nsl nm sdbm gdbm ndbm dbm malloc dl'
+?X:libswanted='net socket inet bind nsl nm sdbm gdbm ndbm dbm malloc dl'
 ?X:libswanted="$libswanted dld sun m c_s c posix cposix ndir dir ucb"
 ?X:libswanted="$libswanted bsd BSD PW x iconv"
 ?X:
