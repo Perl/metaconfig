@@ -260,11 +260,9 @@ say "none".
 EOM
     case "$ccdlflags" in
     '') case "$osname" in
-		hpux)	dflt='-Wl,-E' ;;
-		linux)	dflt='-rdynamic' ;;
-		next)	dflt='none' ;;
-		sunos)	dflt='none' ;;
-		*)	dflt='none' ;;
+	    linux|hpux)	dflt='-Wl,-E' ;;
+	    next|sunos)	dflt='none' ;;
+	    *)		dflt='none' ;;
 	    esac ;;
     ' ')  dflt='none' ;;
     *)  dflt="$ccdlflags" ;;
