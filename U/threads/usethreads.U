@@ -7,7 +7,7 @@
 ?RCS:
 ?RCS: $Log: usethreads.U,v $
 ?RCS:
-?MAKE:usethreads useithreads use5005threads d_oldpthreads: \
+?MAKE:usethreads useithreads use5005threads d_oldpthreads usereentrant: \
 	Myread Oldconfig Setvar test cat
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -34,6 +34,13 @@
 ?S:	draft POSIX threads API.  This is only potentially meaningful if
 ?S:	usethreads is set.
 ?S:.
+?S:usereentrant:
+?S:	This variable conditionally defines the USE_REENTRANT_API symbol,
+?S:	which indicates that the thread code may try to use the various
+?S:	_r versions of library functions.  This is only potentially
+?S:	meaningful if usethreads is set and is very experimental, it is
+?S:	not even prompted for.
+?S:.
 ?C:USE_ITHREADS:
 ?C:	This symbol, if defined, indicates that Perl should be built to
 ?C:	use the interpreter-based threading implementation.
@@ -52,14 +59,20 @@
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use the old draft POSIX threads API.
 ?C:.
+?C:USE_REENTRANT_API:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	try to use the various _r versions of library functions.
+?C:	This is extremely experimental.
+?C:.
 ?H:#$use5005threads	USE_5005THREADS		/**/
 ?H:#$useithreads	USE_ITHREADS		/**/
 ?H:?%<:#if defined(USE_5005THREADS) && !defined(USE_ITHREADS)
 ?H:?%<:#define		USE_THREADS		/* until src is revised*/
 ?H:?%<:#endif
 ?H:#$d_oldpthreads	OLD_PTHREADS_API		/**/
+?H:#$usereentrant	USE_REENTRANT_API	/**/
 ?H:.
-?LINT:set usethreads useithreads use5005threads d_oldpthreads
+?LINT:set usethreads useithreads use5005threads d_oldpthreads usereentrant
 ?INIT:: set usethreads on the Configure command line to enable threads.
 ?F:!usethreads.cbu
 ?X: We should really have some explanatory text here, and some
