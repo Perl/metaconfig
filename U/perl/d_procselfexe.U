@@ -17,7 +17,7 @@ case "$d_readlink" in
 "$define")
 	if $issymlink /proc/self/exe ; then
 		$ls -l /proc/self/exe > reflect
-		if $contains $ls reflect >/dev/null 2>&1; then
+		if $contains /`basename $ls` reflect >/dev/null 2>&1; then
 			val="$define"
 			echo "You have Linux-like /proc/self/exe."
 		fi
