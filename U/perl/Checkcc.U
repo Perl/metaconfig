@@ -73,7 +73,16 @@ EOM
                     fi
                 fi  
                 case "$ans" in
-                [yY]*) cc=gcc; ccname=gcc; ccflags=''; despair=no ;;
+                [yY]*) cc=gcc; ccname=gcc; ccflags=''; despair=no;
+                       if $test -f usethreads.cbu; then
+                           $cat >&4 <<EOM 
+
+*** However, any setting of the C compiler flags (e.g. for thread support)
+*** has been lost.  It may be necessary to pass -Dcc=gcc to Configure
+*** (together with e.g. -Dusethreads).
+
+EOM
+                       fi;;
                 esac
             fi
         fi
