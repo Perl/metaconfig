@@ -28,7 +28,7 @@
 ?MAKE:d_stdstdio d_stdiobase stdio_ptr stdio_cnt \
 	d_stdio_ptr_lval_sets_cnt d_stdio_ptr_lval_nochange_cnt stdio_base \
 	stdio_bufsiz d_stdio_cnt_lval d_stdio_ptr_lval stdio_filbuf: cat \
-	Compile contains rm \
+	Compile contains rm d_gnulibc gnulibc_version \
 	Setvar Findhdr Oldconfig run to
 ?MAKE:	-pick weed $@ %<
 ?S:d_stdstdio:
@@ -262,6 +262,26 @@ else
 	echo "Your stdio doesn't appear very std."
 fi
 $rm -f try.c try
+
+# glibc 2.2.90 and above apparently change stdio streams so Perl's
+# direct buffer manipulation no longer works.  The Configure tests
+# should be changed to correctly detect this, but until then,
+# the following check should at least let perl compile and run.
+# (This quick fix should be updated before 5.8.1.)
+# To be defensive, reject all unknown versions, and all versions  > 2.2.9.
+# A. Dougherty, June 3, 2002.
+case "$d_gnulibc" in
+$define)
+	case "$gnulibc_version" in
+	2.[01]*)  ;;
+	2.2) ;;
+	2.2.[0-9]) ;;
+	*)  echo "But I will not snoop inside glibc $gnulibc_version stdio buffers."
+		val="$undef"
+		;;
+	esac
+	;;
+esac
 set d_stdstdio
 eval $setvar
 
