@@ -90,10 +90,15 @@ esac
 case "$d_sfio" in
 $define) ;;
 *)	: Remove sfio from list of libraries to use
-	set `echo X $libs | $sed -e 's/-lsfio / /' -e 's/-lsfio$//'`
-	shift
-	libs="$*"
-	echo "libs = $libs" >&4
+	case "$libs" in
+	*-lsfio*)
+		echo "Removing unneeded -lsfio from library list" >&4
+		set `echo X $libs | $sed -e 's/-lsfio / /' -e 's/-lsfio$//'`
+		shift
+		libs="$*"
+		echo "libs = $libs" >&4
+		;;
+	esac
 ;;
 esac
 
