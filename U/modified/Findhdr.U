@@ -40,10 +40,14 @@
 ?S:.
 ?V:fieldn
 ?F:./findhdr !fieldn
-?T:cline pos wanted name awkprg usrincdir status cppfilter
+?T:cline pos wanted name awkprg usrincdir status cppfilter testaccess
 : determine filename position in cpp output
 echo " "
 echo "Computing filename position in cpp output for #include directives..." >&4
+case "$osname" in
+vos) testaccess=-e ;;
+*)   testaccess=-r ;;
+esac
 echo '#include <stdio.h>' > foo.c
 $cat >fieldn <<EOF
 $startsh
@@ -53,7 +57,7 @@ while read cline; do
 	pos=1
 	set \$cline
 	while $test \$# -gt 0; do
-		if $test -r \`echo \$1 | $tr -d '"'\`; then
+		if $test $testaccess \`echo \$1 | $tr -d '"'\`; then
 			echo "\$pos"
 			exit 0
 		fi
