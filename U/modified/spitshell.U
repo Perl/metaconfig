@@ -58,12 +58,12 @@ if `$sh -c '#' >/dev/null 2>&1`; then
 	if test ! -f $xcat$_exe; then
 		for p in $paths; do
 			if test -f $p/cat$_exe; then
-				xcat=$p/cat$_exe
+				xcat=$p/cat
 				break
 			fi
 		done
-		if test ! -f $xcat; then
-			echo "Can't find cat anywhere!" >&4
+		if test ! -f $xcat$_exe; then
+			echo "Can't find cat anywhere!"
 			exit 1
 		fi
 	fi

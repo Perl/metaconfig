@@ -142,6 +142,10 @@ case "$eagain" in
 #include <signal.h>
 #include <stdio.h> 
 #include <stdlib.h> 
+#$i_fcntl I_FCNTL
+#ifdef I_FCNTL
+#include <fcntl.h>
+#endif
 #define MY_O_NONBLOCK $o_nonblock
 #ifndef errno  /* XXX need better Configure test */
 extern int errno;
