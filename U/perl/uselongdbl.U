@@ -1,0 +1,50 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:uselongdouble: Myread Oldconfig Setvar
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:uselongdouble:
+?S:	This variable conditionally defines the USE_LONG_DOUBLE symbol,
+?S:	and indicates that long doubles should be used when available.
+?S:.
+?C:USE_LONG_DOUBLE:
+?C:	This symbol, if defined, indicates that long doubles should
+?C:	be used when available.
+?C:.
+?H:#$uselongdouble	USE_LONG_DOUBLE		/**/
+?H:.
+?LINT:set uselongdouble
+?LINT:extern ccflags
+?LINT:change ccflags
+cat <<EOM
+
+Perl can be built to take advantage of long doubles which
+(if available) may give more accuracy and range for floating point
+numbers.  To do so, Configure must be run with -Duselongdouble.
+
+If this doesn't make any sense to you, just accept the default 'n'.
+EOM
+case "$uselongdouble" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+rp='Try to use long doubles if available?'
+. ./myread
+case "$ans" in
+y|Y) 
+	val="$define"
+	ccflags="$ccflags -DUSE_LONG_DOUBLE"
+	;;     
+*)      
+	val="$undef"
+	;;
+esac
+set uselongdouble
+eval $setvar
+
+
