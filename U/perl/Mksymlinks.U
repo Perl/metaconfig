@@ -7,7 +7,7 @@
 ?X: This unit produces a bit of shell code that must be dotted in order
 ?X: to make quick check on whether the current C compiler is working.
 ?X:	
-?MAKE:Mksymlinks: lns testsyml src
+?MAKE:Mksymlinks: lns issymlink src
 ?MAKE:	-pick add $@ %<
 ?T: directory filename
 ?LINT:extern mksymlinks
@@ -18,7 +18,7 @@ $define|true|[yY]*)
 	''|'.')	echo "Cannot create symlinks in the original directory." >&4
 		exit 1
 		;;
-	*)	case "$lns:$testsyml" in
+	*)	case "$lns:$issymlink" in
 		*"ln -s:-"?)
 			echo "Creating the symbolic links..." >&4
 			echo "(First creating the subdirectories...)" >&4
@@ -38,7 +38,7 @@ $define|true|[yY]*)
 				read filename
 				test -z "$filename" && break
 				if test -f $filename; then
-					if test $testsyml $filename; then
+					if test $issymlink $filename; then
 						rm -f $filename
 					fi
 				fi
