@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:installusrbinperl: installbin cat Myread Setvar test
+?MAKE:installusrbinperl: installbin cat Myread Setvar test Devel
 ?MAKE:	-pick add $@ %<
 ?LINT:set installusrbinperl
 ?Y:TOP

@@ -13,6 +13,11 @@
 ?T:xversion
 ?X: waiver of rights
 ?LINT:extern usedevel
+?LINT:extern versiononly
+?LINT:extern installusrbinperl
+?LINT:change usedevel
+?LINT:change versiononly
+?LINT:change installusrbinperl
 xversion=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
 case "$usedevel" in
 $define|true|[yY]*) ;;
@@ -37,7 +42,8 @@ EOH
 	dflt='n'
 	. ./myread
 	case "$ans" in
-	[yY]) echo >&4 "Okay, continuing." ;;
+	[yY]) echo >&4 "Okay, continuing."
+	      usedevel="$define" ;;
 	*) echo >&4 "Okay, bye."
 	   exit 1
 	   ;;
@@ -45,5 +51,15 @@ EOH
 	;;
     esac
     ;;
+esac
+case "$usedevel" in
+$define|true|[yY]*)
+	case "$versiononly" in
+	'') versiononly="$define" ;;
+	esac
+	case "$installusrbinperl" in
+	'') installusrbinperl="$undef" ;;
+	esac
+	;;
 esac
 
