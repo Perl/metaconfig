@@ -22,12 +22,9 @@
 ?H:.
 ?LINT:set i_pthread
 : see if POSIX threads are available
-if test "X$usethreads" = "X$define"; then
-	set pthread.h i_pthread
-	eval $inhdr
-else
-	i_pthread="$undef"
-fi
+set pthread.h i_pthread
+eval $inhdr
+
 
 
 
