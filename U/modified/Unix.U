@@ -72,8 +72,6 @@
 ?INIT:: Trailing extension.  Override this in a hint file, if needed.
 ?INIT:: Extra object files, if any, needed on this platform.
 ?INIT:archobjs=''
-?X:_exe is really initialized in Head.
-?INIT:_exe="$_exe"
 : Define several unixisms.
 : Hints files or command line option can be used to override them.
 : The convoluted testing is in case hints files set either the old
