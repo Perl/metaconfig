@@ -34,7 +34,7 @@
 ?RCS:
 ?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs libspath: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
-	usesocks sed
+	usesocks sed uselongdouble
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
@@ -91,6 +91,7 @@
 ?LINT:extern libscheck
 ?LINT:use libscheck
 ?LINT:extern p
+?LINT:use uselongdouble
 : Looking for optional libraries
 echo " "
 echo "Checking for optional libraries..." >&4
