@@ -163,6 +163,13 @@ int main()
 	Gconvert((DOUBLETYPE)123.456, 8, 0, buf); 
 	checkit("123.456", buf);
 
+        /* Testing of 1e+129 in bigintpm.t must not get extra '.' here. */
+        Gconvert((DOUBLETYPE)1e30, 8, 0, buf);
+        if (strlen(buf) > 5)
+            checkit("1e+030", buf); /* for Microsoft */
+        else
+            checkit("1e+30", buf);
+
 	exit(0);
 }
 EOP
