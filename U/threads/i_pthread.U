@@ -25,6 +25,3 @@
 set pthread.h i_pthread
 eval $inhdr
 
-
-
-
