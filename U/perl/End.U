@@ -30,14 +30,21 @@
 ?LINT:change cppstdin
 : Remove libraries needed only for extensions
 : The appropriate ext/Foo/Makefile.PL will add them back in, if necessary.
-case "$usedl" in
-$define|true|[yY]*)
-	set X `echo " $libs " | sed -e 's@ -lndbm @ @' -e 's@ -lgdbm @ @' -e 's@ -ldbm @ @' -e 's@ -ldb @ @'` 
-	shift
-	perllibs="$*"
-	;;
-*)	perllibs="$libs"
-	;;
+: The exception is SunOS 4.x, which needs them.
+case "${osname}X${osvers}" in
+sunos*X4*)
+    perllibs="$libs"
+    ;;
+*) case "$usedl" in
+    $define|true|[yY]*)
+	    set X `echo " $libs " | sed -e 's@ -lndbm @ @' -e 's@ -lgdbm @ @' -e 's@ -ldbm @ @' -e 's@ -ldb @ @'` 
+	    shift
+	    perllibs="$*"
+	    ;;
+    *)	perllibs="$libs"
+	    ;;
+    esac
+    ;;
 esac
 
 ?X: If the user has the cppstdin wrapper, perl.c will try to call
