@@ -1,0 +1,49 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:Devel: Myread rsrc
+?MAKE:	-pick wipe $@ %<
+?T:xpatchlevel
+?X: waiver of rights
+?LINT:extern useunstabledeveloperreleases
+xpatchlevel=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
+case "$useunstabledeveloperreleases" in
+$define|true|[yY]*) ;;
+*) case "$xpatchlevel" in
+   *[13579])
+	cat >&4 <<EOH
+*** WHOA THERE!!! ***
+
+    This is an UNSTABLE DEVELOPMENT release.
+    (The patchlevel, $xpatchlevel, is odd--as opposed to even,
+     and that signifies a development release.  If you want a
+     maintenance release, you want an even-numbered release.)
+
+    Do ***NOT*** install this into production use.
+    Data corruption and crashes are possible.
+
+    It is most seriously suggested that you do not continue any further
+    unless you want to help in developing and debugging Perl.
+
+EOH
+	rp='Do you really want to continue?'
+	dflt='n'
+	. ./myread
+	case "$ans" in
+	[yY]) echo >&4 "Okay, continuing." ;;
+	*) echo >&4 "Okay, bye."
+	   exit 1
+	   ;;
+	esac
+	;;
+    esac
+    ;;
+esac
+

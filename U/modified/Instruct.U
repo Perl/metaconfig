@@ -27,7 +27,7 @@
 ?X: isn't going to go shooting off the top of the screen, and we don't want
 ?X: to panic them yet.
 ?X: 
-?MAKE:Instruct: Myread Configdir contains
+?MAKE:Instruct: Myread Configdir Devel contains
 ?MAKE:	-pick wipe $@ %<
 ?T:user needman firsttime
 : general instructions
