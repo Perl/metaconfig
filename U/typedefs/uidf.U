@@ -1,0 +1,57 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:uidformat: uidsize uidsign ivsize uvsize longsize intsize shortsize \
+	ivdformat uvuformat test
+?MAKE:	-pick add $@ %<
+?S:uidformat:
+?S:	This variable contains the format string used for printing a Uid_t.
+?S:.
+?C:Uid_t_f:
+?C:	This symbol defines the format string used for printing a Uid_t.
+?C:.
+?H:#define	Uid_t_f		$uidformat		/**/
+?H:.
+
+echo " "
+$echo "Checking the format string to be used for uids..." >&4
+
+case "$uidsign" in
+-1)	if $test X"$uidsize" = X"$ivsize"; then
+		uidformat="$ivdformat"
+	else
+		if $test X"$uidsize" = X"$longsize"; then
+			uidformat='"ld"'
+		else
+			if $test X"$uidsize" = X"$intsize"; then
+				uidformat='"d"'
+			else
+				if $test X"$uidsize" = X"$shortsize"; then
+					uidformat='"hd"'
+				fi
+			fi
+		fi
+	fi
+	;;
+*)	if $test X"$uidsize" = X"$uvsize"; then
+		uidformat="$uvuformat"
+	else
+		if $test X"$uidsize" = X"$longsize"; then
+			uidformat='"lu"'
+		else
+			if $test X"$uidsize" = X"$intsize"; then
+				uidformat='"u"'
+			else
+				if $test X"$uidsize" = X"$shortsize"; then
+					uidformat='"hu"'
+				fi
+			fi
+		fi
+	fi
+	;;
+esac
+

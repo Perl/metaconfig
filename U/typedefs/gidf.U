@@ -1,0 +1,57 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:gidformat: gidsize gidsign ivsize uvsize longsize intsize shortsize \
+	ivdformat uvuformat test
+?MAKE:	-pick add $@ %<
+?S:gidformat:
+?S:	This variable contains the format string used for printing a Gid_t.
+?S:.
+?C:Gid_t_f:
+?C:	This symbol defines the format string used for printing a Gid_t.
+?C:.
+?H:#define	Gid_t_f		$gidformat		/**/
+?H:.
+
+echo " "
+$echo "Checking the format string to be used for gids..." >&4
+
+case "$gidsign" in
+-1)	if $test X"$gidsize" = X"$ivsize"; then
+		gidformat="$ivdformat"
+	else
+		if $test X"$gidsize" = X"$longsize"; then
+			gidformat='"ld"'
+		else
+			if $test X"$gidsize" = X"$intsize"; then
+				gidformat='"d"'
+			else
+				if $test X"$gidsize" = X"$shortsize"; then
+					gidformat='"hd"'
+				fi
+			fi
+		fi
+	fi
+	;;
+*)	if $test X"$gidsize" = X"$uvsize"; then
+		gidformat="$uvuformat"
+	else
+		if $test X"$gidsize" = X"$longsize"; then
+			gidformat='"lu"'
+		else
+			if $test X"$gidsize" = X"$intsize"; then
+				gidformat='"u"'
+			else
+				if $test X"$gidsize" = X"$shortsize"; then
+					gidformat='"hu"'
+				fi
+			fi
+		fi
+	fi
+	;;
+esac
+

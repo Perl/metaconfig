@@ -11,7 +11,7 @@
 	echo rm use64bits quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize \
-	cat Compile i_inttypes exe_ext
+	cat Compile i_inttypes exe_ext test
 ?MAKE:	-pick add $@ %<
 ?S:ivtype:
 ?S:	This variable contains the C type used for Perl's IV.
@@ -227,64 +227,81 @@ int main() {
   uint32_t u = UINT32_MAX;
   printf("int32_t\n");
 #endif
-#ifdef INT64
-   int64_t i =  INT64_MAX;
-  uint64_t u = UINT64_MAX;
-  printf("int64_t\n");
-#endif
 }
 EOCP
-set try -DINT8
-if eval $compile; then
-	case "`./try$exe_ext`" in
-	int8_t)	i8type=int8_t
-		u8type=uint8_t
-		i8size=1
-		u8size=1
-		;;
-	esac
-fi
+
 case "$i8type" in
-'')	i8type=char
-	u8type="unsigned char"
-	i8size=$charsize
-	u8size=$charsize
-	;;
-esac
-set try -DINT16
-if eval $compile; then
-	case "`./try$exe_ext`" in
-	int16_t)
-		i16type=int16_t
-		u16type=uint16_t
-		i16size=2
-		u16size=2
+'')	case "$charsize" in
+	1)	i8type=char
+		u8type="unsigned char"
+		i8size=$charsize
+		u8size=$charsize
 		;;
 	esac
-fi
+	;;
+esac
+case "$i8type" in
+'')	set try -DINT8
+	if eval $compile; then
+		case "`./try$exe_ext`" in
+		int8_t)	i8type=int8_t
+			u8type=uint8_t
+			i8size=1
+			u8size=1
+			;;
+		esac
+	fi
+	;;
+esac
+case "$i8type" in
+'')	if $test $charsize -ge 1; then
+		i8type=char
+		u8type="unsigned char"
+		i8size=$charsize
+		u8size=$charsize
+	fi
+	;;
+esac
+
 case "$i16type" in
-'')	i16type=short
-	u16type="unsigned short"
-	i16size=$shortsize
-	u16size=$shortsize
-	;;
-esac
-set try -DINT32
-if eval $compile; then
-	case "`./try$exe_ext`" in
-	int32_t)
-		i32type=int32_t
-		u32type=uint32_t
-		i32size=4
-		u32size=4
+'')	case "$shortsize" in
+	2)	i16type=short
+		u16type="unsigned short"
+		i16size=$shortsize
+		u16size=$shortsize
 		;;
 	esac
-fi
+	;;
+esac
+case "$i16type" in
+'')	set try -DINT16
+	if eval $compile; then
+		case "`./try$exe_ext`" in
+		int16_t)
+			i16type=int16_t
+			u16type=uint16_t
+			i16size=2
+			u16size=2
+			;;
+		esac
+	fi
+	;;
+esac
+case "$i16type" in
+'')	if $test $shortsize -ge 2; then
+		i16type=short
+		u16type="unsigned short"
+		i16size=$shortsize
+		u16size=$shortsize
+	fi
+	;;
+esac
+
 case "$i32type" in
 '')	case "$longsize" in
 	4)	i32type=long
 		u32type="unsigned long"
-		i32size=longsize
+		i32size=$longsize
 		u32size=$longsize
 		;;
 	*)	case "$intsize" in
@@ -298,17 +315,30 @@ case "$i32type" in
 	esac
 	;;
 esac
-set try -DINT64
-if eval $compile; then
-	case "`./try$exe_ext`" in
-	int64_t)
-		i64type=int64_t
-		u64type=uint64_t
-		i64size=8
-		u64size=8
-		;;
-	esac
-fi
+case "$i32type" in
+'')	set try -DINT32
+	if eval $compile; then
+		case "`./try$exe_ext`" in
+		int32_t)
+			i32type=int32_t
+			u32type=uint32_t
+			i32size=4
+			u32size=4
+			;;
+		esac
+	fi
+	;;
+esac
+case "$i32type" in
+'')	if $test $intsize -ge 4; then
+		i32type=int
+		u32type="unsigned int"
+		i32size=$intsize
+		u32size=$intsize
+	fi
+	;;
+esac
+
 case "$i64type" in
 '')	case "$quadtype" in
 	'')	;;
