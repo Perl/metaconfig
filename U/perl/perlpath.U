@@ -25,7 +25,8 @@
 ?X:
 ?X: The purpose of this unit is to locate perl good enough to construct a #!
 ?X:
-?MAKE:perlpath: cat Getfile Loc Myread Oldconfig binexp startperl
+?MAKE:perlpath: cat Getfile Loc Myread Oldconfig binexp startperl \
+	version versiononly
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:perlpath:

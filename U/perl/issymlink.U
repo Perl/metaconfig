@@ -24,6 +24,7 @@
 ?T:pth p
 ?LINT:change PATH
 ?LINT:change test
+?LINT:extern newsh
 : determine whether symbolic links are supported
 echo " "
 case "$lns" in

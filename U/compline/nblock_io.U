@@ -91,7 +91,7 @@ echo "Figuring out the flag used by open() for non-blocking I/O..." >&4
 case "$o_nonblock" in
 '')
 	$cat head.c > try.c
-	$cat >>try.c <<'EOCP'
+	$cat >>try.c <<EOCP
 #include <stdio.h>
 #include <stdlib.h>
 #$i_fcntl I_FCNTL

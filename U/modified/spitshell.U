@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:49  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:spitshell shsharp sharpbang: eunicefix sh paths
+?MAKE:spitshell shsharp sharpbang: eunicefix sh Head
 ?MAKE:	-pick add $@ %<
 ?S:spitshell:
 ?S:	This variable contains the command necessary to spit out a runnable
@@ -41,6 +41,8 @@
 ?S:	construct.
 ?S:.
 ?T:xcat p
+?X: paths comes from Head
+?LINT:extern paths
 : see if sh knows # comments
 ?X: This is loaded up early, so avoid being chatty.
 ?X: echo " "

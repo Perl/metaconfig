@@ -28,7 +28,7 @@
 ?X: empty string with an error status if the file could not be located.
 ?X:
 ?MAKE:Findhdr: grep test tr rm +usrinc awk cat startsh \
-	cppstdin cppminus +cppflags
+	cppstdin cppminus +cppflags osname
 ?MAKE:	-pick add $@ %<
 ?LINT:define fieldn
 ?S:fieldn:
@@ -74,6 +74,10 @@ case $fieldn in
 esac
 echo "Your cpp writes the filename in the $pos field of the line."
 
+case "$osname" in
+vos) cppfilter="tr '\\\\>' '/' |" ;; # path component separator is >
+*)   cppfilter='' ;;
+esac
 ?X: To locate a header file, we cannot simply check for $usrinc/file.h, since
 ?X: some machine have the headers in weird places and our only hope is that
 ?X: the C pre-processor will know how to find those headers. Thank you NexT!
@@ -91,12 +95,8 @@ do
 done
 awkprg='{ print \$$fieldn }'
 echo "#include <\$wanted>" > foo\$\$.c
-case "$osname" in
-vos) cppfilter="tr '\\\\>' '/'" ;; # path component separator is >
-*)   cppfilter="cat" ;;
-esac
 $cppstdin $cppminus $cppflags < foo\$\$.c 2>/dev/null | \
-$cppfilter | $grep "^[ 	]*#.*\$wanted" | \
+$cppfilter $grep "^[ 	]*#.*\$wanted" | \
 while read cline; do
 	name=\`echo \$cline | $awk "\$awkprg" | $tr -d '"'\`
 	case "\$name" in
