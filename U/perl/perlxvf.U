@@ -168,7 +168,7 @@ else
 fi
 
 case "$ivdformat" in
-'') echo "$0: Fatal: failed to find format strings, cannot continue." >& 4
+'') echo "$0: Fatal: failed to find format strings, cannot continue." >&4
     exit 1
     ;;
 esac

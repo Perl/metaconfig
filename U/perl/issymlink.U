@@ -59,7 +59,7 @@ case "$lns" in
 				echo "Trying external '$test -h'." >&4
 				issymlink="$test -h"
 				if $test ! -h sym >/dev/null 2>&1; then
-					echo "External '$test -h' is broken, too." >& 4
+					echo "External '$test -h' is broken, too." >&4
 					issymlink=''
 				fi
 				;;

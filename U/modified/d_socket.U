@@ -175,7 +175,7 @@ else
 							sockethdr="-I/usr/netinclude"
 							;;
 						esac
-						echo "Found Berkeley sockets interface in lib$net." >& 4 
+						echo "Found Berkeley sockets interface in lib$net." >&4 
 ?X: now check for advanced features
 						if $contains setsockopt libc.list >/dev/null 2>&1; then
 							d_oldsock="$undef"
@@ -206,7 +206,7 @@ eval $inlibc
 echo " "
 ?X: these constants are known to be troublesomely defined as enums
 ?X: so that ifdef will not work for detecting their presence.
-echo "Checking the availability of certain socket constants..." >& 4
+echo "Checking the availability of certain socket constants..." >&4
 for ENUM in MSG_CTRUNC MSG_DONTROUTE MSG_OOB MSG_PEEK MSG_PROXY SCM_RIGHTS; do
 	enum=`$echo $ENUM|./tr '[A-Z]' '[a-z]'`
 	$cat >try.c <<EOF
