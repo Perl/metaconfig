@@ -39,7 +39,7 @@ if test -f "$rsrc/MANIFEST"; then
 ?X: shell archive builder and may be removed by the user. Usually, they are
 ?X: not listed in the MANIFEST file, but you never know...
 ?X:
-	awk '$1 !~ /PACK[A-Z]+/ {print $1}' "$rsrc/MANIFEST" | split
+	awk '$1 !~ /PACK[A-Z]+/ {print $1}' "$rsrc/MANIFEST" | split -l 50
 	rm -f missing
 	tmppwd=`pwd`
 	for filelist in x??; do
