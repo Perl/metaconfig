@@ -22,13 +22,17 @@
 ?S:	or if nothing useful can be parsed as the os version.
 ?S:.
 ?T:gccshortvers
+?T:incdir
+?T:d
 ?D:gccversion=''
 ?LINT:change cpp
 ?LINT:extern ccflags
 ?LINT:extern ldflags
+?LINT:extern locincpth
 ?LINT:extern ccname
-?LINT:change ccname
 ?LINT:change ccflags
+?LINT:change ccname
+?LINT:change locincpth
 ?X: Check if they have gcc in any guise.  
 echo " "
 echo "Checking for GNU cc in disguise and/or its version number..." >&4
