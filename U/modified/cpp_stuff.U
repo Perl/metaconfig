@@ -19,38 +19,38 @@
 ?MAKE:cpp_stuff: cat contains cppstdin cppflags cppminus rm
 ?MAKE:	-pick add $@ %<
 ?S:cpp_stuff:
-?S:	This variable contains an identification of the catenation mechanism
+?S:	This variable contains an identification of the concatenation mechanism
 ?S:	used by the C preprocessor.
 ?S:.
 ?C:CAT2:
-?C:	This macro catenates 2 tokens together.
+?C:	This macro concatenates 2 tokens together.
 ?C:.
 ?C:CAT3:
-?C:	This macro catenates 3 tokens together.
+?C:	This macro concatenates 3 tokens together.
 ?C:.
 ?C:CAT4:
-?C:	This macro catenates 4 tokens together.
+?C:	This macro concatenates 4 tokens together.
 ?C:.
 ?C:CAT5:
-?C:	This macro catenates 5 tokens together.
+?C:	This macro concatenates 5 tokens together.
 ?C:.
 ?C:STRINGIFY:
 ?C:	This macro surrounds its token with double quotes.
 ?C:.
 ?C:SCAT2:
-?C:	This macro catenates 2 tokens together and stringifies the result.
+?C:	This macro concatenates 2 tokens together and stringifies the result.
 ?C:	It might not exist, so #ifdef it in your code!
 ?C:.
 ?C:SCAT3:
-?C:	This macro catenates 3 tokens together and stringifies the result.
+?C:	This macro concatenates 3 tokens together and stringifies the result.
 ?C:	It might not exist, so #ifdef it in your code!
 ?C:.
 ?C:SCAT4:
-?C:	This macro catenates 4 tokens together and stringifies the result.
+?C:	This macro concatenates 4 tokens together and stringifies the result.
 ?C:	It might not exist, so #ifdef it in your code!
 ?C:.
 ?C:SCAT5:
-?C:	This macro catenates 5 tokens together and stringifies the result.
+?C:	This macro concatenates 5 tokens together and stringifies the result.
 ?C:	It might not exist, so #ifdef it in your code!
 ?C:.
 ?X:	Dist pl70 included the following, but AIX's xlc compiler
@@ -96,16 +96,16 @@
 ?H:?SCAT5:#define SCAT5(a,b,c,d,e)	PeRl_StGiFy(a) PeRl_StGiFy(b) PeRl_StGiFy(c) PeRl_StGiFy(d) PeRl_StGiFy(e)
 ?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff != 1 && $cpp_stuff != 42
-?H:?%<:#   include "Bletch: How does this C preprocessor catenate tokens?"
+?H:?%<:#   include "Bletch: How does this C preprocessor concatenate tokens?"
 ?H:?%<:#endif
 ?H:.
 ?W:%<:CAT2 CAT3 CAT4 CAT5 STRINGIFY SCAT2 SCAT3 SCAT4 SCAT5
 ?LINT:known StGiFy
 ?LINT:known PeRl_CaTiFy
 ?LINT:known PeRl_StGiFy
-: how do we catenate cpp tokens here?
+: how do we concatenate cpp tokens here?
 echo " "
-echo "Checking to see how your cpp does stuff like catenate tokens..." >&4
+echo "Checking to see how your cpp does stuff like concatenate tokens..." >&4
 $cat >cpp_stuff.c <<'EOCP'
 #define RCAT(a,b)a/**/b
 #define ACAT(a,b)a ## b
@@ -124,8 +124,8 @@ elif $contains 'Reiser' cpp_stuff.out >/dev/null 2>&1; then
 	cpp_stuff=1
 else
 	$cat >&4 <<EOM
-Hmm, I don't seem to be able to catenate tokens with your cpp.  You're going
-to have to edit the values of CAT[2-5] in config.h...
+Hmm, I don't seem to be able to concatenate tokens with your cpp.
+You're going to have to edit the values of CAT[2-5] in config.h...
 EOM
 ?X: It would be nice to have configure remind us at the end that some manual
 ?X: intervention is needed -- FIXME
