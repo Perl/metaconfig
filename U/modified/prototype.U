@@ -70,33 +70,33 @@
 ?C:
 ?C:		V_FUNC_VOID(int fork)
 ?C:.
-?C:PROTO_ (P):
+?C:_ (P):
 ?C:	This macro is used to declare function parameters for folks who want
 ?C:	to make declarations with prototypes using a different style than
 ?C:	the above macros.  Use double parentheses.  For example:
 ?C:
-?C:		int main PROTO_((int argc, char *argv[]));
+?C:		int main _((int argc, char *argv[]));
 ?C:.
 ?H:?%<:#$prototype	CAN_PROTOTYPE	/**/
-?H:?PROTO_:#ifdef CAN_PROTOTYPE
+?H:?_:#ifdef CAN_PROTOTYPE
 ?H:?NXT_ARG:#define	NXT_ARG ,
 ?H:?DOTS:#define	DOTS , ...
 ?H:?V_FUNC:#define	V_FUNC(name, arglist, args)name(args)
 ?H:?P_FUNC:#define	P_FUNC(name, arglist, args)static name(args)
 ?H:?V_FUNC_VOID:#define	V_FUNC_VOID(name)name(void)
 ?H:?P_FUNC_VOID:#define	P_FUNC_VOID(name)static name(void)
-?H:?PROTO_:#define	PROTO_(args) args
-?H:?PROTO_:#else
+?H:?_:#define	_(args) args
+?H:?_:#else
 ?H:?NXT_ARG:#define	NXT_ARG ;
 ?H:?DOTS:#define	DOTS
 ?H:?V_FUNC:#define	V_FUNC(name, arglist, args)name arglist args;
 ?H:?P_FUNC:#define	P_FUNC(name, arglist, args)static name arglist args;
 ?H:?V_FUNC_VOID:#define	V_FUNC_VOID(name)name()
 ?H:?P_FUNC_VOID:#define	P_FUNC_VOID(name)static name()
-?H:?PROTO_:#define	PROTO_(args) ()
-?H:?PROTO_:#endif
+?H:?_:#define	_(args) ()
+?H:?_:#endif
 ?H:.
-?W:%<:NXT_ARG DOTS V_FUNC P_FUNC V_FUNC_VOID P_FUNC_VOID PROTO_
+?W:%<:NXT_ARG DOTS V_FUNC P_FUNC V_FUNC_VOID P_FUNC_VOID _
 ?LINT:set prototype
 : Cruising for prototypes
 echo " "
