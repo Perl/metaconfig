@@ -62,10 +62,10 @@ int main() {
     buf[1] = 0;
     buf[2] = 0;
     buf[3] = 1;
+    buf[4] = 0;
     buf[5] = 0;
     buf[6] = 0;
-    buf[7] = 0;
-    buf[8] = 1;
+    buf[7] = 1;
 
     for (i = 0; i < 4; i++) {
 	up = (U32*)(buf + i);
