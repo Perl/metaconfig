@@ -1,0 +1,50 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2005 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_libm_lib_version: Compile cat run rm i_math
+?MAKE:	-pick add $@ %<
+?S:d_libm_lib_version:
+?S:	This variable conditionally defines the LIBM_LIB_VERSION symbol,
+?S:	which indicates to the C program that math.h defines _LIB_VERSION
+?S:	being available in libm
+?S:.
+?C:LIBM_LIB_VERSION:
+?C:	This symbol, if defined, indicates that libm exports _LIB_VERSION
+?C:	and that math.h defines the enum to manipulate it.
+?C:.
+?H:#$d_libm_lib_version LIBM_LIB_VERSION		/**/
+?H:.
+?T:foo
+?LINT:set d_libm_lib_version
+d_libm_lib_version="$undef"
+case $i_math in
+    $define)
+	: check to see if math.h defines _LIB_VERSION
+	echo " "
+	echo "Checking to see if your libm supports _LIB_VERSION..." >&4
+	$cat >try.c <<EOCP
+#include <unistd.h>
+#include <math.h>
+int main (int argc, char *argv[])
+{
+    printf ("%d\n", _LIB_VERSION);
+    return (0);
+    } /* main */
+EOCP
+	set try
+	if eval $compile; then
+	    foo=`$run ./try`
+	    echo "Yes, it does ($foo)" >&4
+	    d_libm_lib_version="$define"
+	else
+	    echo "No, it does not (probably harmless)\n" >&4
+	    fi
+	$rm -f try.* try core core.try.*
+	;;
+
+    esac
+
