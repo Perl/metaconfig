@@ -31,7 +31,7 @@
 ?C:	This symbol indicates the C compiler can check for function attributes,
 ?C:	such as printf formats. This is normally only supported by GNU cc.
 ?C:.
-?H:?%<:#$d_attribut HASATTRIBUTE 	/**/
+?H:?%<:#$d_attribut HASATTRIBUTE	/**/
 ?H:?%<:#ifndef HASATTRIBUTE
 ?H:?%<:#ifdef __attribute__
 ?H:?%<:#undef __attribute__
