@@ -20,43 +20,96 @@
 ?RCS: Revision 3.0.1.1  1994/10/29  16:08:55  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_attribut: Myread Oldconfig cat cc ccflags rm Setvar contains
+?MAKE:d_attribute_format d_attribute_malloc d_attribute_nonnull d_attribute_noreturn d_attribute_pure d_attribute_unused d_attribute_warn_unused_result: Myread Oldconfig cat cc ccflags rm Setvar contains
 ?MAKE:	-pick add $@ %<
-?S:d_attribut (d_attrib):
-?S:	This variable conditionally defines HASATTRIBUTE, which
-?S:	indicates the C compiler can check for function attributes,
-?S:	such as printf formats.
+?S:d_attribute_format (d_attribut_format.U):
+?S:	This variable conditionally defines HASATTRIBUTE_FORMAT, which
+?S:	indicates the C compiler can check for printf-like formats.
 ?S:.
-?C:HASATTRIBUTE ~ %< (GNUC_ATTRIBUTE_CHECK):
-?C:	This symbol indicates the C compiler can check for function attributes,
-?C:	such as printf formats. This is normally only supported by GNU cc.
+?S:d_attribute_malloc (d_attribute_malloc.U):
+?S:	This variable conditionally defines HASATTRIBUTE_MALLOC, which
+?S:	indicates the C compiler can understand functions as having
+?S:	malloc-like semantics.
+?S:.
+?S:d_attribute_nonnull (d_attribute_nonnull.U):
+?S:	This variable conditionally defines HASATTRIBUTE_NONNULL, which
+?S:	indicates that the C compiler can know that certain arguments
+?S:	must not be NULL, and will check accordingly at compile time.
+?S:.
+?S:d_attribute_noreturn (d_attribute_noreturn.U):
+?S:	This variable conditionally defines HASATTRIBUTE_NORETURN, which
+?S:	indicates that the C compiler can know that certain functions
+?S:	are guaranteed never to return.
+?S:.
+?S:d_attribute_pure (d_attribute_pure.U):
+?S:	This variable conditionally defines HASATTRIBUTE_PURE, which
+?S:	indicates that the C compiler can know that certain functions
+?S:	are "pure" functions, meaning that they have no side effects, and
+?S:	only rely on function input and/or global data for their results.
+?S:.
+?S:d_attribute_unused (d_attribute_unused.U):
+?S:	This variable conditionally defines HASATTRIBUTE_UNUSED, which
+?S:	indicates that the C compiler can know that certain variables
+?S:	and arguments may not always be used, and to not throw warnings
+?S:	if they don't get used.
+?S:.
+?S:d_attribute_warn_unused_result (d_attribute_warn_unused_result.U):
+?S:	This variable conditionally defines
+?S:	HASATTRIBUTE_WARN_UNUSED_RESULT, which indicates that the C
+?S:	compiler can know that certain functions have a return values
+?S:	that must not be ignored, such as malloc() or open().
+?S:.
+?C:HASATTRIBUTE_FORMAT ~ %< (GNUC_ATTRIBUTE_CHECK):
+?C:	Can we handle GCC attribute for checking printf-style formats
 ?C:.
-?H:?%<:#$d_attribut HASATTRIBUTE	/**/
-?H:?%<:#ifndef HASATTRIBUTE
-?H:?%<:#ifdef __attribute__
-?H:?%<:#undef __attribute__
-?H:?%<:#endif
-?H:?%<:#define __attribute__(_arg_)
-?H:?%<:#endif
+?C:HASATTRIBUTE_MALLOC:
+?C:	Can we handle GCC attribute for malloc-style functions.
+?C:.
+?C:HASATTRIBUTE_NONNULL:
+?C:	Can we handle GCC attribute for nonnull function parms.
+?C:.
+?C:HASATTRIBUTE_NORETURN:
+?C:	Can we handle GCC attribute for functions that do not return
+?C:.
+?C:HASATTRIBUTE_PURE:
+?C:	Can we handle GCC attribute for pure functions
+?C:.
+?C:HASATTRIBUTE_UNUSED:
+?C:	Can we handle GCC attribute for unused variables and arguments
+?C:.
+?C:HASATTRIBUTE_WARN_UNUSED_RESULT ~ %< (HASATTRIBUTE):
+?C:	Can we handle GCC attribute for warning on unused results
+?C:.
+?H:?%<:#$d_attribute_format HASATTRIBUTE_FORMAT	/**/
+?H:?%<:#$d_attribute_noreturn HASATTRIBUTE_NORETURN	/**/
+?H:?%<:#$d_attribute_malloc HASATTRIBUTE_MALLOC	/**/
+?H:?%<:#$d_attribute_nonnull HASATTRIBUTE_NONNULL	/**/
+?H:?%<:#$d_attribute_pure HASATTRIBUTE_PURE	/**/
+?H:?%<:#$d_attribute_unused HASATTRIBUTE_UNUSED	/**/
+?H:?%<:#$d_attribute_warn_unused_result HASATTRIBUTE_WARN_UNUSED_RESULT	/**/
 ?H:.
-?W:%<:__attribute__
-?LINT:set d_attribut
-?LINT:known __attribute__
-: Look for GNU-cc style attribute checking
-case "$d_attribut" in
+?LINT:set d_attribute_format
+?LINT:set d_attribute_malloc
+?LINT:set d_attribute_nonnull
+?LINT:set d_attribute_noreturn
+?LINT:set d_attribute_pure
+?LINT:set d_attribute_unused
+?LINT:set d_attribute_warn_unused_result
+: Look for GCC-style attribute format
+case "$d_attribute_format" in
 '')
 echo " "
-echo "Checking whether your compiler can handle __attribute__ ..." >&4
+echo "Checking whether your compiler can handle __attribute__((format)) ..." >&4
 $cat >attrib.c <<'EOCP'
 #include <stdio.h>
-void croak (char* pat,...) __attribute__((__format__(__printf__,1,2),noreturn));
+void my_special_printf(char* pat,...) __attribute__((__format__(__printf__,1,2)));
 EOCP
 if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
 	if $contains 'warning' attrib.out >/dev/null 2>&1; then
-		echo "Your C compiler doesn't fully support __attribute__."
+		echo "Your C compiler doesn't support __attribute__((format))."
 		val="$undef"
 	else
-		echo "Your C compiler supports __attribute__."
+		echo "Your C compiler supports __attribute__((format))."
 		val="$define"
 	fi
 else
@@ -64,9 +117,177 @@ else
 	val="$undef"
 fi
 ;;
-*) val="$d_attribut" ;;
+*) val="$d_attribute_format" ;;
 esac
-set d_attribut
+set d_attribute_format
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute malloc
+case "$d_attribute_malloc" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((malloc)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+char *go_get_some_memory( int how_many_bytes ) __attribute__((malloc));
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((malloc))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((malloc))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_malloc" ;;
+esac
+set d_attribute_malloc
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute nonnull
+case "$d_attribute_nonnull" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((nonnull(1))) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+void do_something (char *some_pointer,...) __attribute__((nonnull(1)));
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((nonnull))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((nonnull))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_nonnull" ;;
+esac
+set d_attribute_nonnull
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute noreturn
+case "$d_attribute_noreturn" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((noreturn)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+void fall_over_dead( void ) __attribute__((noreturn));
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((noreturn))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((noreturn))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_noreturn" ;;
+esac
+set d_attribute_noreturn
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute pure
+case "$d_attribute_pure" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((pure)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+int square( int n ) __attribute__((pure));
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((pure))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((pure))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_pure" ;;
+esac
+set d_attribute_pure
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute unused
+case "$d_attribute_unused" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((unused)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+int do_something( int dummy __attribute__((unused)), int n );
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((unused))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((unused))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_unused" ;;
+esac
+set d_attribute_unused
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute warn_unused_result
+case "$d_attribute_warn_unused_result" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((warn_unused_result)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+int I_will_not_be_ignored(void) __attribute__((warn_unused_result));
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((warn_unused_result))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((warn_unused_result))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_warn_unused_result" ;;
+esac
+set d_attribute_warn_unused_result
 eval $setvar
 $rm -f attrib*
 
