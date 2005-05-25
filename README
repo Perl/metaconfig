@@ -38,7 +38,7 @@ Contents of this directory:
     Unsurprisingly 'dist' uses (its) Configure to generate itself:
 
     cd dist-3.0at70b
-    chmod +w -R .     # We have derived files in perforce :-(
+    chmod -R +w .     # We have derived files in perforce :-(
     ./Configure
     make
     make install
@@ -83,7 +83,14 @@ Contents of this directory:
 
 (f) metaconfig -m to regenerate Configure
 
-(g) The messy not-yet-automated part is that the knowledge of the new symbol
+(g) metaconfig does not deal with depends in config_h.SH, so some
+    reorganization is needed.
+
+    perl Porting/config_h.SH
+
+    will fix the ordering
+    
+(h) The messy not-yet-automated part is that the knowledge of the new symbol
     needs to be propagated to non-Configure lands like Win32, WinCE, Netware,
     VMS, VOS, EPOC, ...  see previous Configure changes to see which are these
     heathen lands.  Files to take care of are
@@ -96,19 +103,19 @@ Contents of this directory:
     For Win32 the process is semi-automated - if you have a Win32
     machine to run dmake on ...
 
-(h) Edit U/mkglossary (right near the top) to point to where you keep
+(i) Edit U/mkglossary (right near the top) to point to where you keep
     dist's standard metaconfig units as well as your perl-specific ones.
 
-(i) Run U/mksample to freshen the Porting/config* and Porting/Glossary.
+(j) Run U/mksample to freshen the Porting/config* and Porting/Glossary.
     Adjust the various compile-time options (e.g. 64bit, threads) as
     you see fit.
     You can skip this phase, it's not essential, just good housekeeping.
 
-(j) make veryclean;sh Configure -des -Dusedevel;make all test
+(k) make veryclean;sh Configure -des -Dusedevel;make all test
 
-(k) p4 add ../metaconfig/foo/bar.U when you are ready ...
+(l) p4 add ../metaconfig/foo/bar.U when you are ready ...
 
-(l) p4 submit
+(m) p4 submit
     IF your $EDITOR and/or $VISUAL start a background edit session
     ('elvis -fork' or 'gvim'), be sure to set $P4EDITOR to an
     editor call that is waited for.
