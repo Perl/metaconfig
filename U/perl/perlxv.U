@@ -8,10 +8,10 @@
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size \
-	d_nv_preserves_uv nv_preserves_uv_bits: \
+	d_nv_preserves_uv nv_preserves_uv_bits d_nv_zero_is_allbits_zero: \
 	echo rm use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
-	charsize shortsize intsize longsize i_stdlib \
+	charsize shortsize intsize longsize i_stdlib i_string \
 	cat Compile i_inttypes test d_volatile signal_t run
 ?MAKE:	-pick add $@ %<
 ?S:ivtype:
@@ -88,6 +88,10 @@
 ?S:	This variable indicates how many of bits type uvtype
 ?S:	a variable nvtype can preserve.
 ?S:.
+?S:d_nv_zero_is_allbits_zero:
+?S:	This variable indicates whether a variable of type nvtype
+?S:	stores 0.0 in memory as all bits zero.
+?S:.
 ?C:IVTYPE:
 ?C:	This symbol defines the C type used for Perl's IV.
 ?C:.
@@ -162,6 +166,10 @@
 ?C:	This symbol contains the number of bits a variable of type NVTYPE
 ?C:	can preserve of a variable of type UVTYPE.
 ?C:.
+?C:NV_ZERO_IS_ALLBITS_ZERO:
+?C:	This symbol, if defined, indicates that a variable of type NVTYPE
+?C:	stores 0.0 in memory as all bits zero.
+?C:.
 ?H:#define	IVTYPE		$ivtype		/**/
 ?H:#define	UVTYPE		$uvtype		/**/
 ?H:#define	I8TYPE		$i8type		/**/
@@ -190,6 +198,7 @@
 ?H:#define	NVSIZE		$nvsize		/**/
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
 ?H:#define	NV_PRESERVES_UV_BITS	$nv_preserves_uv_bits
+?H:#$d_nv_zero_is_allbits_zero	NV_ZERO_IS_ALLBITS_ZERO
 ?H:?%<:#if UVSIZE == 8
 ?H:?%<:#   ifdef BYTEORDER
 ?H:?%<:#       if BYTEORDER == 0x1234
@@ -205,6 +214,8 @@
 ?H:?%<:#endif
 ?H:.
 ?T:volatile
+?T:xxx
+?T:d
 
 echo " "
 $echo "Choosing the C types to be used for Perl's internal types..." >&4
@@ -446,6 +457,128 @@ case "$nv_preserves_uv_bits" in
 *)	$echo "Can't figure out how many bits your NVs preserve." 2>&1
 	nv_preserves_uv_bits="$undef" ;;
 esac
+
+$rm -f try.* try
+
+$echo "Checking whether NV 0.0 is all bits zero in memory..." >&4
+: volatile so that the compiler has to store it out to memory.
+if test X"$d_volatile" = X"$define"; then
+	volatile=volatile
+fi
+$cat <<EOP >try.c
+#include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
+#$i_string I_STRING
+#ifdef I_STRING
+#  include <string.h>
+#else
+#  include <strings.h>
+#endif
+#include <sys/types.h>
+#include <signal.h>
+#ifdef SIGFPE
+$volatile int bletched = 0;
+$signal_t blech(s) int s; { bletched = 1; }
+#endif
+
+int checkit($nvtype d, char *where) {
+    unsigned char *p = (char *)&d;
+    unsigned char *end = p + sizeof(d);
+    int fail = 0;
+
+    while (p < end)
+	fail += *p++;
+
+    if (!fail)
+	return 0;
+
+    p = (char *)&d;
+    printf("No - %s: 0x", where);
+    while (p < end)
+	printf ("%02X", *p++);
+    printf("\n");
+    return 1;
+}
+
+int main(int argc, char **argv) {
+    $nvtype d = 0.0;
+    int fail = 0;
+    fail += checkit(d, "0.0");
+
+    /* The compiler shouldn't be assuming that bletched is 0  */
+    d = bletched;
+
+    fail += checkit(d, "bleched");
+
+#ifdef SIGFPE
+    signal(SIGFPE, blech);
+#endif
+
+    /* Paranoia - the compiler should have no way of knowing that ANSI says
+       that argv[argc] will always be NULL.  Actually, if it did assume this it
+       would be buggy, as this is C and main() can be called from elsewhere in
+       the program.  */
+    d = argv[argc] ? 1 : 0;
+
+    if (d) {
+	printf("Odd argv[argc]=%p, d=%g\n", argv[argc], d);
+    }
+
+    fail += checkit(d, "ternary");
+
+    memset(&d, sizeof(d), argv[argc] ? 1 : 0);
+
+    if (d != 0.0) {
+	printf("No - memset doesn't give 0.0\n");
+	/* This might just blow up:  */
+	printf("(gives %g)\n", d);
+	return 1;
+    }
+    
+#ifdef SIGFPE
+    if (bletched) {
+	printf("No - something bleched\n");
+	return 1;
+    }
+#endif
+    if (fail) {
+      printf("No - %d fail(s)\n", fail);
+      return 1;
+    }
+    printf("Yes\n");
+    return 0;
+}
+EOP
+set try
+
+d_nv_zero_is_allbits_zero="$undef"
+if eval $compile; then
+    xxx="`$run ./try`"
+    case "$?" in
+	0)
+	    case "$xxx" in
+		Yes)  cat >&4 <<EOM
+0.0 is represented as all bits zero in memory
+EOM
+		    d_nv_zero_is_allbits_zero="$define"
+		    ;;
+		*)  cat >&4 <<EOM
+0.0 is not represented as all bits zero in memory
+EOM
+		    d_nv_zero_is_allbits_zero="$undef"
+		    ;;
+	    esac
+	    ;;
+	*)  cat >&4 <<EOM
+0.0 is not represented as all bits zero in memory
+EOM
+	    d_nv_zero_is_allbits_zero="$undef"
+	    ;;
+    esac
+fi
 
 $rm -f try.* try
 
