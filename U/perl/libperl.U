@@ -92,7 +92,7 @@ any other libraries needed on this system (such as -lm, etc.).  Since
 your system supports dynamic loading, it is probably possible to build
 a shared libperl.$so.  If you will have more than one executable linked
 to libperl.$so, this will significantly reduce the size of each
-executable, but it may have a noticeable affect on performance.  The
+executable, but it may have a noticeable effect on performance.  The
 default is probably sensible for your system.
 $also
 
