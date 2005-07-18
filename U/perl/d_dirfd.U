@@ -65,6 +65,7 @@ int main() {
 		exit(1);
 }
 EOM
+val=$undef
 set dirfd
 if eval $compile; then
 	val="$define"
