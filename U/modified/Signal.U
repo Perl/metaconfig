@@ -134,7 +134,7 @@ int main() {
 
 #ifndef NSIG
 #  ifdef SIGARRAYSIZE
-#    define NSIG (SIGARRAYSIZE+1) /* Not sure of the +1 */
+#    define NSIG SIGARRAYSIZE /* Assume ary[SIGARRAYSIZE] */
 #  endif
 #endif
 
