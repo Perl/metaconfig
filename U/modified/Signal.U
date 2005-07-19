@@ -115,6 +115,12 @@ int main() {
 #endif
 
 #ifndef NSIG
+#  ifdef _SIG_MAX
+#    define NSIG (_SIG_MAX+1)
+#  endif
+#endif
+
+#ifndef NSIG
 #  ifdef MAXSIG
 #    define NSIG (MAXSIG+1)
 #  endif
