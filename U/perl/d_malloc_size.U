@@ -1,0 +1,42 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2005, H.Merijn Brand
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_malloc_size d_malloc_good_size: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_malloc_size:
+?S:	This symbol, if defined, indicates that the malloc_size
+?S:	routine is available for use.
+?S:.
+?S:d_malloc_good_size:
+?S:	This symbol, if defined, indicates that the malloc_good_size
+?S:	routine is available for use.
+?S:.
+?C:HAS_MALLOC_SIZE:
+?C:	This symbol, if defined, indicates that the malloc_size
+?C:	routine is available for use.
+?C:.
+?H:#$d_malloc_size HAS_MALLOC_SIZE		/**/
+?H:.
+?C:HAS_MALLOC_GOOD_SIZE:
+?C:	This symbol, if defined, indicates that the malloc_good_size
+?C:	routine is available for use.
+?C:.
+?H:#$d_malloc_good_size HAS_MALLOC_GOOD_SIZE	/**/
+?H:.
+?LINT:set d_malloc_size
+?LINT:set d_malloc_good_size
+: see if malloc_size exists
+set malloc_size d_malloc_size
+eval $inlibc
+
+: see if malloc_size_good exists
+set malloc_good_size d_malloc_good_size
+eval $inlibc
+
