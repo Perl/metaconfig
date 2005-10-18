@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2005 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_clearenv: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_clearenv:
+?S:	This variable conditionally defines the HAS_CLEARENV symbol, which
+?S:	indicates to the C program that the clearenv () routine is available.
+?S:.
+?C:HAS_CLEARENV:
+?C:	This symbol, if defined, indicates that the clearenv () routine is
+?C:	available for use.
+?C:.
+?H:#$d_clearenv HAS_CLEARENV		/**/
+?H:.
+?LINT:set d_clearenv
+: see if clearenv exists
+set clearenv d_clearenv
+eval $inlibc
+
