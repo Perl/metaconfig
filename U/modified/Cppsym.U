@@ -187,6 +187,16 @@ cat <<EOSH > Cppsym.try
 $startsh
 cat <<'EOCP' > try.c
 #include <stdio.h>
+#if cpp_stuff == 1
+#define STRINGIFY(a)    "a"
+#endif
+#if cpp_stuff == 42
+#define StGiFy(a)  #a
+#define STRINGIFY(a)    StGiFy(a)
+#endif
+#if $cpp_stuff != 1 && $cpp_stuff != 42
+#   include "Bletch: How does this C preprocessor stringify macros?"
+#endif
 int main() {
 EOCP
 ?X: The length($1) command guards against possible empty entries.
@@ -195,10 +205,10 @@ $awk \\
 EOSH
 cat <<'EOSH' >> Cppsym.try
 'length($1) > 0 {
-    printf "#ifdef %s\n#if %s+0\nprintf(\"%s=%%ld\\n\", (long)%s);\n#else\nprintf(\"%s\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
-    printf "#ifdef _%s\n#if _%s+0\nprintf(\"_%s=%%ld\\n\", (long)_%s);\n#else\nprintf(\"_%s\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
-    printf "#ifdef __%s\n#if __%s+0\nprintf(\"__%s=%%ld\\n\", (long)__%s);\n#else\nprintf(\"__%s\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
-    printf "#ifdef __%s__\n#if __%s__+0\nprintf(\"__%s__=%%ld\\n\", (long)__%s__);\n#else\nprintf(\"__%s__\\n\");\n#endif\n#endif\n", $1, $1, $1, $1, $1
+    printf "#ifdef %s\nprintf(\"%s=%%s\\n\", STRINGIFY(%s));\n#endif\n", $1, $1, $1
+    printf "#ifdef _%s\nprintf(\"_%s=%%s\\n\", STRINGIFY(_%s));\n#endif\n", $1, $1, $1
+    printf "#ifdef __%s\nprintf(\"__%s=%%s\\n\", STRINGIFY(__%s));\n#endif\n", $1, $1, $1
+    printf "#ifdef __%s__\nprintf(\"__%s__=%%s\\n\", STRINGIFY(__%s__));\n#endif\n", $1, $1, $1
 }'	 >> try.c
 echo 'return 0;}' >> try.c
 EOSH
@@ -208,7 +218,7 @@ case "$osname-$gccversion" in
 irix-) ccflags="\$ccflags -woff 1178" ;;
 os2-*) ccflags="\$ccflags -Zlinker /PM:VIO" ;;
 esac
-$cc -o try $optimize \$ccflags $ldflags try.c $libs && $run ./try
+$cc -o try -Dcpp_stuff=$cpp_stuff $optimize \$ccflags $ldflags try.c $libs && $run ./try | $sed 's/ /\\\\ /g'
 EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try
@@ -249,11 +259,9 @@ fi
 ?X: the awk script must be on two lines for older awk programs, sigh! -- ADO
 $awk '/\=/ { print $0; next }
 	{ print $0"=1" }' ccsym.raw >ccsym.list
-$awk '/\=/ { print $0; next }
-	{ print $0"=1" }' Cppsym.true >ccsym.true
-$comm -13 ccsym.true ccsym.list >ccsym.own
-$comm -12 ccsym.true ccsym.list >ccsym.com
-$comm -23 ccsym.true ccsym.list >ccsym.cpp
+$comm -13 Cppsym.true ccsym.list >ccsym.own
+$comm -12 Cppsym.true ccsym.list >ccsym.com
+$comm -23 Cppsym.true ccsym.list >ccsym.cpp
 also=''
 if $test -z ccsym.raw; then
 	echo "Your C compiler doesn't seem to define any symbols!" >&4
