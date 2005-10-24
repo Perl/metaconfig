@@ -41,7 +41,7 @@
 ?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: run \
 	eunicefix Guess awk cat tr sed sort rm startsh osname \
 	+cc +gccversion test comm uniq echo Options trnl \
-	optimize ccflags ldflags libs
+	optimize ccflags ldflags libs cpp_stuff
 ?MAKE:	-pick add $@ %<
 ?T:also symbols i postprocess_cc_v
 ?X:
