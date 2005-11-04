@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_futimes: Inlibc
+?MAKE:d_futimes: Compile cat rm run
 ?MAKE:	-pick add $@ %<
 ?S:d_futimes:
 ?S:	This variable conditionally defines the HAS_FUTIMES symbol, which
@@ -18,7 +18,39 @@
 ?H:#$d_futimes HAS_FUTIMES		/**/
 ?H:.
 ?LINT:set d_futimes
-: see if futimes exists
-set futimes d_futimes
-eval $inlibc
+?T:rc
+d_futimes="$undef"
+: check for a working futimes
+echo " "
+echo "Checking for a working futimes()" >&4
+$cat >try.c <<EOCP
+#include <stdio.h>
+#include <sys/time.h>
+#include <errno.h>
+#include <fcntl.h>
+
+int main ()
+{
+    int fd, rv;
+    fd = open ("try.c", O_RDWR);
+    if (-1 == fd) exit (1);
+    rv = futimes (fd, NULL);
+    exit (rv == -1 ? errno : 0);
+}
+EOCP
+set try
+if eval $compile; then
+    `$run ./try`
+    rc=$?
+    case "$rc" in
+	0)  echo "Yes, it does" >&4
+	    d_futimes="$define"
+	    ;;
+	*)  echo "No, it has futimes, but it isn't working ($rc) (probably harmless)\n" >&4
+	    ;;
+    esac
+else
+    echo "No, it does not (probably harmless)\n" >&4
+fi
+$rm -f try.* try core core.try.*
 
