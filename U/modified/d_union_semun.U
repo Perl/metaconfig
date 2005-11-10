@@ -95,9 +95,9 @@ $define)
 #endif
 END
     : see whether semctl IPC_STAT can use union semun
-    val="$undef"
     case "$d_semctl_semun" in
     '')
+      val="$undef"
       $cat > try.c <<END
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -136,7 +136,7 @@ int main() {
 	    printf("semctl IPC_STAT failed: errno = %d\n", errno);
 #	ifdef IPC_RMID
 	if (semctl(sem, 0, IPC_RMID, arg) != 0)
-#   	endif /* IPC_RMID */
+#	endif /* IPC_RMID */
 	    printf("semctl IPC_RMID failed: errno = %d\n", errno);
     } else
 #endif /* IPC_PRIVATE && ... */
@@ -152,10 +152,10 @@ END
           esac
       fi
       $rm -f try try.c
+      set d_semctl_semun
+      eval $setvar
       ;;
     esac
-    set d_semctl_semun
-    eval $setvar
     case "$d_semctl_semun" in
     $define)
         echo "You can use union semun for semctl IPC_STAT." >&4
@@ -167,9 +167,9 @@ END
     esac
 
     : see whether semctl IPC_STAT can use struct semid_ds pointer
-    val="$undef"
     case "$d_semctl_semid_ds" in
     '')
+      val="$undef"
       $cat > try.c <<'END'
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -214,10 +214,10 @@ END
           esac
       fi
       $rm -f try try.c
+      set d_semctl_semid_ds
+      eval $setvar
       ;;
     esac
-    set d_semctl_semid_ds
-    eval $setvar
     case "$d_semctl_semid_ds" in
     $define)
         echo "You can $also use struct semid_ds* for semctl IPC_STAT." >&4
