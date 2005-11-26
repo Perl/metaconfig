@@ -28,7 +28,8 @@
 : see what type of char stdio uses.
 echo " "
 ?X: untangle the #include nest
-echo '#include <stdio.h>' | $cppstdin $cppminus > stdioh
+echo '#include <stdio.h>' > stdio.c
+$cppstdin $cppminus < stdio.c > stdioh
 if $contains 'unsigned.*char.*_ptr;' stdioh >/dev/null 2>&1 ; then
 	echo "Your stdio uses unsigned chars." >&4
 	stdchar="unsigned char"
@@ -36,7 +37,5 @@ else
 	echo "Your stdio uses signed chars." >&4
 	stdchar="char"
 fi
-$rm -f stdioh
-
-
+$rm -f stdio.* stdioh
 
