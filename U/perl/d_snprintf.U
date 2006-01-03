@@ -1,0 +1,40 @@
+?RCS: Copyright (c) 2006-2006, H.Merijn Brand
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_snprintf d_vsnprintf : Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_snprintf:
+?S:	This variable conditionally defines the HAS_SNPRINTF symbol, which
+?S:	indicates to the C program that the snprintf () library function
+?S:	is available.
+?S:.
+?S:d_vsnprintf:
+?S:	This variable conditionally defines the HAS_VSNPRINTF symbol, which
+?S:	indicates to the C program that the vsnprintf () library function
+?S:	is available.
+?S:.
+?C:HAS_SNPRINTF:
+?C:	This symbol, if defined, indicates that the snprintf () library
+?C:	function is available for use.
+?C:.
+?C:HAS_VSNPRINTF:
+?C:	This symbol, if defined, indicates that the vsnprintf () library
+?C:	function is available for use.
+?C:.
+?H:#$d_snprintf HAS_SNPRINTF	/**/
+?H:#$d_vsnprintf HAS_VSNPRINTF	/**/
+?H:.
+?LINT:set d_snprintf d_vsnprintf
+: see if snprintf exists
+set snprintf d_snprintf
+eval $inlibc
+
+: see if vsnprintf exists
+set vsnprintf d_vsnprintf
+eval $inlibc
+
