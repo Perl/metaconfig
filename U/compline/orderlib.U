@@ -1,7 +1,7 @@
 ?RCS: $Id: orderlib.U,v 3.0.1.4 1997/02/28 16:18:18 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -67,6 +67,12 @@ if $cc -o foobar $ccflags $ldflags foo$_o bar$_a $libs > /dev/null 2>&1 &&
 	if [ "X$ranlib" = "X" ]; then
 	    ranlib=":"
 	fi
+elif $ar s bar$_a >/dev/null 2>&1 &&
+	$cc -o foobar $ccflags $ldflags foo$_o bar$_a $libs > /dev/null 2>&1 &&
+	$run ./foobar >/dev/null 2>&1; then
+		echo "a table of contents needs to be added with '$ar s'."
+		orderlib=false
+		ranlib="$ar s"
 elif $ar ts bar$_a >/dev/null 2>&1 &&
 	$cc -o foobar $ccflags $ldflags foo$_o bar$_a $libs > /dev/null 2>&1 &&
 	$run ./foobar >/dev/null 2>&1; then
@@ -96,5 +102,5 @@ else
 		ranlib=":"
 	fi
 fi
-$rm -f foo* bar* 
+$rm -f foo* bar*
 
