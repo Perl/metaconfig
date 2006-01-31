@@ -43,7 +43,7 @@
 	+cc +gccversion test comm uniq echo Options trnl \
 	optimize ccflags ldflags libs cpp_stuff
 ?MAKE:	-pick add $@ %<
-?T:also symbols i postprocess_cc_v
+?T:also symbols i postprocess_cc_v tHdrH
 ?X:
 ?X: The symbol list is in alpha order for ease of maintenance...
 ?X:
@@ -84,7 +84,7 @@
 ?LINT:extern s__
 ?LINT:change s__
 echo " "
-$echo "Guessing which symbols your C compiler and preprocessor define..." >&4 
+$echo "Guessing which symbols your C compiler and preprocessor define..." >&4
 ?X: If your symbol is mixed case, just add it as-is.
 ?X: All symbols will be transformed to both all-lower and all-upper.
 ?X: Also drop any leading/trailing underscores, the scan will try all those.
@@ -223,6 +223,19 @@ EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try
 ./Cppsym < Cppsym.know > Cppsym.true
+: Add in any linux cpp "predefined macros":
+if [[ "$osname" == *linux* ]] && [[ "$gccversion" != "" ]]; then
+  tHdrH=_tmpHdr
+  rm -f $tHdrH'.h' $tHdrH
+  touch $tHdrH'.h'
+  if cpp -dM $tHdrH'.h' > $tHdrH'_cppsym.h' && [ -s $tHdrH'_cppsym.h' ]; then
+     sed 's/#define[\ \  ]*//;s/[\ \     ].*$//' <$tHdrH'_cppsym.h' >$tHdrH'_cppsym.real'
+     if [ -s $tHdrH'_cppsym.real' ]; then
+	cat $tHdrH'_cppsym.real' Cppsym.know | sort | uniq | ./Cppsym | sort | uniq > Cppsym.true
+     fi
+  fi
+  rm -f $tHdrH'.h' $tHdrH'_cppsym.h' $tHdrH'_cppsym.real'
+fi
 : now check the C compiler for additional symbols
 ?X: suggested by Jarkko Hietaniemi <jhi@snakemail.hut.fi>, thanks!
 postprocess_cc_v=''
