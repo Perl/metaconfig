@@ -1,0 +1,44 @@
+?RCS: $Id: mad.U,v $
+?RCS:
+?RCS: Copyright (c) 2006 H.Merijn Brand, Nicholas Clark
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: mad.U,v $
+?RCS:
+?MAKE:mad: Myread Setvar
+?MAKE:	-pick add $@ %<
+?S:mad:
+?S:	This variable indicates that the Misc Attribute Definition code is to
+?S:	be compiled.
+?S:.
+?C:PERL_MAD:
+?C:	This symbol, if defined, indicates that the Misc Attribution
+?C:	Declaration code should be conditionally compiled.
+?C:.
+?H:#$mad	PERL_MAD		/**/
+?H:.
+?LINT:set mad
+
+case "$mad" in
+$define|true|[yY]*)	dflt='y' ;;
+*)			dflt='n' ;;
+esac
+cat <<EOM
+
+Would you like to build with Misc Attribute Decoration? This is development
+work leading to a Perl 5 to Perl 6 convertor, which imposes a space and speed
+overhead on the interpreter.
+
+If this doesn't make any sense to you, just accept the default '$dflt'.
+EOM
+rp='Build Perl with MAD?'
+. ./myread
+case "$ans" in
+y|Y)	val="$define" ;;
+*)	val="$undef"  ;;
+esac
+set mad
+eval $setvar
+
