@@ -1,6 +1,6 @@
 ?RCS: $Id: d_sitecustomize.U,v $
 ?RCS:
-?RCS: Copyright (c) 2005-2005 H.Merijn Brand
+?RCS: Copyright (c) 2005-2006 H.Merijn Brand
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
@@ -18,7 +18,11 @@
 ?C:	This symbol, if defined, indicates that sitecustomize should
 ?C:	be used.
 ?C:.
-?H:#$usesitecustomize	USE_SITECUSTOMIZE		/**/
+?H:?%<:@if USE_SITECUSTOMIZE
+?H:?%<:#ifndef USE_SITECUSTOMIZE
+?H:?%<:#$usesitecustomize	USE_SITECUSTOMIZE		/**/
+?H:?%<:#endif
+?H:?%<:@end
 ?H:.
 
 case "$usesitecustomize" in
