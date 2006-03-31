@@ -7,7 +7,7 @@
 ?RCS:
 ?RCS: $Log: mad.U,v $
 ?RCS:
-?MAKE:mad madlyh madlyobj madlysrc: Myread Setvar
+?MAKE:mad madlyh madlyobj madlysrc: Myread Setvar _o
 ?MAKE:	-pick add $@ %<
 ?S:mad:
 ?S:	This variable indicates that the Misc Attribute Definition code is to
