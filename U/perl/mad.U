@@ -7,11 +7,23 @@
 ?RCS:
 ?RCS: $Log: mad.U,v $
 ?RCS:
-?MAKE:mad: Myread Setvar
+?MAKE:mad madlyh madlyobj madlysrc: Myread Setvar
 ?MAKE:	-pick add $@ %<
 ?S:mad:
 ?S:	This variable indicates that the Misc Attribute Definition code is to
 ?S:	be compiled.
+?S:.
+?S:madlyh:
+?S:	If the Misc Attribute Decoration is to be compiled, this variable is
+?S:	set to the name of the extra header files to be used, else it is ''
+?S:.
+?S:madlyobj:
+?S:	If the Misc Attribute Decoration is to be compiled, this variable is
+?S:	set to the name of the extra object files to be used, else it is ''
+?S:.
+?S:madlysrc:
+?S:	If the Misc Attribute Decoration is to be compiled, this variable is
+?S:	set to the name of the extra C source files to be used, else it is ''
 ?S:.
 ?C:PERL_MAD:
 ?C:	This symbol, if defined, indicates that the Misc Attribution
@@ -19,7 +31,7 @@
 ?C:.
 ?H:#$mad	PERL_MAD		/**/
 ?H:.
-?LINT:set mad
+?LINT:set mad madlyh madlyobj madlysrc
 
 case "$mad" in
 $define|true|[yY]*)	dflt='y' ;;
@@ -36,8 +48,14 @@ EOM
 rp='Build Perl with MAD?'
 . ./myread
 case "$ans" in
-y|Y)	val="$define" ;;
-*)	val="$undef"  ;;
+y|Y)	val="$define"
+	madlyh='madly.h madly.act madly.tab'
+	madlysrc='madly.c'
+	madlyobj="madly$_o" ;;
+*)	val="$undef"
+	madlyh=''
+	madlysrc=''
+	madlyobj='' ;;
 esac
 set mad
 eval $setvar
