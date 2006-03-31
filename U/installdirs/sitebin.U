@@ -11,7 +11,7 @@
 ?RCS: $Log: sitebin.U,v $
 ?RCS:
 ?MAKE:sitebin sitebinexp installsitebin : Getfile Oldconfig siteprefix test \
-	installprefix prefix
+	installprefix installprefixexp prefix prefixexp
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:sitebin:
@@ -46,7 +46,7 @@ sitebin="$ans"
 sitebinexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitebin=`echo $sitebinexp | sed "s#^$prefix#$installprefix#"`
+	installsitebin=`echo $sitebinexp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installsitebin="$sitebinexp"
 fi

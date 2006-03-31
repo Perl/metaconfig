@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:siteman1 siteman1exp installsiteman1: test Getfile \
-	prefix installprefix siteprefix man1dir sed
+	prefix prefixexp installprefix installprefixexp siteprefix man1dir sed
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:siteman1:
@@ -51,7 +51,7 @@ siteman1exp="$ansexp"
 $test X"$siteman1" = "X" && siteman1=' '
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsiteman1=`echo "$siteman1exp" | $sed "s#^$prefix#$installprefix#"`
+	installsiteman1=`echo "$siteman1exp" | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installsiteman1="$siteman1exp"
 fi

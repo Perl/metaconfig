@@ -15,8 +15,8 @@
 ?RCS:
 ?MAKE:d_vendorlib vendorlib vendorlibexp installvendorlib \
 	vendorlib_stem: Getfile \
-	Oldconfig Prefixit test package vendorprefix prefix sed \
-	installstyle installprefix version
+	Oldconfig Prefixit test package vendorprefix prefix prefixexp sed \
+	installstyle installprefix installprefixexp version
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorlib:
@@ -100,7 +100,7 @@ esac
 vendorlib_stem=`echo "$vendorlibexp" | sed "s,/$version$,,"`
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installvendorlib=`echo $vendorlibexp | $sed "s#^$prefix#$installprefix#"`
+	installvendorlib=`echo $vendorlibexp | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installvendorlib="$vendorlibexp"
 fi

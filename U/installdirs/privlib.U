@@ -30,8 +30,8 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:privlib privlibexp installprivlib: package cat Getfile \
-	Oldconfig prefix installprefix Prefixit test version \
-	installstyle
+	Oldconfig prefix prefixexp installprefix installprefixexp \
+	Prefixit test version installstyle
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:privlib:
@@ -85,7 +85,7 @@ privlib="$ans"
 privlibexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installprivlib=`echo $privlibexp | sed "s#^$prefix#$installprefix#"`
+	installprivlib=`echo $privlibexp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installprivlib="$privlibexp"
 fi

@@ -27,7 +27,8 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:26  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:bin binexp installbin: Prefixit prefix installprefix \
+?MAKE:bin binexp installbin: Prefixit prefix prefixexp \
+	installprefix installprefixexp \
 	Getfile Oldconfig test
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -73,7 +74,7 @@ binexp="$ansexp"
 : Change installation prefix, if necessary.
 : XXX Bug? -- ignores Configure -Dinstallprefix setting.
 if $test X"$prefix" != X"$installprefix"; then
-	installbin=`echo $binexp | sed "s#^$prefix#$installprefix#"`
+	installbin=`echo $binexp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installbin="$binexp"
 fi

@@ -12,7 +12,7 @@
 ?RCS:
 ?MAKE:html3dir html3direxp installhtml3dir: cat sed Loc \
 	spackage test Getfile Prefixit Prefixup Myread \
-	prefix installprefix html1dir
+	prefix prefixexp installprefix installprefixexp html1dir
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:html3dir:
@@ -54,7 +54,7 @@ html3direxp="$ansexp"
 $test X"$html3dir" = "X" && html3dir=' '
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installhtml3dir=`echo $html3direxp | sed "s#^$prefix#$installprefix#"`
+	installhtml3dir=`echo $html3direxp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installhtml3dir="$html3direxp"
 fi

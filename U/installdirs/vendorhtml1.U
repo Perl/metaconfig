@@ -14,8 +14,8 @@
 ?RCS:
 ?RCS:
 ?MAKE:vendorhtml1 vendorhtml1exp installvendorhtml1: html1dir Getfile \
-	Oldconfig Prefixit test vendorprefix prefix sed \
-	installprefix
+	Oldconfig Prefixit test vendorprefix prefix prefixexp sed \
+	installprefix installprefixexp
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorhtml1:
@@ -62,7 +62,7 @@ esac
 $test X"$vendorhtml1" = "X" && vendorhtml1=' '
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installvendorhtml1=`echo $vendorhtml1exp | $sed "s#^$prefix#$installprefix#"`
+	installvendorhtml1=`echo $vendorhtml1exp | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installvendorhtml1="$vendorhtml1exp"
 fi

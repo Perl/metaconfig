@@ -25,8 +25,8 @@
 ?X:	pages with long file names. -- ADO
 ?X:
 ?MAKE:man3dir man3direxp man3ext installman3dir: cat nroff Loc Oldconfig \
-	sed man1dir spackage package Getfile prefix Prefixit Prefixup \
-	installprefix d_flexfnam privlib Myread test
+	sed man1dir spackage package Getfile prefix prefixexp Prefixit Prefixup \
+	installprefix installprefixexp d_flexfnam privlib Myread test
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:man3dir:
@@ -129,7 +129,7 @@ esac
 
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installman3dir=`echo $man3direxp | $sed "s#^$prefix#$installprefix#"`
+	installman3dir=`echo $man3direxp | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installman3dir="$man3direxp"
 fi

@@ -26,8 +26,8 @@
 ?X:	man1 used instead of man everywhere.
 ?X:
 ?MAKE:man1dir man1direxp man1ext installman1dir: cat nroff Loc Oldconfig \
-	spackage test Getfile Prefixit prefixexp Prefixup sysman Myread \
-	prefix installprefix sed
+	spackage test Getfile Prefixit Prefixup sysman Myread \
+	prefix prefixexp installprefix installprefixexp sed
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:man1dir:
@@ -106,7 +106,7 @@ esac
 
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installman1dir=`echo $man1direxp | $sed "s#^$prefix#$installprefix#"`
+	installman1dir=`echo $man1direxp | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installman1dir="$man1direxp"
 fi

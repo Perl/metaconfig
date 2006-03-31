@@ -14,8 +14,8 @@
 ?RCS:
 ?RCS:
 ?MAKE:d_vendorscript vendorscript vendorscriptexp installvendorscript: \
-	vendorbin cat Getfile \
-	Oldconfig Prefixit test vendorprefix prefix sed installprefix
+	vendorbin cat Getfile Oldconfig Prefixit test vendorprefix \
+	prefix prefixexp sed installprefix installprefixexp
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorscript:
@@ -83,7 +83,7 @@ EOM
 esac
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installvendorscript=`echo $vendorscriptexp | $sed "s#^$prefix#$installprefix#"`
+	installvendorscript=`echo $vendorscriptexp | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installvendorscript="$vendorscriptexp"
 fi

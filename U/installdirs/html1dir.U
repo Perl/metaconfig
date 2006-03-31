@@ -12,7 +12,7 @@
 ?RCS:
 ?MAKE:html1dir html1direxp installhtml1dir: cat Loc \
 	spackage test Getfile Prefixit Prefixup Myread \
-	prefix installprefix
+	prefix prefixexp installprefix installprefixexp
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:html1dir:
@@ -53,7 +53,7 @@ html1direxp="$ansexp"
 $test X"$html1dir" = "X" && html1dir=' '
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installhtml1dir=`echo $html1direxp | sed "s#^$prefix#$installprefix#"`
+	installhtml1dir=`echo $html1direxp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installhtml1dir="$html1direxp"
 fi

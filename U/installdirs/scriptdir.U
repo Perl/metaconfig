@@ -25,8 +25,8 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:scriptdir scriptdirexp installscript: cat test Getfile Loc \
-	Oldconfig +bin sed \
-	Prefixit prefixexp prefix installprefix Prefixup
+	Oldconfig +bin sed Prefixit prefix prefixexp \
+	installprefix installprefixexp Prefixup
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:scriptdir:
@@ -95,7 +95,7 @@ scriptdir="$ans"
 scriptdirexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installscript=`echo $scriptdirexp | sed "s#^$prefix#$installprefix#"`
+	installscript=`echo $scriptdirexp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installscript="$scriptdirexp"
 fi

@@ -14,8 +14,8 @@
 ?RCS:
 ?RCS:
 ?MAKE:vendorman3dir vendorman3direxp installvendorman3dir: man3dir Getfile \
-	Oldconfig Prefixit test vendorprefix prefix sed \
-	installprefix
+	Oldconfig Prefixit test vendorprefix prefix prefixexp sed \
+	installprefix installprefixexp
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorman3dir:
@@ -59,7 +59,7 @@ esac
 $test X"$vendorman3dir" = "X" && vendorman3dir=' '
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installvendorman3dir=`echo "$vendorman3direxp" | $sed "s#^$prefix#$installprefix#"`
+	installvendorman3dir=`echo "$vendorman3direxp" | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installvendorman3dir="$vendorman3direxp"
 fi

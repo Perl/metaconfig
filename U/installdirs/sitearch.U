@@ -17,8 +17,8 @@
 ?RCS: patch61: created
 ?RCS:
 ?MAKE:sitearch sitearchexp installsitearch: cat sed Getfile \
-	Oldconfig Prefixit archname installprefix \
-	prefix sitelib test
+	Oldconfig Prefixit archname installprefix installprefixexp \
+	prefix prefixexp sitelib test
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:sitearch:
@@ -85,7 +85,7 @@ sitearch="$ans"
 sitearchexp="$ansexp"
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitearch=`echo $sitearchexp | sed "s#^$prefix#$installprefix#"`
+	installsitearch=`echo $sitearchexp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installsitearch="$sitearchexp"
 fi

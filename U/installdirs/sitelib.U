@@ -17,8 +17,8 @@
 ?RCS: patch61: created
 ?RCS:
 ?MAKE:sitelib sitelibexp installsitelib sitelib_stem: cat Getfile \
-	Oldconfig Prefixit package installprefix prefix \
-	version test sed installstyle siteprefix
+	Oldconfig Prefixit package installprefix installprefixexp \
+	prefix prefixexp version test sed installstyle siteprefix
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:sitelib:
@@ -102,7 +102,7 @@ sitelibexp="$ansexp"
 sitelib_stem=`echo "$sitelibexp" | sed "s,/$version$,,"`
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installsitelib=`echo $sitelibexp | $sed "s#^$prefix#$installprefix#"`
+	installsitelib=`echo $sitelibexp | $sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installsitelib="$sitelibexp"
 fi

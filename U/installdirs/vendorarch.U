@@ -15,7 +15,7 @@
 ?RCS:
 ?MAKE:d_vendorarch vendorarch vendorarchexp installvendorarch: sed Getfile \
 	Oldconfig Prefixit test archname vendorlib \
-	vendorprefix prefix installprefix
+	vendorprefix prefix prefixexp installprefix installprefixexp
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorarch:
@@ -82,7 +82,7 @@ case "$vendorprefix" in
 esac
 : Change installation prefix, if necessary.
 if $test X"$prefix" != X"$installprefix"; then
-	installvendorarch=`echo $vendorarchexp | sed "s#^$prefix#$installprefix#"`
+	installvendorarch=`echo $vendorarchexp | sed "s#^$prefixexp#$installprefixexp#"`
 else
 	installvendorarch="$vendorarchexp"
 fi
