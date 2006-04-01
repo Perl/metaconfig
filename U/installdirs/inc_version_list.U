@@ -10,9 +10,9 @@
 ?RCS:
 ?RCS: $Log: inc_version_list.U,v $
 ?RCS:
-?MAKE:inc_version_list inc_version_list_init: cat sed Getfile perl5 \
-	version api_versionstring rm Myread archname prefix sitelib_stem \
-	exe_ext
+?MAKE:inc_version_list inc_version_list_init d_inc_version_list: cat sed \
+	Getfile perl5 version api_versionstring rm Myread archname \
+	prefix sitelib_stem exe_ext
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:inc_version_list:
@@ -34,6 +34,10 @@
 ?S:     This variable holds the same list as inc_version_list, but
 ?S:	each item is enclosed in double quotes and separated by commas, 
 ?S:	suitable for use in the PERL_INC_VERSION_LIST initialization.
+?S:.
+?S:d_inc_version_list:
+?S:	This variable conditionally defines PERL_INC_VERSION_LIST.
+?S:	It is set to undef when PERL_INC_VERSION_LIST is empty.
 ?S:.
 ?C:PERL_INC_VERSION_LIST:
 ?C:	This variable specifies the list of subdirectories in over
@@ -135,9 +139,12 @@ case "$ans" in
 esac
 case "$inc_version_list" in
 ''|' ') 
-	inc_version_list_init='0';;
+	inc_version_list_init='0'
+	d_inc_version_list="$undef"
+	;;
 *)	inc_version_list_init=`echo $inc_version_list |
 		$sed -e 's/^/"/' -e 's/ /","/g' -e 's/$/",0/'`
+	d_inc_version_list="$define"
 	;;
 esac
 $rm -f getverlist
