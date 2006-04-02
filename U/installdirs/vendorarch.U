@@ -82,5 +82,5 @@ case "$vendorprefix" in
 	;;
 esac
 prefixvar=vendorarch
-+. ./installprefix
+. ./installprefix
 

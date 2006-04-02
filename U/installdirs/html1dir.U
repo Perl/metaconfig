@@ -51,7 +51,7 @@ fn=dn+~
 rp="Directory for the main $spackage html pages?"
 . ./getfile
 prefixvar=html1dir
-+. ./setprefixvar
+. ./setprefixvar
 : Use ' ' for none so value is preserved next time through Configure
 $test X"$html1dir" = "X" && html1dir=' '
 
