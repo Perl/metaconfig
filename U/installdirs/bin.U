@@ -63,7 +63,12 @@
 ?S: 	made around the join point (removing "dir/../" pairs)
 ?S:.
 ?S:initialinstalllocation:
-?S:	The initial install location.
+?S:	When userelocatableinc is true, this variable holds the location
+?S:	that make install should copy the perl binary to, with all the
+?S:	run-time relocatable paths calculated from this at install time.
+?S:	When used, it is initialised to the original value of binexp, and
+?S:	then binexp is set to '.../', as the other binaries are found
+?S:	relative to the perl binary.
 ?S:.
 ?C:BIN:
 ?C:	This symbol holds the path of the bin directory where the package will
