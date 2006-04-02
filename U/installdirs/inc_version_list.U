@@ -1,7 +1,7 @@
 ?RCS: $Id: inc_version_list.U,v $
 ?RCS:
 ?RCS: Copyright (c) 2000 Andy Dougherty
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -24,7 +24,7 @@
 ?S:	default one.  See INSTALL for how this works.  The versioned
 ?S:	site_perl directory was introduced in 5.005, so that is the
 ?S:	lowest possible value.
-?S:	
+?S:
 ?S:	This list includes architecture-dependent directories back to
 ?S:	version $api_versionstring (e.g. 5.5.640) and
 ?S:	architecture-independent directories all the way back to
@@ -32,7 +32,7 @@
 ?S:.
 ?S:inc_version_list_init:
 ?S:     This variable holds the same list as inc_version_list, but
-?S:	each item is enclosed in double quotes and separated by commas, 
+?S:	each item is enclosed in double quotes and separated by commas,
 ?S:	suitable for use in the PERL_INC_VERSION_LIST initialization.
 ?S:.
 ?S:d_inc_version_list:
@@ -46,7 +46,7 @@
 ?C:	for a C initialization string.  See the inc_version_list entry
 ?C:	in Porting/Glossary for more details.
 ?C:.
-?H:#define PERL_INC_VERSION_LIST $inc_version_list_init		/**/
+?H:#$d_inc_version_list PERL_INC_VERSION_LIST $inc_version_list_init		/**/
 ?H:.
 ?T: stem d
 : Determine list of previous versions to include in @INC
@@ -61,7 +61,7 @@ EOPL
 	$cat >> getverlist <<'EOPL'
 # Can't have leading @ because metaconfig interprets it as a command!
 ;@inc_version_list=();
-# XXX Redo to do opendir/readdir? 
+# XXX Redo to do opendir/readdir?
 if (-d $stem) {
     chdir($stem);
     ;@candidates = glob("5.*");
@@ -119,8 +119,8 @@ case "$dflt" in
 esac
 $cat <<EOM
 
-In order to ease the process of upgrading, this version of perl 
-can be configured to use modules built and installed with earlier 
+In order to ease the process of upgrading, this version of perl
+can be configured to use modules built and installed with earlier
 versions of perl that were installed under $prefix.  Specify here
 the list of earlier versions that this version of perl should check.
 If Configure detected no earlier versions of perl installed under
@@ -138,7 +138,7 @@ case "$ans" in
 *) inc_version_list="$ans" ;;
 esac
 case "$inc_version_list" in
-''|' ') 
+''|' ')
 	inc_version_list_init='0'
 	d_inc_version_list="$undef"
 	;;

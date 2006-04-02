@@ -16,8 +16,8 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  16:21:30  ram
 ?RCS: patch61: created
 ?RCS:
-?MAKE:sitearch sitearchexp installsitearch: cat sed Getfile Oldconfig \
-	Setprefixvar Prefixit archname sitelib
+?MAKE:sitearch sitearchexp installsitearch d_sitearch: cat sed Getfile \
+	Oldconfig Setprefixvar Prefixit test archname sitelib
 ?MAKE:	-pick add $@ %<
 ?LINT:change prefixvar
 ?Y:TOP
@@ -44,6 +44,12 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
+?D:d_sitearch=''
+?S:d_sitearch:
+?S:	This variable conditionally defines SITEARCH to hold the pathname
+?S:	of architecture-dependent library files for $package.  If
+?S:	$sitearch is the same as $archlib, then this is set to undef.
+?S:.
 ?C:SITEARCH:
 ?C:	This symbol contains the name of the private library for this package.
 ?C:	The library is private in the sense that it needn't be in anyone's
@@ -59,8 +65,8 @@
 ?C:	This symbol contains the ~name expanded version of SITEARCH, to be used
 ?C:	in programs that are not prepared to deal with ~ expansion at run-time.
 ?C:.
-?H:#define SITEARCH "$sitearch"		/**/
-?H:#define SITEARCH_EXP "$sitearchexp"		/**/
+?H:#$d_sitearch SITEARCH "$sitearch"		/**/
+?H:#$d_sitearch SITEARCH_EXP "$sitearchexp"		/**/
 ?H:.
 : determine where site specific architecture-dependent libraries go.
 : sitelib  default is /usr/local/lib/perl5/site_perl/$version
@@ -86,4 +92,9 @@ rp='Pathname for the site-specific architecture-dependent library files?'
 . ./getfile
 prefixvar=sitearch
 . ./setprefixvar
+if $test X"$sitearch" = X"$sitelib"; then
+	d_sitearch="$undef"
+else
+	d_sitearch="$define"
+fi
 
