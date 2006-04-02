@@ -1,17 +1,19 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1999 Jarkko Hietaniemi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:siteman1 siteman1exp installsiteman1: test Getfile \
-	prefix prefixexp installprefix installprefixexp siteprefix man1dir sed
+?MAKE:siteman1 siteman1exp installsiteman1: test Getfile Setprefixvar \
+	prefix siteprefix man1dir sed
 ?MAKE:	-pick add $@ %<
+?LINT:change prefixvar
 ?Y:TOP
+?D:siteman1=''
 ?S:siteman1:
 ?S:	This variable contains the name of the directory in which site-specific
 ?S:	manual source pages are to be put.  It is the responsibility of the
@@ -23,10 +25,12 @@
 ?S:		MakeMaker Makefile.PL
 ?S:	or equivalent.  See INSTALL for details.
 ?S:.
+?D:siteman1exp=''
 ?S:siteman1exp:
 ?S:	This variable is the same as the siteman1 variable, but is filename
 ?S:	expanded at configuration time, for convenient use in makefiles.
 ?S:.
+?D:installsiteman1=''
 ?S:installsiteman1:
 ?S:	This variable is really the same as siteman1exp, unless you are using
 ?S:	AFS in which case it points to the read/write location whereas
@@ -45,14 +49,8 @@ esac
 fn=dn+~
 rp='Pathname where the site-specific manual pages should be installed?'
 . ./getfile
-siteman1="$ans"
-siteman1exp="$ansexp"
+prefixvar=siteman1
+. ./setprefixvar
 : Use ' ' for none so value is preserved next time through Configure
 $test X"$siteman1" = "X" && siteman1=' '
-: Change installation prefix, if necessary.
-if $test X"$prefix" != X"$installprefix"; then
-	installsiteman1=`echo "$siteman1exp" | $sed "s#^$prefixexp#$installprefixexp#"`
-else
-	installsiteman1="$siteman1exp"
-fi
 
