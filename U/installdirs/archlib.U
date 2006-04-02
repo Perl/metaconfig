@@ -5,7 +5,7 @@
 ?RCS: This file is included with or a derivative work of a file included
 ?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
 ?RCS: In accordance with clause 7 of dist's modified Artistic License:
-?RCS: 
+?RCS:
 ?RCS:     You may distribute under the terms of either the GNU General Public
 ?RCS:     License or the Artistic License, as specified in the README file.
 ?RCS:
@@ -30,16 +30,17 @@
 ?RCS: patch36: created by ADO
 ?RCS:
 ?MAKE:d_archlib archlib archlibexp installarchlib: \
-	archname spackage prefix prefixexp \
-	cat Getfile Loc Oldconfig privlib sed test \
-	Prefixit Prefixup installprefix installprefixexp
+	cat Getfile Setprefixvar Loc Oldconfig archname spackage  \
+	privlib sed test Prefixit Prefixup
 ?MAKE:	-pick add $@ %<
+?LINT:change prefixvar
 ?Y:TOP
 ?S:d_archlib:
 ?S:	This variable conditionally defines ARCHLIB to hold the pathname
 ?S:	of architecture-dependent library files for $package.  If
 ?S:	$archlib is the same as $privlib, then this is set to undef.
 ?S:.
+?D:archlib=''
 ?S:archlib:
 ?S:	This variable holds the name of the directory in which the user wants
 ?S:	to put architecture-dependent public library files for $package.
@@ -47,10 +48,12 @@
 ?S:	Programs using this variable must be prepared to deal
 ?S:	with filename expansion.
 ?S:.
+?D:archlibexp=''
 ?S:archlibexp:
 ?S:	This variable is the same as the archlib variable, but is
 ?S:	filename expanded at configuration time, for convenient use.
 ?S:.
+?D:installarchlib=''
 ?S:installarchlib:
 ?S:	This variable is really the same as archlibexp but may differ on
 ?S:	those systems using AFS. For extra portability, only this variable
@@ -98,17 +101,11 @@ EOM
 fn=d+~
 rp='Where do you want to put the public architecture-dependent libraries?'
 . ./getfile
-archlib="$ans"
-archlibexp="$ansexp"
+prefixvar=archlib
+. ./setprefixvar
 if $test X"$archlib" = X"$privlib"; then
 	d_archlib="$undef"
 else
 	d_archlib="$define"
-fi
-: Change installation prefix, if necessary.
-if $test X"$prefix" != X"$installprefix"; then
-	installarchlib=`echo $archlibexp | sed "s#^$prefixexp#$installprefixexp#"`
-else
-	installarchlib="$archlibexp"
 fi
 

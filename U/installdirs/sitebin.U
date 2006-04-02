@@ -1,7 +1,7 @@
 ?RCS: $Id: sitebin.U,v $
 ?RCS:
 ?RCS: Copyright (c) 1999	Andy Dougherty
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -10,10 +10,12 @@
 ?RCS:
 ?RCS: $Log: sitebin.U,v $
 ?RCS:
-?MAKE:sitebin sitebinexp installsitebin : Getfile Oldconfig siteprefix test \
-	installprefix installprefixexp prefix prefixexp
+?MAKE:sitebin sitebinexp installsitebin : Getfile Oldconfig \
+	Setprefixvar siteprefix
 ?MAKE:	-pick add $@ %<
+?LINT:change prefixvar
 ?Y:TOP
+?D:sitebin=''
 ?S:sitebin:
 ?S:	This variable holds the name of the directory in which the user wants
 ?S:	to put add-on publicly executable files for the package in question.  It
@@ -25,10 +27,12 @@
 ?S:		MakeMaker Makefile.PL
 ?S:	or equivalent.  See INSTALL for details.
 ?S:.
+?D:sitebinexp=''
 ?S:sitebinexp:
 ?S:	This is the same as the sitebin variable, but is filename expanded at
 ?S:	configuration time, for use in your makefiles.
 ?S:.
+?D:installsitebin=''
 ?S:installsitebin:
 ?S:	This variable is usually the same as sitebinexp, unless you are on
 ?S:	a system running AFS, in which case they may differ slightly. You
@@ -42,12 +46,6 @@ esac
 fn=d~
 rp='Pathname where the add-on public executables should be installed?'
 . ./getfile
-sitebin="$ans"
-sitebinexp="$ansexp"
-: Change installation prefix, if necessary.
-if $test X"$prefix" != X"$installprefix"; then
-	installsitebin=`echo $sitebinexp | sed "s#^$prefixexp#$installprefixexp#"`
-else
-	installsitebin="$sitebinexp"
-fi
+prefixvar=sitebin
+. ./setprefixvar
 

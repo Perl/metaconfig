@@ -16,11 +16,12 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  16:21:35  ram
 ?RCS: patch61: created
 ?RCS:
-?MAKE:sitelib sitelibexp installsitelib sitelib_stem: cat Getfile \
-	Oldconfig Prefixit package installprefix installprefixexp \
-	prefix prefixexp version test sed installstyle siteprefix
+?MAKE:sitelib sitelibexp installsitelib sitelib_stem: cat Getfile Oldconfig \
+	Setprefixvar Prefixit package version sed installstyle siteprefix
 ?MAKE:	-pick add $@ %<
+?LINT:change prefixvar
 ?Y:TOP
+?D:sitelib=''
 ?S:sitelib:
 ?S:	This variable contains the eventual value of the SITELIB symbol,
 ?S:	which is the name of the private library for this package.  It may
@@ -32,10 +33,12 @@
 ?S:		MakeMaker Makefile.PL
 ?S:	or equivalent.  See INSTALL for details.
 ?S:.
+?D:sitelibexp=''
 ?S:sitelibexp:
 ?S:	This variable is the ~name expanded version of sitelib, so that you
 ?S:	may use it directly in Makefiles or shell scripts.
 ?S:.
+?D:installsitelib=''
 ?S:installsitelib:
 ?S:	This variable is really the same as sitelibexp but may differ on
 ?S:	those systems using AFS. For extra portability, only this variable
@@ -97,13 +100,7 @@ EOM
 fn=d~+
 rp='Pathname for the site-specific library files?'
 . ./getfile
-sitelib="$ans"
-sitelibexp="$ansexp"
+prefixvar=sitelib
+. ./setprefixvar
 sitelib_stem=`echo "$sitelibexp" | sed "s,/$version$,,"`
-: Change installation prefix, if necessary.
-if $test X"$prefix" != X"$installprefix"; then
-	installsitelib=`echo $sitelibexp | $sed "s#^$prefixexp#$installprefixexp#"`
-else
-	installsitelib="$sitelibexp"
-fi
 

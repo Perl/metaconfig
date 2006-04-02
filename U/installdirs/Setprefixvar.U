@@ -1,0 +1,49 @@
+?RCS: $Id: Setprefixvar.U,v 3.0 2006/04/01 17:25:29 hmbrand $
+?RCS:
+?RCS: Copyright (c) 2006-2006, H.Merijn Brand & Nicholas Clark
+?RCS:
+?RCS: This file is included with or a derivative work of a file included
+?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
+?RCS: In accordance with clause 7 of dist's modified Artistic License:
+?RCS:
+?RCS:   You may distribute under the terms of either the GNU General Public
+?RCS:   License or the Artistic License, as specified in the README file.
+?RCS:
+?X:
+?X: This unit sets up the scripts installprefix and setprefixvar, so code
+?X: in other parts can be more simple and maintainable
+?X:
+?MAKE:Setprefixvar: Myread Getfile startsh eunicefix test \
+	prefix prefixexp installprefix installprefixexp
+?MAKE:	-pick add $@ %<
+?LINT:extern prefixvar
+?F:./setprefixvar
+?F:./installprefix
+: Perform the prefixexp/installprefixexp correction if necessary
+cat <<EOS >installprefix
+$startsh
+EOS
+cat <<'EOSC' >>installprefix
+: Change installation prefix, if necessary.
+if $test X"$prefix" != X"$installprefix"; then
+    eval "install${prefixvar}=\`echo \$${prefixvar}exp | sed \"s#^\$prefixexp#\$installprefixexp#\"\`"
+else
+    eval "install${prefixvar}=\"\$${prefixvar}exp\""
+fi
+EOSC
+chmod +x installprefix
+$eunicefix installprefix
+
+: Set variables such as privlib and privlibexp from the output of ./getfile
+: performing the prefixexp/installprefixexp correction if necessary.
+cat <<EOS >setprefixvar
+$startsh
+EOS
+cat <<'EOSC' >>setprefixvar
+eval "${prefixvar}=\"\$ans\""
+eval "${prefixvar}exp\=\"\$ansexp\""
+. ./installprefix
+EOSC
+chmod +x setprefixvar
+$eunicefix setprefixvar
+

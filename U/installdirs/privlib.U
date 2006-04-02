@@ -1,11 +1,11 @@
 ?RCS: $Id: privlib.U,v 3.1 1999/07/08 18:32:29 doughera Exp doughera $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: This file is included with or a derivative work of a file included
 ?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
 ?RCS: In accordance with clause 7 of dist's modified Artistic License:
-?RCS: 
+?RCS:
 ?RCS:     You may distribute under the terms of either the GNU General Public
 ?RCS:     License or the Artistic License, as specified in the README file.
 ?RCS:
@@ -29,21 +29,24 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:35  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:privlib privlibexp installprivlib: package cat Getfile \
-	Oldconfig prefix prefixexp installprefix installprefixexp \
-	Prefixit test version installstyle
+?MAKE:privlib privlibexp installprivlib: package cat Getfile Oldconfig \
+	Setprefixvar Prefixit version installstyle
 ?MAKE:	-pick add $@ %<
+?LINT:change prefixvar
 ?Y:TOP
+?D:privlib=''
 ?S:privlib:
 ?S:	This variable contains the eventual value of the PRIVLIB symbol,
 ?S:	which is the name of the private library for this package.  It may
 ?S:	have a ~ on the front. It is up to the makefile to eventually create
 ?S:	this directory while performing installation (with ~ substitution).
 ?S:.
+?D:privlibexp=''
 ?S:privlibexp:
 ?S:	This variable is the ~name expanded version of privlib, so that you
 ?S:	may use it directly in Makefiles or shell scripts.
 ?S:.
+?D:installprivlib=''
 ?S:installprivlib:
 ?S:	This variable is really the same as privlibexp but may differ on
 ?S:	those systems using AFS. For extra portability, only this variable
@@ -64,7 +67,7 @@
 ?H:.
 : determine where private library files go
 : Usual default is /usr/local/lib/perl5/$version.
-: Also allow things like /opt/perl/lib/$version, since 
+: Also allow things like /opt/perl/lib/$version, since
 : /opt/perl/lib/perl5... would be redundant.
 : The default "style" setting is made in installstyle.U
 case "$installstyle" in
@@ -81,12 +84,6 @@ EOM
 fn=d~+
 rp='Pathname where the private library files will reside?'
 . ./getfile
-privlib="$ans"
-privlibexp="$ansexp"
-: Change installation prefix, if necessary.
-if $test X"$prefix" != X"$installprefix"; then
-	installprivlib=`echo $privlibexp | sed "s#^$prefixexp#$installprefixexp#"`
-else
-	installprivlib="$privlibexp"
-fi
+prefixvar=privlib
+. ./setprefixvar
 

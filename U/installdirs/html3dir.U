@@ -1,7 +1,7 @@
 ?RCS: $Id: html3dir.U,v $
 ?RCS:
 ?RCS: Copyright (c) 1999 Andy Dougherty
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -10,24 +10,27 @@
 ?RCS:
 ?RCS: $Log: html3dir.U,v $
 ?RCS:
-?MAKE:html3dir html3direxp installhtml3dir: cat sed Loc \
-	spackage test Getfile Prefixit Prefixup Myread \
-	prefix prefixexp installprefix installprefixexp html1dir
+?MAKE:html3dir html3direxp installhtml3dir: cat sed Loc Myread \
+	spackage test Getfile Setprefixvar Prefixit Prefixup html1dir
 ?MAKE:	-pick add $@ %<
+?LINT:change prefixvar
 ?Y:TOP
+?D:html3dir=''
 ?S:html3dir:
 ?S:	This variable contains the name of the directory in which html
 ?S:	source pages are to be put.  This directory is for pages
 ?S:	that describe libraries or modules.  It is intended to
 ?S:	correspond roughly to section 3 of the Unix manuals.
 ?S:.
+?D:html3direxp=''
 ?S:html3direxp:
 ?S:	This variable is the same as the html3dir variable, but is filename
 ?S:	expanded at configuration time, for convenient use in makefiles.
 ?S:.
+?D:installhtml3dir=''
 ?S:installhtml3dir:
-?S:	This variable is really the same as html3direxp, unless you are 
-?S:	using a different installprefix.  For extra portability, you 
+?S:	This variable is really the same as html3direxp, unless you are
+?S:	using a different installprefix.  For extra portability, you
 ?S:	should only use this variable within your makefiles.
 ?S:.
 : determine where html pages for libraries and modules go
@@ -48,14 +51,8 @@ esac
 fn=dn+~
 rp="Directory for the $spackage module html pages?"
 . ./getfile
-html3dir="$ans"
-html3direxp="$ansexp"
+prefixvar=html3dir
+. ./setprefixvar
 : Use ' ' for none so value is preserved next time through Configure
 $test X"$html3dir" = "X" && html3dir=' '
-: Change installation prefix, if necessary.
-if $test X"$prefix" != X"$installprefix"; then
-	installhtml3dir=`echo $html3direxp | sed "s#^$prefixexp#$installprefixexp#"`
-else
-	installhtml3dir="$html3direxp"
-fi
 
