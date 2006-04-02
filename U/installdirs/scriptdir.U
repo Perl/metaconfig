@@ -42,7 +42,6 @@
 ?S:	This variable is the same as scriptdir, but is filename expanded
 ?S:	at configuration time, for programs not wanting to bother with it.
 ?S:.
-?D:installscript=''
 ?S:installscript:
 ?S:	This variable is usually the same as scriptdirexp, unless you are on
 ?S:	a system running AFS, in which case they may differ slightly. You
@@ -62,6 +61,7 @@
 ?H:#define SCRIPTDIR "$scriptdir"	/**/
 ?H:#define SCRIPTDIR_EXP "$scriptdirexp"	/**/
 ?H:.
+?T:installscriptdir
 : determine where public executable scripts go
 set scriptdir scriptdir
 eval $prefixit
@@ -94,6 +94,9 @@ rp='Where do you keep publicly executable scripts?'
 if $test "X$ansexp" != "X$scriptdirexp"; then
 	installscript=''
 fi
+installscriptdir=''
 prefixvar=scriptdir
 . ./setprefixvar
+: A little fix up for an irregularly named variable.
+installscript="$installscriptdir"
 
