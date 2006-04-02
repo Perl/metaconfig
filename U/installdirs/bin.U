@@ -27,12 +27,14 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:26  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:bin binexp installbin userelocatableinc: Myread Prefixit Getfile \
-	Setvar Setprefixvar Oldconfig test prefix prefixexp
+?MAKE:bin binexp installbin userelocatableinc initialinstalllocation: \
+	Myread Prefixit Getfile Setvar Setprefixvar Oldconfig \
+	test prefix prefixexp
 ?MAKE:	-pick add $@ %<
 ?LINT:change prefix
 ?LINT:change prefixexp
 ?LINT:change prefixvar
+?LINT:change installprefixexp
 ?Y:TOP
 ?D:bin=''
 ?S:bin:
@@ -59,6 +61,9 @@
 ?S: 	Any @INC paths starting ".../" are relocated relative to the directory
 ?S: 	containing the perl binary, and a logical cleanup of the path is then
 ?S: 	made around the join point (removing "dir/../" pairs)
+?S:.
+?S:initialinstalllocation:
+?S:	The initial install location.
 ?S:.
 ?C:BIN:
 ?C:	This symbol holds the path of the bin directory where the package will
@@ -116,8 +121,12 @@ eval $setvar
 : Default prefix is now "up one level from where the binaries are"
 case "$userelocatableinc" in
 $define|true|[yY]*)
+    initialinstalllocation="$binexp"
+    bin=".../"
+    binexp=".../"
     prefix=".../.."
     prefixexp=".../.."
+    installprefixexp=".../.."
     ;;
 esac
 
