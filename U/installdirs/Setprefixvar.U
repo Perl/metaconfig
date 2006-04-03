@@ -41,7 +41,10 @@ $startsh
 EOS
 cat <<'EOSC' >>setprefixvar
 eval "${prefixvar}=\"\$ans\""
-eval "${prefixvar}exp\=\"\$ansexp\""
+?X: metalint will see the next line as one that assigns to $exp
+?X: declaring exp as a temp variable exp will catch that.
+?T:exp
+eval "${prefixvar}exp=\"\$ansexp\""
 . ./installprefix
 EOSC
 chmod +x setprefixvar
