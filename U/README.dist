@@ -2,6 +2,7 @@
 		     Perl5 Metaconfig Units
 
 	     Copyright (c) 1996-1998, Andy Dougherty
+	     Copyright (c) 1999-2006, H.Merijn Brand
 			All rights reserved.
 
 These units are the ones I used to build Configure and config_h.SH
@@ -41,15 +42,21 @@ Instructions:
 
 6.  From your main perl5 source directory, run
 
+	metalint
+
+    and repair every failure it reports.
+
+7.  From your main perl5 source directory, run
+
 	metaconfig -m
 
-7.  Edit U/mkglossary to point to your dist-3.0pl70 location.
-    (See comments at the top.)
+8.  Edit U/mkglossary and/or U/mkgloss.pl to point to your dist-3.0pl70
+    location.  (See comments at the top.)
 
-8.  Run the U/mksample script to update the contents of the Porting/
-    subdirectory.
+9.  Run the U/mksample script to update the contents of the Porting/
+    subdirectory, or run all parts by hand. (see README)
 
-9.  Let me know about any changes, corrections, or enhancements.
+10. Let me know about any changes, corrections, or enhancements.
 
 Things to watch out for:
 
@@ -60,6 +67,11 @@ Things to watch out for:
     why MPE/iX needed some of the patches, so I may have missed
     something important.  I did try to flag questionable changes in
     the individual units.
+    The Configure as generated in the 5.9.x branch leading towards
+    5.10, is also used exactly as is without changes in the 5.8.x
+    and 5.6.x branches, so do not remove support for features that
+    are availabvle in those branches, but are removed from devel (e.g.
+    perl5005threads).
 
 2.  Future support of better random number generators should probably
     start with the randfunc.U unit included here.  It's currently

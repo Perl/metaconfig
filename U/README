@@ -2,6 +2,7 @@
 		     Perl5 Metaconfig Units
 
 	     Copyright (c) 1996-1998, Andy Dougherty
+	     Copyright (c) 1999-2006, H.Merijn Brand
 			All rights reserved.
 
 These units are the ones used to build Configure and config_h.SH
@@ -22,12 +23,21 @@ Glossary.patch
     complain.  This patch silences those warnings.  As new units are
     added and Configure is regenerated, this patch may need more and more
     'fuzz' to be applied.  It should be freshly regenerated every once
-    in a while.
+    in a while. See also mkgloss.pl
+
+ln-all.pl
+    Re-generate the all/ folder
 
 mkglossary
     A script to regenerate Porting/Glossary.  You have to manually
     edit the top of the script to point the location of your metaconfig 
-    units.  It is called automatically by 'mksample'.
+    units.  It is called automatically by 'mksample'. See also mkgloss.pl
+
+mkgloss.pl
+    A perl script that calls U/mkglossary from the perl source tree, sorts
+    the list of symbols, and applies the patch mentioned in Glossary.patch.
+    When called on its own, redirect the output to a temporary file,  and
+    compare that file to Porting/Glossary before applying.
 
 mksample
     A script to regenerate Porting/config.sh and Porting/config.H.
@@ -54,6 +64,10 @@ a_dvisory/
 acl/
     This is an old patch to begin to detect and use ACL (access
     control list) file protection schemes.
+
+all/
+    A folder that conveniently holds symbolic links to all the modules
+    that are used to build the current Configure and config_h.SH.
 
 compline/
     These are similar to the standard units, but I have modified them
