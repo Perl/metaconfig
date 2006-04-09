@@ -17,6 +17,7 @@
 	prefix prefixexp installprefix installprefixexp
 ?MAKE:	-pick add $@ %<
 ?LINT:extern prefixvar
+?T:exp
 ?F:./setprefixvar
 ?F:./installprefix
 : Perform the prefixexp/installprefixexp correction if necessary
@@ -42,8 +43,7 @@ EOS
 cat <<'EOSC' >>setprefixvar
 eval "${prefixvar}=\"\$ans\""
 ?X: metalint will see the next line as one that assigns to $exp
-?X: declaring exp as a temp variable exp will catch that.
-?T:exp
+?X: declaring exp as a temp with ?T: variable exp will catch that.
 eval "${prefixvar}exp=\"\$ansexp\""
 . ./installprefix
 EOSC
