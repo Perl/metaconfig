@@ -31,7 +31,8 @@ while (<>) {
     s{^\s+$perl/U}{} or next;
     chomp;
     (my $f = $_) =~ s{.*/}{};
-    symlink "../$_", $f;
+    (my $l = "../$_") =~ s{//+}{/}g;
+    symlink $l, $f;
     }
 
 for (qw( Configure config_h.SH )) {
