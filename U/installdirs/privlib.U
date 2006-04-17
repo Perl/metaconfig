@@ -30,7 +30,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:privlib privlibexp installprivlib: package cat Getfile Oldconfig \
-	Setprefixvar Prefixit version installstyle
+	Setprefixvar Prefixit version installstyle binexp
 ?MAKE:	-pick add $@ %<
 ?LINT:change prefixvar
 ?Y:TOP
@@ -81,6 +81,8 @@ There are some auxiliary files for $package that need to be put into a
 private library directory that is accessible by everyone.
 
 EOM
+?X: Force dependancy on bin.U
+fn=$binexp
 fn=d~+
 rp='Pathname where the private library files will reside?'
 . ./getfile
