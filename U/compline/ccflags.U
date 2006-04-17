@@ -78,6 +78,7 @@
 ?S:	It's not much, but it parallels the loclibpth stuff in libpth.U.
 ?S:.
 ?T:inctest thisincl xxx flag inclwanted ftry previous thislibdir
+?T:EBUGGING DEBUGGING
 ?D:cppflags=''
 ?D:ccflags=''
 ?D:ldflags=''
@@ -89,6 +90,10 @@
 ?INIT::
 ?INIT:: no include file wanted by default
 ?INIT:inclwanted=''
+?INIT:
+?INIT:: Enable -DEBUGGING and -DDEBUGGING from the command line
+?INIT:EBUGGING=''
+?INIT:DEBUGGING=old
 ?INIT:
 : determine optimization, if desired, or use for debug flag also
 ?X: Allow for Configure -Uoptimize -- it's not strictly sensible, but
@@ -113,16 +118,46 @@ case "$optimize" in
 'none') optimize=" ";;
 esac
 
+: Check what DEBUGGING is required from the command line
+: -DEBUGGING      or -DDEBUGGING or
+: -DEBUGGING=both			= -g + -DDEBUGGING
+: -DEBUGGING=-g   or -Doptimize=-g	= -g
+: -DEBUGGING=none or -UDEBUGGING	=
+: -DEBUGGING=old  or -DEBUGGING=default	= ? $optimize
+case "$EBUGGING" in
+'')	;;
+*)	DEBUGGING=$EBUGGING ;;
+esac
+
+case "$DEBUGGING" in
+-g|$define)
+    case "$optimize" in
+	*-g*) ;;
+	*)    optimize="$optimize -g" ;;
+    esac ;;
+none|$undef)
+    case "$optimize" in
+	*-g*)	set `echo "X $optimize " | sed 's/ -g / /'`
+		shift
+		optimize="$*"
+		;;
+    esac ;;
+esac
+
 dflt=''
+case "$DEBUGGING" in
+both|$define) dflt='-DDEBUGGING'
+esac
+
 : We will not override a previous value, but we might want to
 : augment a hint file
 case "$hint" in
 default|recommended)
 	case "$gccversion" in
-	1*) dflt='-fpcc-struct-return' ;;
+	1*) dflt="$dflt -fpcc-struct-return" ;;
 	esac
-	case "$optimize" in
-	*-g*) dflt="$dflt -DDEBUGGING";;
+	case "$optimize:$DEBUGGING" in
+	*-g*:old) dflt="$dflt -DDEBUGGING";;
 	esac
 ?X: check for POSIXized ISC
 	case "$gccversion" in
