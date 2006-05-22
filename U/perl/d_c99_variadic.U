@@ -1,0 +1,62 @@
+?RCS: Copyright (c) 2006-2006, H.Merijn Brand
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_c99_variadic_macros: Compile Setvar cat rm run i_stdarg i_stdlib
+?MAKE:	-pick add $@ %<
+?S:d_c99_variadic_macros:
+?S:	This variable conditionally defines the HAS_C99_VARIADIC_MACROS
+?S:	symbol, which indicates to the C program that C99 variadic macros
+?S:	are available.
+?S:.
+?C:HAS_C99_VARIADIC_MACROS:
+?C:	If defined, the compiler supports C99 variadic macros.
+?C:.
+?H:#$d_c99_variadic_macros	HAS_C99_VARIADIC_MACROS	/**/
+?H:.
+?LINT:set d_c99_variadic_macros
+: see if the Compiler supports C99 variadic macros
+case "$i_stdarg$i_stdlib" in
+    "$define$define")
+    echo "You have <stdarg.h> and <stdlib.h>, so checking for C99 variadic macros." >&4
+    $cat >try.c <<EOCP
+#include <stdio.h>
+#include <stdarg.h>
+
+#define foo(buffer, format, ...) sprintf(buffer, format, __VA_ARGS__)
+
+int main() {
+  char buf[20];
+  foo(buf, "%d %g %.*s", 123, 456.0, (int)3, "789fail");
+  puts(buf);
+  return 0;
+}
+EOCP
+    set try
+    if eval $compile && $run ./try 2>&1 >/dev/null; then
+	case "`$run ./try`" in
+	    "123 456 789")
+	    echo "You have C99 variadic macros." >&4
+	    d_c99_variadic_macros="$define"
+	    ;;
+	    *)
+	    echo "You don't have functional C99 variadic macros." >&4
+	    d_c99_variadic_macros="$undef"
+	    ;;
+	esac
+    else
+	echo "I couldn't compile and run the test program, so I assume that you don't have functional C99 variadic macros." >&4
+	d_c99_variadic_macros="$undef"
+    fi
+    $rm -f try.* try core core.try.*
+    ;;
+    *)
+    echo "You don't have <stdarg.h> and <stdlib.h>, so not checking for C99 variadic macros." >&4
+    d_c99_variadic_macros="$undef"
+    ;;
+esac
+
