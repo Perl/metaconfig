@@ -99,6 +99,8 @@ if $test "X$ansexp" != "X$binexp"; then
 fi
 prefixvar=bin
 : XXX Bug? -- ignores Configure -Dinstallprefix setting.
+: XXX If this is fixed, also fix the "start perl" hunk below, which relies on
+:     this via initialinstalllocation
 . ./setprefixvar
 
 case "$userelocatableinc" in
@@ -123,10 +125,10 @@ esac
 set userelocatableinc
 eval $setvar
 
+initialinstalllocation="$binexp"
 : Default prefix is now "up one level from where the binaries are"
 case "$userelocatableinc" in
 $define|true|[yY]*)
-    initialinstalllocation="$binexp"
     bin=".../"
     binexp=".../"
     prefix=".../.."

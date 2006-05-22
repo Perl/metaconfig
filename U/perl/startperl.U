@@ -1,11 +1,11 @@
 ?RCS: $Id: startperl.U,v 3.0 1993/08/18 12:09:50 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: This file is included with or a derivative work of a file included
 ?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
 ?RCS: In accordance with clause 7 of dist's modified Artistic License:
-?RCS: 
+?RCS:
 ?RCS:     You may distribute under the terms of either the GNU General Public
 ?RCS:     License or the Artistic License, as specified in the README file.
 ?RCS:
@@ -15,7 +15,8 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:50  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:startperl: cat Myread sharpbang binexp test versiononly version
+?MAKE:startperl: cat Myread sharpbang initialinstalllocation test \
+	versiononly version
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?X: This is different from dist's standard startperl.U unit because
@@ -39,6 +40,9 @@
 ?H:#define STARTPERL "$startperl"		/**/
 ?H:.
 : figure out how to guarantee perl startup
+: XXX Note that this currently takes advantage of the bug that binexp ignores
+:     the Configure -Dinstallprefix setting, which in turn means that under
+:     relocatable @INC, initialinstalllocation is what binexp started as.
 case "$startperl" in
 '')
 	case "$sharpbang" in
@@ -48,13 +52,13 @@ case "$startperl" in
 I can use the #! construct to start perl on your system. This will
 make startup of perl scripts faster, but may cause problems if you
 want to share those scripts and perl is not in a standard place
-($binexp/perl) on all your platforms. The alternative is to force
-a shell by starting the script with a single ':' character.
+($initialinstalllocation/perl) on all your platforms. The alternative
+is to force a shell by starting the script with a single ':' character.
 
 EOH
 		case "$versiononly" in
-		"$define")      dflt="$binexp/perl$version";;  
-		*)              dflt="$binexp/perl";;
+		"$define")      dflt="$initialinstalllocation/perl$version";;
+		*)              dflt="$initialinstalllocation/perl";;
 		esac
 		rp='What shall I put after the #! to start up perl ("none" to not use #!)?'
 		. ./myread

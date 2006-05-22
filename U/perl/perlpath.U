@@ -1,11 +1,11 @@
 ?RCS: $Id: perlpath.U,v 3.0.1.2 1995/09/25 09:17:04 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: This file is included with or a derivative work of a file included
 ?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
 ?RCS: In accordance with clause 7 of dist's modified Artistic License:
-?RCS: 
+?RCS:
 ?RCS:     You may distribute under the terms of either the GNU General Public
 ?RCS:     License or the Artistic License, as specified in the README file.
 ?RCS:
@@ -25,8 +25,8 @@
 ?X:
 ?X: The purpose of this unit is to locate perl good enough to construct a #!
 ?X:
-?MAKE:perlpath: cat Getfile Loc Myread Oldconfig binexp startperl \
-	version versiononly
+?MAKE:perlpath: cat Getfile Loc Myread Oldconfig initialinstalllocation \
+	startperl version versiononly
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:perlpath:
@@ -50,8 +50,8 @@
 case "$perlpath" in
 '')
 	case "$versiononly" in
-	"$define")	perlpath="$binexp/perl$version";;
-	*)		perlpath="$binexp/perl";;
+	"$define")	perlpath="$initialinstalllocation/perl$version";;
+	*)		perlpath="$initialinstalllocation/perl";;
 	esac
 	case "$startperl" in
 	*!*) ;;
@@ -61,10 +61,10 @@ case "$perlpath" in
 I will use the "eval 'exec'" idiom to start Perl on your system.
 I can use the full path of your Perl binary for this purpose, but
 doing so may cause problems if you want to share those scripts and
-Perl is not always in a standard place ($binexp/perl).
+Perl is not always in a standard place ($initialinstalllocation/perl).
 
 EOH
-		dflt="$binexp/perl"
+		dflt="$initialinstalllocation/perl"
 		rp="What path shall I use in \"eval 'exec'\"?"
 		. ./myread
 		perlpath="$ans"
