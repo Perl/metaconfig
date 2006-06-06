@@ -45,7 +45,7 @@ echo "Checking for GNU cc in disguise and/or its version number..." >&4
 $cat >try.c <<EOM
 #include <stdio.h>
 int main() {
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 #ifdef __VERSION__
 	printf("%s\n", __VERSION__);
 #else
