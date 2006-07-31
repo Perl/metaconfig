@@ -166,7 +166,7 @@ extern int errno;
 #else
 #include <strings.h>
 #endif
-$signal_t blech(x) int x; { exit(3); }
+$signal_t blech(int x) { exit(3); }
 EOCP
 	$cat >> try.c <<'EOCP'
 int main()

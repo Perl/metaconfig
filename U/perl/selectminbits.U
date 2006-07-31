@@ -75,7 +75,7 @@ $selecttype b;
 #define NBYTES (S * 8 > MINBITS ? S : MINBITS/8)
 #define NBITS  (NBYTES * 8)
 int main() {
-    char *s = malloc(NBYTES);
+    char *s = (char *)malloc(NBYTES);
     struct timeval t;
     int i;
     FILE* fp;

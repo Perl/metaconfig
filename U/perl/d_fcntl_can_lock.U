@@ -34,7 +34,7 @@ $cat >try.c <<EOCP
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-$signal_t blech(x) int x; { exit(3); }
+$signal_t blech(int x) { exit(3); }
 int main() {
 #if defined(F_SETLK) && defined(F_SETLKW)
      struct flock flock;

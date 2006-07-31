@@ -39,7 +39,7 @@ case "$d_u32align" in
 #define U8 $u8type
 #include <signal.h>
 #ifdef SIGBUS
-$signal_t bletch(s) int s; { exit(4); }
+$signal_t bletch(int s) { exit(4); }
 #endif
 int main() {
 #if BYTEORDER == 0x1234 || BYTEORDER == 0x4321

@@ -409,7 +409,7 @@ $cat <<EOP >try.c
 #include <signal.h>
 #ifdef SIGFPE
 $volatile int bletched = 0;
-$signal_t blech(s) int s; { bletched = 1; }
+$signal_t blech(int s) { bletched = 1; }
 #endif
 int main() {
     $uvtype u = 0;
@@ -481,7 +481,7 @@ $cat <<EOP >try.c
 #include <signal.h>
 #ifdef SIGFPE
 $volatile int bletched = 0;
-$signal_t blech(s) int s; { bletched = 1; }
+$signal_t blech(int s) { bletched = 1; }
 #endif
 
 int checkit($nvtype d, char *where) {

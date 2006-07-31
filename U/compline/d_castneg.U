@@ -64,11 +64,11 @@ $cat >try.c <<EOCP
 #endif
 #include <sys/types.h>
 #include <signal.h>
-$signal_t blech(s) int s; { exit(7); }
-$signal_t blech_in_list(s) int s; { exit(4); }
-unsigned long dummy_long(p) unsigned long p; { return p; }
-unsigned int dummy_int(p) unsigned int p; { return p; }
-unsigned short dummy_short(p) unsigned short p; { return p; }
+$signal_t blech(int s) { exit(7); }
+$signal_t blech_in_list(int s) { exit(4); }
+unsigned long dummy_long(unsigned long p) { return p; }
+unsigned int dummy_int(unsigned int p) { return p; }
+unsigned short dummy_short(unsigned short p) { return p; }
 int main()
 {
 	double f;
