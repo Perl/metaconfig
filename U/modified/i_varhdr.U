@@ -109,6 +109,7 @@ va_dcl
 	p = va_arg(ap, char *);
 #endif
 	va_end(ap);
+	return 0;
 }
 EOP
 $cat > varargs <<EOP
