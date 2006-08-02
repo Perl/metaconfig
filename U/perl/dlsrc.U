@@ -18,7 +18,7 @@
 ?X:
 ?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags: \
 	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar \
-	cc ccflags ldflags ls gccversion cat rsrc src run i_stdlib
+	cc ccflags ldflags ls gccversion cat rsrc src run i_stdlib i_unistd
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:usedl:
@@ -164,6 +164,10 @@ EOM
 #$i_stdlib I_STDLIB
 #ifdef I_STDLIB
 #include <stdlib.h>
+#endif
+#$i_unistd I_UNISTD
+#ifdef I_UNISTD
+#include <unistd.h>
 #endif
 int main() {
 	char b[4];
