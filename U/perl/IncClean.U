@@ -7,7 +7,7 @@
 ?X: This unit produces a bit of shell code that must be dotted in order
 ?X: to make quick check on whether the current C compiler is working.
 ?X:	
-?MAKE:IncClean: ccflags usrinc
+?MAKE:IncClean: ccflags cppflags
 ?MAKE:	-pick add $@ %<
 ?LINT:extern ccflags
 ?LINT:change ccflags
