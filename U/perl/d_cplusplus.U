@@ -1,0 +1,48 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2005 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_cplusplus: Compile Inlibc Setvar run cat rm
+?MAKE:	-pick add $@ %<
+?S:d_cplusplus (d_cplusplus.U):
+?S:	This variable conditionally defines the USE_CPLUSPLUS symbol, which
+?S:	indicates that a C++ compiler was used to compiled Perl and will be
+?S:	used to compile extensions.
+?S:.
+?C:USE_CPLUSPLUS:
+?C:	This symbol, if defined, indicates that a C++ compiler was
+?C:	used to compiled Perl and will be used to compile extensions.
+?C:.
+?H:#$d_cplusplus USE_CPLUSPLUS		/**/
+?H:.
+?LINT:set d_cplusplus
+
+echo " "
+echo "Checking for C++..." >&4
+cat >try.c <<'EOCP'
+#include <stdio.h>
+int main(void)
+{
+#ifdef __cplusplus
+    printf("define\n");
+#else
+    printf("undef\n");
+#endif
+    return 0;
+}
+EOCP
+set try
+if eval $compile_ok && $run ./try >cplusplus$$; then
+	val=`$cat cplusplus$$`
+	echo "You are using a C++ compiler."
+else
+	val="$undef"
+	echo "You are not using a C++ compiler."
+fi
+$rm -f try try.* cplusplus$$
+set d_cplusplus
+eval $setvar
+

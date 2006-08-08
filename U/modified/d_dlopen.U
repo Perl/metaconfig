@@ -1,0 +1,57 @@
+?RCS: $Id: d_dlopen.U,v 3.0.1.2 1995/07/25 13:52:56 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: d_dlopen.U,v $
+?RCS: Revision 3.0.1.2  1995/07/25  13:52:56  ram
+?RCS: patch56: force compile-link test since symbol might lie in crt0.o (ADO)
+?RCS:
+?RCS: Revision 3.0.1.1  1994/08/29  16:07:34  ram
+?RCS: patch32: created by ADO
+?RCS:
+?MAKE:d_dlopen: Inlibc runnm d_cplusplus ccflags gccversion
+?MAKE:	-pick add $@ %<
+?S:d_dlopen:
+?S:	This variable conditionally defines the HAS_DLOPEN symbol, which
+?S:	indicates to the C program that the dlopen() routine is available.
+?S:.
+?C:HAS_DLOPEN :
+?C:	This symbol, if defined, indicates that the dlopen routine is
+?C:	available.
+?C:.
+?H:#$d_dlopen HAS_DLOPEN		/**/
+?H:.
+?T: xxx_runnm
+?T: xxx_ccflags
+?LINT:set d_dlopen
+?X: We don't permanently change runnm and ccflags, but we do temporarily.
+?LINT: change runnm
+?LINT: change ccflags
+: see if dlopen exists
+?X: On NetBSD and FreeBSD, dlopen is available, but it is in 
+?X: /usr/lib/crt0.o, not in any of the libraries.  Therefore, do not
+?X: use the nm extraction, but use a real compile and link test instead.
+xxx_runnm="$runnm"
+xxx_ccflags="$ccflags"
+runnm=false
+: with g++ one needs -shared to get is-in-libc to work for dlopen
+case "$gccversion" in
+'')	;;
+*)	case "$d_cplusplus" in
+	"$define") ccflags="$ccflags -shared" ;;
+	esac
+	;;
+esac
+set dlopen d_dlopen
+eval $inlibc
+runnm="$xxx_runnm"
+ccflags="$xxx_ccflags"
+

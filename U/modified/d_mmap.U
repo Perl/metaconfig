@@ -26,7 +26,7 @@
 ?C:Mmap_t:
 ?C:	This symbol holds the return type of the mmap() system call
 ?C:	(and simultaneously the type of the first argument).
-?C:	Usually set to 'void *' or 'cadd_t'.
+?C:	Usually set to 'void *' or 'caddr_t'.
 ?C:.
 ?H:#$d_mmap HAS_MMAP		/**/
 ?H:#define Mmap_t $mmaptype	/**/
