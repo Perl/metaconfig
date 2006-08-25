@@ -134,6 +134,18 @@ EOF
 	exit 1
 fi
 
+if test ! -c /dev/null ; then
+	cat >&4 <<EOF
+***
+*** I'm sorry, but /dev/null appears to be a file rather than a device.
+*** Please consult your operating sytem's notes for making a device
+*** in /dev.
+*** Cannot continue, aborting.
+***
+EOF
+	exit 1
+fi
+
 : compute my invocation name
 me=$0
 case "$0" in
