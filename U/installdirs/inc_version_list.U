@@ -59,30 +59,34 @@ use File::Basename;
 \$archname = "$archname";
 EOPL
 	$cat >> getverlist <<'EOPL'
+# The list found is store twice for each entry: the original name, and
+# the binary broken down version as pack "sss", so sorting is easy and
+# unambiguous. This will work for all versions that have a maximum of
+# three digit groups, separate by '.'s or '_'s. Names are extended with
+# ".0.0" to ensure at least three elements for the pack.
+#					-- H.Merijn Brand (m)'06 23-10-2006
+
 # Can't have leading @ because metaconfig interprets it as a command!
 ;@inc_version_list=();
 # XXX Redo to do opendir/readdir?
 if (-d $stem) {
     chdir($stem);
-    ;@candidates = glob("5.*");
+    ;@candidates = map {
+	[ $_, pack "sss", split m/[._]/, "$_.0.0" ] } glob("5.*");
 }
 else {
     ;@candidates = ();
 }
 
-# XXX ToDo:  These comparisons must be reworked when two-digit
-# subversions come along, so that 5.7.10 compares as greater than
-# 5.7.3!  By that time, hope that 5.6.x is sufficiently
-# widespread that we can use the built-in version vectors rather
-# than reinventing them here.  For 5.6.0, however, we must
-# assume this script will likely be run by 5.005_0x.  --AD 1/2000.
+($pversion, $aversion, $vsn5005) = map {
+    pack "sss", split m/[._]/, "$_.0.0" } $version, $api_versionstring, "5.005";
 foreach $d (@candidates) {
-    if ($d lt $version) {
-	if ($d ge $api_versionstring) {
-	    unshift(@inc_version_list, grep { -d } "$d/$archname", $d);
+    if ($d->[1] lt $pversion) {
+	if ($d->[1] ge $aversion) {
+	    unshift(@inc_version_list, grep { -d } $d->[0]."/$archname", $d->[0]);
 	}
-	elsif ($d ge "5.005") {
-	    unshift(@inc_version_list, grep { -d } $d);
+	elsif ($d->[1] ge $vsn5005) {
+	    unshift(@inc_version_list, grep { -d } $d->[0]);
 	}
     }
     else {
