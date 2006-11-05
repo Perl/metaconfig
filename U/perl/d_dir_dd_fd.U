@@ -1,0 +1,61 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2006-2006, H.Merijn Brand
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS:
+?MAKE:d_dir_dd_fd: Compile cat rm Setvar i_dirent i_stdlib
+?MAKE:	-pick add $@ %<
+?S:d_dir_dd_fd (d_dir_dd_fd.U):
+?S:	This variable conditionally defines the HAS_DIR_DD_FD symbol, which
+?S:	indicates that the DIR directory stream type contains a member
+?S:	variable called dd_fd.
+?S:.
+?C:HAS_DIR_DD_FD:
+?C:	This symbol, if defined, indicates that the the DIR* dirstream
+?C:	structure contains a member variable named dd_fd.
+?C:.
+?H:#$d_dir_dd_fd HAS_DIR_DD_FD		/**/
+?H:.
+?LINT:set d_dir_dd_fd
+: Look for DIR.dd_fd
+case "$i_dirent" in
+"$define")
+    echo "Checking to see if DIR has a dd_fd member variable" >&4
+    $cat >try.c <<EOCP
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
+#include <dirent.h>
+
+int main() {
+    DIR dir;
+    dir.dd_fd = 1;
+    return 0;
+}
+EOCP
+    val=$undef
+    set try
+    if eval $compile; then
+        echo "Yes, it does."
+        val="$define"
+    else
+        echo "No, it does not."
+        val="$undef"
+    fi
+    ;;
+*)
+    echo "You don't have a <dirent.h>, so not checking for dd_fd." >&4
+    val="$undef"
+    ;;
+esac
+set d_dir_dd_fd
+eval $setvar
+$rm -f try try.*
+
