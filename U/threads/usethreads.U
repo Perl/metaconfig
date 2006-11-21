@@ -8,7 +8,7 @@
 ?RCS: $Log: usethreads.U,v $
 ?RCS:
 ?MAKE:usethreads useithreads use5005threads d_oldpthreads usereentrant: \
-	Myread Oldconfig Setvar test cat useperlio
+	Myread Oldconfig Setvar test cat useperlio patchlevel
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usethreads:
@@ -23,7 +23,7 @@
 ?S:use5005threads:
 ?S:	This variable conditionally defines the USE_5005THREADS symbol,
 ?S:	and indicates that Perl should be built to use the 5.005-based
-?S:	threading implementation.
+?S:	threading implementation. Only valid up to 5.8.x.
 ?S:.
 ?X: I'm putting old_pthreads in this unit because it might eventually
 ?X: be part of an automatic determination to see if we can use threads
@@ -48,12 +48,14 @@
 ?C:USE_5005THREADS:
 ?C:	This symbol, if defined, indicates that Perl should be built to
 ?C:	use the 5.005-based threading implementation.
+?C:	Only valid up to 5.8.x.
 ?C:.
 ?C:USE_THREADS:
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built to use threads.  At present, it is a synonym for
-?C:	USE_5005THREADS, but eventually the source ought to be changed
-?C:	to use this to mean _any_ threading implementation.
+?C:	USE_5005THREADS for perl older than 5.8 and USE_ITHREADS
+?C:	for 5.8.x and newer, but eventually the source ought to be
+?C:	changed to use this to mean _any_ threading implementation.
 ?C:.
 ?C:OLD_PTHREADS_API:
 ?C:	This symbol, if defined, indicates that Perl should
@@ -114,8 +116,9 @@ esac
 set usethreads
 eval $setvar
 
-case "$usethreads" in
-$define)
+if $test $patchlevel -lt 9; then
+    case "$usethreads" in
+    $define)
 	$cat <<EOM
 
 Since release 5.6, Perl has had two different threading implementations,
@@ -152,15 +155,15 @@ EOM
 	set use5005threads
 	eval $setvar
 	;;
-*)
+    *)
 	useithreads="$undef"
 	use5005threads="$undef"
 	;;
-esac
+    esac
 
 ?X: This is not supposed to be possible but with some trickery, maybe.
-case "$useithreads$use5005threads" in
-"$define$define")
+    case "$useithreads$use5005threads" in
+    "$define$define")
 	$cat >&4 <<EOM
 
 You cannot have both the ithreads and the 5.005 threads enabled
@@ -170,7 +173,35 @@ much less stable than the ithreads.
 EOM
 	use5005threads="$undef"
 	;;
-esac
+    esac
+
+else
+: perl-5.9.x and later
+
+    use5005threads="$undef"
+    case "$usethreads" in
+    $define)
+	: Default to ithreads unless overridden on command line or with
+	: old config.sh
+	dflt='y'
+	case "$useithreads" in
+		$undef|false|[nN]*) dflt='n';;
+	esac
+	rp='Use the newer interpreter-based ithreads?'
+	. ./myread
+	case "$ans" in
+	y|Y)    val="$define" ;;
+	*)      val="$undef" ;;
+	esac
+	set useithreads
+	eval $setvar
+	;;
+    *)
+	useithreads="$undef"
+	;;
+    esac
+
+fi
 
 if test X"$usethreads" = "X$define" -a "X$useperlio" = "Xundef"; then
 	cat >&4 <<EOF
