@@ -130,7 +130,7 @@ case "$EBUGGING" in
 esac
 
 case "$DEBUGGING" in
--g|$define)
+-g|both|$define)
     case "$optimize" in
 	*-g*) ;;
 	*)    optimize="$optimize -g" ;;
