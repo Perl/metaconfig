@@ -31,7 +31,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:55  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_vfork usevfork: Inlibc Myread Oldconfig Setvar
+?MAKE:d_vfork usevfork d_pseudofork: Inlibc Myread Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_vfork:
 ?S:	This variable conditionally defines the HAS_VFORK symbol, which
@@ -42,10 +42,20 @@
 ?S:	It is set to false when no vfork is available or when the user
 ?S:	explicitely requests not to use vfork.
 ?S:.
+?S:d_pseudofork:
+?S:	This variable conditionally defines the HAS_PSEUDOFORK symbol,
+?S:	which indicates that an emulation of the fork routine is available.
+?S:.
 ?C:HAS_VFORK (VFORK):
 ?C:	This symbol, if defined, indicates that vfork() exists.
 ?C:.
 ?H:#$d_vfork HAS_VFORK	/**/
+?H:.
+?C:HAS_PSEUDOFORK:
+?C:	This symbol, if defined, indicates that an emulation of the
+?C:	fork routine is available.
+?C:.
+?H:#$d_pseudofork HAS_PSEUDOFORK	/**/
 ?H:.
 ?M:vfork: HAS_VFORK
 ?M:#ifndef HAS_VFORK
@@ -67,7 +77,9 @@ val=''
 set vfork val
 eval $inlibc
 
-: Ok, but do we want to use it. vfork is reportedly unreliable in 
+d_pseudofork=$undef
+
+: Ok, but do we want to use it. vfork is reportedly unreliable in
 : perl on Solaris 2.x, and probably elsewhere.
 case "$val" in
 $define)
@@ -77,7 +89,7 @@ $define)
 	*) dflt='y';;
 	esac
 	cat <<'EOM'
- 
+
 Perl can only use a vfork() that doesn't suffer from strict
 restrictions on calling functions or modifying global data in
 the child.  For example, glibc-2.1 contains such a vfork()
