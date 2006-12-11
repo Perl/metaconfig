@@ -102,12 +102,14 @@ eval $find_extensions
 # recursive find above (and adding in general recursive finding breaks
 # SDBM_File/sdbm).  A.D.  10/25/2001.
 known_extensions="$known_extensions threads/shared"
-set X $nonxs_extensions
-shift
-nonxs_extensions="$*"
 set X $known_extensions
 shift
 known_extensions="$*"
+#  Ditto for IO/Compress/Base and IO/Compress/Zlib
+nonxs_extensions="$nonxs_extensions IO/Compress/Base IO/Compress/Zlib"
+set X $nonxs_extensions
+shift
+nonxs_extensions="$*"
 cd "$tdir"
 
 : Now see which are supported on this system.
