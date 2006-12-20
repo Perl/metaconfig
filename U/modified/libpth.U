@@ -75,6 +75,7 @@
 ?X:	/usr/shlib is for OSF/1 systems.
 ?INIT:test -f /usr/shlib/libc.so && glibpth="/usr/shlib $glibpth"
 ?INIT:test -f /shlib/libc.so     && glibpth="/shlib $glibpth"
+?INIT:test -d /usr/lib64         && glibpth="$glibpth /lib64 /usr/lib64 /usr/local/lib64"
 ?INIT:
 ?INIT:: Private path used by Configure to find libraries.  Its value
 ?INIT:: is prepended to libpth. This variable takes care of special
