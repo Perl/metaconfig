@@ -431,10 +431,9 @@ int main() {
       if (($uvtype)d != (u - 1))
         break;
 #ifdef SIGFPE
-      if (bletched) {
+      if (bletched)
 	break;
 #endif
-      }	
     }
     printf("%d\n", ((i == n) ? -n : i));
     exit(0);
