@@ -454,7 +454,7 @@ case "$nv_preserves_uv_bits" in
 [1-9]*)	$echo "Your NVs can preserve only $nv_preserves_uv_bits bits of your UVs."  2>&1
 	d_nv_preserves_uv="$undef" ;;
 *)	$echo "Can't figure out how many bits your NVs preserve." 2>&1
-	nv_preserves_uv_bits="$undef" ;;
+	nv_preserves_uv_bits="0" ;;
 esac
 
 $rm -f try.* try
