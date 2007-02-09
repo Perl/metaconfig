@@ -1,0 +1,64 @@
+?RCS: $Id$
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_signbit: nvtype Compile Setvar cat run rm echo n c i_math i_sunmath
+?MAKE:	-pick add $@ %<
+?S:d_signbit:
+?S:	This variable conditionally defines the HAS_SIGNBIT symbol, which
+?S:	indicates to the C program that the signbit() routine is available
+?S:	and safe to use with perl's intern NV type.
+?S:.
+?C:HAS_SIGNBIT:
+?C:	This symbol, if defined, indicates that the signbit routine is
+?C:	available to check if the given number has the sign bit set.
+?C:	This should include correct testing of -0.0.  This will only be set
+?C:	if the signbit() routine is safe to use with the NV type used internally
+?C:	in perl.  Users should call Perl_signbit(), which will be #defined to
+?C:	the system's signbit() function or macro if this symbol is defined.
+?C:.
+?H:#$d_signbit HAS_SIGNBIT		/**/
+?H:.
+?LINT:set d_signbit d_use_signbit
+: see if signbit exists
+$echo $n "Checking to see if you have signbit() available to work on $nvtype... $c" >&4
+$cat >try.c <<EOCP
+#$i_math I_MATH
+#$i_sunmath I_SUNMATH
+#ifdef I_MATH
+#  include <math.h>
+#endif
+#ifdef I_SUNMATH  /* Solaris special math library */
+#  include <sunmath.h>
+#endif
+#define NV $nvtype
+int main(int argc, char **argv)
+{
+    NV x = 0.0;
+    NV y = -0.0;
+    if ((signbit(x) == 0) && (signbit(y) != 0))
+	return 0;
+    else
+	return 1;
+}
+EOCP
+val="$undef"
+set try
+if eval $compile; then
+    if $run ./try; then
+        $echo "Yes." >&4
+	val="$define"
+    else
+        $echo "Signbit seems to be available, but doesn't work as I expected."
+        $echo "I won't use it." >&4
+	val="$undef"
+    fi
+else
+    $echo "Nope." >&4
+    dflt="$undef"
+fi
+set d_signbit
+eval $setvar
+$rm -f try.* try
+
