@@ -136,7 +136,7 @@ EOM
 			;;
 		*)  case "$osname" in
 	                darwin) dflt='none' ;;
-			svr4*|esix*|solaris|nonstopux) dflt='-fPIC' ;;
+			linux*|svr4*|esix*|solaris|nonstopux) dflt='-fPIC' ;;
 			*)	dflt='-fpic' ;;
 		    esac ;;
 	    esac ;;
