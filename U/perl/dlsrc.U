@@ -17,8 +17,8 @@
 ?X:	  ld -b module_a.o module_b.o -o module.sl
 ?X:
 ?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags: \
-	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar \
-	cc ccflags ldflags ls gccversion cat rsrc src run i_stdlib i_unistd
+	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar src run \
+	cc ccflags ldflags optimize ls gccversion cat rsrc i_stdlib i_unistd
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:usedl:
@@ -216,7 +216,7 @@ EOM
 			      '') dflt="$dflt +vnocompatwarnings" ;;
 			      esac
 			      ;;	
-			linux|irix*|gnu*)	dflt='-shared' ;;
+			linux|irix*|gnu*)  dflt="-shared $optimize" ;;
 			next)  dflt='none' ;;
 			solaris) dflt='-G' ;;
 			sunos) dflt='-assert nodefinitions' ;;
