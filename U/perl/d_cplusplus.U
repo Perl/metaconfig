@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_cplusplus: Compile Inlibc Setvar run cat rm
+?MAKE:d_cplusplus: Compile Setvar run cat rm
 ?MAKE:	-pick add $@ %<
 ?S:d_cplusplus (d_cplusplus.U):
 ?S:	This variable conditionally defines the USE_CPLUSPLUS symbol, which
