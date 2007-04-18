@@ -157,5 +157,5 @@ case "$castflags" in
 esac
 set d_castneg
 eval $setvar
-$rm -f try.*
+$rm -f try try.*
 

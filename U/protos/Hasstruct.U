@@ -40,5 +40,5 @@ else
 fi;
 set $varname;
 eval $setvar;
-$rm -f try.c try.o'
+$rm -f try try.c try.o'
 

@@ -184,7 +184,7 @@ EOCP
 			;;
 		esac
 	fi
-	$rm -f try.*
+	$rm -f try try.*
 	;;
 esac
 
@@ -228,7 +228,7 @@ EOCP
 		echo "Help:  I can't seem to compile the db test program." >&4
 		echo "Something's wrong, but I'll assume you use $db_hashtype." >&4
 	fi
-	$rm -f try.*
+	$rm -f try try.*
 	echo "Your version of Berkeley DB uses $db_hashtype for hash."
 	;;
 *)	db_hashtype=u_int32_t
@@ -275,7 +275,7 @@ EOCP
 		echo "Help:  I can't seem to compile the db test program." >&4
 		echo "Something's wrong, but I'll assume you use $db_prefixtype." >&4
 	fi
-	$rm -f try.*
+	$rm -f try try.*
 	echo "Your version of Berkeley DB uses $db_prefixtype for prefix."
 	;;
 *)	db_prefixtype='size_t'

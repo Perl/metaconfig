@@ -159,5 +159,5 @@ EOM
 	voidflags="$ans"
 	;;
 esac
-$rm -f try.* .out
+$rm -f try try.* .out
 
