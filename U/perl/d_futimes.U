@@ -46,11 +46,11 @@ if eval $compile; then
 	0)  echo "Yes, it does" >&4
 	    d_futimes="$define"
 	    ;;
-	*)  echo "No, it has futimes, but it isn't working ($rc) (probably harmless)\n" >&4
+	*)  echo "No, it has futimes, but it isn't working ($rc) (probably harmless)" >&4
 	    ;;
     esac
 else
-    echo "No, it does not (probably harmless)\n" >&4
+    echo "No, it does not (probably harmless)" >&4
 fi
 $rm -f try.* try core core.try.*
 

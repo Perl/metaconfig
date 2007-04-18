@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:58  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_safebcpy: cat d_bcopy Compile rm \
+?MAKE:d_safebcpy: cat d_bcopy Compile rm run \
 	d_memmove i_memory i_stdlib i_string i_unistd Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_safebcpy:
@@ -42,7 +42,6 @@
 ?C:.
 ?H:#$d_safebcpy HAS_SAFE_BCOPY	/**/
 ?H:.
-?F:!try
 ?LINT: set d_safebcpy
 : can bcopy handle overlapping blocks?
 echo " "
@@ -104,7 +103,7 @@ exit(0);
 EOCP
 		set try
 		if eval $compile_ok; then
-			if ./try 2>/dev/null; then
+			if $run ./try 2>/dev/null; then
 				echo "Yes, it can."
 				val="$define"
 			else

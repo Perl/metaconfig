@@ -29,7 +29,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:58  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_safemcpy: Compile cat d_memcpy rm \
+?MAKE:d_safemcpy: Compile cat d_memcpy rm run \
 	d_memmove i_memory i_stdlib i_string i_unistd Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_safemcpy:
@@ -45,7 +45,6 @@
 ?C:.
 ?H:#$d_safemcpy HAS_SAFE_MEMCPY	/**/
 ?H:.
-?F:!try
 ?LINT: set d_safemcpy
 : can memcpy handle overlapping blocks?
 echo " "
@@ -107,7 +106,7 @@ exit(0);
 EOCP
 		set try
 		if eval $compile_ok; then
-			if ./try 2>/dev/null; then
+			if $run ./try 2>/dev/null; then
 				echo "Yes, it can."
 				val="$define"
 			else
