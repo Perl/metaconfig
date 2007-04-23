@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:fflushNULL fflushall: Compile cat rm rm_try test osname run to from \
-	Oldconfig Myread Setvar exe_ext echo \
+	Oldconfig Myread Setvar echo \
 	d_sysconf i_unistd d_stdio_stream_array stdio_stream_array i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:fflushNULL:
