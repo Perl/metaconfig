@@ -16,7 +16,7 @@
 ?X:	  cc -c +z module_b.c
 ?X:	  ld -b module_a.o module_b.o -o module.sl
 ?X:
-?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags: \
+?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags: rm_try \
 	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar src run \
 	cc ccflags ldflags optimize ls gccversion cat rsrc i_stdlib i_unistd
 ?MAKE:	-pick add $@ %<
@@ -73,7 +73,7 @@ $undef|n|false)
 	dflt='n'
 	usedl="$undef"
 	;;
-*) 
+*)
 	dflt='n'
 	case "$d_dlopen" in
 	    $define) dflt='y' ;;
@@ -172,7 +172,7 @@ EOM
 int main() {
 	char b[4];
 	int i = open("a.out",O_RDONLY);
-	if(i == -1) 
+	if(i == -1)
 		exit(1); /* fail */
 	if(read(i,b,4)==4 && b[0]==127 && b[1]=='E' && b[2]=='L' && b[3]=='F')
 		exit(0); /* succeed (yes, it's ELF) */
@@ -189,7 +189,7 @@ EOM
 			echo "I'll use ld to build dynamic libraries."
 			dflt='ld'
 		fi
-		rm -f try.c a.out
+		$rm_try
 		;;
 	*)	dflt="$ld"
 		;;
@@ -215,7 +215,7 @@ EOM
 			      case "$gccversion" in
 			      '') dflt="$dflt +vnocompatwarnings" ;;
 			      esac
-			      ;;	
+			      ;;
 			linux|irix*|gnu*)  dflt="-shared $optimize" ;;
 			next)  dflt='none' ;;
 			solaris) dflt='-G' ;;

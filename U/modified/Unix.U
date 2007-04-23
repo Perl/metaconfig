@@ -19,7 +19,7 @@
 ?X: files.
 ?X:
 ?MAKE:Unix _exe _a _o exe_ext lib_ext obj_ext path_sep \
-	firstmakefile archobjs: Oldconfig
+	firstmakefile archobjs rm_try: Oldconfig rm
 ?MAKE:	-pick add $@ %<
 ?S:_exe:
 ?S:	This variable defines the extension used for executable files.
@@ -70,6 +70,10 @@
 ?S:	This is an old synonym for p_ in Head.U, the character
 ?S:	used to separate elements in the command shell search PATH.
 ?S:.
+?S:rm_try:
+?S:	This is a cleanup variable for try test programs.
+?S:	Internal Configure use only.
+?S:.
 ?LINT: change _a _exe _o p_
 ?INIT:: Trailing extension.  Override this in a hint file, if needed.
 ?INIT:: Extra object files, if any, needed on this platform.
@@ -110,6 +114,8 @@ exe_ext=$_exe
 lib_ext=$_a
 obj_ext=$_o
 path_sep=$p_
+
+rm_try="$rm -f try try$_exe a.out .out try.[cho] try.$_o core core.try* try.core*"
 
 @if firstmakefile
 : Which makefile gets called first.  This is used by make depend.

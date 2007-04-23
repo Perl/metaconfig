@@ -9,7 +9,7 @@
 	sPRIgldbl d_PRIeldbl sPRIeldbl sPRIFUldbl d_PRIGUldbl sPRIEUldbl \
 	d_SCNfldbl \
 	sSCNfldbl: \
-	d_longdbl longdblsize doublesize test cat rm \
+	d_longdbl longdblsize doublesize test cat rm_try \
 	Setvar Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_PRIfldbl:
@@ -217,17 +217,17 @@ else
 	sSCNfldbl=$sPRIfldbl	# expect consistency
 fi
 
-$rm -f try try.*
+$rm_try
 
 fi # d_longdbl
 
 case "$sPRIfldbl" in
-'')	d_PRIfldbl="$undef"; d_PRIgldbl="$undef"; d_PRIeldbl="$undef"; 
-	d_PRIFUldbl="$undef"; d_PRIGUldbl="$undef"; d_PRIEUldbl="$undef"; 
+'')	d_PRIfldbl="$undef"; d_PRIgldbl="$undef"; d_PRIeldbl="$undef";
+	d_PRIFUldbl="$undef"; d_PRIGUldbl="$undef"; d_PRIEUldbl="$undef";
 	d_SCNfldbl="$undef";
 	;;
-*)	d_PRIfldbl="$define"; d_PRIgldbl="$define"; d_PRIeldbl="$define"; 
-	d_PRIFUldbl="$define"; d_PRIGUldbl="$define"; d_PRIEUldbl="$define"; 
+*)	d_PRIfldbl="$define"; d_PRIgldbl="$define"; d_PRIeldbl="$define";
+	d_PRIFUldbl="$define"; d_PRIGUldbl="$define"; d_PRIEUldbl="$define";
 	d_SCNfldbl="$define";
 	;;
 esac

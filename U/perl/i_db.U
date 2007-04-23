@@ -22,7 +22,7 @@
 ?RCS:
 ?MAKE:i_db db_hashtype db_prefixtype \
 	db_version_major db_version_minor db_version_patch : \
-	Inhdr +cc +ccflags rm contains cat \
+	Inhdr +cc +ccflags rm_try contains cat \
 	Compile d_const libs sed run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:i_db:
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
     /* check that db.h & libdb are compatible */
     if (DB_VERSION_MAJOR != Major || DB_VERSION_MINOR != Minor || DB_VERSION_PATCH != Patch) {
 	printf("db.h and libdb are incompatible.\n") ;
-        exit(3);	
+        exit(3);
     }
 
     printf("db.h and libdb are compatible.\n") ;
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
     if (Version < 2003004) {
     /* if (DB_VERSION_MAJOR == 2 && DB_VERSION_MINOR == 0 && DB_VERSION_PATCH < 5) { */
 	printf("Perl needs Berkeley DB 2.3.4 or greater.\n") ;
-        exit(2);	
+        exit(2);
     }
 
     exit(0);
@@ -184,14 +184,14 @@ EOCP
 			;;
 		esac
 	fi
-	$rm -f try try.*
+	$rm_try
 	;;
 esac
 
 @if DB_Hash_t
 case "$i_db" in
 define)
-	: Check the return type needed for hash 
+	: Check the return type needed for hash
 	echo " "
 	echo "Checking return type needed for hash for Berkeley DB ..." >&4
 	$cat >try.c <<EOCP
@@ -228,7 +228,7 @@ EOCP
 		echo "Help:  I can't seem to compile the db test program." >&4
 		echo "Something's wrong, but I'll assume you use $db_hashtype." >&4
 	fi
-	$rm -f try try.*
+	$rm_try
 	echo "Your version of Berkeley DB uses $db_hashtype for hash."
 	;;
 *)	db_hashtype=u_int32_t
@@ -238,7 +238,7 @@ esac
 @if DB_Prefix_t
 case "$i_db" in
 define)
-	: Check the return type needed for prefix 
+	: Check the return type needed for prefix
 	echo " "
 	echo "Checking return type needed for prefix for Berkeley DB ..." >&4
 	cat >try.c <<EOCP
@@ -275,11 +275,11 @@ EOCP
 		echo "Help:  I can't seem to compile the db test program." >&4
 		echo "Something's wrong, but I'll assume you use $db_prefixtype." >&4
 	fi
-	$rm -f try try.*
+	$rm_try
 	echo "Your version of Berkeley DB uses $db_prefixtype for prefix."
 	;;
 *)	db_prefixtype='size_t'
 	;;
 esac
-
 @end
+

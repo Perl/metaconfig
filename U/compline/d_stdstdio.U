@@ -28,7 +28,7 @@
 ?MAKE:d_stdstdio d_stdiobase stdio_ptr stdio_cnt \
 	d_stdio_ptr_lval_sets_cnt d_stdio_ptr_lval_nochange_cnt stdio_base \
 	stdio_bufsiz d_stdio_cnt_lval d_stdio_ptr_lval stdio_filbuf: cat \
-	Compile contains rm d_gnulibc gnulibc_version i_stdlib \
+	Compile contains rm_try d_gnulibc gnulibc_version i_stdlib \
 	Setvar Findhdr Oldconfig run to
 ?MAKE:	-pick weed $@ %<
 ?S:d_stdstdio:
@@ -265,7 +265,7 @@ if eval $compile && $to try.c; then
 else
 	echo "Your stdio doesn't appear very std."
 fi
-$rm -f try.c try
+$rm_try
 
 # glibc 2.2.90 and above apparently change stdio streams so Perl's
 # direct buffer manipulation no longer works.  The Configure tests
@@ -346,7 +346,7 @@ EOP
 		else
 			echo "Hmm.  $filbuf doesn't seem to work."
 		fi
-		$rm -f try.c try
+		$rm_try
 	done
 	case "$xxx" in
 	notok)	echo "I can't figure out how to access _filbuf"
@@ -419,7 +419,7 @@ int main() {
 	if (cnt == FILE_cnt(fp)) {
 		puts("Pass_unchanged");
 		exit (0);
-	}	
+	}
 	if (FILE_cnt(fp) == (cnt - 42)) {
 		puts("Pass_changed");
 		exit (0);
@@ -446,7 +446,7 @@ EOP
 	else
 		echo "It seems we can't set ptr in your stdio.  Nevermind." >&4
 	fi
-	$rm -f try.c try
+	$rm_try
 	;;
 esac
 @end
@@ -486,7 +486,7 @@ EOP
 	else
 		echo "However, it seems to be lacking the _base field."
 	fi
-	$rm -f try.c try
+	$rm_try
 	;;
 esac
 set d_stdiobase

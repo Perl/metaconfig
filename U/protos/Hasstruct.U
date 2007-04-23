@@ -5,8 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?X:	This unit generates a $hasstruct string that is used internally 
-?X:	by Configure to check if this system has a field for a 
+?X:	This unit generates a $hasstruct string that is used internally
+?X:	by Configure to check if this system has a field for a
 ?X:	particular struct (of if this system has a particular struct!)
 ?X:
 ?X:	To use it, say something like:
@@ -14,13 +14,13 @@
 ?X:		eval $hasstruct
 ?X:	Or, for more complicated sets of headers, do something like
 ?X:	hdrs="$define sys/foo.h
-?X:		$i_sysbar sys/bar.h 
+?X:		$i_sysbar sys/bar.h
 ?X:		$i_syszot sys/zot.h
 ?X:		$i_zappa zappa.h"
 ?X:	set d_statblocks stat $hdrs
 ?X:	eval $hasstruct
 ?X:
-?MAKE:Hasstruct: Setvar rm test Compile
+?MAKE:Hasstruct: Setvar rm_try test Compile
 ?MAKE:	-pick add $@ %<
 ?T:varname struct
 ?V:hasstruct
@@ -40,5 +40,5 @@ else
 fi;
 set $varname;
 eval $setvar;
-$rm -f try try.c try.o'
+$rm_try'
 

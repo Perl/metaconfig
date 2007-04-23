@@ -18,8 +18,8 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:23  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:alignbytes: Myread Compile cat rm usecrosscompile multiarch run \
-	d_longdbl uselongdouble test 
+?MAKE:alignbytes: Myread Compile cat rm_try usecrosscompile multiarch run \
+	d_longdbl uselongdouble test
 ?MAKE:	-pick add $@ %<
 ?S:alignbytes:
 ?S:	This variable holds the number of bytes required to align a
@@ -90,7 +90,7 @@ EOCP
 	rp="Doubles must be aligned on a how-many-byte boundary?"
 	. ./myread
 	alignbytes="$ans"
-	$rm -f try.c try
+	$rm_try
 	;;
 esac
 

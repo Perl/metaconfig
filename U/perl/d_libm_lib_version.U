@@ -1,11 +1,9 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 2005 H.Merijn Brand
+?RCS: Copyright (c) 2005-2007 H.Merijn Brand
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_libm_lib_version: Compile cat run rm i_math
+?MAKE:d_libm_lib_version: Compile cat run rm_try i_math
 ?MAKE:	-pick add $@ %<
 ?S:d_libm_lib_version:
 ?S:	This variable conditionally defines the LIBM_LIB_VERSION symbol,
@@ -43,7 +41,7 @@ EOCP
 	else
 	    echo "No, it does not (probably harmless)\n" >&4
 	    fi
-	$rm -f try.* try core core.try.*
+	$rm_try
 	;;
 
     esac

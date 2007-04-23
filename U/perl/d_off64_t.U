@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_off64_t: \
-	Inlibc Setvar Compile rm cat lseeksize
+	Inlibc Setvar Compile rm_try cat lseeksize
 ?MAKE:	-pick add $@ %<
 ?S:d_off64_t:
 ?S:	This symbol will be defined if the C compiler supports off64_t.
@@ -17,7 +17,6 @@
 ?H:#$d_off64_t	HAS_OFF64_T    		/**/
 ?H:.
 ?LINT:set d_off64_t
-
 : check for off64_t
 echo " "
 echo "Checking to see if you have off64_t..." >&4
@@ -37,7 +36,7 @@ else
 	8) echo "(Your off_t is 64 bits, so you could use that.)" ;;
 	esac
 fi
-$rm -f try.* try
+$rm_try
 set d_off64_t
 eval $setvar
 

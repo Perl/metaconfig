@@ -23,7 +23,7 @@
 ?X:
 ?X:	Can the compiler cast negative / odd floats to unsigned values.
 ?X:
-?MAKE:d_castneg castflags: cat Compile rm Setvar signal_t run i_stdlib
+?MAKE:d_castneg castflags: cat Compile rm_try Setvar signal_t run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_castneg:
 ?S:	This variable conditionally defines CASTNEG, which indicates
@@ -77,12 +77,12 @@ int main()
 	unsigned short ashort;
 	int result = 0;
 	char str[16];
-	
+
 	/* Frustrate gcc-2.7.2's optimizer which failed this test with
 	   a direct f = -123. assignment.  gcc-2.8.0 reportedly
 	   optimized the whole file away
 	*/
-	/* Store the number in a writable string for gcc to pass to 
+	/* Store the number in a writable string for gcc to pass to
 	   sscanf under HP/UX.
 	*/
 	sprintf(str, "-123");
@@ -157,5 +157,5 @@ case "$castflags" in
 esac
 set d_castneg
 eval $setvar
-$rm -f try try.*
+$rm_try
 

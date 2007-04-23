@@ -1,4 +1,4 @@
-?RCS: Copyright (c) 2006-2006, H.Merijn Brand
+?RCS: Copyright (c) 2006-2007, H.Merijn Brand
 ?RCS: 
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -6,7 +6,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_snprintf d_vsnprintf : Inlibc Compile cat run rm
+?MAKE:d_snprintf d_vsnprintf : Inlibc Compile cat run rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_snprintf:
 ?S:	This variable conditionally defines the HAS_SNPRINTF symbol, which
@@ -91,7 +91,7 @@ EOM
 	d_snprintf="$undef"
 	d_vsnprintf="$undef"
     fi
-    $rm -f try.* try core core.try.*
+    $rm_try
     ;;
 esac
 

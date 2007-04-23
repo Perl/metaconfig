@@ -7,7 +7,7 @@
 ?RCS:
 ?RCS: $Log: d_fcntl_can_lock.U,v $
 ?RCS:
-?MAKE:d_fcntl_can_lock: d_fcntl Compile Setvar cat rm run signal_t i_stdlib
+?MAKE:d_fcntl_can_lock: d_fcntl Compile Setvar cat rm_try run signal_t i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_fcntl_can_lock:
 ?S:	This variable conditionally defines the FCNTL_CAN_LOCK symbol
@@ -88,6 +88,5 @@ EOM
 esac
 set d_fcntl_can_lock
 eval $setvar
-$rm -f try*
-
+$rm_try
 

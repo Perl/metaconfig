@@ -26,7 +26,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:58  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_safebcpy: cat d_bcopy Compile rm run \
+?MAKE:d_safebcpy: cat d_bcopy Compile rm_try run \
 	d_memmove i_memory i_stdlib i_string i_unistd Oldconfig Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_safebcpy:
@@ -114,7 +114,7 @@ EOCP
 		fi
 		;;
 	esac
-	$rm -f try.* try core
+	$rm_try
 	;;
 esac
 set d_safebcpy

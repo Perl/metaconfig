@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:44  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_open3: Compile test cat h_fcntl h_sysfile rm Setvar Findhdr run i_stdlib
+?MAKE:d_open3: Compile test cat h_fcntl h_sysfile rm_try Setvar Findhdr run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?X:	It would be easy to separate the h_O_stuff from this.
 ?X:	Is there a reason to do so? -- HMS
@@ -89,5 +89,5 @@ else
 fi
 set d_open3
 eval $setvar
-$rm -f try try.*
+$rm_try
 

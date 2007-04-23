@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:06  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:doublesize: cat rm Myread Compile run i_stdlib
+?MAKE:doublesize: cat rm_try Myread Compile run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:doublesize:
 ?S:	This variable contains the value of the DOUBLESIZE symbol, which
@@ -57,5 +57,5 @@ EOCP
 	fi
 	;;
 esac
-$rm -f try.c try
+$rm_try
 

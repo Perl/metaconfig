@@ -5,13 +5,13 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?X:	This unit generates a ./protochk script that is used internally 
-?X:	by Configure to check if this system will accept a particular 
+?X:	This unit generates a ./protochk script that is used internally
+?X:	by Configure to check if this system will accept a particular
 ?X:	prototype.
 ?X:
 ?X:	To use it, say something like:
 ?X:	hdrs="$define sys/types.h
-?X:		$i_systime sys/time.h 
+?X:		$i_systime sys/time.h
 ?X:		$i_sysselct sys/select.h
 ?X:		$d_socket sys/socket.h"
 ?X:	$xxx='fd_set *'
@@ -27,34 +27,34 @@
 ?X:	The C compiler on QNX warns about invalid pointer types, but
 ?X:	still exits with a 0 exit status, so it's not much help here.
 ?X:	(It does correctly detect incorrect non-pointer arguments).
-?X:	Still, since QNX is a POSIX-ish system, just make your first 
+?X:	Still, since QNX is a POSIX-ish system, just make your first
 ?X:	a POSIX-ish one, and QNX will probably accept it.
 ?X:
 ?X:	For determining argument types, your compiler must support
 ?X:	prototypes, and the header files must use them.  Determining
 ?X:	return types, however, is easier.  Just give an ridiculuous
 ?X:	return type, something like
-?X:	./protochk 'extern int atof _((void));' $i_stdlib stdlib.h 
+?X:	./protochk 'extern int atof _((void));' $i_stdlib stdlib.h
 ?X:	that should surely fail if atof() is defined in <stdlib.h>
 ?X:
 ?X:	There is also an 'escape' hatch built in.  If you have a pair
 ?X:	of args   'literal 'stuff' then 'stuff' gets included literally
 ?X:	into the test program.  This could be useful for doing something
-?X:	like 
+?X:	like
 ?X:	hdrs="$define stdio.h
 ?X:		$define sys/types.h"
 ?X:	./protochk 'extern int fsetpos(FILE *, Fpos_t);' $args \
 ?X:			'literal' '#define Fpos_t long long'
 ?X:	but you have to be really careful about the spaces in "literal".
-?X:		
+?X:
 ?X:		Andy Dougherty   Feb. 1998
-?MAKE:Protochk: cat rm startsh eunicefix +cc +optimize +ccflags \
+?MAKE:Protochk: cat rm_try startsh eunicefix +cc +optimize +ccflags \
 	prototype i_pthread usethreads
 ?MAKE:	-pick add $@ %<
 ?F:./protochk
 ?X: Comfort metalint.  All these are actually used in the protochk script.
 ?T:foo status pthread_h_done
-?LINT: change cc optimize ccflags prototype define rm
+?LINT: change cc optimize ccflags prototype define rm_try
 ?LINT: extern pthread_h_first
 ?LINT: change pthread_h_first
 ?LINT: change usethreads
@@ -67,7 +67,7 @@ optimize="$optimize"
 ccflags="$ccflags"
 prototype="$prototype"
 define="$define"
-rm=$rm
+rm_try=$rm_try
 usethreads=$usethreads
 i_pthread=$i_pthread
 pthread_h_first=$pthread_h_first
@@ -75,7 +75,7 @@ EOSH
 
 $cat >> protochk <<'EOSH'
 
-$rm -f try.c
+$rm_try
 foo="$1"
 shift
 while test $# -ge 2; do
@@ -106,7 +106,7 @@ echo "$foo" >> try.c
 echo 'int no_real_function_has_this_name _((void)) { return 0; }' >> try.c
 $cc $optimize $ccflags -c try.c > /dev/null 2>&1
 status=$?
-$rm -f try.[co]
+$rm_try
 exit $status
 EOSH
 chmod +x protochk

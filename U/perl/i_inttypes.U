@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:i_inttypes: Inhdr cat rm Setvar Compile
+?MAKE:i_inttypes: Inhdr cat rm_try Setvar Compile
 ?MAKE:	-pick add $@ %<
 ?S:i_inttypes:
 ?S:     This variable conditionally defines the I_INTTYPES symbol,
@@ -39,7 +39,7 @@ else
 	echo "<inttypes.h> NOT found." >&4
 	val="$undef"
 fi
-$rm -f try.c try
+$rm_try
 set i_inttypes
 eval $setvar
 

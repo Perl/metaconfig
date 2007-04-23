@@ -1,6 +1,4 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 2006-2006, H.Merijn Brand
+?RCS: Copyright (c) 2006-2007, H.Merijn Brand
 ?RCS: 
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -9,7 +7,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS:
-?MAKE:d_dir_dd_fd: Compile cat rm Setvar i_dirent i_stdlib
+?MAKE:d_dir_dd_fd: Compile cat rm_try Setvar i_dirent i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_dir_dd_fd (d_dir_dd_fd.U):
 ?S:	This variable conditionally defines the HAS_DIR_DD_FD symbol, which
@@ -57,5 +55,5 @@ EOCP
 esac
 set d_dir_dd_fd
 eval $setvar
-$rm -f try try.*
+$rm_try
 

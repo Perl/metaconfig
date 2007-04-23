@@ -20,7 +20,7 @@
 ?X:	set d_getnetent_proto getnetent $hdrs
 ?X:	eval $hasproto
 ?X:
-?MAKE:Hasproto: Setvar cppstdin cppflags cppminus contains rm test
+?MAKE:Hasproto: Setvar cppstdin cppflags cppminus contains rm_try test
 ?MAKE:	-pick add $@ %<
 ?T:func varname
 ?V:hasproto
@@ -41,5 +41,5 @@ else
 fi;
 set $varname;
 eval $setvar;
-$rm -f try.c tryout.c'
+$rm_try tryout.c'
 

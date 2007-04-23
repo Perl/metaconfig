@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:57  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_volatile: cat +cc +ccflags rm Setvar
+?MAKE:d_volatile: cat +cc +ccflags rm_try Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_volatile:
 ?S:	This variable conditionally defines the HASVOLATILE symbol, which
@@ -70,5 +70,5 @@ else
 fi
 set d_volatile
 eval $setvar
-$rm -f try try.*
+$rm_try
 

@@ -20,7 +20,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:52  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:intsize longsize shortsize: Compile Myread cat rm run i_stdlib
+?MAKE:intsize longsize shortsize: Compile Myread cat run i_stdlib rm_try
 ?MAKE:	-pick add $@ %<
 ?S:intsize:
 ?S:	This variable contains the value of the INTSIZE symbol, which
@@ -116,5 +116,5 @@ EOM
 	fi
 	;;
 esac
-$rm -f try try.*
+$rm_try
 

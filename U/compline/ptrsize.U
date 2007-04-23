@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:37  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:ptrsize: cat rm Myread Compile voidflags run use64bitall i_stdlib d_quad
+?MAKE:ptrsize: cat rm_try Myread Compile voidflags run use64bitall i_stdlib d_quad
 ?MAKE:	-pick add $@ %<
 ?S:ptrsize:
 ?S:	This variable contains the value of the PTRSIZE symbol, which
@@ -67,7 +67,7 @@ EOCP
 	fi
 	;;
 esac
-$rm -f try.c try
+$rm_try
 case "$use64bitall" in
 "$define"|true|[yY]*)
 	case "$ptrsize" in

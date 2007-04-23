@@ -14,7 +14,7 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  15:34:33  ram
 ?RCS: patch61: created
 ?RCS:
-?MAKE:d_gnulibc gnulibc_version: Myread Oldconfig Setvar rm \
+?MAKE:d_gnulibc gnulibc_version: Myread Oldconfig Setvar rm_try \
 	cat Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_gnulibc:
@@ -26,7 +26,7 @@
 ?S:	is not the GNU C library, or if the version is unknown.
 ?S:.
 ?C:HAS_GNULIBC:
-?C:	This symbol, if defined, indicates to the C program that 
+?C:	This symbol, if defined, indicates to the C program that
 ?C:	the GNU C library is being used.  A better check is to use
 ?C:	the __GLIBC__ and __GLIBC_MINOR__ symbols supplied with glibc.
 ?C:.
@@ -48,7 +48,7 @@
 ?X: #define	__GLIBC__  2
 ?X: #define__GLIBC_MINOR__ 0.
 ?X: (The '6' isn't available :-(.
-?X: glibc2.1 will also have 
+?X: glibc2.1 will also have
 ?X:		extern const char * __gnu_get_libc_release(void);
 ?X:		extern const char * __gnu_get_libc_version(void);
 ?X: functions.   --thanks to Andreas Jaeger.   --AD  6/1998.
@@ -93,7 +93,7 @@ else
 	gnulibc_version=''
 	echo "You are not using the GNU C Library"
 fi
-$rm -f try try.* glibc.ver
+$rm_try glibc.ver
 set d_gnulibc
 eval $setvar
 

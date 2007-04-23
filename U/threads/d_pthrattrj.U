@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_old_pthread_create_joinable old_pthread_create_joinable: \
-	cat Compile rm Setvar usethreads i_pthread
+	cat Compile rm_try Setvar usethreads i_pthread
 ?MAKE:	-pick add $@ %<
 ?S:d_old_pthread_create_joinable:
 ?S:	This variable conditionally defines pthread_create_joinable.
@@ -33,7 +33,7 @@
 : how to create joinable pthreads
 if test "X$usethreads" = "X$define" -a "X$i_pthread" = "X$define"; then
 	echo " "
-	echo "Checking what constant to use for creating joinable pthreads..." >&4 
+	echo "Checking what constant to use for creating joinable pthreads..." >&4
 	$cat >try.c <<'EOCP'
 #include <pthread.h>
 int main() {
@@ -59,7 +59,7 @@ EOCP
 			val=PTHREAD_CREATE_UNDETACHED
 			set old_pthread_create_joinable
 			eval $setvar
-		else		
+		else
 			set try -DJOINABLE=__UNDETACHED
 			if eval $compile; then
 				echo "You seem to use __UNDETACHED." >&4
@@ -80,7 +80,7 @@ EOCP
 			fi
 		fi
 	fi
-	$rm -f try try.*
+	$rm_try
 else
     d_old_pthread_create_joinable="$undef"
     old_pthread_create_joinable=""

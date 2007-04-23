@@ -9,7 +9,7 @@
 	i8type u8type i16type u16type i32type u32type i64type u64type \
 	i8size u8size i16size u16size i32size u32size i64size u64size \
 	d_nv_preserves_uv nv_preserves_uv_bits d_nv_zero_is_allbits_zero: \
-	echo rm use64bitint d_quad quadtype uquadtype \
+	echo rm_try use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	charsize shortsize intsize longsize i_stdlib i_string \
 	cat Compile i_inttypes test d_volatile signal_t run
@@ -446,7 +446,7 @@ if eval $compile; then
 	nv_preserves_uv_bits="`$run ./try`"
 fi
 case "$nv_preserves_uv_bits" in
-\-[1-9]*)	
+\-[1-9]*)
 	nv_preserves_uv_bits=`expr 0 - $nv_preserves_uv_bits`
 	$echo "Your NVs can preserve all $nv_preserves_uv_bits bits of your UVs."  2>&1
 	d_nv_preserves_uv="$define"
@@ -456,8 +456,7 @@ case "$nv_preserves_uv_bits" in
 *)	$echo "Can't figure out how many bits your NVs preserve." 2>&1
 	nv_preserves_uv_bits="0" ;;
 esac
-
-$rm -f try.* try
+$rm_try
 
 $echo "Checking whether NV 0.0 is all bits zero in memory..." >&4
 : volatile so that the compiler has to store it out to memory.
@@ -536,7 +535,7 @@ int main(int argc, char **argv) {
 	printf("(gives %g)\n", d);
 	return 1;
     }
-    
+
 #ifdef SIGFPE
     if (bletched) {
 	printf("No - something bleched\n");
@@ -578,6 +577,5 @@ EOM
 	    ;;
     esac
 fi
-
-$rm -f try.* try
+$rm_try
 

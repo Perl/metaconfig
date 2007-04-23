@@ -1,4 +1,4 @@
-?RCS: Copyright (c) 2006-2006, H.Merijn Brand
+?RCS: Copyright (c) 2006-2007, H.Merijn Brand
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -6,7 +6,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_builtin_choose_expr d_builtin_expect : Compile Setvar cat rm
+?MAKE:d_builtin_choose_expr d_builtin_expect : Compile Setvar cat rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_builtin_choose_expr:
 ?S:	This conditionally defines HAS_BUILTIN_CHOOSE_EXPR, which
@@ -69,7 +69,7 @@ esac
 
 set d_builtin_choose_expr
 eval $setvar
-$rm -f try.* try core core.try.*
+$rm_try
 
 : Look for GCC-style __builtin_expect
 case "$d_builtin_expect" in
@@ -96,5 +96,5 @@ esac
 
 set d_builtin_expect
 eval $setvar
-$rm -f try.* try core core.try.*
+$rm_try
 

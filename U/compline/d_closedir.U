@@ -21,7 +21,7 @@
 ?RCS: patch32: created by ADO
 ?RCS:
 ?MAKE:d_closedir d_void_closedir: Inlibc i_dirent i_sysdir i_sysndir \
-	i_systypes Compile Setvar rm run
+	i_systypes Compile Setvar rm_try run
 ?MAKE:	-pick add $@ %<
 ?S:d_closedir:
 ?S:	This variable conditionally defines HAS_CLOSEDIR if closedir() is
@@ -84,7 +84,7 @@ case "$d_closedir" in
 #endif
 #endif
 #endif
-#endif 
+#endif
 int main() { return closedir(opendir(".")); }
 EOM
 	set try
@@ -107,5 +107,6 @@ EOM
 esac
 set d_void_closedir
 eval $setvar
-$rm -f try try.*
+$rm_try
 @end
+

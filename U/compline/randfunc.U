@@ -23,7 +23,7 @@
 ?X:	    Andy Dougherty  July 1998
 ?X:
 ?MAKE:randfunc drand01 seedfunc randbits randseedtype: \
-	cat rm test i_stdlib i_unistd Compile Myread Csym ccflags
+	cat rm_try test i_stdlib i_unistd Compile Myread Csym ccflags
 ?MAKE:	-pick add $@ %<
 ?S:randfunc:
 ?S:	Indicates the name of the random number function to use.
@@ -80,7 +80,6 @@
 ?H:.
 ?T:cont val
 ?LINT:change ccflags
-
 : How can we generate normalized random numbers ?
 echo " "
 echo "Looking for a random number function..." >&4
@@ -189,7 +188,7 @@ EOCP
 			rp="How many bits does your $randfunc() function produce?"
 			. ./myread
 			randbits="$ans"
-			$rm -f try.c try
+			$rm_try
 			drand01="($randfunc() / (double) ((unsigned long)1 << $randbits))"
 			seedfunc="s$randfunc"
 			randseedtype=unsigned

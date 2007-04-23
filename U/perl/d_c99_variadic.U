@@ -1,4 +1,4 @@
-?RCS: Copyright (c) 2006-2006, H.Merijn Brand
+?RCS: Copyright (c) 2006-2007, H.Merijn Brand
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -6,7 +6,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_c99_variadic_macros: Compile Setvar cat rm run i_stdarg i_stdlib
+?MAKE:d_c99_variadic_macros: Compile Setvar cat rm_try run i_stdarg i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_c99_variadic_macros:
 ?S:	This variable conditionally defines the HAS_C99_VARIADIC_MACROS
@@ -52,7 +52,7 @@ EOCP
 	echo "I couldn't compile and run the test program, so I assume that you don't have functional C99 variadic macros." >&4
 	d_c99_variadic_macros="$undef"
     fi
-    $rm -f try.* try core core.try.*
+    $rm_try
     ;;
     *)
     echo "You don't have <stdarg.h> and <stdlib.h>, so not checking for C99 variadic macros." >&4

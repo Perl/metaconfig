@@ -8,10 +8,10 @@
 ?RCS: $Log: d_longlong.U,v $
 ?RCS:
 ?MAKE:d_longlong longlongsize: Compile Setvar Myread run \
-	cat rm test longsize
+	cat rm_try test longsize
 ?MAKE:	-pick add $@ %<
 ?S:d_longlong:
-?S:	This variable conditionally defines HAS_LONG_LONG if 
+?S:	This variable conditionally defines HAS_LONG_LONG if
 ?S:	the long long type is supported.
 ?S:.
 ?S:longlongsize:
@@ -23,7 +23,7 @@
 ?C:	This symbol will be defined if the C compiler supports long long.
 ?C:.
 ?C:LONGLONGSIZE:
-?C:	This symbol contains the size of a long long, so that the 
+?C:	This symbol contains the size of a long long, so that the
 ?C:	C preprocessor can make decisions based on it.  It is only
 ?C:	defined if the system supports long long.
 ?C:.
@@ -45,7 +45,7 @@ else
 	val="$undef"
 	echo "You do not have long long."
 fi
-$rm try.*
+$rm_try
 set d_longlong
 eval $setvar
 
@@ -78,9 +78,9 @@ EOCP
 	fi
 	if $test "X$longsize" = "X$longlongsize"; then
 		echo "(That isn't any different from an ordinary long.)"
-	fi	
+	fi
 	;;
 esac
-$rm -f try.* try
+$rm_try
 @end
 

@@ -48,7 +48,7 @@
 ?MAKE:ccflags ldflags lkflags cppflags optimize locincpth: test cat \
 	Myread Guess Options Oldconfig +gccversion mips_type +usrinc \
 	package contains rm +cc cppstdin cppminus cpprun cpplast libpth \
-	libs loclibpth hint usesocks sh run
+	libs loclibpth hint usesocks sh run rm_try
 ?MAKE:	-pick add $@ %<
 ?S:ccflags:
 ?S:	This variable contains any additional C compiler flags desired by
@@ -519,5 +519,5 @@ y)
 	;;
 n) echo "OK, that should do.";;
 esac
-$rm -f try try.* core
+$rm_try
 

@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_pthread_yield sched_yield d_sched_yield: \
-	Compile Setvar cat rm usethreads
+	Compile Setvar cat rm_try usethreads
 ?MAKE:	-pick add $@ %<
 ?S:d_pthread_yield:
 ?S:	This variable conditionally defines the HAS_PTHREAD_YIELD
@@ -23,7 +23,7 @@
 ?S:	the execution of the current thread.
 ?S:.
 ?C:HAS_PTHREAD_YIELD:
-?C:	This symbol, if defined, indicates that the pthread_yield 
+?C:	This symbol, if defined, indicates that the pthread_yield
 ?C:	routine is available to yield the execution of the current
 ?C:	thread.	 sched_yield is preferable to pthread_yield.
 ?C:.
@@ -107,10 +107,8 @@ $define)
 esac
 set d_pthread_yield
 eval $setvar
-
 case "$sched_yield" in
 '') sched_yield=undef ;;
 esac
-
-$rm -f try try.*
+$rm_try
 

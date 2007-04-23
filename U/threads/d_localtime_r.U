@@ -1,6 +1,6 @@
 ?RCS: $Id: d_localtime_r.U,v 0RCS:
 ?RCS: Copyright (c) 2002,2003 Jarkko Hietaniemi
-?RCS: Copyright (c) 2006,2006 H.Merijn Brand
+?RCS: Copyright (c) 2006,2007 H.Merijn Brand
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
@@ -9,7 +9,7 @@
 ?RCS:
 ?MAKE:d_localtime_r d_localtime_r_needs_tzset localtime_r_proto: Inlibc \
 	cat run Protochk Hasproto i_systypes usethreads i_time i_systime \
-	rm Compile
+	rm_try Compile
 ?MAKE:	-pick add $@ %<
 ?S:d_localtime_r:
 ?S:	This variable conditionally defines the HAS_LOCALTIME_R symbol,
@@ -155,5 +155,5 @@ EOCP
      d_localtime_r_needs_tzset=undef;
      ;;
 esac
-$rm -f try try.* core
+$rm_try
 

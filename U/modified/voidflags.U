@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:10:01  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:voidflags defvoidused: cat rm contains +cc +ccflags package \
+?MAKE:voidflags defvoidused: cat rm_try contains +cc +ccflags package \
 	Oldconfig Myread i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:voidflags:
@@ -159,5 +159,5 @@ EOM
 	voidflags="$ans"
 	;;
 esac
-$rm -f try try.* .out
+$rm_try
 

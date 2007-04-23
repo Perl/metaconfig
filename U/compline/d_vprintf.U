@@ -12,7 +12,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:59  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_vprintf d_charvspr: Compile Guess cat Csym Setvar run rm i_stdlib
+?MAKE:d_vprintf d_charvspr: Compile Guess cat Csym Setvar run rm_try i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_vprintf:
 ?S:	This variable conditionally defines the HAS_VPRINTF symbol, which
@@ -77,7 +77,7 @@ else
 		val="$undef"
 		val2="$undef"
 fi
-$rm -f try try.*
+$rm_try
 set d_vprintf
 eval $setvar
 val=$val2

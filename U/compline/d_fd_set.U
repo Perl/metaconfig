@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:06:02  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_fd_set d_fd_macros d_fds_bits: Compile cat rm Oldconfig \
+?MAKE:d_fd_set d_fd_macros d_fds_bits: Compile cat rm_try Oldconfig \
 	d_socket i_systime i_sysselct i_stdlib run
 ?MAKE:	-pick add $@ %<
 ?S:d_fd_set:
@@ -138,5 +138,5 @@ EOM
 		d_fd_macros="$undef"
 	fi
 fi
-$rm -f try try.*
+$rm_try
 

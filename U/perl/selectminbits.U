@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:selectminbits: Compile cat rm Oldconfig d_select \
+?MAKE:selectminbits: Compile cat rm_try Oldconfig d_select \
 	i_time i_systime i_systimek i_sysselct selecttype d_socket \
 	byteorder Myread Setvar run i_stdlib ptrsize
 ?MAKE:	-pick add $@ %<
@@ -128,7 +128,7 @@ EOM
 			val=$ans
 			selectminbits="$val"
 		fi
-		$rm -f try.* try
+		$rm_try
 		;;
 	*)	: no select, so pick a harmless default
 		selectminbits=$safebits

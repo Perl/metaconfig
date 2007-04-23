@@ -8,7 +8,7 @@
 ?RCS: $Log: d_union_semun.U,v $
 ?RCS:
 ?MAKE:d_union_semun d_semctl_semun d_semctl_semid_ds: Compile Setvar Myread run \
-	cat rm d_sem
+	cat rm_try d_sem
 ?MAKE:	-pick add $@ %<
 ?S:d_union_semun:
 ?S:	This variable conditionally defines HAS_UNION_SEMUN if the
@@ -62,7 +62,7 @@ else
     echo "You do not have union semun in <sys/sem.h>." >&4
     val="$undef"
 fi
-$rm -f try try.c
+$rm_try
 set d_union_semun
 eval $setvar
 
@@ -151,7 +151,7 @@ END
           semun) val="$define" ;;
           esac
       fi
-      $rm -f try try.c
+      $rm_try
       set d_semctl_semun
       eval $setvar
       ;;
@@ -213,7 +213,7 @@ END
           semid_ds) val="$define" ;;
           esac
       fi
-      $rm -f try try.c
+      $rm_try
       set d_semctl_semid_ds
       eval $setvar
       ;;
@@ -225,7 +225,7 @@ END
     *)  echo "You cannot use struct semid_ds* for semctl IPC_STAT." >&4
         ;;
     esac
-    $rm -f try.h
+    $rm_try
     ;;
 *)  val="$undef"
 

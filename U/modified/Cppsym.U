@@ -30,16 +30,14 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:50  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
 ?X: This unit produces a shell script called Cppsym, which can be used to
 ?X: determine whether any in a list of symbols is defined by the C compilation
 ?X: chain (C preprocessor symbols plus C compiler native ones).
 ?X: It can determine the status of any symbol, though the symbols in $al
 ?X: are more easily determined.  If you want to add to $al you can do
 ?X: it in Myinit.U.
-?X: 
 ?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: run \
-	eunicefix Guess awk cat tr sed sort rm startsh osname \
+	eunicefix Guess awk cat tr sed sort rm rm_try startsh osname \
 	+cc +gccversion test comm uniq echo Options trnl \
 	optimize ccflags ldflags libs cpp_stuff
 ?MAKE:	-pick add $@ %<
@@ -256,7 +254,7 @@ do
 	-A*) $test "$gccversion" && echo "\$i" | $sed 's/^-A//' | $sed 's/\(.*\)(\(.*\))/\1=\2/';;
 	esac
 done
-$rm -f try.c
+$rm_try
 EOS
 postprocess_cc_v=''
 chmod +x ccsym

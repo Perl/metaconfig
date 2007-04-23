@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:d_PRId64 d_PRIi64 d_PRIu64 d_PRIo64 d_PRIx64 d_PRIXU64 \
 	sPRId64 sPRIi64 sPRIu64 sPRIo64 sPRIx64 sPRIXU64: \
-	quadtype i_inttypes test cat rm Setvar Compile run
+	quadtype i_inttypes test cat rm_try Setvar Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_PRId64:
 ?S:	This variable conditionally defines the PERL_PRId64 symbol, which
@@ -236,17 +236,16 @@ fi
 if $test X"$sPRId64" = X; then
 	echo "Cannot figure out how to print 64-bit integers." >&4
 fi
-
-$rm -f try try.*
+$rm_try
 
 fi
 
 case "$sPRId64" in
-'')	d_PRId64="$undef"; d_PRIi64="$undef"; d_PRIu64="$undef"; 
-	d_PRIo64="$undef"; d_PRIx64="$undef"; d_PRIXU64="$undef"; 
+'')	d_PRId64="$undef"; d_PRIi64="$undef"; d_PRIu64="$undef";
+	d_PRIo64="$undef"; d_PRIx64="$undef"; d_PRIXU64="$undef";
 	;;
-*)	d_PRId64="$define"; d_PRIi64="$define"; d_PRIu64="$define"; 
-	d_PRIo64="$define"; d_PRIx64="$define"; d_PRIXU64="$define"; 
+*)	d_PRId64="$define"; d_PRIi64="$define"; d_PRIu64="$define";
+	d_PRIo64="$define"; d_PRIx64="$define"; d_PRIXU64="$define";
 	;;
 esac
 

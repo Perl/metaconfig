@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:d_stdio_stream_array stdio_stream_array: run \
-	Compile cat rm Oldconfig Myread Setvar exe_ext
+	Compile cat rm_try Oldconfig Myread Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_stdio_stream_array:
 ?S:	This variable tells whether there is an array holding
@@ -54,7 +54,7 @@ EOCP
 			esac
 		fi
 	done
-	$rm -f try.* try$exe_ext
+	$rm_try
 esac
 case "$stdio_stream_array" in
 '')	$cat >&4 <<EOM

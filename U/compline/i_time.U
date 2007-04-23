@@ -19,7 +19,7 @@
 ?X:
 ?MAKE:i_time i_systime i_systimek timeincl d_tm_tm_zone d_tm_tm_gmtoff: \
 	Compile cat \
-	contains rm echo n c +i_sysselct Findhdr Hasfield i_stdlib
+	contains rm_try echo n c +i_sysselct Findhdr Hasfield i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:i_time:
 ?S:	This variable conditionally defines I_TIME, which indicates
@@ -192,11 +192,11 @@ EOCP
 		esac
 	esac
 @end
-	$rm -f try.c try
+	$rm_try
 fi
 : see if struct tm knows about tm_zone
 case "$i_systime$i_time" in
-*$define*) 
+*$define*)
         echo " "
         echo "Checking to see if your struct tm has tm_zone field..." >&4
         set d_tm_tm_zone tm tm_zone $i_systime sys/time.h $i_time time.h
@@ -213,7 +213,7 @@ case "$d_tm_tm_zone" in
 esac
 : see if struct tm knows about tm_gmtoff
 case "$i_systime$i_time" in
-*$define*) 
+*$define*)
         echo " "
         echo "Checking to see if your struct tm has tm_gmtoff field..." >&4
         set d_tm_tm_gmtoff tm tm_gmtoff $i_systime sys/time.h $i_time time.h

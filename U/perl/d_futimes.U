@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_futimes: Compile cat rm run
+?MAKE:d_futimes: Compile cat rm_try run
 ?MAKE:	-pick add $@ %<
 ?S:d_futimes:
 ?S:	This variable conditionally defines the HAS_FUTIMES symbol, which
@@ -22,7 +22,7 @@
 d_futimes="$undef"
 : check for a working futimes
 echo " "
-echo "Checking for a working futimes()" >&4
+echo "Checking if you have a working futimes()" >&4
 $cat >try.c <<EOCP
 #include <stdio.h>
 #include <sys/time.h>
@@ -43,14 +43,14 @@ if eval $compile; then
     `$run ./try`
     rc=$?
     case "$rc" in
-	0)  echo "Yes, it does" >&4
+	0)  echo "Yes, you have" >&4
 	    d_futimes="$define"
 	    ;;
-	*)  echo "No, it has futimes, but it isn't working ($rc) (probably harmless)" >&4
+	*)  echo "No, you have futimes, but it isn't working ($rc) (probably harmless)" >&4
 	    ;;
     esac
 else
     echo "No, it does not (probably harmless)" >&4
 fi
-$rm -f try.* try core core.try.*
+$rm_try
 

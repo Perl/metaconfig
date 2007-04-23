@@ -13,7 +13,7 @@
 ?RCS: patch61: created
 ?RCS:
 ?RCS:
-?MAKE:d_sigaction: Csym Compile Setvar cat rm _o i_stdlib
+?MAKE:d_sigaction: Csym Compile Setvar cat rm_try i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_sigaction:
 ?S:	This variable conditionally defines the HAS_SIGACTION symbol, which
@@ -65,5 +65,5 @@ else
 	val="$undef"
 fi
 set d_sigaction; eval $setvar
-$rm -f try try$_o try.c
+$rm_try
 

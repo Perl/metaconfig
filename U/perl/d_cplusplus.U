@@ -1,11 +1,9 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 2005 H.Merijn Brand
+?RCS: Copyright (c) 2005-2007 H.Merijn Brand
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_cplusplus: Compile Setvar run cat rm
+?MAKE:d_cplusplus: Compile Setvar run cat rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_cplusplus (d_cplusplus.U):
 ?S:	This variable conditionally defines the USE_CPLUSPLUS symbol, which
@@ -42,7 +40,7 @@ else
 	val="$undef"
 	echo "You are not using a C++ compiler."
 fi
-$rm -f try try.* cplusplus$$
+$rm_try cplusplus$$
 set d_cplusplus
 eval $setvar
 

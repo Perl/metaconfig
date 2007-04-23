@@ -3,7 +3,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_signbit: nvtype Compile Setvar cat run rm echo n c i_math i_sunmath
+?MAKE:d_signbit: nvtype Compile Setvar cat run rm_try echo n c i_math i_sunmath
 ?MAKE:	-pick add $@ %<
 ?S:d_signbit:
 ?S:	This variable conditionally defines the HAS_SIGNBIT symbol, which
@@ -60,5 +60,5 @@ else
 fi
 set d_signbit
 eval $setvar
-$rm -f try.* try
+$rm_try
 

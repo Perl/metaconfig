@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_u32align: Compile cat rm Oldconfig run i_stdlib \
+?MAKE:d_u32align: Compile cat rm_try Oldconfig run i_stdlib \
 	byteorder u32type Myread Setvar u8type signal_t
 ?MAKE:	-pick add $@ %<
 ?S:d_u32align:
@@ -122,7 +122,7 @@ else
 	*)	d_u32align="$define" ;;
 	esac
 fi
-$rm -f core core.try.* try.core
+$rm_try
 ;;
 esac
 

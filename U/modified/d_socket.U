@@ -22,7 +22,7 @@
 	d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy \
 	d_scm_rights: \
 	contains libc echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
-	Compile cat rm Setvar Hasfield
+	Compile cat rm_try Setvar Hasfield
 ?MAKE:	-pick add $@ %<
 ?S:d_socket:
 ?S:	This variable conditionally defines HAS_SOCKET, which indicates
@@ -175,7 +175,7 @@ else
 							sockethdr="-I/usr/netinclude"
 							;;
 						esac
-						echo "Found Berkeley sockets interface in lib$net." >&4 
+						echo "Found Berkeley sockets interface in lib$net." >&4
 ?X: now check for advanced features
 						if $contains setsockopt libc.list >/dev/null 2>&1; then
 							d_oldsock="$undef"
@@ -221,6 +221,6 @@ EOF
 		val="$define"
 	fi
 	set d_${enum}; eval $setvar
-	$rm -f try.c try
+	$rm_try
 done
 

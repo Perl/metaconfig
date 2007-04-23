@@ -16,7 +16,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:21  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:i_malloc: cat rm Compile Setvar
+?MAKE:i_malloc: cat rm_try Compile Setvar
 ?MAKE:	-pick add $@ %<
 ?S:i_malloc:
 ?S:	This variable conditionally defines the I_MALLOC symbol, and indicates
@@ -46,7 +46,7 @@ else
     echo "<malloc.h> NOT found." >&4
     val="$undef"
 fi
-$rm -f try.c try
+$rm_try
 set i_malloc
 eval $setvar
 

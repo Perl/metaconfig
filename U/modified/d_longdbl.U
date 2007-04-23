@@ -8,10 +8,10 @@
 ?RCS: $Log: d_longdbl.U,v $
 ?RCS:
 ?MAKE:d_longdbl longdblsize: Compile Setvar Myread run \
-	cat rm test doublesize
+	cat rm_try test doublesize
 ?MAKE:	-pick add $@ %<
 ?S:d_longdbl:
-?S:	This variable conditionally defines HAS_LONG_DOUBLE if 
+?S:	This variable conditionally defines HAS_LONG_DOUBLE if
 ?S:	the long double type is supported.
 ?S:.
 ?S:longdblsize:
@@ -24,7 +24,7 @@
 ?C:	doubles.
 ?C:.
 ?C:LONG_DOUBLESIZE:
-?C:	This symbol contains the size of a long double, so that the 
+?C:	This symbol contains the size of a long double, so that the
 ?C:	C preprocessor can make decisions based on it.  It is only
 ?C:	defined if the system supports long doubles.
 ?C:.
@@ -46,7 +46,7 @@ else
 	val="$undef"
 	echo "You do not have long double."
 fi
-$rm try.*
+$rm_try
 set d_longdbl
 eval $setvar
 
@@ -83,9 +83,9 @@ EOCP
 		echo "That isn't any different from an ordinary double."
 		echo "I'll keep your setting anyway, but you may see some"
 		echo "harmless compilation warnings."
-	fi	
+	fi
 	;;
 esac
-$rm -f try.* try
+$rm_try
 @end
 

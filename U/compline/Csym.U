@@ -27,7 +27,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:Csym mistrustnm: Options contains libc libs runnm test \
-	+cc +optimize +ccflags +ldflags run rm _exe d_cplusplus
+	+cc +optimize +ccflags +ldflags run rm_try _exe d_cplusplus
 ?MAKE:	-pick add $@ %<
 ?LINT:define csym
 ?LINT:use libc
@@ -95,12 +95,12 @@ yes)
 			echo "extern $extern_C void *$1$tdc; void *(*(p()))$tdc { return &$1; } int main() { if(p()) return(0); else return(1); }"> try.c;
 			$cc -o try $optimize $ccflags $ldflags try.c >/dev/null 2>&1 $libs && tval=true;
 			$test "$mistrustnm" = run -a -x try && { $run ./try$_exe >/dev/null 2>&1 || tval=false; };
-			$rm -f try$_exe try.c core core.* try.core;
+			$rm_try;
 		fi;
 	else
 		echo "extern $extern_C void *$1$tdc; void *(*(p()))$tdc { return &$1; } int main() { if(p()) return(0); else return(1); }"> try.c;
 		$cc -o try $optimize $ccflags $ldflags try.c $libs >/dev/null 2>&1 && tval=true;
-		$rm -f try$_exe try.c;
+		$rm_try;
 	fi;
 	;;
 *)

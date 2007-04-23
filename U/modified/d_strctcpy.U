@@ -12,7 +12,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:34  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_strctcpy: cat rm cc Setvar
+?MAKE:d_strctcpy: cat rm_try cc Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_strctcpy:
 ?S:	This variable conditionally defines the USE_STRUCT_COPY symbol, which
@@ -49,5 +49,5 @@ else
 fi
 set d_strctcpy
 eval $setvar
-$rm -f try try.*
+$rm_try
 

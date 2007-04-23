@@ -10,7 +10,7 @@
 	ldflags_uselargefiles \
 	libswanted_uselargefiles: \
 	Myread Oldconfig Setvar test lseeksize fpossize \
-	fpostype Compile echo n c cat lseektype rm run \
+	fpostype Compile echo n c cat lseektype rm_try run \
 	use64bitint use64bitall i_stdlib
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -62,7 +62,7 @@ case "$uselfs" in
 EOM
 	uselargefiles="$define"
 	;;
-esac                          
+esac
 
 case "$lseeksize:$fpossize" in
 8:8) cat <<EOM
@@ -109,7 +109,7 @@ case "$uselargefiles" in
 int main()
 {
     printf("%d\n", (int)sizeof($lseektype));
-    return(0); 
+    return(0);
 }
 EOCP
 		set try
@@ -128,7 +128,7 @@ EOCP
 		*_t) zzz="$fpostype"	;;
 		*)   zzz="fpos_t"	;;
 		esac
-		$echo $n "Rechecking the size of $zzz...$c" >&4 
+		$echo $n "Rechecking the size of $zzz...$c" >&4
 		$cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
@@ -161,7 +161,7 @@ EOCP
 			. ./myread
 			fpossize="$ans"
 		fi
-		$rm -f try.c try
+		$rm_try
 	fi
 	;;
 esac

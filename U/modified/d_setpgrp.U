@@ -24,7 +24,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:09  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_setpgrp d_bsdsetpgrp: cat rm +cc +libs +ccflags \
+?MAKE:d_setpgrp d_bsdsetpgrp: cat rm_try +cc +libs +ccflags \
 	+ldflags Inlibc Guess Setvar i_unistd i_stdlib run
 ?MAKE:	-pick add $@ %<
 ?S:d_setpgrp:
@@ -115,5 +115,6 @@ EOP
 esac
 set d_bsdsetpgrp
 eval $setvar
-$rm -f try try.*
+$rm_try
 @end
+

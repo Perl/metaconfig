@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:28  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:byteorder: cat Myread Oldconfig Loc Compile rm run \
+?MAKE:byteorder: cat Myread Oldconfig Loc Compile rm_try run \
 	usecrosscompile multiarch uvtype uvsize i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:byteorder:
@@ -36,11 +36,11 @@
 ?C:	On NeXT 3.2 (and greater), you can build "Fat" Multiple Architecture
 ?C:	Binaries (MAB) on either big endian or little endian machines.
 ?C:	The endian-ness is available at compile-time.  This only matters
-?C:	for perl, where the config.h can be generated and installed on 
+?C:	for perl, where the config.h can be generated and installed on
 ?C:	one system, and used by a different architecture to build an
 ?C:	extension.  Older versions of NeXT that might not have
 ?C:	defined either *_ENDIAN__ were all on Motorola 680x0 series,
-?C:	so the default case (for NeXT) is big endian to catch them. 
+?C:	so the default case (for NeXT) is big endian to catch them.
 ?C:	This might matter for NeXT 3.0.
 ?C:.
 ?H:?%<:#if defined(USE_CROSS_COMPILE) || defined(MULTIARCH)
@@ -150,8 +150,7 @@ EOM
 		esac
 		;;
 	esac
-	$rm -f try.c try
+	$rm_try
 	;;
 esac
-
 

@@ -22,7 +22,7 @@
 ?RCS: patch36: created by ADO
 ?RCS:
 ?MAKE:d_Gconvert: \
-	Compile cat Inlibc rm _o i_stdlib d_qgcvt run \
+	Compile cat Inlibc rm_try i_stdlib d_qgcvt run \
 	uselongdouble d_longdbl d_PRIgldbl sPRIgldbl
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
@@ -33,11 +33,11 @@
 ?S:	long doubles, the macro uses the first of the following
 ?S:	functions that pass Configure's tests: qgcvt, sprintf (if
 ?S:	Configure knows how to make sprintf format long doubles--see
-?S:	sPRIgldbl), gconvert, gcvt, and sprintf (casting to double).  
-?S:	The gconvert_preference and gconvert_ld_preference variables   
+?S:	sPRIgldbl), gconvert, gcvt, and sprintf (casting to double).
+?S:	The gconvert_preference and gconvert_ld_preference variables
 ?S:	can be used to alter Configure's preferences, for doubles and
-?S:	long doubles, respectively.  If present, they contain a       
-?S:	space-separated list of one or more of the above function       
+?S:	long doubles, respectively.  If present, they contain a
+?S:	space-separated list of one or more of the above function
 ?S:	names in the order they should be tried.
 ?S:
 ?S:	d_Gconvert may be set to override Configure with a platform-
@@ -66,7 +66,6 @@
 ?T: xxx_list xxx_convert xxx_ld_list
 ?LINT:extern gconvert_preference
 ?LINT:extern gconvert_ld_preference
-?X: 
 : Check how to convert floats to strings.
 
 if test "X$d_Gconvert" = X; then
@@ -138,8 +137,8 @@ char *got;
 }
 
 int main()
-{ 
-	char buf[64]; 
+{
+	char buf[64];
 	buf[63] = '\0';
 
 	/* This must be 1st test on (which?) platform */
@@ -147,13 +146,13 @@ int main()
 	Gconvert((DOUBLETYPE)0.1, 8, 0, buf);
 	checkit("0.1", buf);
 
-	Gconvert((DOUBLETYPE)0.01, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)0.01, 8, 0, buf);
 	checkit("0.01", buf);
 
-	Gconvert((DOUBLETYPE)0.001, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)0.001, 8, 0, buf);
 	checkit("0.001", buf);
 
-	Gconvert((DOUBLETYPE)0.0001, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)0.0001, 8, 0, buf);
 	checkit("0.0001", buf);
 
 	Gconvert((DOUBLETYPE)0.00009, 8, 0, buf);
@@ -162,42 +161,42 @@ int main()
 	else
 	    checkit("9e-05", buf);
 
-	Gconvert((DOUBLETYPE)1.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.0, 8, 0, buf);
 	checkit("1", buf);
 
-	Gconvert((DOUBLETYPE)1.1, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.1, 8, 0, buf);
 	checkit("1.1", buf);
 
-	Gconvert((DOUBLETYPE)1.01, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.01, 8, 0, buf);
 	checkit("1.01", buf);
 
-	Gconvert((DOUBLETYPE)1.001, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.001, 8, 0, buf);
 	checkit("1.001", buf);
 
-	Gconvert((DOUBLETYPE)1.0001, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.0001, 8, 0, buf);
 	checkit("1.0001", buf);
 
-	Gconvert((DOUBLETYPE)1.00001, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.00001, 8, 0, buf);
 	checkit("1.00001", buf);
 
-	Gconvert((DOUBLETYPE)1.000001, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)1.000001, 8, 0, buf);
 	checkit("1.000001", buf);
 
-	Gconvert((DOUBLETYPE)0.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)0.0, 8, 0, buf);
 	checkit("0", buf);
 
-	Gconvert((DOUBLETYPE)-1.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)-1.0, 8, 0, buf);
 	checkit("-1", buf);
 
 	/* Some Linux gcvt's give 1.e+5 here. */
-	Gconvert((DOUBLETYPE)100000.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)100000.0, 8, 0, buf);
 	checkit("100000", buf);
-	
+
 	/* Some Linux gcvt's give -1.e+5 here. */
-	Gconvert((DOUBLETYPE)-100000.0, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)-100000.0, 8, 0, buf);
 	checkit("-100000", buf);
 
-	Gconvert((DOUBLETYPE)123.456, 8, 0, buf); 
+	Gconvert((DOUBLETYPE)123.456, 8, 0, buf);
 	checkit("123.456", buf);
 
 	/* Testing of 1e+129 in bigintpm.t must not get extra '.' here. */
@@ -229,14 +228,14 @@ for xxx_convert in $gconvert_preference; do
     case $xxx_convert in
     gcvt|gconvert|sprintf) xxx_list="$xxx_list $xxx_convert" ;;
     *) echo "Discarding unrecognized gconvert_preference $xxx_convert" >&4 ;;
-    esac 
+    esac
 done
 : then add any others
 for xxx_convert in gconvert gcvt sprintf; do
     case "$xxx_list" in
     *$xxx_convert*) ;;
     *) xxx_list="$xxx_list $xxx_convert" ;;
-    esac 
+    esac
 done
 
 case "$d_longdbl$uselongdouble" in
@@ -271,7 +270,7 @@ esac
 
 for xxx_convert in $xxx_list; do
 	echo "Trying $xxx_convert..."
-	$rm -f try try$_o
+	$rm_try
 	set try -DTRY_$xxx_convert
 	if eval $compile; then
 		echo "$xxx_convert() found." >&4
@@ -304,7 +303,7 @@ qgcvt) d_Gconvert='qgcvt((x),(n),(b))' ;;
       d_Gconvert='sprintf((b),"%.*g",(n),(double)(x))' ;;
    *) d_Gconvert='sprintf((b),"%.*g",(n),(x))' ;;
    esac
-   ;;  
+   ;;
 esac
 
 fi

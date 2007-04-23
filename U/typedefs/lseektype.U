@@ -15,15 +15,15 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:08  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:lseektype lseeksize: Myread Typedef cat Compile rm longsize run
+?MAKE:lseektype lseeksize: Myread Typedef cat Compile rm_try longsize run
 ?MAKE:	-pick add $@ %<
 ?S:lseektype:
-?S:	This variable defines lseektype to be something like off_t, long, 
+?S:	This variable defines lseektype to be something like off_t, long,
 ?S:	or whatever type is used to declare lseek offset's type in the
 ?S:	kernel (which also appears to be lseek's return type).
 ?S:.
 ?S:lseeksize:
-?S:	This variable defines lseektype to be something like off_t, long, 
+?S:	This variable defines lseektype to be something like off_t, long,
 ?S:	or whatever type is used to declare lseek offset's type in the
 ?S:	kernel (which also appears to be lseek's return type).
 ?S:.
@@ -57,7 +57,7 @@ $cat >try.c <<EOCP
 int main()
 {
     printf("%d\n", (int)sizeof($lseektype));
-    return(0); 
+    return(0);
 }
 EOCP
 set try
@@ -72,5 +72,5 @@ else
 	. ./myread
 	lseeksize="$ans"
 fi
-$rm -f try.c try
+$rm_try
 

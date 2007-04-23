@@ -1,11 +1,9 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 2005 H.Merijn Brand
+?RCS: Copyright (c) 2005-2007 H.Merijn Brand
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_sprintf_returns_strlen: Compile cat rm run i_stdlib i_string i_math echo
+?MAKE:d_sprintf_returns_strlen: Compile cat rm_try run i_stdlib i_string i_math echo
 ?MAKE:	-pick add $@ %<
 ?S:d_sprintf_returns_strlen:
 ?S:	This variable defines whether sprintf returns the length of the string
@@ -81,6 +79,5 @@ EOM
         ;;
     esac
 fi
-
-$rm -f try.* try
+$rm_try
 

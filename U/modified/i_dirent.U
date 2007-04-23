@@ -29,7 +29,7 @@
 ?X: This unit looks whether there is a dirent system or not
 ?X:
 ?MAKE:i_dirent d_dirnamlen direntrytype: test contains Setvar \
-	Myread Findhdr cppstdin cppflags cppminus rm
+	Myread Findhdr cppstdin cppflags cppminus rm_try
 ?MAKE:	-pick add $@ %<
 ?S:i_dirent:
 ?S:	This variable conditionally defines I_DIRENT, which indicates
@@ -87,7 +87,7 @@ fi
 set i_dirent
 eval $setvar
 
-?X: Use struct dirent or struct direct?   If we're using dirent.h, 
+?X: Use struct dirent or struct direct?   If we're using dirent.h,
 ?X: it's probably struct dirent, but apparently not always.
 ?X: Assume $xinc still contains the name of the header file we're using.
 @if direntrytype || Direntry_t
@@ -110,7 +110,7 @@ case "$guess1" in
 'struct dirent') guess2='struct direct' ;;
 *) guess2='struct dirent' ;;
 esac
-		
+
 if $contains "$guess1" try.c >/dev/null 2>&1; then
 	direntrytype="$guess1"
 	echo "Your directory entries are $direntrytype." >&4
@@ -124,10 +124,9 @@ else
 	. ./myread
 	direntrytype="$ans"
 fi
-$rm -f try try.c
+$rm_try
 
 @end
-
 @if d_dirnamlen || DIRNAMLEN
 : see if the directory entry stores field length
 echo " "
@@ -141,6 +140,6 @@ else
 fi
 set d_dirnamlen
 eval $setvar
-$rm -f try try.c
+$rm_try
 
 @end

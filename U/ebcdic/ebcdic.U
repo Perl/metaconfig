@@ -8,7 +8,7 @@
 ?RCS:	Original author Jarkko Hietaniemi <jhi@iki.fi>
 ?RCS:	Merged into dist by Andy Dougherty  July 13, 1998
 ?RCS:
-?MAKE:ebcdic: Compile Setvar cat rm run
+?MAKE:ebcdic: Compile Setvar cat rm_try run
 ?MAKE:	-pick add $@ %<
 ?S:ebcdic:
 ?S:	This variable conditionally defines EBCDIC if this
@@ -46,7 +46,7 @@ else
 	echo "I'm unable to compile the test program." >&4
 	echo "I'll assume ASCII or some ISO Latin. Or UTF8." >&4
 fi
-$rm -f try try.*
+$rm_try
 set ebcdic
 eval $setvar
 

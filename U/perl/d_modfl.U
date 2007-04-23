@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_modfl d_modflproto d_modfl_pow32_bug: Inlibc Compile Hasproto cat \
-	rm test sPRIfldbl d_longdbl osname gccversion ccflags run \
+	rm_try test sPRIfldbl d_longdbl osname gccversion ccflags run \
 	uselongdouble i_math \
 	d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl
 ?MAKE:	-pick add $@ %<
@@ -72,12 +72,12 @@ $define$define)
 Checking to see whether your modfl() is okay for large values...
 EOM
 $cat >try.c <<EOCP
-#include <math.h> 
+#include <math.h>
 #include <stdio.h>
 EOCP
 if $test "X$d_modflproto" != "X$define"; then
 	$cat >>try.c <<EOCP
-/* Sigh. many current glibcs provide the function, but do not prototype it.  */ 
+/* Sigh. many current glibcs provide the function, but do not prototype it. */
 long double modfl (long double, long double *);
 EOCP
 fi
@@ -85,7 +85,7 @@ $cat >>try.c <<EOCP
 int main() {
     long double nv = 4294967303.15;
     long double v, w;
-    v = modfl(nv, &w);         
+    v = modfl(nv, &w);
 #ifdef __GLIBC__
     printf("glibc");
 #endif
@@ -116,7 +116,7 @@ EOCP
 			d_modfl="$undef"
 			;;
 		esac
-		$rm -f try.* try core core.try.*
+		$rm_try
 	else
 		echo "I cannot figure out whether your modfl() is okay, assuming it isn't."
 		d_modfl="$undef"

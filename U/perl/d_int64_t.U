@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_int64_t: Inhdr cat rm Setvar Compile i_inttypes
+?MAKE:d_int64_t: Inhdr cat rm_try Setvar Compile i_inttypes
 ?MAKE:	-pick add $@ %<
 ?S:d_int64_t:
 ?S:     This symbol will be defined if the C compiler supports int64_t.
@@ -40,7 +40,7 @@ else
 	val="$undef"
 	echo "You do not have int64_t."
 fi
-$rm -f try try.*
+$rm_try
 set d_int64_t
 eval $setvar
 

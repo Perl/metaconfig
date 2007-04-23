@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:need_va_copy: +ccflags rm cat Compile i_stdarg i_stdlib run
+?MAKE:need_va_copy: +ccflags rm_try cat Compile i_stdarg i_stdlib run
 ?MAKE:	-pick add $@ %<
 ?S:need_va_copy:
 ?S:	This symbol, if defined, indicates that the system stores
@@ -50,28 +50,28 @@ ivfprintf(FILE *f, const char *fmt, va_list *valp)
 {
   return vfprintf(f, fmt, *valp);
 }
- 
-int    
+
+int
 myvfprintf(FILE *f, const  char *fmt, va_list val)
 {
   return ivfprintf(f, fmt, &val);
 }
-      
+
 int
-myprintf(char *fmt, ...) 
+myprintf(char *fmt, ...)
 {
   va_list val;
   va_start(val, fmt);
-  return myvfprintf(stdout, fmt, val); 
-}         
+  return myvfprintf(stdout, fmt, val);
+}
 
 int
 main(int ac, char **av)
 {
   signal(SIGSEGV, exit);
 
-  myprintf("%s%cs all right, then\n", "that", '\'');                            
-  exit(0);      
+  myprintf("%s%cs all right, then\n", "that", '\'');
+  exit(0);
 }
 EOCP
 	set try
@@ -90,7 +90,7 @@ EOCP
 		need_va_copy="$define"
 		;;
 	esac
-	$rm -f try.* core core.* *.core *.core.*
+	$rm_try
 	;;
 *)	echo "You don't have <stdarg.h>, not checking for va_copy()." >&4
 	;;

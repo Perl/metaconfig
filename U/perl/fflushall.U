@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:fflushNULL fflushall: Compile cat rm test osname run to from \
+?MAKE:fflushNULL fflushall: Compile cat rm rm_try test osname run to from \
 	Oldconfig Myread Setvar exe_ext echo \
 	d_sysconf i_unistd d_stdio_stream_array stdio_stream_array i_stdlib
 ?MAKE:	-pick add $@ %<
@@ -98,7 +98,7 @@ int main() {
 #    endif
 #   endif
 #  endif
-# endif 
+# endif
 # ifdef HAS_STDIO_STREAM_ARRAY
     if (open_max > 0) {
       long i;
@@ -107,7 +107,7 @@ int main() {
 		STDIO_STREAM_ARRAY[i]._file < open_max &&
 		STDIO_STREAM_ARRAY[i]._flag)
 		fflush(&STDIO_STREAM_ARRAY[i]);
-    }	
+    }
   }
 # endif
 #endif
@@ -158,7 +158,7 @@ EOM
 			fi
 		fi
 	fi
-	$rm -f core try.core core.try.*
+	$rm_try
 	case "$fflushNULL" in
 	x)	$cat >&4 <<EOM
 Your fflush(NULL) works okay for output streams.
@@ -276,7 +276,7 @@ EOM
 					fflushall="`$cat try.out`"
 				fi
 			fi
-			$rm -f core try.core core.try.*
+			$rm_try
 			case "$fflushall" in
 			x)	$cat >&4 <<EOM
 Whew. Flushing explicitly all the stdio streams works.
@@ -326,5 +326,5 @@ We won't be flushing handles at all before fork/exec/popen.
 EOM
 	;;
 esac
-$rm -f try.* try$exe_ext
+$rm_try
 

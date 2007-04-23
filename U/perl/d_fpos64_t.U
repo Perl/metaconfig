@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_fpos64_t: \
-	Inlibc Setvar Compile rm cat fpossize
+	Inlibc Setvar Compile rm_try cat fpossize
 ?MAKE:	-pick add $@ %<
 ?S:d_fpos64_t:
 ?S:	This symbol will be defined if the C compiler supports fpos64_t.
@@ -36,7 +36,7 @@ else
 	8) echo "(Your fpos_t is 64 bits, so you could use that.)" ;;
 	esac
 fi
-$rm -f try.* try
+$rm_try
 set d_fpos64_t
 eval $setvar
 
