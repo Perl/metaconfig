@@ -22,7 +22,7 @@
 ?RCS: patch36: created by ADO
 ?RCS:
 ?MAKE:d_Gconvert: \
-	Compile cat Inlibc rm_try i_stdlib d_qgcvt run \
+	Compile cat Inlibc rm _o rm_try i_stdlib d_qgcvt run \
 	uselongdouble d_longdbl d_PRIgldbl sPRIgldbl
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
@@ -270,7 +270,8 @@ esac
 
 for xxx_convert in $xxx_list; do
 	echo "Trying $xxx_convert..."
-	$rm_try
+?X: Do NOT use $rm_try here, as we need to keep try.c
+	$rm -f try try$_o core
 	set try -DTRY_$xxx_convert
 	if eval $compile; then
 		echo "$xxx_convert() found." >&4
@@ -307,4 +308,5 @@ qgcvt) d_Gconvert='qgcvt((x),(n),(b))' ;;
 esac
 
 fi
+$rm_try
 

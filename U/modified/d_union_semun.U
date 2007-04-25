@@ -70,7 +70,8 @@ eval $setvar
 case "$d_sem" in
 $define)
     echo " "
-    $cat > try.h <<END
+?X: use tryh.h instead of try.h because $rm_try cleans up try.*
+    $cat > tryh.h <<END
 #ifndef S_IRUSR
 #   ifdef S_IREAD
 #	define S_IRUSR S_IREAD
@@ -105,7 +106,7 @@ END
 #include <sys/stat.h>
 #include <stdio.h>
 #include <errno.h>
-#include "try.h"
+#include "tryh.h"
 #ifndef errno
 extern int errno;
 #endif
@@ -175,7 +176,7 @@ END
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <sys/stat.h>
-#include "try.h"
+#include "tryh.h"
 #include <stdio.h>
 #include <errno.h>
 #ifndef errno
@@ -225,7 +226,6 @@ END
     *)  echo "You cannot use struct semid_ds* for semctl IPC_STAT." >&4
         ;;
     esac
-    $rm_try
     ;;
 *)  val="$undef"
 
@@ -239,4 +239,5 @@ END
     eval $setvar
     ;;
 esac
+$rm_try tryh.h
 
