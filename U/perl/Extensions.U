@@ -105,8 +105,6 @@ known_extensions="$known_extensions threads/shared"
 set X $known_extensions
 shift
 known_extensions="$*"
-#  Ditto for IO/Compress/Base and IO/Compress/Zlib
-nonxs_extensions="$nonxs_extensions IO/Compress/Base IO/Compress/Zlib"
 set X $nonxs_extensions
 shift
 nonxs_extensions="$*"
