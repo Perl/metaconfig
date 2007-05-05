@@ -128,7 +128,7 @@ $test -z "$myuname" && myuname=`hostname 2>/dev/null`
 ?X: new lines to keep the myuname variable sane... --RAM
 # tr '[A-Z]' '[a-z]' would not work in EBCDIC
 # because the A-Z/a-z are not consecutive.
-myuname=`echo $myuname | $sed -e 's/^[^=]*=//' -e 's/\///g' | \
+myuname=`echo $myuname | $sed -e 's/^[^=]*=//' -e 's,['/],,g' | \
 	./tr '[A-Z]' '[a-z]' | $tr $trnl ' '`
 ?X: Save the value we just computed to reset myuname after we get done here.
 newmyuname="$myuname"
