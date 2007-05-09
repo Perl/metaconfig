@@ -10,7 +10,7 @@
 ?MAKE:known_extensions extensions dynamic_ext static_ext nonxs_ext \
 	useposix useopcode : \
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
-	i_ndbm usethreads useithreads package test cat rsrc \
+	i_ndbm usethreads use5005threads package test cat rsrc \
 	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
 	libs
 ?MAKE:	-pick add $@ %<
@@ -188,8 +188,8 @@ for xxx in $known_extensions ; do
 	Thread|thread)
                 case "$usethreads" in
                 true|$define|y)
-                        case "$useithreads" in
-                        $undef|false|[nN]*) avail_ext="$avail_ext $xxx" ;;
+                        case "$use5005threads" in
+                        $define|true|[yY]*) avail_ext="$avail_ext $xxx" ;;
                         esac
 		esac
 		;;
