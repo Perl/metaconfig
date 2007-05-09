@@ -48,7 +48,7 @@
 ?V:reuseval alldone error realsilent silent extractsh fastread \
 	override knowitall: config_sh
 ?T:arg argn symbol config_arg0 config_args config_argc xxx yyy zzz uuu
-?T:args_exp args_sep arg_exp
+?T:args_exp args_sep arg_exp libswanted
 ?F:./optdef.sh ./cmdline.opt ./posthint.sh ./cmdl.opt
 
 : Save command line options in file UU/cmdline.opt for later use in
@@ -193,6 +193,7 @@ while test $# -gt 0; do
 		fi
 		cd UU
 		shift;;
+	--help|\
 	-h) shift; error=true;;
 	-r) shift; reuseval=true;;
 	-s) shift; silent=true; realsilent=true;;
@@ -297,6 +298,14 @@ Usage: $me [-dehrsEKOSV] [-f config.sh] [-D symbol] [-D symbol=value]
   -D : define symbol to have some value:
          -D symbol         symbol gets the value 'define'
          -D symbol=value   symbol gets the value 'value'
+       common used examples (see INSTALL for more info):
+         -Duse64bitint            use 64bit integers
+         -Duse64bitall            use 64bit inttegers and pointers
+         -Dusethreads             use thread support
+         -Dinc_version_list=none  do not include older perl treess in @INC
+         -DEBUGGING=none          DEBUGGING options
+         -Dcc=gcc                 choose your compiler
+         -Dprefix=/opt/perl5      choose your destination
   -E : stop at the end of questions, after having produced config.sh.
   -K : do not use unless you know what you are doing.
   -O : let -D and -U override definitions from loaded configuration file.
@@ -304,6 +313,7 @@ Usage: $me [-dehrsEKOSV] [-f config.sh] [-D symbol] [-D symbol=value]
   -U : undefine symbol:
          -U symbol    symbol gets the value 'undef'
          -U symbol=   symbol gets completely empty
+       e.g.:  -Uversiononly
   -A : manipulate symbol after the platform specific hints have been applied:
 	 -A symbol=value		append " "value to symbol
 	 -A append:symbol=value		append value to symbol
@@ -314,6 +324,7 @@ Usage: $me [-dehrsEKOSV] [-f config.sh] [-D symbol] [-D symbol=value]
 	 -A prepend:symbol=value	prepend value to symbol
 	 -A undef:symbol		define symbol to be 'undef'
 	 -A undef:symbol=		define symbol to be ''
+       e.g.:  -A prepend:libswanted='cl pthread '
   -V : print version number and exit (with a zero status).
 EOM
 	exit 1
