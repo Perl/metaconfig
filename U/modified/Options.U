@@ -300,9 +300,9 @@ Usage: $me [-dehrsEKOSV] [-f config.sh] [-D symbol] [-D symbol=value]
          -D symbol=value   symbol gets the value 'value'
        common used examples (see INSTALL for more info):
          -Duse64bitint            use 64bit integers
-         -Duse64bitall            use 64bit inttegers and pointers
+         -Duse64bitall            use 64bit integers and pointers
          -Dusethreads             use thread support
-         -Dinc_version_list=none  do not include older perl treess in @INC
+         -Dinc_version_list=none  do not include older perl trees in @INC
          -DEBUGGING=none          DEBUGGING options
          -Dcc=gcc                 choose your compiler
          -Dprefix=/opt/perl5      choose your destination
