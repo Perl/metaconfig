@@ -23,7 +23,7 @@
 ?X:
 ?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm_try Compile run \
 	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar \
-	startsh i_unistd i_string i_fcntl i_stdlib
+	startsh i_unistd i_string i_fcntl i_stdlib d_fork d_pipe
 ?MAKE:	-pick add $@ %<
 ?S:o_nonblock:
 ?S:	This variable bears the symbol value to be used during open() or fcntl()
@@ -138,6 +138,8 @@ echo " "
 echo "Let's see what value errno gets from read() on a $o_nonblock file..." >&4
 case "$eagain" in
 '')
+	case "$d_fork:$d_pipe" in
+	define:define)
 	$cat head.c > try.c
 	$cat >>try.c <<EOCP
 #include <errno.h>
@@ -271,6 +273,12 @@ EOCP
 		echo "I can't compile the test program--assuming errno EAGAIN will do."
 		eagain=EAGAIN
 	fi
+	;;
+	*)	echo "Can't figure out how to test this--assuming errno EAGAIN will do."
+		eagain=EAGAIN
+		val="$define"
+		;;
+	esac
 	set d_eofnblk
 	eval $setvar
 	;;
