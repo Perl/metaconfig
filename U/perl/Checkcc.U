@@ -53,15 +53,36 @@ EOM
         case "$cc" in
         *gcc*) trygcc=no ;;
         esac
-        case "`$cc -v -c try.c 2>&1`" in
-        *gcc*) trygcc=no ;;
-        esac
+	# Skip this test because it gives a false match on output like:
+	#    ./trygcc: line 23: cc: command not found
+        # case "`$cc -v -c try.c 2>&1`" in
+        # *gcc*) trygcc=no ;;
+        # esac
         if $test X"$trygcc" = Xyes; then
             if gcc -o try -c try.c; then
                 echo " "
                 echo "You seem to have a working gcc, though." >&4
-                rp="Would you like to use it?"
-                dflt=y
+		# Switching compilers may undo the work of hints files.
+		# The most common problem is -D_REENTRANT for threads.
+		# This heuristic catches that case, but gets false positives
+		# if -Dusethreads was not actually specified.  Better to
+		# bail out here with a useful message than fail 
+		# mysteriously later. Should we perhaps just try to
+		# re-invoke Configure -Dcc=gcc config_args ?
+		if $test -f usethreads.cbu; then
+			$cat >&4 <<EOM 
+
+*** However, any setting of the C compiler flags (e.g. for thread support)
+*** will be lost.  It may be necessary for you to restart Configure and
+*** add -Dcc=gcc to your Configure command line.
+
+EOM
+			rp="Would you like to go ahead and try gcc anyway?"
+			dflt=n
+		else
+			rp="Would you like to use it?"
+			dflt=y
+		fi
                 if $test -f myread; then
                     . ./myread
                 else
@@ -74,15 +95,6 @@ EOM
                 fi  
                 case "$ans" in
                 [yY]*) cc=gcc; ccname=gcc; ccflags=''; despair=no;
-                       if $test -f usethreads.cbu; then
-                           $cat >&4 <<EOM 
-
-*** However, any setting of the C compiler flags (e.g. for thread support)
-*** has been lost.  It may be necessary to pass -Dcc=gcc to Configure
-*** (together with e.g. -Dusethreads).
-
-EOM
-                       fi;;
                 esac
             fi
         fi
