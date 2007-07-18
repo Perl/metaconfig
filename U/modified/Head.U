@@ -293,6 +293,11 @@ true)
 	esac
 	;;
 esac
+?X: 2004.06.09 rac
+?X: having $newsh persist as ksh here is bad news if ksh doesn't really
+?X: exist. this causes us to toss away a perfectly good working test in
+?X: bash in favour of more exotic external options. see bug 42665.
+test -x "${newsh}" || unset newsh
 
 ?X: Unset CDPATH to avoid surprises when using cd under some shells
 ?X: Can't unset it because that's not portable to very old shells.
