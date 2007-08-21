@@ -11,7 +11,7 @@
 	d_nv_preserves_uv nv_preserves_uv_bits d_nv_zero_is_allbits_zero: \
 	echo rm_try use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
-	charsize shortsize intsize longsize i_stdlib i_string \
+	shortsize intsize longsize i_stdlib i_string \
 	cat Compile i_inttypes test d_volatile signal_t run
 ?MAKE:	-pick add $@ %<
 ?S:ivtype:
@@ -273,38 +273,10 @@ int main() {
 }
 EOCP
 
-case "$i8type" in
-'')	case "$charsize" in
-	1)	i8type=char
-		u8type="unsigned char"
-		i8size=$charsize
-		u8size=$charsize
-		;;
-	esac
-	;;
-esac
-case "$i8type" in
-'')	set try -DINT8
-	if eval $compile; then
-		case "`$run ./try`" in
-		int8_t)	i8type=int8_t
-			u8type=uint8_t
-			i8size=1
-			u8size=1
-			;;
-		esac
-	fi
-	;;
-esac
-case "$i8type" in
-'')	if $test $charsize -ge 1; then
-		i8type=char
-		u8type="unsigned char"
-		i8size=$charsize
-		u8size=$charsize
-	fi
-	;;
-esac
+i8type=char
+u8type="unsigned char"
+i8size=1
+u8size=1
 
 case "$i16type" in
 '')	case "$shortsize" in
