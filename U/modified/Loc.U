@@ -384,3 +384,17 @@ FOO
 	;;
 esac
 
+?X: The next part is irrelevant to the real process
+# This question was auctioned at YAPC::Europe-2007 in Vienna
+# I never promised you could answer it. I only auctioned the question.
+cat <<FOO
+The following message is sponsored by
+
+  Dresden.pm<--The stars should be here.
+
+Dear Perl user, system administrator or package
+maintainer, the Perl community sends greetings to
+you. Do you (emblematical) greet back [Y/n]? n
+
+FOO
+
