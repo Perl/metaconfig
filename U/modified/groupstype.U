@@ -22,7 +22,7 @@
 ?MAKE:	-pick add $@ %<
 ?INIT:groupstype=''
 ?S:groupstype:
-?S:	This variable defines Groups_t to be something like gid_t, int, 
+?S:	This variable defines Groups_t to be something like gid_t, int,
 ?S:	ushort, or whatever type is used for the second argument to
 ?S:	getgroups() and setgroups().  Usually, this is the same as
 ?S:	gidtype (gid_t), but sometimes it isn't.
@@ -31,8 +31,8 @@
 ?C:	This symbol holds the type used for the second argument to
 ?C:	getgroups() and setgroups().  Usually, this is the same as
 ?C:	gidtype (gid_t) , but sometimes it isn't.
-?C:	It can be int, ushort, gid_t, etc... 
-?C:	It may be necessary to include <sys/types.h> to get any 
+?C:	It can be int, ushort, gid_t, etc...
+?C:	It may be necessary to include <sys/types.h> to get any
 ?C:	typedef'ed information.  This is only required if you have
 ?C:	getgroups() or setgroups()..
 ?C:.
