@@ -37,8 +37,8 @@
 ?S:.
 ?S:sig_name_init:
 ?S:	This variable holds the signal names, enclosed in double quotes and
-?S:	separated by commas, suitable for use in the SIG_NAME definition 
-?S:	below.  A "ZERO" is prepended to the list, and the list is 
+?S:	separated by commas, suitable for use in the SIG_NAME definition
+?S:	below.  A "ZERO" is prepended to the list, and the list is
 ?S:	terminated with a plain 0.  The leading SIG in signal names
 ?S:	is removed. See sig_num.
 ?S:.
@@ -51,8 +51,8 @@
 ?S:.
 ?S:sig_num_init:
 ?S:	This variable holds the signal numbers, enclosed in double quotes and
-?S:	separated by commas, suitable for use in the SIG_NUM definition 
-?S:	below.  A "ZERO" is prepended to the list, and the list is 
+?S:	separated by commas, suitable for use in the SIG_NUM definition
+?S:	below.  A "ZERO" is prepended to the list, and the list is
 ?S:	terminated with a plain 0.
 ?S:.
 ?S:sig_count (sig_name.U):
@@ -86,10 +86,10 @@
 ?C:	The signals in the list are separated with commas, and the indices
 ?C:	within that list and the SIG_NAME list match, so it's easy to compute
 ?C:	the signal name from a number or vice versa at the price of a small
-?C:	dynamic linear lookup. 
+?C:	dynamic linear lookup.
 ?C:	Duplicates are allowed, but are moved to the end of the list.
 ?C:	The signal number corresponding to sig_name[i] is sig_number[i].
-?C:	if (i < NSIG) then sig_number[i] == i.  
+?C:	if (i < NSIG) then sig_number[i] == i.
 ?C:	The last element is 0, corresponding to the 0 at the end of
 ?C:	the sig_name_init list.
 ?C:	Note that this variable is initialized from the sig_num_init,
@@ -157,5 +157,5 @@ echo $sig_name | $awk \
 	printf "\n"
 }'
 sig_size=`echo $sig_name | awk '{print NF}'`
-$rm -f signal signal.c signal.awk signal.lst signal_cmd 
+$rm -f signal signal.c signal.awk signal.lst signal_cmd
 

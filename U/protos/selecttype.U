@@ -26,19 +26,19 @@
 ?S:selecttype:
 ?S:	This variable holds the type used for the 2nd, 3rd, and 4th
 ?S:	arguments to select.  Usually, this is 'fd_set *', if HAS_FD_SET
-?S:	is defined, and 'int *' otherwise.  This is only useful if you 
+?S:	is defined, and 'int *' otherwise.  This is only useful if you
 ?S:	have select(), naturally.
 ?S:.
 ?C:Select_fd_set_t:
 ?C:	This symbol holds the type used for the 2nd, 3rd, and 4th
 ?C:	arguments to select.  Usually, this is 'fd_set *', if HAS_FD_SET
-?C:	is defined, and 'int *' otherwise.  This is only useful if you 
+?C:	is defined, and 'int *' otherwise.  This is only useful if you
 ?C:	have select(), of course.
 ?C:.
 ?H:#define Select_fd_set_t 	$selecttype	/**/
 ?H:.
 ?T:xxx nfd tmo try hdrs val
-: check for type of arguments to select. 
+: check for type of arguments to select.
 case "$selecttype" in
 '') case "$d_select" in
 	$define)
@@ -47,7 +47,7 @@ case "$selecttype" in
 Checking to see what type of arguments are accepted by select().
 EOM
 		hdrs="$define sys/types.h
-			$i_systime sys/time.h 
+			$i_systime sys/time.h
 			$i_sysselct sys/select.h
 			$d_socket sys/socket.h"
 		: The first arg can be int, unsigned, or size_t

@@ -24,7 +24,7 @@
 ?S:	which indicates to the C program that isascii() is available.
 ?S:.
 ?C:HAS_ISASCII:
-?C:	This manifest constant lets the C program know that isascii 
+?C:	This manifest constant lets the C program know that isascii
 ?C:	is available.
 ?C:.
 ?H:#$d_isascii HAS_ISASCII		/**/
