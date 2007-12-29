@@ -1,0 +1,25 @@
+?RCS: $Id: i_assert.U,v $
+?RCS:
+?RCS: Copyright (c) 2007 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_assert: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_assert:
+?S:	This variable conditionally defines the I_ASSERT symbol,
+?S:	and indicates whether a C program could include <assert.h>.
+?S:.
+?C:I_ASSERT:
+?C:	This symbol, if defined, indicates that <assert.h> exists and
+?C:	could be included.
+?C:.
+?H:#$i_assert	I_ASSERT		/**/
+?H:.
+?LINT:set i_assert
+
+: see if this is a assert.h system
+set assert.h i_assert
+eval $inhdr
+
