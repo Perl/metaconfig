@@ -13,7 +13,7 @@
 ?S:.
 ?C:I_ASSERT:
 ?C:	This symbol, if defined, indicates that <assert.h> exists and
-?C:	could be included.
+?C:	could be included by the C program to get the assert() macro.
 ?C:.
 ?H:#$i_assert	I_ASSERT		/**/
 ?H:.
