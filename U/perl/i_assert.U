@@ -8,8 +8,9 @@
 ?MAKE:i_assert: Inhdr Hasfield
 ?MAKE:	-pick add $@ %<
 ?S:i_assert:
-?S:	This variable conditionally defines the I_ASSERT symbol,
-?S:	and indicates whether a C program could include <assert.h>.
+?S:	This variable conditionally defines the I_ASSERT symbol, which
+?S:	indicates to the C program that <assert.h> exists and could be
+?S:	included.
 ?S:.
 ?C:I_ASSERT:
 ?C:	This symbol, if defined, indicates that <assert.h> exists and
