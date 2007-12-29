@@ -17,12 +17,12 @@
 ?MAKE:modetype: Myread Typedef
 ?MAKE:	-pick add $@ %<
 ?S:modetype:
-?S:	This variable defines modetype to be something like mode_t, 
-?S:	int, unsigned short, or whatever type is used to declare file 
+?S:	This variable defines modetype to be something like mode_t,
+?S:	int, unsigned short, or whatever type is used to declare file
 ?S:	modes for system calls.
 ?S:.
 ?C:Mode_t:
-?C:	This symbol holds the type used to declare file modes 
+?C:	This symbol holds the type used to declare file modes
 ?C:	for systems calls.  It is usually mode_t, but may be
 ?C:	int or unsigned short.  It may be necessary to include <sys/types.h>
 ?C:	to get any typedef'ed information.
