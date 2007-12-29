@@ -77,8 +77,9 @@
 ?S:	local directories from the Configure command line.
 ?S:	It's not much, but it parallels the loclibpth stuff in libpth.U.
 ?S:.
-?T:inctest thisincl xxx flag inclwanted ftry previous thislibdir
+?T:inctest thisincl xxx inclwanted ftry previous thislibdir
 ?T:EBUGGING DEBUGGING
+?T:check flag callback checkccflag
 ?D:cppflags=''
 ?D:ccflags=''
 ?D:ldflags=''
@@ -149,6 +150,27 @@ case "$DEBUGGING" in
 both|$define) dflt='-DDEBUGGING'
 esac
 
+: argument order is deliberate, as the flag will start with - which set could
+: think is an option
+checkccflag='check=$1; flag=$2; callback=$3;
+echo " ";
+echo "Checking if your compiler accepts $flag" 2>&1;
+echo "int main(void) { return 0; }" > gcctest.c;
+if $cc -O2 $flag -o gcctest gcctest.c && ./gcctest; then
+    echo "Yes, it does." 2>&1;
+    case "$ccflags" in
+    *$check*)
+	echo "Leaving current flags $ccflags alone." 2>&1
+	;;
+    *) dflt="$dflt $flag";
+	eval $callback
+	;;
+    esac
+else
+    echo "Nope, it does not, but that is ok." 2>&1;
+fi
+'
+
 : We will not override a previous value, but we might want to
 : augment a hint file
 case "$hint" in
@@ -177,20 +199,8 @@ default|recommended)
 	case "$gccversion" in
 	1*) ;;
 	2.[0-8]*) ;;
-	?*) 	echo " "
-		echo "Checking if your compiler accepts -fno-strict-aliasing" 2>&1
-		echo 'int main(void) { return 0; }' > gcctest.c
-		if $cc -O2 -fno-strict-aliasing -o gcctest gcctest.c; then
-			echo "Yes, it does." 2>&1
-			case "$ccflags" in
-			*strict-aliasing*)
-				echo "Leaving current flags $ccflags alone." 2>&1
-				;;
-			*) dflt="$dflt -fno-strict-aliasing" ;;
-			esac
-		else
-			echo "Nope, it doesn't, but that's ok." 2>&1
-		fi
+	?*)	set strict-aliasing -fno-strict-aliasing
+		eval $checkccflag
 		;;
 	esac
 ?X: HMB 200405
@@ -201,20 +211,21 @@ default|recommended)
 	# some assemblers can't read from stdin.  (It also slows down compilations
 	# in other cases, but those are apparently rarer these days.)  AD 5/2004.
 	case "$gccversion" in
-	?*)	echo " "
-		echo "Checking if your compiler accepts -pipe" 2>&1
-		echo 'int main(void) { return 0; }' > gcctest.c
-		if $cc -pipe -o gcctest gcctest.c; then
-			echo "Yes, it does." 2>&1
-			case "$ccflags" in
-			*-pipe*)
-				echo "Leaving current flags $ccflags alone." 2>&1
-				;;
-			*) dflt="$dflt -pipe" ;;
-			esac
-		else
-			echo "Nope, it doesn't, but that's ok." 2>&1
-		fi
+	?*)	set pipe -pipe
+		eval $checkccflag
+		;;
+	esac
+
+?X: NWC 200712
+	# on x86_64 (at least) we require an extra library (libssp) in the
+	# link command line. This library is not named, so I infer that it is
+	# an implementation detail that may change. Hence the safest approach
+	# is to add the flag to the flags passed to the compiler at link time,
+	# as that way the compiler can do the right implementation dependant
+	# thing. (NWC)
+	case "$gccversion" in
+	?*)	set stack-protector -fstack-protector 'ldflags="$ldflags -fstack-protector"'
+		eval $checkccflag
 		;;
 	esac
 	;;
