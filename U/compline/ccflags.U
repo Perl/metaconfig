@@ -158,7 +158,7 @@ echo "Checking if your compiler accepts $flag" 2>&1;
 echo "int main(void) { return 0; }" > gcctest.c;
 if $cc -O2 $flag -o gcctest gcctest.c 2>gcctest.out && ./gcctest; then
     echo "Yes, it does." 2>&1;
-    if -s gcctest.out ; then
+    if $test -s gcctest.out ; then
         echo "But your platform does not like it:";
         cat gcctest.out;
     else
@@ -188,7 +188,7 @@ default|recommended)
 	esac
 ?X: check for POSIXized ISC
 	case "$gccversion" in
-	2*) if test -d /etc/conf/kconfig.d &&
+	2*) if $test -d /etc/conf/kconfig.d &&
 			$contains _POSIX_VERSION $usrinc/sys/unistd.h >/dev/null 2>&1
 		then
 			# Interactive Systems (ISC) POSIX mode.
