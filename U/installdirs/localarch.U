@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS:
 ?MAKE:localarch localarchexp installlocalarch installlocalarchexp: \
-	afs cat sed Getfile \
+	afs cat Getfile \
 	Oldconfig Prefixit test archname uselocallib locallib sitearch
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
@@ -60,6 +60,7 @@
 ?H:.
 ?T:tdflt
 ?LINT:extern sitearch
+: Set the localarch variables
 case "$uselocallib" in
 "$define")
 	case "$sitearch" in

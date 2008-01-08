@@ -12,7 +12,7 @@
 ?S:	Currently, this is not supported, so we just abort.
 ?S:.
 ?Y:TOP
-?LINT:set ansi2knr
+: Check if ansi2knr is required
 case "$prototype" in
 "$define") ;;
 *)	ansi2knr='ansi2knr'

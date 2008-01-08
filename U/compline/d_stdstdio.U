@@ -166,7 +166,7 @@
 ?H:?d_stdiobase:#endif
 ?H:.
 ?W:d_stdiobase:FILE_base FILE_bufsiz
-?LINT:set d_stdstdio d_stdiobase d_stdio_ptr_lval d_stdio_cnt_lval
+?LINT:set d_stdstdio d_stdiobase
 ?T:ptr_lval cnt_lval filbuf xxx
 : see if _ptr and _cnt from stdio act std
 echo " "

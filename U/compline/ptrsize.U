@@ -29,9 +29,7 @@
 ?C:.
 ?H:#define PTRSIZE $ptrsize		/**/
 ?H:.
-?LINT:change use64bitall
 ?LINT:extern use64bitint
-?LINT:change use64bitint
 : check for length of pointer
 echo " "
 case "$ptrsize" in

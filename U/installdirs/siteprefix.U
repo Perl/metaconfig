@@ -27,6 +27,7 @@
 ?S:	This variable is set non-null if the siteprefix was previously defined
 ?S:	and gets set to a new value. Used internally by Configure only.
 ?S:.
+: Set the siteprefix variables
 $cat <<EOM
 
 After $package is installed, you may wish to install various

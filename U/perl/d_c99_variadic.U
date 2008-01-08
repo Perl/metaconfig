@@ -18,7 +18,6 @@
 ?C:.
 ?H:#$d_c99_variadic_macros	HAS_C99_VARIADIC_MACROS	/**/
 ?H:.
-?LINT:set d_c99_variadic_macros
 : see if the Compiler supports C99 variadic macros
 case "$i_stdarg$i_stdlib" in
     "$define$define")

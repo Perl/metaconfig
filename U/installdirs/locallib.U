@@ -10,7 +10,7 @@
 ?RCS: 
 ?RCS:
 ?MAKE:uselocallib locallib locallibexp installlocallib installlocallibexp: \
-	cat Getfile Oldconfig Prefixit test sed afs sitelib
+	cat Getfile Oldconfig Prefixit test afs sitelib
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselocallib:

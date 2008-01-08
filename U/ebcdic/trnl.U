@@ -17,8 +17,8 @@
 ?S:	newline is not necessarily '\012'.
 ?S:.
 ?T: DJGPP
-echo " "
 : Find the appropriate value for a newline for tr
+echo " "
 ?X: dos djgpp uses '\015\012', but reportedly is happy with '\012' in the
 ?X: tr command.  I don't know why it passes the '\n' test but later
 ?X: refuses to work correctly with it.  --AD  6/14/98

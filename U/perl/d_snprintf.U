@@ -29,7 +29,7 @@
 ?H:#$d_snprintf HAS_SNPRINTF	/**/
 ?H:#$d_vsnprintf HAS_VSNPRINTF	/**/
 ?H:.
-?LINT:set d_snprintf d_vsnprintf
+?F:try
 : see if snprintf exists
 set snprintf d_snprintf
 eval $inlibc

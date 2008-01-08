@@ -11,6 +11,7 @@
 ?S:extras:
 ?S:	This variable holds a list of extra modules to install.
 ?S:.
+: See if we want extra modules installed
 echo " "
 case "$extras" in
 '') dflt='n';;

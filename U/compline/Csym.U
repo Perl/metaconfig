@@ -32,7 +32,6 @@
 ?LINT:define csym
 ?LINT:use libc
 ?LINT:extern mistrustnm
-?LINT:change mistrustnm
 ?LINT:set mistrustnm
 ?S:csym:
 ?S:	This shell variable is used internally by Configure to check

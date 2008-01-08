@@ -32,6 +32,7 @@
 ?LINT:change ccflags
 ?LINT:extern ccflags
 ?LINT:extern ldflags
+: Check what type of C compiler we use
 cat <<EOS >trygcc
 $startsh
 EOS

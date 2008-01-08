@@ -25,6 +25,7 @@
 ?C:.
 ?H:#$multiarch MULTIARCH		/**/
 ?H:.
+: Check if is a multiplatform env
 case "$osname" in
 next|rhapsody|darwin) multiarch="$define" ;;
 esac

@@ -15,7 +15,6 @@
 ?S:	not the user has specified 'portability'.  This is only used
 ?S:	in the Makefile.SH.
 ?S:.
-?LINT:use ar
 : Store the full pathname to the ar program for use in the C program
 : Respect a hint or command line value for full_ar.
 case "$full_ar" in

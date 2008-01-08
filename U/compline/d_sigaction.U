@@ -27,8 +27,8 @@
 ?H:.
 ?T:val
 ?LINT:set d_sigaction
-echo " "
 : see if we have sigaction
+echo " "
 if set sigaction val -f d_sigaction; eval $csym; $val; then
 	echo 'sigaction() found.' >&4
 ?X:

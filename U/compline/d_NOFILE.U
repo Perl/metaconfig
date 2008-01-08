@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:39  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:nofile d_gettblsz tablesize: Compile Myread Guess libc cat \
+?MAKE:nofile d_gettblsz tablesize: Compile Myread Guess cat \
 	test rm Csym +cc +ccflags +optimize +ldflags +libs
 ?MAKE:	-pick add $@ %<
 ?S:nofile:

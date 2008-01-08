@@ -71,6 +71,7 @@
 ?H:#$d_vendorlib PERL_VENDORLIB_STEM "$vendorlib_stem"		/**/
 ?H:.
 ?T:prog
+: Set the vendorlib variables
 case "$vendorprefix" in
 '')	d_vendorlib="$undef"
 	vendorlib=''

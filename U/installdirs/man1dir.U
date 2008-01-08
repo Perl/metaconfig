@@ -27,7 +27,7 @@
 ?X:
 ?MAKE:man1dir man1direxp man1ext installman1dir: cat nroff Loc Oldconfig \
 	spackage test Getfile Setprefixvar Prefixit Prefixup sysman Myread \
-	sed prefixexp
+	prefixexp
 ?MAKE:	-pick add $@ %<
 ?LINT:change prefixvar
 ?Y:TOP

@@ -44,7 +44,7 @@
 ?H:.
 ?LINT:set quadtype
 ?LINT:set uquadtype
-
+: Check if 64bit ints have a quad type
 echo " "
 echo "Checking which 64-bit integer type we could use..." >&4
 ?X: We prefer quad types in order of int, long, long long, int64_t.

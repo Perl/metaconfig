@@ -37,6 +37,7 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
+: Set the vendorhtml1dir variables
 case "$vendorprefix" in
 '')	vendorhtml1dir=''
 	vendorhtml1direxp=''

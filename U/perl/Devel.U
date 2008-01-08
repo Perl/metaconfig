@@ -18,6 +18,7 @@
 ?LINT:change usedevel
 ?LINT:change versiononly
 ?LINT:change installusrbinperl
+: See if we are using a devel version and want that
 xversion=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
 case "$usedevel" in
 $define|true|[yY]*) ;;

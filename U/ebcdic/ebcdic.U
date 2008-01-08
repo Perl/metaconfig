@@ -23,6 +23,7 @@
 ?H:#$ebcdic	EBCDIC 		/**/
 ?H:.
 ?LINT:set ebcdic
+: Determine if this is an EBCDIC system
 echo " "
 echo "Determining whether or not we are on an EBCDIC system..." >&4
 $cat >try.c <<'EOM'

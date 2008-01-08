@@ -24,8 +24,6 @@
 ?C:.
 ?H:#$d_bincompat3 BINCOMPAT3			/**/
 ?H:.
-?LINT: set d_bincompat3
-
 : Binary compatibility with 5.003 is not possible with 5.004_50 and later.
 if test $patchlevel -gt 4 -o $subversion -ge 50; then
     d_bincompat3=$undef

@@ -32,6 +32,7 @@
 ?S:	This variable is set non-null if the vendorprefix was previously defined
 ?S:	and gets set to a new value. Used internally by Configure only.
 ?S:.
+: Set the vendorprefix variables
 $cat <<EOM
 
 The installation process will also create a directory for

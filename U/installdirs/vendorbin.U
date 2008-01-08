@@ -14,7 +14,7 @@
 ?RCS:
 ?RCS:
 ?MAKE:d_vendorbin vendorbin vendorbinexp installvendorbin: Getfile \
-	Setprefixvar Oldconfig Prefixit vendorprefix sed
+	Setprefixvar Oldconfig Prefixit vendorprefix
 ?MAKE:	-pick add $@ %<
 ?LINT:change prefixvar
 ?Y:TOP
@@ -57,6 +57,7 @@
 ?H:#$d_vendorbin PERL_VENDORBIN "$vendorbin"		/**/
 ?H:#$d_vendorbin PERL_VENDORBIN_EXP "$vendorbinexp"		/**/
 ?H:.
+: Set the vendorbin variables
 case "$vendorprefix" in
 '')	d_vendorbin="$undef"
 	vendorbin=''

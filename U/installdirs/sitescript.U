@@ -11,7 +11,7 @@
 ?RCS: $Log: sitescript.U,v $
 ?RCS:
 ?MAKE:sitescript sitescriptexp installsitescript : Getfile Oldconfig test \
-	Setprefixvar sitebin siteprefix sed
+	Setprefixvar sitebin siteprefix
 ?MAKE:	-pick add $@ %<
 ?LINT:change prefixvar
 ?Y:TOP

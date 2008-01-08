@@ -42,7 +42,6 @@
 ?C:	This symbol, if defined, indicates the target architecture
 ?C:	Perl has been cross-compiled to.  Undefined if not a cross-compile.
 ?C:.
-?H:
 ?H:?%<:#ifndef USE_CROSS_COMPILE
 ?H:?%<:#$usecrosscompile	USE_CROSS_COMPILE	/**/
 ?H:?%<:#define	PERL_TARGETARCH	"$targetarch"	/**/
@@ -77,7 +76,7 @@
 ?LINT:extern loclibpth
 ?LINT:change locincpth
 ?LINT:change loclibpth
-
+: Check for Cross-Compilation
 case "$usecrosscompile" in
 $define|true|[yY]*)
 	$echo "Cross-compiling..."

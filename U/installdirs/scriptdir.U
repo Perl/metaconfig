@@ -25,7 +25,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:scriptdir scriptdirexp installscript: cat test Getfile Loc \
-	Oldconfig +bin sed Prefixit Setprefixvar prefixexp Prefixup
+	Oldconfig +bin Prefixit Setprefixvar prefixexp Prefixup
 ?MAKE:	-pick add $@ %<
 ?LINT:change prefixvar
 ?Y:TOP

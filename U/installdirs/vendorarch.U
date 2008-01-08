@@ -58,6 +58,7 @@
 ?H:#$d_vendorarch PERL_VENDORARCH "$vendorarch"		/**/
 ?H:#$d_vendorarch PERL_VENDORARCH_EXP "$vendorarchexp"		/**/
 ?H:.
+: Set the vendorarch variables
 case "$vendorprefix" in
 '')	d_vendorarch="$undef"
 	vendorarch=''

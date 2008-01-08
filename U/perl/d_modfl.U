@@ -49,11 +49,8 @@
 ?H:#$d_modfl_pow32_bug HAS_MODFL_POW32_BUG		/**/
 ?H:.
 ?T:foo saveccflags
-?LINT:set d_modfl
 ?LINT:set d_modflproto
-?LINT:set d_modfl_pow32_bug
 ?LINT:change ccflags
-?LINT:change uselongdouble
 ?T: message
 : see if modfl exists
 set modfl d_modfl

@@ -26,8 +26,6 @@
 ?C:.
 ?H:#$d_bincompat5005 PERL_BINCOMPAT_5005			/**/
 ?H:.
-?LINT: set d_bincompat5005
-
 : Binary compatibility with 5.005 is not possible for builds
 : with advanced features
 case "$usethreads$usemultiplicity" in

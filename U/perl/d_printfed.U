@@ -19,7 +19,7 @@
 ?C:.
 ?H:#define PRINTF_EXP_DIGITS $d_printf_exp_digits
 ?H:.
-?LINT:set d_strtoll
+: Check sprintf exponent digits
 echo " "
 echo "Checking how many exponent digits your sprintf formats use..."
 $cat >try.c <<'EOSC'
