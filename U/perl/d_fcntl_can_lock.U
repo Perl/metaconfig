@@ -20,12 +20,13 @@
 ?C:.
 ?H:#$d_fcntl_can_lock FCNTL_CAN_LOCK		/**/
 ?H:.
+?F:!try
 ?LINT: set d_fcntl_can_lock
 ?X: fcntl may not be fully functional.  As of November 2000, on VMS and
 ?X: DOS/DJGPP, fctnl-based locking doesn't work.
 ?X: Thanks to Craig A. Berry <craig.berry@psinetcs.com> for this test.
-echo " "
 : See if fcntl-based locking works.
+echo " "
 $cat >try.c <<EOCP
 #$i_stdlib I_STDLIB
 #ifdef I_STDLIB

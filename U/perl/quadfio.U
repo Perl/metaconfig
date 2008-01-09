@@ -94,6 +94,8 @@
 ?H:#$d_PRIx64 PERL_PRIXU64	$sPRIXU64	/**/
 ?H:.
 ?T:yyy
+?F:!try
+: Check 64bit sizes
 echo " "
 
 if $test X"$quadtype" != X; then

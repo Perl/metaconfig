@@ -43,6 +43,7 @@
 ?C:.
 ?H:#$d_void_closedir VOID_CLOSEDIR		/**/
 ?H:.
+?F:!try
 ?LINT:set d_closedir d_void_closedir
 : see if closedir exists
 set closedir d_closedir

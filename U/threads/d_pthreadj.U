@@ -10,7 +10,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_pthreads_created_joinable:
 ?S:	This variable conditionally defines the PTHREADS_CREATED_JOINABLE
-?S:	symbol if pthreads are created in the joinable (aka undetached) 
+?S:	symbol if pthreads are created in the joinable (aka undetached)
 ?S:	state.
 ?S:.
 ?C:PTHREADS_CREATED_JOINABLE:
@@ -20,10 +20,11 @@
 ?H:#$d_pthreads_created_joinable PTHREADS_CREATED_JOINABLE /**/
 ?H:.
 ?T:yyy
+?F:!try
 ?LINT: set d_pthreads_created_joinable
 : test whether pthreads are created in joinable -- aka undetached -- state
 if test "X$usethreads" = "X$define" -a "X$i_pthread" = "X$define"; then
-	echo "Checking whether pthreads are created joinable..." >&4 
+	echo "Checking whether pthreads are created joinable..." >&4
 	$cat >try.c <<'EOCP'
 #include <pthread.h>
 #ifdef PTHREAD_CREATE_UNDETACHED
@@ -64,7 +65,7 @@ EOCP
 				detached) echo "No, they aren't." ;;
 				*) echo "Yes, they are." ;;
 			esac
-		else		
+		else
 			echo " "
 			echo "(I can't execute the test program--assuming they are.)" >&4
 			yyy=joinable

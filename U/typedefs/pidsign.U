@@ -1,6 +1,6 @@
 ?RCS:
 ?RCS: Copyright (c) 1999, Jarkko Hietaniemi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -20,13 +20,15 @@
 ?H:#define Pid_t_sign	$pidsign		/* PID sign */
 ?H:.
 ?T:yyy zzz
+?F:!try
 ?LINT: set pidsign
+: Check if PID is signed
 echo " "
 case "$pidtype" in
 *_t) zzz="$pidtype"	;;
 *)   zzz="pid"		;;
 esac
-echo "Checking the sign of $zzz..." >&4 
+echo "Checking the sign of $zzz..." >&4
 cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>

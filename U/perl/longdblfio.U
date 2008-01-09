@@ -117,6 +117,8 @@
 ?H:#$d_SCNfldbl PERL_SCNfldbl	$sSCNfldbl	/**/
 ?H:.
 ?T:yyy
+?F:!try
+: Check print/scan long double stuff
 echo " "
 
 if $test X"$d_longdbl" = X"$define"; then

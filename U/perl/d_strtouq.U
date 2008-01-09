@@ -17,6 +17,7 @@
 ?C:.
 ?H:#$d_strtouq HAS_STRTOUQ		/**/
 ?H:.
+?F:!try
 ?LINT:set d_strtouq
 : see if strtouq exists
 set strtouq d_strtouq
@@ -30,7 +31,7 @@ EOM
 	$cat >try.c <<'EOCP'
 #include <errno.h>
 #include <stdio.h>
-extern unsigned long long int strtouq(char *s, char **, int); 
+extern unsigned long long int strtouq(char *s, char **, int);
 static int bad = 0;
 void check(char *s, unsigned long long eull, int een) {
 	unsigned long long gull;

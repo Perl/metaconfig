@@ -18,6 +18,7 @@
 ?H:#$d_strtoll HAS_STRTOLL		/**/
 ?H:.
 ?T:yyy
+?F:!try
 ?LINT:set d_strtoll
 : see if strtoll exists
 set strtoll d_strtoll
@@ -37,7 +38,7 @@ EOM
 #define strtoll _strtoll
 #endif
 #include <stdio.h>
-extern long long int strtoll(char *s, char **, int); 
+extern long long int strtoll(char *s, char **, int);
 static int bad = 0;
 int check(char *s, long long ell, int een) {
 	long long gll;

@@ -20,6 +20,7 @@
 ?H:#$d_sprintf_returns_strlen SPRINTF_RETURNS_STRLEN	/**/
 ?H:.
 ?T:xxx
+?F:!try
 : see if sprintf returns the length of the string in the buffer as per ANSI
 $echo "Checking whether sprintf returns the length of the string..." >&4
 $cat <<EOP >try.c

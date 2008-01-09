@@ -17,6 +17,7 @@
 ?H:#$d_libm_lib_version LIBM_LIB_VERSION		/**/
 ?H:.
 ?T:foo
+?F:!try
 : check to see if math.h defines _LIB_VERSION
 d_libm_lib_version="$undef"
 case $i_math in

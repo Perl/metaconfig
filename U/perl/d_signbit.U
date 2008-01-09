@@ -20,6 +20,7 @@
 ?C:.
 ?H:#$d_signbit HAS_SIGNBIT		/**/
 ?H:.
+?F:!try
 ?LINT:set d_signbit d_use_signbit
 : see if signbit exists
 $echo $n "Checking to see if you have signbit() available to work on $nvtype... $c" >&4

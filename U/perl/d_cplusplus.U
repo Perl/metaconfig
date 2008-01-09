@@ -16,8 +16,9 @@
 ?C:.
 ?H:#$d_cplusplus USE_CPLUSPLUS		/**/
 ?H:.
+?F:!try
 ?LINT:set d_cplusplus
-
+: Check if we are using C++
 echo " "
 echo "Checking for C++..." >&4
 $cat >try.c <<'EOCP'

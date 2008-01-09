@@ -26,11 +26,12 @@
 ?S:	-ansi and -pedantic ccflags for building core files (through
 ?S:	cflags script). (See Porting/pumpkin.pod for full description).
 ?S:.
+?D:gccversion=''
+?D:gccansipedantic=''
 ?T:gccshortvers
 ?T:incdir
 ?T:warn
-?D:gccversion=''
-?D:gccansipedantic=''
+?F:!try
 ?LINT:change cpp
 ?LINT:extern ccflags
 ?LINT:extern ldflags
@@ -40,6 +41,7 @@
 ?LINT:change ccname
 ?LINT:change locincpth
 ?X: Check if they have gcc in any guise.
+: Check if we are using GNU gcc and what its version is
 echo " "
 echo "Checking for GNU cc in disguise and/or its version number..." >&4
 $cat >try.c <<EOM

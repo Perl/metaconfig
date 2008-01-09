@@ -19,11 +19,12 @@
 ?C:.
 ?H:#define PRINTF_EXP_DIGITS $d_printf_exp_digits
 ?H:.
+?F:!try
 : Check sprintf exponent digits
 echo " "
 echo "Checking how many exponent digits your sprintf formats use..."
 $cat >try.c <<'EOSC'
-#include <stdio.h> 
+#include <stdio.h>
 int main() {
   char b[10];
   exit(sprintf(b, "%0.1e", 1.2) - 5);

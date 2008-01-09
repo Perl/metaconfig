@@ -1,7 +1,7 @@
 ?RCS: $Id: nblock_io.U,v 3.0.1.2 1997/02/28 16:17:14 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -73,8 +73,8 @@
 ?H:#define RD_NODATA $rd_nodata
 ?H:#$d_eofnblk EOF_NONBLOCK
 ?H:.
-?F:!try.out !try.ret !try.err
 ?T:status
+?F:!try.out !try.ret !try.err !try
 ?LINT:use d_open3
 : check for non-blocking I/O stuff
 case "$h_sysfile" in

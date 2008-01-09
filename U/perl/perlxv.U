@@ -216,7 +216,8 @@
 ?T:volatile
 ?T:xxx
 ?T:d
-
+?F:!try
+: Check basic sizes
 echo " "
 $echo "Choosing the C types to be used for Perl's internal types..." >&4
 

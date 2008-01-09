@@ -45,6 +45,7 @@
 ?H:#$d_semctl_semid_ds USE_SEMCTL_SEMID_DS	/**/
 ?H:.
 ?T:xxx also
+?F:!try
 ?LINT: set d_union_semun d_semctl_semun d_semctl_semid_ds
 : see whether sys/sem.h defines union semun
 echo " "

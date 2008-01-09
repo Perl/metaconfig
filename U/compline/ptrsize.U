@@ -1,7 +1,7 @@
 ?RCS: $Id: ptrsize.U,v 3.0.1.1 1994/10/29 16:28:19 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -29,6 +29,7 @@
 ?C:.
 ?H:#define PTRSIZE $ptrsize		/**/
 ?H:.
+?F:!try
 ?LINT:extern use64bitint
 : check for length of pointer
 echo " "

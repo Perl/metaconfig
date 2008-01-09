@@ -33,6 +33,7 @@
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLESIZE $longdblsize		/**/
 ?H:?LONG_DOUBLESIZE:#endif
 ?H:.
+?F:!try
 ?LINT:set d_longdbl
 : check for long doubles
 echo " "

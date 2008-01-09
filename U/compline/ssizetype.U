@@ -1,7 +1,7 @@
 ?RCS: $Id: ssizetype.U,v 3.0.1.3 1997/02/28 16:24:21 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -39,6 +39,7 @@
 ?C:.
 ?H:#define SSize_t $ssizetype	 /* signed count of bytes */
 ?H:.
+?F:!try
 : see what type is used for signed size_t
 set ssize_t ssizetype int stdio.h sys/types.h
 eval $typedef

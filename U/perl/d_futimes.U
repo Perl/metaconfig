@@ -18,6 +18,7 @@
 ?H:#$d_futimes HAS_FUTIMES		/**/
 ?H:.
 ?T:rc
+?F:!try
 : check for a working futimes
 d_futimes="$undef"
 echo " "

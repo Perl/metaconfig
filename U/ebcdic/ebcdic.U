@@ -22,6 +22,7 @@
 ?C:.
 ?H:#$ebcdic	EBCDIC 		/**/
 ?H:.
+?F:!try
 ?LINT:set ebcdic
 : Determine if this is an EBCDIC system
 echo " "

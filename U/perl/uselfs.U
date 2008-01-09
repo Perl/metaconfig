@@ -41,11 +41,11 @@
 ?H:?%<:#$uselargefiles	USE_LARGE_FILES		/**/
 ?H:?%<:#endif
 ?H:.
-?F:!uselargefiles.cbu
 ?INIT:ccflags_uselargefiles=''
 ?INIT:ldflags_uselargefiles=''
 ?INIT:libswanted_uselargefiles=''
 ?T:yyy zzz
+?F:!uselargefiles.cbu !try
 ?LINT:set uselargefiles
 ?LINT:change lseeksize
 ?LINT:change fpossize
@@ -53,6 +53,7 @@
 ?LINT:use uselfs
 ?LINT:use use64bitint
 ?LINT:use use64bitall
+: Check for large file support
 # Backward compatibility (uselfs is deprecated).
 case "$uselfs" in
 "$define"|true|[yY]*)
