@@ -19,7 +19,6 @@
 ?H:.
 ?T:yyy zzz
 ?F:!try
-?LINT: set fpossize
 : Check size for Fpos_t
 echo " "
 case "$fpostype" in

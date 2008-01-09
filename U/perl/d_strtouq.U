@@ -18,7 +18,6 @@
 ?H:#$d_strtouq HAS_STRTOUQ		/**/
 ?H:.
 ?F:!try
-?LINT:set d_strtouq
 : see if strtouq exists
 set strtouq d_strtouq
 eval $inlibc

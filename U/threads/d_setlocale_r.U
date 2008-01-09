@@ -33,8 +33,6 @@
 ?H:#define SETLOCALE_R_PROTO $setlocale_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_setlocale_r_proto
-?LINT:set d_setlocale_r
-?LINT:set setlocale_r_proto
 : see if setlocale_r exists
 set setlocale_r d_setlocale_r
 eval $inlibc

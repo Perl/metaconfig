@@ -33,8 +33,6 @@
 ?H:#define CRYPT_R_PROTO $crypt_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_crypt_r_proto
-?LINT:set d_crypt_r
-?LINT:set crypt_r_proto
 : see if crypt_r exists
 set crypt_r d_crypt_r
 eval $inlibc

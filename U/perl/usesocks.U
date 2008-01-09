@@ -21,7 +21,6 @@
 ?H:?%<:#endif
 ?H:.
 ?LINT:set usesocks
-?LINT:set useperlio
 ?LINT:extern useperlio
 ?LINT:change useperlio
 ?INIT:: set usesocks on the Configure command line to enable socks.
@@ -42,7 +41,7 @@ EOM
 rp='Build Perl for SOCKS?'
 . ./myread
 case "$ans" in
-y|Y)	val="$define" ;;     
+y|Y)	val="$define" ;;
 *)      val="$undef" ;;
 esac
 set usesocks

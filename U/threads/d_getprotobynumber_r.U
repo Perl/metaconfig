@@ -33,8 +33,6 @@
 ?H:#define GETPROTOBYNUMBER_R_PROTO $getprotobynumber_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getprotobynumber_r_proto
-?LINT:set d_getprotobynumber_r
-?LINT:set getprotobynumber_r_proto
 : see if getprotobynumber_r exists
 set getprotobynumber_r d_getprotobynumber_r
 eval $inlibc

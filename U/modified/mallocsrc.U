@@ -1,7 +1,7 @@
 ?RCS: $Id: mallocsrc.U,v 3.0.1.2 1997/02/28 16:10:26 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -83,7 +83,6 @@
 ?H:#$d_mymalloc MYMALLOC			/**/
 ?H:.
 ?LINT:extern usedevel
-?LINT:change usedevel
 ?LINT:change libs
 ?X: Cannot test for mallocsrc; it is the unit's name and there is a bug in
 ?X: the interpreter which defines all the names, even though they are not used.

@@ -33,8 +33,6 @@
 ?H:#define GETHOSTBYADDR_R_PROTO $gethostbyaddr_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_gethostbyaddr_r_proto
-?LINT:set d_gethostbyaddr_r
-?LINT:set gethostbyaddr_r_proto
 : see if gethostbyaddr_r exists
 set gethostbyaddr_r d_gethostbyaddr_r
 eval $inlibc

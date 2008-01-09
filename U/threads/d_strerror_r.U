@@ -33,8 +33,6 @@
 ?H:#define STRERROR_R_PROTO $strerror_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_strerror_r_proto
-?LINT:set d_strerror_r
-?LINT:set strerror_r_proto
 : see if strerror_r exists
 set strerror_r d_strerror_r
 eval $inlibc

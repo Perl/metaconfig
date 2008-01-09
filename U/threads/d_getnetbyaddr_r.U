@@ -33,8 +33,6 @@
 ?H:#define GETNETBYADDR_R_PROTO $getnetbyaddr_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getnetbyaddr_r_proto
-?LINT:set d_getnetbyaddr_r
-?LINT:set getnetbyaddr_r_proto
 : see if getnetbyaddr_r exists
 set getnetbyaddr_r d_getnetbyaddr_r
 eval $inlibc

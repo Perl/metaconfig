@@ -34,7 +34,6 @@
 ?H:.
 ?T:s
 ?F:!try
-?LINT:set d_stdio_stream_array
 : Check stream access
 $cat >&4 <<EOM
 Checking how to access stdio streams by file descriptor number...

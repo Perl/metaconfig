@@ -19,7 +19,6 @@
 ?H:.
 ?T:yyy zzz
 ?F:!try
-?LINT: set sizesize
 : Check size of size
 echo " "
 case "$sizetype" in

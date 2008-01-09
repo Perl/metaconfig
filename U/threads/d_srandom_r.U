@@ -33,8 +33,6 @@
 ?H:#define SRANDOM_R_PROTO $srandom_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_srandom_r_proto
-?LINT:set d_srandom_r
-?LINT:set srandom_r_proto
 : see if srandom_r exists
 set srandom_r d_srandom_r
 eval $inlibc

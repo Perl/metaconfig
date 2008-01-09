@@ -20,7 +20,6 @@
 ?H:?%<:#$uselonglong	USE_LONG_LONG		/**/
 ?H:?%<:#endif
 ?H:.
-?LINT:set uselonglong
 ?LINT:extern ccflags
 ?F:!uselonglong.cbu
 case "$uselonglong" in

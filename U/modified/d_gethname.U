@@ -1,7 +1,7 @@
 ?RCS: $Id: d_gethname.U,v 3.0.1.1 1994/10/29 16:13:00 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -70,7 +70,6 @@
 ?H:.
 ?T:file val call
 ?LINT:change i_whoami
-?LINT:change PHOSTNAME
 : see how we will look up host name
 echo " "
 call=''
@@ -119,7 +118,7 @@ case "$d_uname$d_gethname" in
 *define*)
 	dflt=n
 	cat <<EOM
- 
+
 Every now and then someone has a $call() that lies about the hostname
 but can't be fixed for political or economic reasons.  If you wish, I can
 @if MYHOSTNAME && PHOSTNAME
@@ -176,7 +175,7 @@ possibilities at this point:
 1)  You can have your host name ($myhostname) compiled into $package, which
     lets $package start up faster, but makes your binaries non-portable, or
 2)  you can have $package use a
-	
+
 	popen("$aphostname","r")
 
     which will start slower but be more portable.
@@ -211,7 +210,7 @@ EOT
 		"$define")
 			dflt=y
 			$cat <<EOM
- 
+
 No hostname function--you can either use the whoami.h file, which has this line:
 
 	`grep sysname $usrinc/whoami.h`
@@ -271,7 +270,7 @@ case "$d_uname$d_gethname" in
 	"$define")
 		dflt=y
 		$cat <<EOM
- 
+
 No hostname function--you can either use the whoami.h file, which has this line:
 
 	`grep sysname $usrinc/whoami.h`

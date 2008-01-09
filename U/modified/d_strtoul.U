@@ -28,7 +28,6 @@
 ?H:#$d_strtoul HAS_STRTOUL	/**/
 ?H:.
 ?F:!try
-?LINT:set d_strtoul
 : see if strtoul exists
 set strtoul d_strtoul
 eval $inlibc

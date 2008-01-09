@@ -1,7 +1,7 @@
 ?RCS: $Id: d_time.U,v 3.0.1.2 1995/07/25 14:07:43 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -43,7 +43,7 @@
 ?H:#$d_time HAS_TIME		/**/
 ?H:#define Time_t $timetype		/* Time type */
 ?H:.
-?LINT:set d_time timetype
+?LINT:set d_time
 : see if time exists
 echo " "
 ?X: MPE/iX needs this protection of hint values.

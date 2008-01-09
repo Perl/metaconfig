@@ -33,8 +33,6 @@
 ?H:#define TTYNAME_R_PROTO $ttyname_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_ttyname_r_proto
-?LINT:set d_ttyname_r
-?LINT:set ttyname_r_proto
 : see if ttyname_r exists
 set ttyname_r d_ttyname_r
 eval $inlibc

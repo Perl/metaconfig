@@ -1,7 +1,7 @@
 ?RCS: $Id: Head.U,v 3.0.1.9 1997/02/28 15:02:09 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -42,17 +42,17 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:58  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This is the very first unit in the Configure script.  It is mostly just
 ?X: things to keep people from getting into a tizzy right off the bat.
-?X: 
+?X:
 ?MAKE:Head:
 ?MAKE:	-pick wipe $@ %<
 ?V:PATH p_ me
 ?T:argv Id p paths OS2_SHELL DJGPP
 ?T:inksh needksh avoidksh newsh changesh reason
 ?LINT:extern ENV CDPATH SHELL MACHTYPE _exe is_os2
-?LINT:change ENV CDPATH _exe is_os2
+?LINT:change ENV CDPATH is_os2
 #! /bin/sh
 #
 # If these # comments don't work, trim them. Don't worry about any other

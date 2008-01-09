@@ -37,7 +37,6 @@
 ?LINT:extern ldflags
 ?LINT:extern locincpth
 ?LINT:extern ccname
-?LINT:change ccflags
 ?LINT:change ccname
 ?LINT:change locincpth
 ?X: Check if they have gcc in any guise.

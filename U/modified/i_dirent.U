@@ -1,7 +1,7 @@
 ?RCS: $Id: i_dirent.U,v 3.0.1.4 1994/10/29 16:20:01 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -68,7 +68,7 @@
 ?H:?%<:@end
 ?H:.
 ?T:xinc guess1 guess2
-?LINT:set i_dirent d_dirnamlen direntrytype
+?LINT:set i_dirent d_dirnamlen
 : see if this is a dirent system
 echo " "
 if xinc=`./findhdr dirent.h`; $test "$xinc"; then

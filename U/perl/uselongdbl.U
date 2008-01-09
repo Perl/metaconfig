@@ -20,11 +20,8 @@
 ?H:?%<:#$uselongdouble	USE_LONG_DOUBLE		/**/
 ?H:?%<:#endif
 ?H:.
-?LINT:set uselongdouble
 ?LINT:extern ccflags
-?LINT:change ccflags
 ?LINT:use usemorebits
-?LINT:use uselargefiles
 ?F:!uselongdouble.cbu
 case "$ccflags" in
 *-DUSE_LONG_DOUBLE*|*-DUSE_MORE_BITS*) uselongdouble="$define" ;;

@@ -1,7 +1,7 @@
 ?RCS: $Id: voidflags.U,v 3.0.1.2 1997/02/28 16:27:58 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -60,7 +60,6 @@
 ?INIT:: full support for void wanted by default
 ?INIT:defvoidused=15
 ?INIT:
-?LINT:describe defvoidused
 ?LINT:known void M_VOID VOIDUSED
 : check for void type
 echo " "

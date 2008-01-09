@@ -1,7 +1,7 @@
 ?RCS: $Id: d_vfork.U,v 3.0.1.6 1994/08/29 16:18:21 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -62,9 +62,6 @@
 ?M:#define vfork fork
 ?M:#endif
 ?M:.
-?LINT:set d_vfork
-?X: TO BE REMOVED in dist 4.0
-?X:==========================
 ?T:d_hvfork
 : backward compatibility for d_hvfork
 if test X$d_hvfork != X; then

@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1998, Jarkko Hietaniemi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -20,7 +20,6 @@
 ?C:.
 ?H:#$i_machcthr   I_MACH_CTHREADS	/**/
 ?H:.
-?LINT:set i_machcthr
 : see if mach cthreads are available
 if test "X$usethreads" = "X$define"; then
 	set mach/cthreads.h i_machcthr
@@ -28,6 +27,4 @@ if test "X$usethreads" = "X$define"; then
 else
 	i_machcthr="$undef"
 fi
-
-
 

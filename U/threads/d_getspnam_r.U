@@ -33,8 +33,6 @@
 ?H:#define GETSPNAM_R_PROTO $getspnam_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getspnam_r_proto
-?LINT:set d_getspnam_r
-?LINT:set getspnam_r_proto
 : see if getspnam_r exists
 set getspnam_r d_getspnam_r
 eval $inlibc

@@ -2,7 +2,7 @@
 ?RCS:
 ?RCS: Copyright (c) 1996, Cygnus Support
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -29,7 +29,6 @@
 ?S:	i.e. there might be an extra .. prepended to get out of the UU dir.
 ?S:	Configure units should use this, not the src variable.
 ?S:.
-?LINT:change package
 : Find the path to the source tree
 case "$src" in
 '') case "$0" in

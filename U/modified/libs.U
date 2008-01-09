@@ -1,7 +1,7 @@
 ?RCS: $Id: libs.U,v 3.0.1.6 1997/02/28 16:09:11 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -89,7 +89,6 @@
 ?INIT:: some systems want to use only the non-versioned libso:s
 ?INIT:ignore_versioned_solibs=''
 ?LINT:extern libscheck
-?LINT:use libscheck
 ?LINT:extern p
 ?LINT:use uselongdouble
 : Looking for optional libraries
@@ -103,7 +102,7 @@ case "$libswanted" in
 '') libswanted='c_s';;
 esac
 ?X: libsocks has nasty naming scheme.
-?X: This does not work if somebody wants SOCKS 4. 
+?X: This does not work if somebody wants SOCKS 4.
 case "$usesocks" in
 "$define") libswanted="$libswanted socks5 socks5_sh" ;;
 esac
@@ -126,7 +125,7 @@ for thislib in $libswanted; do
 		xxx=$thisdir/lib$thislib.$so
 	        $test -f "$xxx" && eval $libscheck
 		$test -f "$xxx" && libstyle=shared
-	    fi	
+	    fi
 	    if test ! -f "$xxx"; then
 		xxx=$thisdir/lib$thislib$_a
 	        $test -f "$xxx" && eval $libscheck
@@ -168,7 +167,7 @@ for thislib in $libswanted; do
 		   ;;
 		esac
 		break
-	    fi	
+	    fi
 	done
 	if $test ! -f "$xxx"; then
 	    echo "No -l$thislib."

@@ -74,10 +74,13 @@
 ?H:#$d_oldpthreads	OLD_PTHREADS_API		/**/
 ?H:#$usereentrant	USE_REENTRANT_API	/**/
 ?H:.
-?LINT:set usethreads useithreads use5005threads d_oldpthreads usereentrant
+?X:       [hmb] Removed LINT for use5005threads, useithreads, and
+?X:             usereentrant, as LINT is only run on blead
+?LINT:set usethreads d_oldpthreads
 ?INIT:: set usethreads on the Configure command line to enable threads.
 ?INIT:usereentrant='undef'
 ?F:!usethreads.cbu
+: Do we want threads support and if so, what type
 ?X: We should really have some explanatory text here, and some
 ?X: automatic setting of sensible defaults.
 case "$usethreads" in
@@ -85,7 +88,7 @@ $define|true|[yY]*)     dflt='y';;
 *)     # Catch case where user specified ithreads or 5005threads but
        # forgot -Dusethreads (A.D. 4/2002)
        case "$useithreads$use5005threads" in
-       *$define*)      
+       *$define*)
 		case "$useperlio" in
 		"$define")	dflt='y' ;;
 		*)		dflt='n' ;;

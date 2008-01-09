@@ -21,7 +21,6 @@
 ?H:.
 ?T:yyy zzz
 ?F:!try
-?LINT: set gidsign
 : Check if GID is signed
 echo " "
 case "$gidtype" in

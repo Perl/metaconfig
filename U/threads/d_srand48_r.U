@@ -33,8 +33,6 @@
 ?H:#define SRAND48_R_PROTO $srand48_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_srand48_r_proto
-?LINT:set d_srand48_r
-?LINT:set srand48_r_proto
 : see if srand48_r exists
 set srand48_r d_srand48_r
 eval $inlibc

@@ -46,11 +46,9 @@
 ?INIT:libswanted_uselargefiles=''
 ?T:yyy zzz
 ?F:!uselargefiles.cbu !try
-?LINT:set uselargefiles
 ?LINT:change lseeksize
 ?LINT:change fpossize
 ?LINT:extern uselfs
-?LINT:use uselfs
 ?LINT:use use64bitint
 ?LINT:use use64bitall
 : Check for large file support

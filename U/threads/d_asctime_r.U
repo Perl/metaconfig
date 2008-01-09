@@ -33,8 +33,6 @@
 ?H:#define ASCTIME_R_PROTO $asctime_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_asctime_r_proto
-?LINT:set d_asctime_r
-?LINT:set asctime_r_proto
 : see if asctime_r exists
 set asctime_r d_asctime_r
 eval $inlibc

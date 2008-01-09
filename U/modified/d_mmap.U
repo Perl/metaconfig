@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1999, Jarkko Hietaniemi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -32,7 +32,6 @@
 ?H:#define Mmap_t $mmaptype	/**/
 ?H:.
 ?LINT:set d_mmap
-?LINT:set mmaptype
 : see if mmap exists
 set mmap d_mmap
 eval $inlibc

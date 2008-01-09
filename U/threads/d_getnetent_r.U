@@ -33,8 +33,6 @@
 ?H:#define GETNETENT_R_PROTO $getnetent_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getnetent_r_proto
-?LINT:set d_getnetent_r
-?LINT:set getnetent_r_proto
 : see if getnetent_r exists
 set getnetent_r d_getnetent_r
 eval $inlibc

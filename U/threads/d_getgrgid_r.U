@@ -33,8 +33,6 @@
 ?H:#define GETGRGID_R_PROTO $getgrgid_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getgrgid_r_proto
-?LINT:set d_getgrgid_r
-?LINT:set getgrgid_r_proto
 : see if getgrgid_r exists
 set getgrgid_r d_getgrgid_r
 eval $inlibc

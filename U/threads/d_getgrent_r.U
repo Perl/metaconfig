@@ -33,8 +33,6 @@
 ?H:#define GETGRENT_R_PROTO $getgrent_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getgrent_r_proto
-?LINT:set d_getgrent_r
-?LINT:set getgrent_r_proto
 : see if getgrent_r exists
 set getgrent_r d_getgrent_r
 eval $inlibc

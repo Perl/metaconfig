@@ -33,8 +33,6 @@
 ?H:#define GETSERVBYNAME_R_PROTO $getservbyname_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getservbyname_r_proto
-?LINT:set d_getservbyname_r
-?LINT:set getservbyname_r_proto
 : see if getservbyname_r exists
 set getservbyname_r d_getservbyname_r
 eval $inlibc

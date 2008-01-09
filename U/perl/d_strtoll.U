@@ -19,7 +19,6 @@
 ?H:.
 ?T:yyy
 ?F:!try
-?LINT:set d_strtoll
 : see if strtoll exists
 set strtoll d_strtoll
 eval $inlibc

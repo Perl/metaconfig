@@ -33,8 +33,6 @@
 ?H:#define CTIME_R_PROTO $ctime_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_ctime_r_proto
-?LINT:set d_ctime_r
-?LINT:set ctime_r_proto
 : see if ctime_r exists
 set ctime_r d_ctime_r
 eval $inlibc

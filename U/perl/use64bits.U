@@ -57,23 +57,14 @@
 ?H:?%<:#endif
 ?H:.
 ?INIT:archname64=''
-?LINT:set use64bitint
 ?LINT:extern ccflags
-?LINT:change ccflags
 ?LINT:use usemorebits
 ?LINT:extern use64bits
-?LINT:use use64bits
 ?LINT:extern uselonglong
-?LINT:use uselonglong
 ?LINT:extern uselonglongs
-?LINT:use uselonglongs
 ?LINT:extern use64bitints
-?LINT:use use64bitints
 ?LINT:extern use64bitsint
-?LINT:use use64bitints
 ?LINT:extern use64bitsall
-?LINT:use use64bitsall
-?LINT:set use64bitall
 ?F:!use64bitint.cbu
 ?F:!use64bitall.cbu
 
@@ -85,7 +76,7 @@ case "$uselonglong" in
 EOM
 	use64bitint="$define"
 	;;
-esac                          
+esac
 case "$use64bits" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -94,7 +85,7 @@ case "$use64bits" in
 EOM
 	use64bitint="$define"
 	;;
-esac                          
+esac
 case "$use64bitints" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -103,7 +94,7 @@ case "$use64bitints" in
 EOM
 	use64bitint="$define"
 	;;
-esac                          
+esac
 case "$use64bitsint" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -112,7 +103,7 @@ case "$use64bitsint" in
 EOM
 	use64bitint="$define"
 	;;
-esac                          
+esac
 case "$uselonglongs" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -121,7 +112,7 @@ case "$uselonglongs" in
 EOM
 	use64bitint="$define"
 	;;
-esac                          
+esac
 case "$use64bitsall" in
 "$define"|true|[yY]*)
 	cat <<EOM >&4
@@ -130,7 +121,7 @@ case "$use64bitsall" in
 EOM
 	use64bitall="$define"
 	;;
-esac                          
+esac
 
 case "$ccflags" in
 *-DUSE_LONG_LONG*|*-DUSE_64_BIT_INT*|*-DUSE_64_BIT_ALL*) use64bitint="$define";;
@@ -181,7 +172,7 @@ case "$use64bitall" in
    *) dflt='n' ;;
    esac
    ;;
-esac	
+esac
 cat <<EOM
 
 You may also choose to try maximal 64-bitness.  It means using as much

@@ -19,7 +19,6 @@
 ?H:.
 ?T:yyy zzz
 ?F:!try
-?LINT: set uidsize
 : Check size of UID
 echo " "
 case "$uidtype" in

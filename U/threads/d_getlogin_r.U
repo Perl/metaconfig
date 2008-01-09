@@ -33,8 +33,6 @@
 ?H:#define GETLOGIN_R_PROTO $getlogin_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getlogin_r_proto
-?LINT:set d_getlogin_r
-?LINT:set getlogin_r_proto
 : see if getlogin_r exists
 set getlogin_r d_getlogin_r
 eval $inlibc

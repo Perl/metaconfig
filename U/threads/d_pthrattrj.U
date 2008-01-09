@@ -28,8 +28,6 @@
 ?C:.
 ?H:#$d_old_pthread_create_joinable OLD_PTHREAD_CREATE_JOINABLE $old_pthread_create_joinable /**/
 ?H:.
-?LINT: set d_old_pthread_create_joinable
-?LINT: set old_pthread_create_joinable
 : how to create joinable pthreads
 if test "X$usethreads" = "X$define" -a "X$i_pthread" = "X$define"; then
 	echo " "

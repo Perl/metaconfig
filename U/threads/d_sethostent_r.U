@@ -33,8 +33,6 @@
 ?H:#define SETHOSTENT_R_PROTO $sethostent_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_sethostent_r_proto
-?LINT:set d_sethostent_r
-?LINT:set sethostent_r_proto
 : see if sethostent_r exists
 set sethostent_r d_sethostent_r
 eval $inlibc

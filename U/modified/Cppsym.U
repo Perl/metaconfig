@@ -1,7 +1,7 @@
 ?RCS: $Id: Cppsym.U,v 3.0.1.5 1995/05/12 11:59:11 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -67,20 +67,16 @@
 ?S:	The list is a space-separated list of symbol=value tokens.
 ?S:.
 ?F:./Cppsym
+?F:./Cppsym.know
 ?F:!Cppsym.true
 ?F:!ccsym.com
 ?F:!ccsym.cpp
 ?F:!ccsym.own
 ?X: fake LINT hints
-?LINT:change cc
-?LINT:change optimize
 ?LINT:change ccflags
-?LINT:change ldflags
-?LINT:change libs
 ?LINT:extern s
-?LINT:change s
 ?LINT:extern s__
-?LINT:change s__
+: Preprocessor symbols
 echo " "
 $echo "Guessing which symbols your C compiler and preprocessor define..." >&4
 ?X: If your symbol is mixed case, just add it as-is.

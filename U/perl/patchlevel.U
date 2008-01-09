@@ -102,17 +102,15 @@
 ?S:.
 ?S:version_patchlevel_string:
 ?S:	This is a string combining version, subversion and
-?S:	perl_patchlevel (if perl_patchlevel is non-zero).  
-?S:	It is typically something like 
+?S:	perl_patchlevel (if perl_patchlevel is non-zero).
+?S:	It is typically something like
 ?S:	'version 7 subversion 1'  or
 ?S:	'version 7 subversion 1 patchlevel 11224'
 ?S:	It is computed here to avoid duplication of code in myconfig.SH
-?S:	and lib/Config.pm. 
+?S:	and lib/Config.pm.
 ?S:.
 ?LINT:extern LC_ALL
-?LINT:change LC_ALL
 ?LINT:extern LANGUAGE
-?LINT:change LANGUAGE
 : get the patchlevel
 echo " "
 echo "Getting the current patchlevel..." >&4

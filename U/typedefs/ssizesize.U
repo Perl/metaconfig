@@ -19,7 +19,6 @@
 ?H:.
 ?T:yyy zzz
 ?F:!try
-?LINT: set ssizesize
 : Check size of Ssize_t
 echo " "
 case "$ssizetype" in

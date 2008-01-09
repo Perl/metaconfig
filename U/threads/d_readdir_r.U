@@ -33,8 +33,6 @@
 ?H:#define READDIR_R_PROTO $readdir_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_readdir_r_proto
-?LINT:set d_readdir_r
-?LINT:set readdir_r_proto
 : see if readdir_r exists
 set readdir_r d_readdir_r
 eval $inlibc

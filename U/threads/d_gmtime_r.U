@@ -33,8 +33,6 @@
 ?H:#define GMTIME_R_PROTO $gmtime_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_gmtime_r_proto
-?LINT:set d_gmtime_r
-?LINT:set gmtime_r_proto
 : see if gmtime_r exists
 set gmtime_r d_gmtime_r
 eval $inlibc

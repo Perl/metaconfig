@@ -21,7 +21,6 @@
 ?H:.
 ?T:yyy
 ?F:!try
-?LINT: set d_pthreads_created_joinable
 : test whether pthreads are created in joinable -- aka undetached -- state
 if test "X$usethreads" = "X$define" -a "X$i_pthread" = "X$define"; then
 	echo "Checking whether pthreads are created joinable..." >&4

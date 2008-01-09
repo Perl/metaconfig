@@ -1,7 +1,7 @@
 ?RCS: $Id: libpth.U,v 3.0.1.6 1997/02/28 16:08:49 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -82,8 +82,6 @@
 ?INIT:: machines, like the mips.  Usually, it should be empty.
 ?INIT:plibpth=''
 ?INIT:
-?LINT:describe xlibpth glibpth
-?LINT:use use64bitint
 : Set private lib path
 case "$plibpth" in
 '') if ./mips; then

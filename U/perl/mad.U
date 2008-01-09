@@ -32,7 +32,8 @@
 ?H:#$mad	PERL_MAD		/**/
 ?H:.
 ?T:ans
-?LINT:set mad madlyh madlyobj madlysrc
+?LINT:set mad
+: MAD = Misc Attribute Definition
 
 if $test $patchlevel -lt 9; then
 : MAD is not available in 5.8.x or earlier.

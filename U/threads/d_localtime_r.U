@@ -57,9 +57,6 @@
 ?H:.
 ?T:try hdrs d_localtime_r_proto
 ?F:!try
-?LINT:set d_localtime_r
-?LINT:set d_localtime_r_needs_tzset
-?LINT:set localtime_r_proto
 : see if localtime_r exists
 set localtime_r d_localtime_r
 eval $inlibc

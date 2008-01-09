@@ -21,9 +21,7 @@
 ?H:?%<:#endif
 ?H:.
 ?LINT:set usecjk
-?LINT:set useperlio
 ?LINT:extern useperlio
-?LINT:change useperlio
 ?INIT:: set usecjk on the Configure command line to enable cjk.
 ?X: We should really have some explanatory text here, and some
 ?X: automatic setting of sensible defaults.
@@ -47,7 +45,7 @@ EOM
 rp='Build Perl for CJK?'
 . ./myread
 case "$ans" in
-y*|Y*)	val="$define" ;;     
+y*|Y*)	val="$define" ;;
 *)      val="$undef"  ;;
 esac
 set usecjk

@@ -89,7 +89,6 @@
 ?H:#define DB_VERSION_PATCH_CFG	$db_version_patch  	/**/
 ?H:.
 ?F:!try
-?LINT:set i_db
 ?LINT:change libs
 : see if this is a db.h system
 set db.h i_db

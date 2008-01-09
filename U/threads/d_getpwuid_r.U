@@ -33,8 +33,6 @@
 ?H:#define GETPWUID_R_PROTO $getpwuid_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_getpwuid_r_proto
-?LINT:set d_getpwuid_r
-?LINT:set getpwuid_r_proto
 : see if getpwuid_r exists
 set getpwuid_r d_getpwuid_r
 eval $inlibc

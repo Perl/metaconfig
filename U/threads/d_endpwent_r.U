@@ -33,8 +33,6 @@
 ?H:#define ENDPWENT_R_PROTO $endpwent_r_proto	   /**/
 ?H:.
 ?T:try hdrs d_endpwent_r_proto
-?LINT:set d_endpwent_r
-?LINT:set endpwent_r_proto
 : see if endpwent_r exists
 set endpwent_r d_endpwent_r
 eval $inlibc

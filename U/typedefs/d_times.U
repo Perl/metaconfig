@@ -1,7 +1,7 @@
 ?RCS: $Id: d_times.U,v 3.0.1.2 1995/07/25 14:07:50 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -48,7 +48,6 @@
 ?H:#$d_times HAS_TIMES		/**/
 ?H:#define Clock_t $clocktype	/* Clock time */
 ?H:.
-?LINT:set clocktype
 ?T:val inc
 : see if times exists
 echo " "

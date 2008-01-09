@@ -44,7 +44,6 @@
 ?H:.
 ?F:!try
 ?LINT:set lseektype
-?LINT:set lseeksize
 : see what type lseek is declared as in the kernel
 rp="What is the type used for lseek's offset on this system?"
 set off_t lseektype long stdio.h sys/types.h

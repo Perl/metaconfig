@@ -21,7 +21,6 @@
 ?H:.
 ?T:yyy zzz
 ?F:!try
-?LINT: set uidsign
 : Check if UID is signed
 echo " "
 case "$uidtype" in

@@ -8,7 +8,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:need_va_copy: +ccflags rm_try cat Compile i_stdarg i_stdlib run
+?MAKE:need_va_copy: rm_try cat Compile i_stdarg i_stdlib run
 ?MAKE:	-pick add $@ %<
 ?S:need_va_copy:
 ?S:	This symbol, if defined, indicates that the system stores
@@ -32,7 +32,6 @@
 ?H:.
 ?T:okay
 ?F:!try
-?LINT:set need_va_copy
 : see if we need va_copy
 echo " "
 case "$i_stdarg" in

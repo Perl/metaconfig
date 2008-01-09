@@ -1,7 +1,7 @@
 ?RCS: $Id: usrinc.U,v 1.1 2000/06/27 00:20:28 jhi Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -41,8 +41,6 @@
 ?S:	Possible values are "BSD 4.3" and "System V".
 ?S:.
 ?D:usrinc='/usr/include'
-?LINT:describe mips
-?LINT:set mips
 ?LINT:create mips
 ?T:xxx_prompt
 ?F:./mips
