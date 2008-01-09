@@ -1,12 +1,12 @@
-?RCS: $Id: Head.U,v 3.0.1.9 1997/02/28 15:02:09 ram Exp $
+?RCS: $Id: Head.U 6 2006-08-25 22:21:46Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Head.U,v $
 ?RCS: Revision 3.0.1.9  1997/02/28  15:02:09  ram
@@ -48,11 +48,13 @@
 ?X:
 ?MAKE:Head:
 ?MAKE:	-pick wipe $@ %<
-?V:PATH p_ me
+?V:PATH p_ _exe me newsh
 ?T:argv Id p paths OS2_SHELL DJGPP
 ?T:inksh needksh avoidksh newsh changesh reason
+?F:!*
 ?LINT:extern ENV CDPATH SHELL MACHTYPE _exe is_os2
 ?LINT:change ENV CDPATH is_os2
+?LINT:nocomment
 #! /bin/sh
 #
 # If these # comments don't work, trim them. Don't worry about any other
@@ -73,11 +75,10 @@
 ?X:
 ?X: WE ASK YOU NOT TO REMOVE OR ALTER THE FOLLOWING PARAGRAPH, PLEASE:
 ?X:
-# (Note: this Configure script was generated automatically. Rather than
+# Note: this Configure script was generated automatically. Rather than
 # working with this copy of Configure, you may wish to get metaconfig.
-# The dist-3.0 package (which contains metaconfig) was posted in
-# comp.sources.misc and is available on CPAN under authors/id/RAM so
-# you may fetch it yourself from your nearest archive site.)
+# The dist package (which contains metaconfig) is available via SVN:
+#     svn co https://svn.sourceforge.net/svnroot/dist/trunk/dist
 #
 ?X: OK, I'll not alter, but I'll add to it then ...
 #
@@ -93,7 +94,7 @@
 ?X: by your version, not mine: It credits your work.
 ?X:
 
-# $Id: Head.U,v 3.0.1.9 1997/02/28 15:02:09 ram Exp $
+# $Id: Head.U 6 2006-08-25 22:21:46Z rmanfredi $
 #
 # Generated on <DATE> [metaconfig <VERSION> PL<PATCHLEVEL>]
 # (with additional metaconfig patches by <MAINTLOC>)
@@ -162,9 +163,9 @@ esac
 ?X:
 : Proper separator for the PATH environment variable
 p_=:
-: On OS/2 this directory should exist if this is not floppy only system :-]
+: On OS/2 this directory should exist if this is not floppy only system ":-]"
 if test -d c:/. || ( uname -a | grep -i 'os\(/\|\)2' ) 2>&1 >/dev/null ; then
-    if test -n "$OS2_SHELL"; then
+	if test -n "$OS2_SHELL"; then
 		p_=\;
 		PATH=`cmd /c "echo %PATH%" | tr '\\\\' / `
 ?X: That's a bug in ksh5.22
@@ -196,7 +197,7 @@ fi
 ?X:
 ?X: 20040627, Merijn, HP-UX's ANSI compiler is in /opt/ansic/bin if present
 ?X:  and should be before /usr/ccs/bin, where the braindead bundled compiler
-?X:  can be found. The .usr/ccs/bin compiler cannot be used to build perl.
+?X:  can be found. The /usr/ccs/bin compiler cannot be used to build perl.
 ?X:
 : Proper PATH setting
 paths='/bin /usr/bin /usr/local/bin /usr/ucb /usr/local /usr/lbin'
@@ -247,15 +248,17 @@ fi
 ?X: On Digital UNIX, /bin/sh may start up buggy /bin/ksh, use sh
 if test -f /osf_boot -a -f /usr/sbin/setld; then
 	if test X`/usr/bin/uname -s` = XOSF1; then
-	        avoidksh="to avoid Digital UNIX' ksh"
-	        newsh=/bin/sh
-	        unset BIN_SH # if this is 'xpg4' sh will start up ksh
+		avoidksh="to avoid Digital UNIX' ksh"
+		newsh=/bin/sh
+?X: if BIN_SH is set to 'xpg4', sh will start up ksh
+		unset BIN_SH
 	fi
 fi
 ?X: If we are not in ksh and need it, then feed us back to it
 case "$inksh/$needksh" in
 /[a-z]*)
-?X: Unset ENV to avoid any ~/.kshrc that could alias cd or whatever...
+?X: Clear ENV to avoid any ~/.kshrc that could alias cd or whatever...
+?X: Don't use "unset ENV", that is not portable enough
 		ENV=''
 		changesh=true
 		reason="$needksh"
@@ -305,16 +308,17 @@ test -x "${newsh}" || unset newsh
 ?X: Don't want to set it to '.' because then ksh prints out the
 ?X: name of the directory every time you cd to it. --AD 6/98
 ?X: In order to inflict the least harm, change it only if it's set.
-: if needed set CDPATH to a harmless value that is not chatty
+: if needed, set CDPATH to a harmless value that is not chatty
 : avoid bash 2.02 problems with empty CDPATH.
 case "$CDPATH" in
 '')	;;
 *)	case "$SHELL" in
-	*bash*)	CDPATH='.' ;;
-	*)		CDPATH='' ;;
+	*bash*) CDPATH='.' ;;
+	*) CDPATH='' ;;
 	esac
 	;;
 esac
+
 : Configure runs within the UU subdirectory
 test -d UU || mkdir UU
 ?X: Use ./* to avoid any confirmation prompts from enhanced shells -- WED
