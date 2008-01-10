@@ -74,7 +74,7 @@
 ?H:#$d_eofnblk EOF_NONBLOCK
 ?H:.
 ?T:status
-?F:!try.out !try.ret !try.err !try
+?F:!try.out !try.ret !try.err !try !mtry
 ?LINT:use d_open3
 : check for non-blocking I/O stuff
 case "$h_sysfile" in

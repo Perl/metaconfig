@@ -61,6 +61,7 @@
 ?H:.
 ?W:%<:dlopen
 ?T:dldir thisflag tdir
+?F:!a.out
 : determine which dynamic loading, if any, to compile in
 echo " "
 dldir="ext/DynaLoader"

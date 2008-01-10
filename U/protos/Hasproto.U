@@ -5,8 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?X:	This unit generates a $hasproto string that is used internally 
-?X:	by Configure to check if this system has a prototype for a 
+?X:	This unit generates a $hasproto string that is used internally
+?X:	by Configure to check if this system has a prototype for a
 ?X:	particular function
 ?X:
 ?X:	To use it, say something like:
@@ -14,7 +14,7 @@
 ?X:		eval $hasproto
 ?X:	Or, for more complicated sets of headers, do something like
 ?X:	hdrs="$define sys/types.h
-?X:		$i_systime sys/time.h 
+?X:		$i_systime sys/time.h
 ?X:		$i_sysselct sys/select.h
 ?X:		$i_netdb netdb.h"
 ?X:	set d_getnetent_proto getnetent $hdrs
@@ -23,6 +23,7 @@
 ?MAKE:Hasproto: Setvar cppstdin cppflags cppminus contains rm_try test
 ?MAKE:	-pick add $@ %<
 ?T:func varname
+?F:!try.c
 ?V:hasproto
 hasproto='varname=$1; func=$2; shift; shift;
 while $test $# -ge 2; do

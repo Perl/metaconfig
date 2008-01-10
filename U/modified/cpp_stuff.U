@@ -1,7 +1,7 @@
 ?RCS: $Id: cpp_stuff.U,v 3.0.1.1 1994/10/29 16:08:24 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -54,7 +54,7 @@
 ?C:	It might not exist, so #ifdef it in your code!
 ?C:.
 ?X:	Dist pl70 included the following, but AIX's xlc compiler
-?X:	(which is ANSI-ish and has cpp_stuff == 42)) rejects 
+?X:	(which is ANSI-ish and has cpp_stuff == 42)) rejects
 ?X:	The SQuoTe/EQuoTe stuff because the string literals are on
 ?X:	separate lines.  Sigh.
 ?X:		Andy Dougherty   24 Feb 1998
@@ -80,7 +80,7 @@
 ?H:?%<:		/* If you can get stringification with catify, tell me how! */
 ?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff == 42
-?H:?%<:#define PeRl_CaTiFy(a, b)	a ## b	
+?H:?%<:#define PeRl_CaTiFy(a, b)	a ## b
 ?H:?%<:#define PeRl_StGiFy(a)	#a
 ?H:?%<:/* the additional level of indirection enables these macros to be
 ?H:?%<: * used as arguments to other macros.  See K&R 2nd ed., page 231. */

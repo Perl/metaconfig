@@ -48,7 +48,7 @@
 ?C:.
 ?H:#$d_inc_version_list PERL_INC_VERSION_LIST $inc_version_list_init		/**/
 ?H:.
-?T: stem d pversion aversion vsn5005 _
+?T:stem
 : Determine list of previous versions to include in @INC
 $cat > getverlist <<EOPL
 #!$perl5 -w

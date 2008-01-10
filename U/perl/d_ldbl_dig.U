@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1999, Jarkko Hietaniemi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -24,6 +24,7 @@
 ?C:.
 ?H:#$d_ldbl_dig HAS_LDBL_DIG 	/* */
 ?H:.
+?F:!ldbl_dig.c
 ?LINT:set d_ldbl_dig
 : See if number of significant digits in a double precision number is known
 echo " "

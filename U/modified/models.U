@@ -1,7 +1,7 @@
 ?RCS: $Id: models.U,v 3.0.1.2 1997/02/28 16:13:17 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -105,7 +105,7 @@ EOP
 *) dflt="$models";;
 esac
 $cat <<EOM
- 
+
 Some systems have different model sizes.  On most systems they are called
 small, medium, large, and huge.  On the PDP11 they are called unsplit and
 split.  If your system doesn't support different memory models, say "none".

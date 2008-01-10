@@ -80,6 +80,7 @@
 ?T:inctest thisincl xxx inclwanted ftry previous thislibdir
 ?T:EBUGGING DEBUGGING
 ?T:check flag callback checkccflag
+?F:!cpp.c !gcctest !try
 ?D:cppflags=''
 ?D:ccflags=''
 ?D:ldflags=''
@@ -485,7 +486,7 @@ dflt=y
 ?X: when run from within `backticks`.  What fun.
 ?X: --Andy Dougherty 2/13/1998
 if $sh -c "$cc -o try $optimize $ccflags $ldflags try.c $libs" >>try.msg 2>&1; then
-	if $sh -c "$run ./try" >>try.msg 2>&1; then
+	if $sh -c "$run ./try " >>try.msg 2>&1; then
 		xxx=`$run ./try`
 		case "$xxx" in
 		"Ok") dflt=n ;;
@@ -535,5 +536,5 @@ y)
 	;;
 n) echo "OK, that should do.";;
 esac
-$rm_try gcctest.out
+$rm_try gcctest gcctest.out
 

@@ -38,6 +38,7 @@
 ?S:	needed to generate random libraries.  Set to ":" if ar can generate
 ?S:	random libraries or if random libraries are not supported
 ?S:.
+?F:!foobar
 : see if ar generates random libraries by itself
 echo " "
 echo "Checking how to generate random libraries on your machine..." >&4

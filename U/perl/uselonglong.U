@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:uselonglong: Myread Oldconfig Setvar cat test usemorebits ccflags
+?MAKE:uselonglong: Myread Oldconfig Setvar cat test ccflags
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:uselonglong:

@@ -38,7 +38,7 @@
 ?H:#$fflushall	FFLUSH_ALL 		/**/
 ?H:.
 ?T:output code
-?F:!try.out !try
+?F:!try.out !try !tryp
 : Check how to flush
 echo " "
 $cat >&4 <<EOM
@@ -327,5 +327,5 @@ We won't be flushing handles at all before fork/exec/popen.
 EOM
 	;;
 esac
-$rm_try
+$rm_try tryp
 

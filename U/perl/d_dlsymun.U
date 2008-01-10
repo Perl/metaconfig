@@ -27,6 +27,7 @@
 ?H:.
 ?LINT:set d_dlsymun
 ?T: xxx
+?F:!fred
 : Check if dlsym need a leading underscore
 echo " "
 val="$undef"
@@ -89,9 +90,9 @@ int main()
 }
 EOM
 	: Call the object file tmp-dyna.o in case dlext=o.
-	if $cc $ccflags $cccdlflags -c dyna.c > /dev/null 2>&1 && 
-		mv dyna${_o} tmp-dyna${_o} > /dev/null 2>&1 && 
-		$ld -o dyna.$dlext $ldflags $lddlflags tmp-dyna${_o} > /dev/null 2>&1 && 
+	if $cc $ccflags $cccdlflags -c dyna.c > /dev/null 2>&1 &&
+		mv dyna${_o} tmp-dyna${_o} > /dev/null 2>&1 &&
+		$ld -o dyna.$dlext $ldflags $lddlflags tmp-dyna${_o} > /dev/null 2>&1 &&
 		$cc -o fred $ccflags $ldflags $cccdlflags $ccdlflags fred.c $libs > /dev/null 2>&1 && $to dyna.$dlext; then
 		xxx=`$run ./fred`
 		case $xxx in
@@ -109,7 +110,7 @@ EOM
 	fi
 	;;
 esac
-		
+
 $rm -f fred fred.* dyna.$dlext dyna.* tmp-dyna.*
 
 set d_dlsymun

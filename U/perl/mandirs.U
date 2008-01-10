@@ -85,7 +85,7 @@
 ?LINT: set man5ext man6ext man7ext man8ext
 ?T: num s ts text
 ?X: eval fools metalint
-?T: ext man
+?T: man
 : Determine locations for other man pages.  For example, programs
 : should place man4 pages in $prefix/man/$man4 with an extension
 : of $man4ext.  Use bsd naming conventions.  See mandirstyle.
