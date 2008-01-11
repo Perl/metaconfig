@@ -51,7 +51,6 @@
 ?H:?%<:#ifndef USE_64_BIT_INT
 ?H:?%<:#$use64bitint	USE_64_BIT_INT		/**/
 ?H:?%<:#endif
-?H:.
 ?H:?%<:#ifndef USE_64_BIT_ALL
 ?H:?%<:#$use64bitall	USE_64_BIT_ALL		/**/
 ?H:?%<:#endif

@@ -1,13 +1,13 @@
-?RCS: $Id: src.U,v 3.0.1.1 1997/02/28 16:23:54 ram Exp $
+?RCS: $Id: src.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
 ?RCS: Copyright (c) 1996, Cygnus Support
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: Original Author: Tom Tromey <tromey@cygnus.com>
 ?RCS:
@@ -19,9 +19,9 @@
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:src (srcdir):
-?S:	This variable holds the path to the package source. It is up to
-?S:	the Makefile to use this variable and set VPATH accordingly to
-?S:	find the sources remotely.
+?S:	This variable holds the (possibly relative) path of the package source.
+?S:	It is up to the Makefile to use this variable and set VPATH accordingly
+?S:	to find the sources remotely.  Use $pkgsrc to have an absolute path.
 ?S:.
 ?S:rsrc (relsrcdir):
 ?S:	This variable holds a potentially relative path to the package
@@ -46,8 +46,8 @@ case "$src" in
 '')	src=/
 	rsrc=/
 	;;
-/*) rsrc="$src";;
-*) rsrc="../$src";;
+/*)	rsrc="$src";;
+*)	rsrc="../$src";;
 esac
 ?X:
 ?X: Now check whether we have found the right source tree (i.e. the one for the
@@ -59,7 +59,7 @@ esac
 ?X: If it matches, we know we found the right source tree. -- RAM, 15/03/96
 ?X:
 if test -f $rsrc/Configure && \
-	$contains "^package=$package$" $rsrc/Configure >/dev/null 2>&1
+	$contains "^package='$package'\$" $rsrc/Configure >/dev/null 2>&1
 then
    : found it, so we are ok.
 else
