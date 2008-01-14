@@ -80,7 +80,7 @@
 ?LINT:set d_delete64
 ?LINT:set d_firstkey64
 ?LINT:set d_nextkey64
-
+: Check if DBM has 64bit functions
 if $test X"$use64bitint" = X"$define"; then
 	: see if dbminit64 exists
 	set dbminit64 d_dbminit64

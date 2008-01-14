@@ -22,6 +22,7 @@
 ?H:.
 ?LINT:set usemultiplicity
 ?INIT:: set usemultiplicity on the Configure command line to enable multiplicity.
+: Check if multiplicity is required
 ?X: We should really have some explanatory text here, and some
 ?X: automatic setting of sensible defaults.
 cat <<EOM

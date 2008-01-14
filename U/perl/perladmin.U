@@ -9,6 +9,7 @@
 ?S:perladmin:
 ?S:	Electronic mail address of the perl5 administrator.
 ?S:.
+: Ask e-mail of administrator
 $cat <<EOM
 
 If you or somebody else will be maintaining perl at your site, please

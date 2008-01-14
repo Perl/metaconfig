@@ -17,7 +17,6 @@
 ?H:#$d_fpos64_t	HAS_FPOS64_T    	/**/
 ?H:.
 ?LINT:set d_fpos64_t
-
 : check for fpos64_t
 echo " "
 echo "Checking to see if you have fpos64_t..." >&4

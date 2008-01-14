@@ -18,7 +18,6 @@
 ?H:#$i_sysrusage	I_SYSRUSAGE		/**/
 ?H:.
 ?LINT:set i_sysrusage
-
 : see if this is a sys/rusage.h system
 set sys/rusage.h i_sysrusage
 eval $inhdr

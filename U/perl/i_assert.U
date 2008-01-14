@@ -19,7 +19,6 @@
 ?H:#$i_assert	I_ASSERT		/**/
 ?H:.
 ?LINT:set i_assert
-
 : see if this is a assert.h system
 set assert.h i_assert
 eval $inhdr

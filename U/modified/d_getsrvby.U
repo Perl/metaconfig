@@ -8,14 +8,14 @@
 ?MAKE:d_getsbyname d_getsbyport: Inlibc
 ?MAKE:	-pick add $@ %<
 ?S:d_getsbyname:
-?S:	This variable conditionally defines the HAS_GETSERVBYNAME 
-?S:	symbol, which indicates to the C program that the 
+?S:	This variable conditionally defines the HAS_GETSERVBYNAME
+?S:	symbol, which indicates to the C program that the
 ?S:	getservbyname() routine is available to look up services
 ?S:	by their name.
 ?S:.
 ?S:d_getsbyport:
-?S:	This variable conditionally defines the HAS_GETSERVBYPORT 
-?S:	symbol, which indicates to the C program that the 
+?S:	This variable conditionally defines the HAS_GETSERVBYPORT
+?S:	symbol, which indicates to the C program that the
 ?S:	getservbyport() routine is available to look up services
 ?S:	by their port.
 ?S:.
@@ -31,6 +31,7 @@
 ?H:#$d_getsbyport HAS_GETSERVBYPORT		/**/
 ?H:.
 ?LINT:set d_getsbyname d_getsbyport
+: Optional checks for getsbyname and getsbyport
 
 @if d_getsbyname || HAS_GETSERVBYNAME
 : see if getservbyname exists

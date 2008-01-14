@@ -1,7 +1,7 @@
 ?RCS: $Id: d_statblks.U,v 3.0 1993/08/18 12:07:29 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -28,7 +28,6 @@
 ?H:?%<:#endif
 ?H:.
 ?LINT:set d_statblks
-
 : see if stat knows about block sizes
 echo " "
 echo "Checking to see if your struct stat has st_blocks field..." >&4

@@ -18,7 +18,6 @@
 ?H:#$i_syslog	I_SYSLOG		/**/
 ?H:.
 ?LINT:set i_syslog
-
 : see if this is a syslog.h system
 set syslog.h i_syslog
 eval $inhdr

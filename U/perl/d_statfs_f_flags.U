@@ -27,10 +27,9 @@
 ?H:#$d_statfs_f_flags HAS_STRUCT_STATFS_F_FLAGS		/**/
 ?H:.
 ?LINT:set d_statfs_f_flags
-
 : see if struct statfs knows about f_flags
 case "$d_statfs_s" in
-define)	
+define)
 	echo " "
 	echo "Checking to see if your struct statfs has f_flags field..." >&4
 	set d_statfs_f_flags statfs f_flags $i_systypes sys/types.h $i_sysparam sys/param.h $i_sysmount sys/mount.h $i_sysvfs sys/vfs.h $i_sysstatfs sys/statfs.h

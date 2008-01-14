@@ -130,9 +130,9 @@
 ?LINT:set d_sockpair
 ?LINT:set d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy
 ?LINT:set d_scm_rights
+: see whether socket exists
 socketlib=''
 sockethdr=''
-: see whether socket exists
 echo " "
 $echo $n "Hmm... $c" >&4
 if set socket val -f d_socket; eval $csym; $val; then

@@ -22,6 +22,7 @@
 ?H:.
 ?LINT:extern ccflags
 ?F:!uselonglong.cbu
+: Check for longlong support
 case "$uselonglong" in
 ''|true|[yY]*) uselonglong="$define" ;;
 *) case "$ccflags" in

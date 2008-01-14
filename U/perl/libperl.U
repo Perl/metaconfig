@@ -24,7 +24,7 @@
 ?S:.
 ?S:shrpenv:
 ?S:	If the user builds a shared libperl.so, then we need to tell the
-?S:	'perl' executable where it will be able to find the installed libperl.so. 
+?S:	'perl' executable where it will be able to find the installed libperl.so.
 ?S:	One way to do this on some systems is to set the environment variable
 ?S:	LD_RUN_PATH to the directory that will be the final location of the
 ?S:	shared libperl.so.  The makefile can use this with something like
@@ -53,6 +53,7 @@
 ?LINT:change ccdlflags
 ?LINT:extern maintloc maintname
 ?Y:top
+: Do we want a share libperl?
 also=''
 case "$usedl" in
 $undef)
@@ -205,7 +206,7 @@ shrpdir=$archlibexp/CORE
 xxx=''
 tmp_shrpenv=''
 if "$useshrplib"; then
-    case "$osname" in 
+    case "$osname" in
 	aix)
 		# We'll set it in Makefile.SH...
 		;;
@@ -234,7 +235,7 @@ if "$useshrplib"; then
 	esac
 	case "$xxx" in
 	'') ;;
-	*)	
+	*)
 		# Only add $xxx if it isn't already in ccdlflags.
 		case " $ccdlflags " in
 		*" $xxx "*)	;;
@@ -242,7 +243,7 @@ if "$useshrplib"; then
 			cat <<EOM >&4
 
 Adding $xxx to the flags
-passed to $ld so that the perl executable will find the 
+passed to $ld so that the perl executable will find the
 installed shared $libperl.
 
 EOM

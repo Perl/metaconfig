@@ -8,14 +8,14 @@
 ?MAKE:d_getpbyname d_getpbynumber: Inlibc
 ?MAKE:	-pick add $@ %<
 ?S:d_getpbyname:
-?S:	This variable conditionally defines the HAS_GETPROTOBYNAME 
-?S:	symbol, which indicates to the C program that the 
+?S:	This variable conditionally defines the HAS_GETPROTOBYNAME
+?S:	symbol, which indicates to the C program that the
 ?S:	getprotobyname() routine is available to look up protocols
 ?S:	by their name.
 ?S:.
 ?S:d_getpbynumber:
-?S:	This variable conditionally defines the HAS_GETPROTOBYNUMBER 
-?S:	symbol, which indicates to the C program that the 
+?S:	This variable conditionally defines the HAS_GETPROTOBYNUMBER
+?S:	symbol, which indicates to the C program that the
 ?S:	getprotobynumber() routine is available to look up protocols
 ?S:	by their number.
 ?S:.
@@ -31,6 +31,7 @@
 ?H:#$d_getpbynumber HAS_GETPROTOBYNUMBER		/**/
 ?H:.
 ?LINT:set d_getpbyname d_getpbynumber
+: Optional checks for getprotobyname and getprotobynumber
 
 @if d_getpbyname || HAS_GETPROTOBYNAME
 : see if getprotobyname exists

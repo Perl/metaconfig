@@ -30,7 +30,6 @@
 ?LINT:set d_sfio
 ?LINT:change libs
 ?LINT:change useperlio
-
 : see if sfio library is available
 case "$i_sfio" in
 $define)

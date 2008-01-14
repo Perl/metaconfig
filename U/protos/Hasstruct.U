@@ -24,6 +24,7 @@
 ?MAKE:	-pick add $@ %<
 ?T:varname struct
 ?V:hasstruct
+: Define hasstruct macro for Configure internal use
 hasstruct='varname=$1; struct=$2; shift; shift;
 while $test $# -ge 2; do
 	case "$1" in

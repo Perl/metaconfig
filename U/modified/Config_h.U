@@ -1,7 +1,7 @@
 ?RCS: $Id: Config_h.U,v 3.0.1.5 1997/02/28 14:57:43 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -27,7 +27,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:47  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This file ends up producing the config_h.SH script, which is run to produce
 ?X: the config.h file.  The file ./.Config_h below contains all the ?H: lines
 ?X: extracted out of all the units.  Metaconfig itself adds the !GROK!THIS!.
@@ -38,7 +38,7 @@
 ?X: 'dot' is allowed within the file name, as it is part of the "extension" of
 ?X: the file. MS-DOG will not let you have two 'dots' because that would mean
 ?X: two "extensions".
-?X: 
+?X:
 ?MAKE:Config_h: Id End Config_sh Obsol_h myuname cf_time cf_by package src
 ?MAKE:	-pick c_h_weed $@ %<
 ?MAKE:	-pick c_h_weed $@ ./Config_h
@@ -48,6 +48,7 @@
 ?LINT:change CONFIG_H
 ?LINT:change CONFIG_SH
 ?T:PERL_CONFIG_SH TOP
+: Set up for generating config_h.SH
 case "$CONFIG_SH" in
 '') CONFIG_SH=config.sh ;;
 esac
@@ -78,16 +79,16 @@ echo "Extracting $CONFIG_H (with variable substitutions)"
 ?X: is provision here for #un-def, which is translated back into #undef after
 ?X: all original #undef have been processed.
 ?X:
-?X:	Previously, we changed all 
-?X:		#undef FOO /**/ 
+?X:	Previously, we changed all
+?X:		#undef FOO /**/
 ?X:	into
-?X:		/*#define FOO /**/ 
+?X:		/*#define FOO /**/
 ?X:	The xlc compiler (available on IBM's AIX) complains that this is
 ?X:	an illegal attempt to write a nested comment, and warns against it.
 ?X:	There's apparently no way to shut the compiler up, either.
 ?X:	This sed command from Hallvard B Furuseth <h.b.furuseth@usit.uio.no>
 ?X:	changes it to
-?X:		/*#define FOO / **/ 
+?X:		/*#define FOO / **/
 sed <<!GROK!THIS! >$CONFIG_H -e 's!^#undef\(.*/\)\*!/\*#define\1 \*!' -e 's!^#un-def!#undef!'
 /*
  * This file was produced by running the config_h.SH script, which

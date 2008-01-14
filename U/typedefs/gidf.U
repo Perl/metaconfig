@@ -16,6 +16,7 @@
 ?C:.
 ?H:#define	Gid_t_f		$gidformat		/**/
 ?H:.
+: Check format string for GID
 
 echo " "
 $echo "Checking the format string to be used for gids..." >&4

@@ -18,7 +18,6 @@
 ?H:#$d_getfsstat HAS_GETFSSTAT		/**/
 ?H:.
 ?LINT:set d_getfsstat
-
 : see if getfsstat exists
 set getfsstat d_getfsstat
 eval $inlibc

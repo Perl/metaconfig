@@ -20,7 +20,7 @@
 ?H:#$d_statfs3 HAS_STATFS3		/**/
 ?H:.
 ?LINT:set d_statfs3
-
+: Check for statfs3
 case "$d_statfs" in
 define)
 	$cat >try.h <<EOCP

@@ -25,6 +25,7 @@
 ?T:func varname
 ?F:!try.c
 ?V:hasproto
+: Define hasproto macro for Configure internal use
 hasproto='varname=$1; func=$2; shift; shift;
 while $test $# -ge 2; do
 	case "$1" in

@@ -16,7 +16,7 @@
 ?C:.
 ?H:#define	Uid_t_f		$uidformat		/**/
 ?H:.
-
+: Check format string for UID
 echo " "
 $echo "Checking the format string to be used for uids..." >&4
 

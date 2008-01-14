@@ -23,6 +23,7 @@
 ?LINT:extern ccflags
 ?LINT:use usemorebits
 ?F:!uselongdouble.cbu
+: Check for uselongdouble support
 case "$ccflags" in
 *-DUSE_LONG_DOUBLE*|*-DUSE_MORE_BITS*) uselongdouble="$define" ;;
 esac

@@ -24,6 +24,7 @@
 ?LINT:extern useperlio
 ?LINT:change useperlio
 ?INIT:: set usesocks on the Configure command line to enable socks.
+: Check is we will use socks
 ?X: We should really have some explanatory text here, and some
 ?X: automatic setting of sensible defaults.
 case "$usesocks" in

@@ -1,7 +1,7 @@
 ?RCS: $Id: groupstype.U,v 3.0.1.2 1994/10/29 16:18:08 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -41,7 +41,6 @@
 ?H:?%<:#endif
 ?H:.
 ?W:%<:getgroups HAS_GETGROUPS setgroups HAS_SETGROUPS
-
 : Find type of 2nd arg to 'getgroups()' and 'setgroups()'
 echo " "
 case "$d_getgrps$d_setgrps" in

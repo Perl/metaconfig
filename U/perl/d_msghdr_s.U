@@ -18,7 +18,7 @@
 ?H:#$d_msghdr_s HAS_STRUCT_MSGHDR	/**/
 ?H:.
 ?LINT:set d_msghdr_s
-
+: Check for msghdr_s
 echo " "
 echo "Checking to see if your system supports struct msghdr..." >&4
 set d_msghdr_s msghdr $i_systypes sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h

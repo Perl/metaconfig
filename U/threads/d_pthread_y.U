@@ -42,7 +42,6 @@
 ?H:#$d_sched_yield HAS_SCHED_YIELD	/**/
 ?H:.
 ?LINT: set d_pthread_yield d_sched_yield
-
 : see whether the various POSIXish _yields exist
 $cat >try.c <<EOP
 #include <pthread.h>

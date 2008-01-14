@@ -18,7 +18,7 @@
 ?H:#$d_cmsghdr_s HAS_STRUCT_CMSGHDR	/**/
 ?H:.
 ?LINT:set d_cmsghdr_s
-
+: Check for cmsghdr support
 echo " "
 echo "Checking to see if your system supports struct cmsghdr..." >&4
 set d_cmsghdr_s cmsghdr $i_systypes sys/types.h $d_socket sys/socket.h $i_sysuio sys/uio.h

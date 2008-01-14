@@ -18,7 +18,6 @@
 ?H:#$d_statfs HAS_STATFS		/**/
 ?H:.
 ?LINT:set d_statfs
-
 : see if statfs exists
 set statfs d_statfs
 eval $inlibc

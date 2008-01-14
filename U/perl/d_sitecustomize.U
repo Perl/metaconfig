@@ -24,7 +24,7 @@
 ?H:?%<:#endif
 ?H:?%<:@end
 ?H:.
-
+: Check if site customization support was requested
 case "$usesitecustomize" in
     $define|true|[Yy]*)
 	usesitecustomize="$define"

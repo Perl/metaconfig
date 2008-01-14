@@ -18,7 +18,6 @@
 ?H:#$d_fstatfs HAS_FSTATFS		/**/
 ?H:.
 ?LINT:set d_fstatfs
-
 : see if fstatfs exists
 set fstatfs d_fstatfs
 eval $inlibc

@@ -20,7 +20,7 @@
 ?H:#$d_statfs_s HAS_STRUCT_STATFS	/**/
 ?H:.
 ?LINT:set d_statfs_s
-
+: Check for statfs_s
 echo " "
 echo "Checking to see if your system supports struct statfs..." >&4
 set d_statfs_s statfs $i_systypes sys/types.h $i_sysparam sys/param.h $i_sysmount sys/mount.h $i_sysvfs sys/vfs.h $i_sysstatfs sys/statfs.h

@@ -24,6 +24,7 @@
 ?MAKE:	-pick add $@ %<
 ?T:varname struct field
 ?V:hasfield
+: Define hasfield macro for Configure internal use
 hasfield='varname=$1; struct=$2; field=$3; shift; shift; shift;
 while $test $# -ge 2; do
 	case "$1" in

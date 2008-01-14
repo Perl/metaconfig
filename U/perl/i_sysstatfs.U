@@ -17,7 +17,6 @@
 ?H:#$i_sysstatfs	I_SYS_STATFS		/**/
 ?H:.
 ?LINT:set i_sysstatfs
-
 : see if this is a sys/statfs.h system
 set sys/statfs.h i_sysstatfs
 eval $inhdr

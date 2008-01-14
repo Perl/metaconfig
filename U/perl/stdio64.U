@@ -100,7 +100,7 @@
 ?LINT:set d_ftell64
 ?LINT:set d_ftello64
 ?LINT:set d_tmpfile64
-
+: Check for 64bit versions of basic file IO
 if $test X"$use64bitint" = X"$define"; then
 	: see if fgetpos64 exists
 	set fgetpos64 d_fgetpos64

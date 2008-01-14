@@ -66,10 +66,10 @@
 ?LINT:extern libnames
 ?LINT:change nm_opt
 ?INIT:libnames=''
+: get list of predefined functions in a handy place
 case "$runnm" in
 true)
 ?X: indentation is wrong on purpose--RAM
-: get list of predefined functions in a handy place
 echo " "
 case "$libc" in
 '') libc=unknown

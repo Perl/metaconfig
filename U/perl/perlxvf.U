@@ -16,15 +16,15 @@
 ?MAKE:	-pick add $@ %<
 ?S:ivdformat:
 ?S:	This variable contains the format string used for printing
-?S:	a Perl IV as a signed decimal integer. 
+?S:	a Perl IV as a signed decimal integer.
 ?S:.
 ?S:uvuformat:
 ?S:	This variable contains the format string used for printing
-?S:	a Perl UV as an unsigned decimal integer. 
+?S:	a Perl UV as an unsigned decimal integer.
 ?S:.
 ?S:uvoformat:
 ?S:	This variable contains the format string used for printing
-?S:	a Perl UV as an unsigned octal integer. 
+?S:	a Perl UV as an unsigned octal integer.
 ?S:.
 ?S:uvxformat:
 ?S:	This variable contains the format string used for printing
@@ -114,7 +114,7 @@
 ?H:#define	NVFf		$nvFUformat		/**/
 ?H:#define	NVGf		$nvGUformat		/**/
 ?H:.
-
+: Check format strings for internal types
 echo " "
 $echo "Checking the format strings to be used for Perl's internal types..." >&4
 

@@ -25,7 +25,7 @@
 ?LINT:change use64bitint
 ?LINT:extern uselongdouble
 ?LINT:change uselongdouble
-
+: Check if morebits is requested
 case "$usemorebits" in
 "$define"|true|[yY]*)
 	use64bitint="$define"

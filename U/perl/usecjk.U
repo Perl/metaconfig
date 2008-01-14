@@ -25,6 +25,7 @@
 ?INIT:: set usecjk on the Configure command line to enable cjk.
 ?X: We should really have some explanatory text here, and some
 ?X: automatic setting of sensible defaults.
+: Check for CJK support
 case "$usecjk" in
 ''|$define|true|[yY]*)	dflt='y';;
 *) dflt='n';;

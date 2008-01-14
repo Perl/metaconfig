@@ -25,6 +25,7 @@
 ?H:?%<:#endif
 ?H:.
 ?LINT:set useperlio
+: Check if we want perlio
 case "$useperlio" in
 $define|true|[yY]*|'')	dflt='y';;
 *) dflt='n';;
@@ -43,16 +44,16 @@ EOM
 rp='Use the PerlIO abstraction layer?'
 . ./myread
 case "$ans" in
-y|Y) 
+y|Y)
 	val="$define"
 	;;
-*)      
+*)
 	echo "Ok, doing things the stdio way."
 	val="$undef"
 	;;
 esac
 set useperlio
-eval $setvar 
+eval $setvar
 
 case "$usesocks" in
 $define|true|[yY]*)
@@ -69,4 +70,3 @@ EOM
 	;;
 esac
 
-	

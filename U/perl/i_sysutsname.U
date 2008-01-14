@@ -18,7 +18,6 @@
 ?H:#$i_sysutsname	I_SYSUTSNAME		/**/
 ?H:.
 ?LINT:set i_sysutsname
-
 : see if this is a sys/utsname.h system
 set sys/utsname.h i_sysutsname
 eval $inhdr

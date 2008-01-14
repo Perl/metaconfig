@@ -18,7 +18,7 @@
 ?H:#$d_fs_data_s HAS_STRUCT_FS_DATA	/**/
 ?H:.
 ?LINT:set d_fs_data_s
-
+: Check for fs_data_s
 echo " "
 echo "Checking to see if your system supports struct fs_data..." >&4
 set d_fs_data_s fs_data $i_systypes sys/types.h $i_sysparam sys/param.h $i_sysmount sys/mount.h

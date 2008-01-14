@@ -18,6 +18,7 @@
 ?H:#$d_iovec_s	HAS_STRUCT_IOVEC		/**/
 ?H:.
 ?LINT:set d_iovec_s
+: Check for iovec_s
 echo "Checking to see if your system supports struct iovec..." >&4
 set d_iovec_s iovec iov_base $i_sysuio sys/uio.h
 eval $hasfield

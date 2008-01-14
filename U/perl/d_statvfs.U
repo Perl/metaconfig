@@ -28,7 +28,6 @@
 ?H:.
 ?LINT:set d_statvfs
 ?LINT:set d_fstatvfs
-
 : see if statvfs exists
 set statvfs d_statvfs
 eval $inlibc

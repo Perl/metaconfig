@@ -24,6 +24,7 @@
 ?H:.
 ?T:xversion
 ?LINT:set usefaststdio
+: Check if faststdio is requested and available
 case "$usefaststdio" in
 $define|true|[yY]*|'')
 	xversion=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
@@ -47,7 +48,7 @@ EOM
 rp='Use the "fast stdio" if available?'
 . ./myread
 case "$ans" in
-y|Y)	val="$define" ;;     
+y|Y)	val="$define" ;;
 *)      val="$undef" ;;
 esac
 set usefaststdio
