@@ -33,7 +33,6 @@
 	cat Getfile Setprefixvar Loc Oldconfig archname spackage  \
 	privlib sed test Prefixit Prefixup binexp
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?S:d_archlib:
 ?S:	This variable conditionally defines ARCHLIB to hold the pathname
@@ -76,6 +75,10 @@
 ?H:#$d_archlib ARCHLIB_EXP "$archlibexp"		/**/
 ?H:.
 ?T: tdflt
+?LINT:change prefixvar
+?LINT:set archlib
+?LINT:set archlibexp
+?LINT:set installarchlib
 : determine where public architecture dependent libraries go
 set archlib archlib
 eval $prefixit

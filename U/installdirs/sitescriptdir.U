@@ -13,7 +13,6 @@
 ?MAKE:sitescriptdir sitescriptdirexp installsitescriptdir : Getfile \
 	Setprefixvar Oldconfig scriptdir prefix siteprefix sed
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:sitescriptdir=''
 ?S:sitescriptdir:
@@ -38,6 +37,10 @@
 ?S:	a system running AFS, in which case they may differ slightly. You
 ?S:	should always use this variable within your makefiles for portability.
 ?S:.
+?LINT:change prefixvar
+?LINT:set installsitescriptdir
+?LINT:set sitescriptdir
+?LINT:set sitescriptdirexp
 : determine where add-on public executables go
 case "$sitescriptdir" in
 '')	dflt=`echo $scriptdir | $sed "s#^$prefix#$siteprefix#"` ;;

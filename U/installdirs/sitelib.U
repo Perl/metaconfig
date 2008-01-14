@@ -19,7 +19,6 @@
 ?MAKE:sitelib sitelibexp installsitelib sitelib_stem: cat Getfile Oldconfig \
 	Setprefixvar Prefixit package version sed installstyle siteprefix
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:sitelib=''
 ?S:sitelib:
@@ -74,6 +73,10 @@
 ?H:#define SITELIB_STEM "$sitelib_stem"		/**/
 ?H:.
 ?T:prog
+?LINT:change prefixvar
+?LINT:set installsitelib
+?LINT:set sitelib
+?LINT:set sitelibexp
 : determine where site specific libraries go.
 : Usual default is /usr/local/lib/perl5/site_perl/$version
 : The default "style" setting is made in installstyle.U

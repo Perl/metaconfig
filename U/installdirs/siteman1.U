@@ -11,7 +11,6 @@
 ?MAKE:siteman1 siteman1exp installsiteman1: test Getfile Setprefixvar \
 	prefix siteprefix man1dir sed
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:siteman1=''
 ?S:siteman1:
@@ -37,7 +36,9 @@
 ?S:	man1direxp only points to the read-only access location. For extra
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
-?INIT:siteman1=''
+?LINT:change prefixvar
+?LINT:set installsiteman1
+?LINT:set siteman1exp
 : determine where add-on manual pages go
 case "$siteman1" in
 '')	dflt=`echo "$man1dir" | $sed "s#^$prefix#$siteprefix#"` ;;

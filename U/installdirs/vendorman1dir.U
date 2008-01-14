@@ -12,11 +12,9 @@
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
 ?RCS:
-?RCS:
 ?MAKE:vendorman1dir vendorman1direxp installvendorman1dir: man1dir Getfile \
 	Oldconfig Setprefixvar Prefixit test vendorprefix prefix sed
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?S:vendorman1dir:
 ?S:	This variable contains the name of the directory for man1
@@ -37,6 +35,8 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
+?LINT:change prefixvar
+?LINT:set installvendorman1dir
 : Set the vendorman1dir variables
 case "$vendorprefix" in
 '')	vendorman1dir=''

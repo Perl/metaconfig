@@ -12,11 +12,9 @@
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
 ?RCS:
-?RCS:
 ?MAKE:d_vendorscript vendorscript vendorscriptexp installvendorscript: Getfile \
 	vendorbin cat Setprefixvar Oldconfig Prefixit test vendorprefix
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?S:vendorscript:
 ?S:	This variable contains the eventual value of the VENDORSCRIPT symbol.
@@ -57,6 +55,8 @@
 ?H:#$d_vendorscript PERL_VENDORSCRIPT "$vendorscript"		/**/
 ?H:#$d_vendorscript PERL_VENDORSCRIPT_EXP "$vendorscriptexp"		/**/
 ?H:.
+?LINT:change prefixvar
+?LINT:set installvendorscript
 : Set the vendorscript variables
 case "$vendorprefix" in
 '')	d_vendorscript="$undef"

@@ -13,7 +13,6 @@
 ?MAKE:html1dir html1direxp installhtml1dir: cat Loc Myread \
 	spackage test Getfile Setprefixvar Prefixit Prefixup
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:html1dir=''
 ?S:html1dir:
@@ -34,6 +33,9 @@
 ?S:	using a different installprefix.  For extra portability, you
 ?S:	should only use this variable within your makefiles.
 ?S:.
+?LINT:change prefixvar
+?LINT:set html1direxp
+?LINT:set installhtml1dir
 : determine where html pages for programs go
 set html1dir html1dir none
 eval $prefixit

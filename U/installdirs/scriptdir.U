@@ -27,7 +27,6 @@
 ?MAKE:scriptdir scriptdirexp installscript: cat test Getfile Loc \
 	Oldconfig +bin Prefixit Setprefixvar prefixexp Prefixup
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:scriptdir=''
 ?S:scriptdir:
@@ -62,6 +61,9 @@
 ?H:#define SCRIPTDIR_EXP "$scriptdirexp"	/**/
 ?H:.
 ?T:installscriptdir
+?LINT:change prefixvar
+?LINT:set scriptdir
+?LINT:set scriptdirexp
 : determine where public executable scripts go
 set scriptdir scriptdir
 eval $prefixit

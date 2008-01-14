@@ -19,7 +19,6 @@
 ?MAKE:sitearch sitearchexp installsitearch d_sitearch: cat sed Getfile \
 	Oldconfig Setprefixvar Prefixit test archname sitelib
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:sitearch=''
 ?S:sitearch:
@@ -68,6 +67,10 @@
 ?H:#$d_sitearch SITEARCH "$sitearch"		/**/
 ?H:#$d_sitearch SITEARCH_EXP "$sitearchexp"		/**/
 ?H:.
+?LINT:change prefixvar
+?LINT:set installsitearch
+?LINT:set sitearch
+?LINT:set sitearchexp
 : determine where site specific architecture-dependent libraries go.
 : sitelib  default is /usr/local/lib/perl5/site_perl/$version
 : sitearch default is /usr/local/lib/perl5/site_perl/$version/$archname

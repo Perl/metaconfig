@@ -32,7 +32,6 @@
 ?MAKE:privlib privlibexp installprivlib: package cat Getfile Oldconfig \
 	Setprefixvar Prefixit version installstyle binexp
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:privlib=''
 ?S:privlib:
@@ -65,6 +64,10 @@
 ?H:#define PRIVLIB "$privlib"		/**/
 ?H:#define PRIVLIB_EXP "$privlibexp"		/**/
 ?H:.
+?LINT:change prefixvar
+?LINT:set installprivlib
+?LINT:set privlib
+?LINT:set privlibexp
 : determine where private library files go
 : Usual default is /usr/local/lib/perl5/$version.
 : Also allow things like /opt/perl/lib/$version, since

@@ -11,7 +11,6 @@
 ?MAKE:siteman3 siteman3exp installsiteman3: test Getfile Setprefixvar \
 	prefix siteprefix man3dir sed
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:siteman3=''
 ?S:siteman3:
@@ -37,7 +36,9 @@
 ?S:	man3direxp only points to the read-only access location. For extra
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
-?INIT:siteman3=''
+?LINT:change prefixvar
+?LINT:set installsiteman3
+?LINT:set siteman3exp
 : determine where add-on library man pages go
 case "$siteman3" in
 '')	dflt=`echo "$man3dir" | $sed "s#^$prefix#$siteprefix#"` ;;

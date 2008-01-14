@@ -13,7 +13,6 @@
 ?MAKE:html3dir html3direxp installhtml3dir: cat sed Loc Myread \
 	spackage test Getfile Setprefixvar Prefixit Prefixup html1dir
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:html3dir=''
 ?S:html3dir:
@@ -33,6 +32,9 @@
 ?S:	using a different installprefix.  For extra portability, you
 ?S:	should only use this variable within your makefiles.
 ?S:.
+?LINT:change prefixvar
+?LINT:set html3direxp
+?LINT:set installhtml3dir
 : determine where html pages for libraries and modules go
 set html3dir html3dir none
 eval $prefixit

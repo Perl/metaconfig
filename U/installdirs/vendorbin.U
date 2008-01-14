@@ -12,11 +12,9 @@
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
 ?RCS:
-?RCS:
 ?MAKE:d_vendorbin vendorbin vendorbinexp installvendorbin: Getfile \
 	Setprefixvar Oldconfig Prefixit vendorprefix
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?S:vendorbin:
 ?S:	This variable contains the eventual value of the VENDORBIN symbol.
@@ -57,6 +55,8 @@
 ?H:#$d_vendorbin PERL_VENDORBIN "$vendorbin"		/**/
 ?H:#$d_vendorbin PERL_VENDORBIN_EXP "$vendorbinexp"		/**/
 ?H:.
+?LINT:change prefixvar
+?LINT:set installvendorbin
 : Set the vendorbin variables
 case "$vendorprefix" in
 '')	d_vendorbin="$undef"

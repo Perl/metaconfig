@@ -13,7 +13,6 @@
 ?MAKE:sitebin sitebinexp installsitebin : Getfile Oldconfig \
 	Setprefixvar siteprefix
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:sitebin=''
 ?S:sitebin:
@@ -38,6 +37,10 @@
 ?S:	a system running AFS, in which case they may differ slightly. You
 ?S:	should always use this variable within your makefiles for portability.
 ?S:.
+?LINT:change prefixvar
+?LINT:set installsitebin
+?LINT:set sitebin
+?LINT:set sitebinexp
 : determine where add-on public executables go
 case "$sitebin" in
 '')	dflt=$siteprefix/bin ;;

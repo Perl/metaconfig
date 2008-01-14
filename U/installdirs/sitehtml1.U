@@ -11,7 +11,6 @@
 ?MAKE:sitehtml1 sitehtml1exp installsitehtml1: Getfile Setprefixvar \
 	prefix siteprefix html1dir sed
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:sitehtml1=''
 ?S:sitehtml1:
@@ -37,6 +36,10 @@
 ?S:	html1direxp only points to the read-only access location. For extra
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
+?LINT:change prefixvar
+?LINT:set installsitehtml1
+?LINT:set sitehtml1
+?LINT:set sitehtml1exp
 : determine where add-on html pages go
 : There is no standard location, so try to copy the previously-selected
 : directory structure for the core html pages.

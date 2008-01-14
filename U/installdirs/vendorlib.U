@@ -12,12 +12,10 @@
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
 ?RCS:
-?RCS:
 ?MAKE:d_vendorlib vendorlib vendorlibexp installvendorlib vendorlib_stem: \
 	Getfile Setprefixvar Oldconfig Prefixit package vendorprefix sed \
 	installstyle version
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?S:vendorlib:
 ?S:	This variable contains the eventual value of the VENDORLIB symbol,
@@ -71,6 +69,8 @@
 ?H:#$d_vendorlib PERL_VENDORLIB_STEM "$vendorlib_stem"		/**/
 ?H:.
 ?T:prog
+?LINT:change prefixvar
+?LINT:set installvendorlib
 : Set the vendorlib variables
 case "$vendorprefix" in
 '')	d_vendorlib="$undef"

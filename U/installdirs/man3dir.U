@@ -16,7 +16,6 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  16:10:34  ram
 ?RCS: patch61: created
 ?RCS:
-?X:
 ?X:	This was originally specific to perl5.  Since perl5 has man pages that
 ?X:	go in both man1/ and man3/ directories, we need both man1dir
 ?X:	and man3dir.  This unit is basically dist's mansrc.U with
@@ -28,7 +27,6 @@
 	sed man1dir spackage package Getfile Setprefixvar Prefixit Prefixup \
 	d_flexfnam privlib Myread test
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:man3dir=''
 ?S:man3dir:
@@ -55,6 +53,8 @@
 ?S:	See man3dir.
 ?S:.
 ?T:prog tdflt
+?LINT:change prefixvar
+?LINT:set man3direxp
 : determine where library module manual pages go
 set man3dir man3dir none
 eval $prefixit

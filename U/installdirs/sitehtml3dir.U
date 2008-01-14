@@ -11,7 +11,6 @@
 ?MAKE:sitehtml3dir sitehtml3direxp installsitehtml3dir: Getfile \
 	Setprefixvar prefix siteprefix html3dir sed
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?D:sitehtml3dir=''
 ?S:sitehtml3dir:
@@ -37,6 +36,10 @@
 ?S:	html3direxp only points to the read-only access location. For extra
 ?S:	portability, you should only use this variable within your makefiles.
 ?S:.
+?LINT:change prefixvar
+?LINT:set installsitehtml3dir
+?LINT:set sitehtml3dir
+?LINT:set sitehtml3direxp
 : determine where add-on library html pages go
 : There is no standard location, so try to copy the previously-selected
 : directory structure for the core html pages.

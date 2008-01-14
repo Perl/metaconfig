@@ -31,10 +31,6 @@
 	Myread Prefixit Getfile Setvar Setprefixvar Oldconfig \
 	test prefix prefixexp
 ?MAKE:	-pick add $@ %<
-?LINT:change prefix
-?LINT:change prefixexp
-?LINT:change prefixvar
-?LINT:change installprefixexp
 ?Y:TOP
 ?D:bin=''
 ?S:bin:
@@ -87,6 +83,11 @@
 ?H:#define PERL_RELOCATABLE_INC "$userelocatableinc" 		/**/
 ?H:.
 ?D:bin='/usr/local/bin'
+?LINT:change prefix
+?LINT:change prefixexp
+?LINT:change prefixvar
+?LINT:change installprefixexp
+?LINT:set userelocatableinc
 : determine where public executables go
 echo " "
 set dflt bin bin

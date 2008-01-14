@@ -12,11 +12,9 @@
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
 ?RCS:
-?RCS:
 ?MAKE:d_vendorarch vendorarch vendorarchexp installvendorarch: sed Getfile \
 	Setprefixvar Oldconfig Prefixit archname vendorlib vendorprefix
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?S:vendorarch:
 ?S:	This variable contains the value of the PERL_VENDORARCH symbol.
@@ -58,6 +56,8 @@
 ?H:#$d_vendorarch PERL_VENDORARCH "$vendorarch"		/**/
 ?H:#$d_vendorarch PERL_VENDORARCH_EXP "$vendorarchexp"		/**/
 ?H:.
+?LINT:change prefixvar
+?LINT:set installvendorarch
 : Set the vendorarch variables
 case "$vendorprefix" in
 '')	d_vendorarch="$undef"

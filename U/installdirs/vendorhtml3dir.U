@@ -12,11 +12,9 @@
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
 ?RCS:
-?RCS:
 ?MAKE:vendorhtml3dir vendorhtml3direxp installvendorhtml3dir: html3dir Getfile \
 	Oldconfig Setprefixvar Prefixit test vendorprefix prefix sed
 ?MAKE:	-pick add $@ %<
-?LINT:change prefixvar
 ?Y:TOP
 ?S:vendorhtml3dir:
 ?S:	This variable contains the name of the directory for html
@@ -37,6 +35,8 @@
 ?S:	those systems using AFS. For extra portability, only this variable
 ?S:	should be used in makefiles.
 ?S:.
+?LINT:change prefixvar
+?LINT:set installvendorhtml3dir
 : Set the vendorhtml3dir variables
 case "$vendorprefix" in
 '')	vendorhtml3dir=''
