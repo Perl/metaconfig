@@ -53,7 +53,7 @@
 ?LINT:change ccdlflags
 ?LINT:extern maintloc maintname
 ?Y:top
-: Do we want a share libperl?
+: Do we want a shared libperl?
 also=''
 case "$usedl" in
 $undef)
