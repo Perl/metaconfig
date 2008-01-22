@@ -21,7 +21,7 @@
 ?MAKE:d_socket d_oldsock d_sockpair socketlib sockethdr \
 	d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy \
 	d_scm_rights: \
-	contains libc echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
+	contains echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
 	Compile cat rm_try Setvar Hasfield
 ?MAKE:	-pick add $@ %<
 ?S:d_socket:

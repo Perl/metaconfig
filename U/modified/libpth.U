@@ -1,12 +1,12 @@
-?RCS: $Id: libpth.U,v 3.0.1.6 1997/02/28 16:08:49 ram Exp $
+?RCS: $Id: libpth.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: libpth.U,v $
 ?RCS: Revision 3.0.1.6  1997/02/28  16:08:49  ram
@@ -62,6 +62,7 @@
 ?S:	machines, like the mips.  Usually, it should be empty.
 ?S:.
 ?T: xxx dlist
+?LINT:use usrinc
 ?INIT:: change the next line if compiling for Xenix/286 on Xenix/386
 ?INIT:xlibpth='/usr/lib/386 /lib/386'
 ?INIT:: Possible local library directories to search.

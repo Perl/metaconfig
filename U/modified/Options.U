@@ -49,8 +49,8 @@
 	override knowitall: config_sh
 ?T:arg argn symbol config_arg0 config_args config_argc xxx yyy zzz uuu
 ?T:args_exp args_sep arg_exp libswanted ccflags
-?F:./optdef.sh ./cmdline.opt ./posthint.sh ./cmdl.opt
 ?F:!Configure
+?F:./optdef.sh ./cmdline.opt ./posthint.sh ./cmdl.opt
 : Save command line options in file UU/cmdline.opt for later use in
 : generating config.sh.
 ?X: This temporary file will be read by Oldsym.U.  I used a temporary

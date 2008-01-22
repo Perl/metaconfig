@@ -1,12 +1,12 @@
-?RCS: $Id: d_htonl.U,v 3.0.1.2 1994/08/29 16:09:25 ram Exp $
+?RCS: $Id: d_htonl.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: d_htonl.U,v $
 ?RCS: Revision 3.0.1.2  1994/08/29  16:09:25  ram
@@ -50,6 +50,7 @@
 ?H:#$d_htonl HAS_NTOHL		/**/
 ?H:#$d_htonl HAS_NTOHS		/**/
 ?H:.
+?F:!htonl.c
 ?LINT:set d_htonl
 : see if htonl --and friends-- exists
 val=''

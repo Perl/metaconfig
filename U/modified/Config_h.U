@@ -1,12 +1,12 @@
-?RCS: $Id: Config_h.U,v 3.0.1.5 1997/02/28 14:57:43 ram Exp $
+?RCS: $Id: Config_h.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Config_h.U,v $
 ?RCS: Revision 3.0.1.5  1997/02/28  14:57:43  ram
@@ -43,17 +43,17 @@
 ?MAKE:	-pick c_h_weed $@ %<
 ?MAKE:	-pick c_h_weed $@ ./Config_h
 ?MAKE:	-pick c_h_weed $@ ./Obsol_h
-?LINT:extern CONFIG_H
-?LINT:extern CONFIG_SH
-?LINT:change CONFIG_H
-?LINT:change CONFIG_SH
 ?T:PERL_CONFIG_SH TOP
+?LINT:unclosed !GROK!THIS!
+?LINT:extern CONFIG_H CONFIG_SH
+?LINT:change CONFIG_H CONFIG_SH
+?X:?LINT:nocomment
 : Set up for generating config_h.SH
 case "$CONFIG_SH" in
-'') CONFIG_SH=config.sh ;;
+'') CONFIG_SH=config.sh;;
 esac
 case "$CONFIG_H" in
-'') CONFIG_H=config.h ;;
+'') CONFIG_H=config.h;;
 esac
 case $PERL_CONFIG_SH in
 '')
@@ -99,7 +99,7 @@ sed <<!GROK!THIS! >$CONFIG_H -e 's!^#undef\(.*/\)\*!/\*#define\1 \*!' -e 's!^#un
  * that running config_h.SH again will wipe out any changes you've made.
  * For a more permanent change edit $CONFIG_SH and rerun config_h.SH.
  *
- * \$Id: Config_h.U,v 3.0.1.5 1997/02/28 14:57:43 ram Exp $
+ * \$Id: Config_h.U 1 2006-08-24 12:32:52Z rmanfredi $
  */
 
 /*

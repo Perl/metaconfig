@@ -1,12 +1,12 @@
-?RCS: $Id: Config_sh.U,v 3.0.1.3 1997/02/28 14:57:53 ram Exp $
+?RCS: $Id: Config_sh.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Config_sh.U,v $
 ?RCS: Revision 3.0.1.3  1997/02/28  14:57:53  ram
@@ -21,28 +21,28 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:48  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This unit ends up producing the config.sh script, which contains all the
 ?X: definitions figured out by Configure.  The add.Config_sh command knows
 ?X: which variables need to be remembered.  It also adds the EOT (ends the
 ?X: here document redirection with variable substitution).
-?X: 
+?X:
 ?MAKE:Config_sh: cf_time cf_by test spitshell startsh myuname Myread \
-	End Obsol_sh Loc +d_portable package src
+	End Obsol_sh Loc +d_portable package src cat
 ?MAKE:	-pick add.Config_sh $@ %<
 ?MAKE:	-pick add $@ ./Obsol_sh
 ?MAKE:	-pick close.Config_sh $@ %<
-?F:!config.over
-?F:!config.arch
+?F:!config.over !config.arch
 ?T:file temp
+?LINT:unclosed EOT
 : back to where it started
 if test -d ../UU; then
 	cd ..
 fi
 
-: configuration may be patched via a 'config.arch' file
+: configuration may be unconditionally patched via a 'config.arch' file
 if $test -f config.arch; then
-	echo "I see a config.arch file, loading it."
+	echo "I see a config.arch file, loading it." >&4
 	. ./config.arch
 fi
 
@@ -79,7 +79,7 @@ case "$d_portable" in
 ?X:	This method assumes there is a "basename" command available.  If
 ?X:	not, replace it with the following expr-based command:
 ?X:			expr  $temp : '.*/\(.*\)' \| $temp
-?X:	Since this preserves the actual command name, we can now drop the 
+?X:	Since this preserves the actual command name, we can now drop the
 ?X:	OS/2 specific code.
 ?X:		--Andy Dougherty  August 1999
 ?X:
@@ -117,4 +117,10 @@ $startsh
 # Configuration time: $cf_time
 # Configured by     : $cf_by
 # Target system     : $myuname
+
+EOT
+?X: Command line options are saved by the Options.U unit in the
+?X: temporary file UU/cmdline.opt
+$test -f UU/cmdline.opt && $cat UU/cmdline.opt >> config.sh
+$spitshell <<EOT >>config.sh
 

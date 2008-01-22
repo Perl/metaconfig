@@ -80,6 +80,7 @@
 ?H:.
 ?T:cont val
 ?LINT:change ccflags
+?LINT:unclosed $randbits))"
 : How can we generate normalized random numbers ?
 echo " "
 echo "Looking for a random number function..." >&4

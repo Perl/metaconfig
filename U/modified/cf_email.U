@@ -1,12 +1,12 @@
-?RCS: $Id: cf_email.U,v 3.0.1.1 1994/01/24 14:05:06 ram Exp $
+?RCS: $Id: cf_email.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: cf_email.U,v $
 ?RCS: Revision 3.0.1.1  1994/01/24  14:05:06  ram
@@ -20,7 +20,7 @@
 ?S:	used by units that require the user's e-mail, like MailList.U.
 ?S:.
 ?T:cont
-: Ask for e-mail
+: determine the e-mail address of the user who is running us
 $cat <<EOM
 
 I need to get your e-mail address in Internet format if possible, i.e.

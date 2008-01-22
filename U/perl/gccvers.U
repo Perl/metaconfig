@@ -9,7 +9,7 @@
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:gccversion gccosandvers gccansipedantic: cat cpp rm +cc \
-	Mcc Myread Guess Options Oldconfig Loc osname osvers run
+	Myread Guess Options Oldconfig Loc osname osvers run
 ?MAKE:	-pick add $@ %<
 ?S:gccversion:
 ?S:	If GNU cc (gcc) is used, this variable holds '1' or '2' to

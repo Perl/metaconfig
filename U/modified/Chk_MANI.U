@@ -1,12 +1,12 @@
-?RCS: $Id: Chk_MANI.U,v 3.0.1.2 1997/02/28 14:57:25 ram Exp $
+?RCS: $Id: Chk_MANI.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Chk_MANI.U,v $
 ?RCS: Revision 3.0.1.2  1997/02/28  14:57:25  ram
@@ -38,12 +38,16 @@ if test -f "$rsrc/MANIFEST"; then
 ?X: Files spelled uppercased and beginning with PACK are produced by the
 ?X: shell archive builder and may be removed by the user. Usually, they are
 ?X: not listed in the MANIFEST file, but you never know...
-?X: We try the new way of split and the old way of split.
-	awk '$1 !~ /PACK[A-Z]+/ {print $1}' "$rsrc/MANIFEST" | (split -l 50 2>/dev/null || split -50)
+?X:
+?X: "split -l" is the new way of running a split, but we also try the older way
+?X:
+	awk '$1 !~ /PACK[A-Z]+/ {print $1}' "$rsrc/MANIFEST" |\
+		(split -l 50 2>/dev/null || split -50)
 	rm -f missing
 	tmppwd=`pwd`
 	for filelist in x??; do
-		(cd "$rsrc"; ls `cat "$tmppwd/$filelist"` >/dev/null 2>>"$tmppwd/missing")
+		(cd "$rsrc"; ls `cat "$tmppwd/$filelist"` \
+			>/dev/null 2>>"$tmppwd/missing")
 	done
 	if test -s missing; then
 		cat missing >&4
