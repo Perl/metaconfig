@@ -17,6 +17,12 @@
 ?S:dtrace:
 ?S:	This variable holds the location of the dtrace executable.
 ?S:.
+?C:USE_DTRACE:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	be built with support for DTrace.
+?C:.
+?H:#$usedtrace USE_DTRACE		/**/
+?H:.
 ?T:dflt_dtrace
 ?LINT:set usedtrace
 ?LINT:set dtrace
