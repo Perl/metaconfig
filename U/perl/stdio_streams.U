@@ -28,9 +28,9 @@
 ?C:	Usual values include _iob, __iob, and __sF.
 ?C:.
 ?H:#$d_stdio_stream_array	HAS_STDIO_STREAM_ARRAY	/**/
-?H:#ifdef HAS_STDIO_STREAM_ARRAY
-?H:#define STDIO_STREAM_ARRAY	$stdio_stream_array
-?H:#endif
+?H:?%<:#ifdef HAS_STDIO_STREAM_ARRAY
+?H:?%<:#define STDIO_STREAM_ARRAY	$stdio_stream_array
+?H:?%<:#endif
 ?H:.
 ?T:s
 ?F:!try

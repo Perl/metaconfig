@@ -1,12 +1,12 @@
-?RCS: $Id: cpp_stuff.U,v 3.0.1.1 1994/10/29 16:08:24 ram Exp $
+?RCS: $Id: cpp_stuff.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: cpp_stuff.U,v $
 ?RCS: Revision 3.0.1.1  1994/10/29  16:08:24  ram
@@ -77,13 +77,13 @@
 ?H:?CAT4:#define CAT4(a,b,c,d)	a/**/b/**/c/**/d
 ?H:?CAT5:#define CAT5(a,b,c,d,e)	a/**/b/**/c/**/d/**/e
 ?H:?STRINGIFY:#define STRINGIFY(a)	"a"
-?H:?%<:		/* If you can get stringification with catify, tell me how! */
+?X:	If you can get stringification with catify, tell me how!
 ?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff == 42
 ?H:?%<:#define PeRl_CaTiFy(a, b)	a ## b
 ?H:?%<:#define PeRl_StGiFy(a)	#a
-?H:?%<:/* the additional level of indirection enables these macros to be
-?H:?%<: * used as arguments to other macros.  See K&R 2nd ed., page 231. */
+?X: The additional level of indirection enables these macros to be
+?X: used as arguments to other macros.  See K&R 2nd ed., page 231.
 ?H:?CAT2:#define CAT2(a,b)	PeRl_CaTiFy(a,b)
 ?H:?CAT3:#define CAT3(a,b,c)	CAT2(PeRl_CaTiFy(a,b),c)
 ?H:?CAT4:#define CAT4(a,b,c,d)	CAT2(CAT3(a,b,c),d)
@@ -96,7 +96,7 @@
 ?H:?SCAT5:#define SCAT5(a,b,c,d,e)	PeRl_StGiFy(a) PeRl_StGiFy(b) PeRl_StGiFy(c) PeRl_StGiFy(d) PeRl_StGiFy(e)
 ?H:?%<:#endif
 ?H:?%<:#if $cpp_stuff != 1 && $cpp_stuff != 42
-?H:?%<:#   include "Bletch: How does this C preprocessor concatenate tokens?"
+?H:?%<:#include "Bletch: How does this C preprocessor concatenate tokens?"
 ?H:?%<:#endif
 ?H:.
 ?W:%<:CAT2 CAT3 CAT4 CAT5 STRINGIFY SCAT2 SCAT3 SCAT4 SCAT5
