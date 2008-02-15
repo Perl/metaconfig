@@ -6,9 +6,10 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:ivtype uvtype nvtype ivsize uvsize nvsize \
-	i8type u8type i16type u16type i32type u32type i64type u64type \
-	i8size u8size i16size u16size i32size u32size i64size u64size \
-	d_nv_preserves_uv nv_preserves_uv_bits d_nv_zero_is_allbits_zero: \
+      i8type u8type i16type u16type i32type u32type i64type u64type \
+      i8size u8size i16size u16size i32size u32size i64size u64size \
+      d_nv_preserves_uv nv_preserves_uv_bits nv_overflows_integers_at \
+      d_nv_zero_is_allbits_zero: \
 	echo rm_try use64bitint d_quad quadtype uquadtype \
 	d_longdbl uselongdouble longdblsize doublesize \
 	shortsize intsize longsize i_stdlib i_string \
@@ -88,6 +89,11 @@
 ?S:	This variable indicates how many of bits type uvtype
 ?S:	a variable nvtype can preserve.
 ?S:.
+?S:nv_overflows_integers_at:
+?S:	This variable gives the largest integer value that NVs can hold
+?S:	as a constant floating point expression.
+?S:	If it could not be determined, it holds the value 0.
+?S:.
 ?S:d_nv_zero_is_allbits_zero:
 ?S:	This variable indicates whether a variable of type nvtype
 ?S:	stores 0.0 in memory as all bits zero.
@@ -166,6 +172,12 @@
 ?C:	This symbol contains the number of bits a variable of type NVTYPE
 ?C:	can preserve of a variable of type UVTYPE.
 ?C:.
+?C:NV_OVERFLOWS_INTEGERS_AT:
+?C:	This symbol gives the largest integer value that NVs can hold. This
+?C:	value + 1.0 cannot be stored accurately. It is expressed as constant
+?C:	floating point expression to reduce the chance of decimale/binary
+?C:	conversion issues. If it can not be determined, the value 0 is given.
+?C:.
 ?C:NV_ZERO_IS_ALLBITS_ZERO:
 ?C:	This symbol, if defined, indicates that a variable of type NVTYPE
 ?C:	stores 0.0 in memory as all bits zero.
@@ -198,6 +210,7 @@
 ?H:#define	NVSIZE		$nvsize		/**/
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
 ?H:#define	NV_PRESERVES_UV_BITS	$nv_preserves_uv_bits
+?H:#define	NV_OVERFLOWS_INTEGERS_AT	$nv_overflows_integers_at
 ?H:#$d_nv_zero_is_allbits_zero	NV_ZERO_IS_ALLBITS_ZERO
 ?H:?%<:#if UVSIZE == 8
 ?H:?%<:#   ifdef BYTEORDER
@@ -429,6 +442,89 @@ case "$nv_preserves_uv_bits" in
 *)	$echo "Can't figure out how many bits your NVs preserve." 2>&1
 	nv_preserves_uv_bits="0" ;;
 esac
+$rm_try
+
+$echo "Checking to find the largest integer value your NVs can hold..." >&4
+: volatile so that the compiler has to store it out to memory.
+if test X"$d_volatile" = X"$define"; then
+	volatile=volatile
+fi
+$cat <<EOP >try.c
+#include <stdio.h>
+
+typedef $nvtype NV;
+
+int
+main() {
+  NV value = 2;
+  int count = 1;
+
+  while(count < 256) {
+    $volatile NV up = value + 1.0;
+    $volatile NV negated = -value;
+    $volatile NV down = negated - 1.0;
+    $volatile NV got_up = up - value;
+    int up_good = got_up == 1.0;
+    int got_down = down - negated;
+    int down_good = got_down == -1.0;
+
+    if (down_good != up_good) {
+      fprintf(stderr,
+	      "Inconsistency - up %d %f; down %d %f; for 2**%d (%.20f)\n",
+	      up_good, (double) got_up, down_good, (double) got_down,
+	      count, (double) value);
+      return 1;
+    }
+    if (!up_good) {
+      while (1) {
+	if (count > 8) {
+	  count -= 8;
+	  fputs("256.0", stdout);
+	} else {
+	  count--;
+	  fputs("2.0", stdout);
+	}
+	if (!count) {
+	  puts("");
+	  return 0;
+	}
+	fputs("*", stdout);
+      }
+    }
+    value *= 2;
+    ++count;
+  }
+  fprintf(stderr, "Cannot overflow integer range, even at 2**%d (%.20f)\n",
+	  count, (double) value);
+  return 1;
+}
+EOP
+set try
+
+nv_overflows_integers_at='0'
+if eval $compile; then
+    xxx="`$run ./try`"
+    case "$?" in
+	0)
+	    case "$xxx" in
+		2*)  cat >&4 <<EOM
+The largest integer your NVs can preserve is equal to $xxx
+EOM
+		    nv_overflows_integers_at="$xxx"
+		    ;;
+		*)  cat >&4 <<EOM
+Cannot determine the largest integer value your NVs can hold, unexpected output
+'$xxx'
+EOM
+		    ;;
+	    esac
+	    ;;
+	*)  cat >&4 <<EOM
+Cannot determine the largest integer value your NVs can hold
+EOM
+	    ;;
+    esac
+fi
 $rm_try
 
 $echo "Checking whether NV 0.0 is all bits zero in memory..." >&4
