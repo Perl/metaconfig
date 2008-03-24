@@ -10,8 +10,9 @@
 ?X:	This unit is just a quick shorthand for the compile command
 ?X:	to be used in all the other metaconfig units.
 ?X:
-?MAKE:Compile: +cc +optimize +ccflags +ldflags +libs
+?MAKE:Compile: +cc +optimize +ccflags +ldflags +libs test
 ?MAKE:	-pick add $@ %<
+?LINT:extern usedevel
 ?LINT:define compile compile_ok
 ?V:compile compile_ok mc_file
 ?S:compile:
@@ -46,6 +47,11 @@
 compile='
 mc_file=$1;
 shift;
+case "$usedevel" in $define|true|[yY]*) if $test ! -f "${mc_file}.c"; then
+echo "Internal Configure script bug - compiler test file ${mc_file}.c is missing. Please report this to perlbug@perl.org" >&4;
+exit 1;
+fi;
+esac;
 $cc -o ${mc_file} $optimize $ccflags $ldflags $* ${mc_file}.c $libs > /dev/null 2>&1;'
 : define a shorthand compile call for compilations that should be ok.
 compile_ok='

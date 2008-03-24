@@ -1,0 +1,27 @@
+?RCS: $Id: i_malloc.U,v 3.5 2008/03/29 14:06:51 merijn Exp $
+?RCS:
+?RCS: Copyright (c) 2008, H.Merijn Brand
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.5.
+?RCS:
+?MAKE:i_mallocmalloc: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_mallocmalloc:
+?S:	This variable conditionally defines the I_MALLOCMALLOC symbol,
+?S:	and indicates whether a C program should include <malloc/malloc.h>.
+?S:.
+?C:I_MALLOCMALLOC:
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <malloc/malloc.h>.
+?C:.
+?H:#$i_mallocmalloc I_MALLOCMALLOC		/**/
+?H:.
+?LINT:set i_mallocmalloc
+: see if malloc/malloc.h has to be included
+set malloc/malloc.h i_mallocmalloc
+eval $inhdr
+

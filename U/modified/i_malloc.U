@@ -16,7 +16,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:21  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:i_malloc: cat rm_try Compile Setvar
+?MAKE:i_malloc: cat rm_try Compile Setvar i_mallocmalloc
 ?MAKE:	-pick add $@ %<
 ?S:i_malloc:
 ?S:	This variable conditionally defines the I_MALLOC symbol, and indicates
@@ -36,6 +36,11 @@ echo " "
 $cat >try.c <<EOCP
 #include <stdlib.h>
 #include <malloc.h>
+$i_mallocmalloc I_MALLOCMALLOC
+#ifdef I_MALLOCMALLOC
+# include <malloc/malloc.h>
+#endif
+
 int main () { return 0; }
 EOCP
 set try
