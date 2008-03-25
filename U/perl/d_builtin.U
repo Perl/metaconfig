@@ -6,7 +6,7 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_builtin_choose_expr d_builtin_expect : Compile Setvar cat rm_try
+?MAKE:d_builtin_choose_expr d_builtin_expect : Compile Setvar cat run rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_builtin_choose_expr:
 ?S:	This conditionally defines HAS_BUILTIN_CHOOSE_EXPR, which
@@ -56,7 +56,7 @@ int main(void) {
 
 EOCP
     set try
-    if eval $compile; then
+    if eval $compile && $run ./try; then
 	echo "Your C compiler supports __builtin_choose_expr."
 	val="$define"
     else
@@ -76,18 +76,20 @@ case "$d_builtin_expect" in
 '')
     echo " "
     echo "Checking whether your compiler can handle __builtin_expect ..." >&4
-    $cat >builtin.c <<'EOCP'
+    $cat >try.c <<'EOCP'
 int main(void) {
     int n = 50;
     if ( __builtin_expect(n, 0) ) n = 1;
+    /* Remember shell exit code truth is 0, C truth is non-zero */
+    return !(n == 1);
 }
 EOCP
     set try
-    if eval $compile; then
-	echo "Your C compiler supports __builtin_choose_expr."
+    if eval $compile && $run ./try; then
+	echo "Your C compiler supports __builtin_expect."
 	val="$define"
     else
-	echo "Your C compiler doesn't seem to understand __builtin_choose_expr."
+	echo "Your C compiler doesn't seem to understand __builtin_expect."
 	val="$undef"
     fi
     ;;
