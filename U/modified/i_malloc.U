@@ -36,7 +36,7 @@ echo " "
 $cat >try.c <<EOCP
 #include <stdlib.h>
 #include <malloc.h>
-$i_mallocmalloc I_MALLOCMALLOC
+#$i_mallocmalloc I_MALLOCMALLOC
 #ifdef I_MALLOCMALLOC
 # include <malloc/malloc.h>
 #endif
