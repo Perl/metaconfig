@@ -37,7 +37,7 @@ sunos*X4*)
     ;;
 *) case "$usedl" in
     $define|true|[yY]*)
-	    set X `echo " $libs " | sed -e 's@ -lndbm @ @' -e 's@ -lgdbm @ @' -e 's@ -ldbm @ @' -e 's@ -ldb @ @'` 
+	    set X `echo " $libs " | sed -e 's@ -lndbm @ @' -e 's@ -lgdbm @ @' -e 's@ -lgdbm_compat @ @' -e 's@ -ldbm @ @' -e 's@ -ldb @ @'` 
 	    shift
 	    perllibs="$*"
 	    ;;

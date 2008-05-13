@@ -15,55 +15,84 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:23  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:i_ndbm: Inhdr Inlibc Setvar test ccflags cppflags
+?MAKE:i_ndbm i_gdbmndbm i_gdbm_ndbm d_ndbm: Inhdr Inlibc Setvar test
 ?MAKE:	-pick add $@ %<
-?S:i_ndbm (d_ndbm):
+?S:i_ndbm :
 ?S:	This variable conditionally defines the I_NDBM symbol, which
 ?S:	indicates to the C program that <ndbm.h> exists and should
 ?S:	be included.
 ?S:.
-?C:I_NDBM (HAS_NDBM NDBM):
+?C:I_NDBM :
 ?C:	This symbol, if defined, indicates that <ndbm.h> exists and should
 ?C:	be included.
 ?C:.
+?S:i_gdbmndbm :
+?S:	This variable conditionally defines the I_GDBMNDBM symbol, which
+?S:	indicates to the C program that <gdbm/ndbm.h> exists and should
+?S:	be included.  This was the location of the ndbm.h compatibility file
+?S:	in RedHat 7.1.
+?S:.
+?C:I_GDBMNDBM:
+?C:	This symbol, if defined, indicates that <gdbm/ndbm.h> exists and should
+?C:	be included.  This was the location of the ndbm.h compatibility file
+?C:	in RedHat 7.1.
+?C:.
+?S:i_gdbm_ndbm :
+?S:	This variable conditionally defines the I_GDBM_NDBM symbol, which
+?S:	indicates to the C program that <gdbm-ndbm.h> exists and should
+?S:	be included.  This is the location of the ndbm.h compatibility file
+?S:	in Debian 4.0.
+?S:.
+?C:I_GDBM_NDBM:
+?C:	This symbol, if defined, indicates that <gdbm-ndbm.h> exists and should
+?C:	be included.  This is the location of the ndbm.h compatibility file
+?C:	in Debian 4.0.
+?C:.
+?S:d_ndbm:
+?S:	This variable conditionally defines the HAS_NDBM symbol, which
+?S:	indicates that both the ndbm.h include file and an appropriate ndbm
+?S:	library exist.  Consult the different i_*ndbm variables
+?S:	to find out the actual include location.  Sometimes, a system has the
+?S:	header file but not the library.  This variable will only be set if
+?S:	the system has both.
+?S:.
+?C:HAS_NDBM:
+?C:	This symbol, if defined, indicates that some form of ndbm.h or compatibility
+?C:	include exists, along with the appropriate library.
+?C:.
 ?H:#$i_ndbm I_NDBM	/**/
+?H:#$i_gdbmndbm I_GDBMNDBM	/**/
+?H:#$i_gdbm_ndbm I_GDBM_NDBM	/**/
+?H:#$d_ndbm HAS_NDBM	/**/
 ?H:.
-?T:t_ndbm d_dbm_open
-?LINT:set i_ndbm
-?LINT:change ccflags
-?LINT:change cppflags
+?T:d_dbm_open
+?LINT:set d_ndbm
 : see if ndbm.h is available
-?X: t_ndbm is a tentative check.  We might just have the .h, not the lib -- ADO
-set ndbm.h t_ndbm
+set ndbm.h i_ndbm
+eval $inhdr
+: Compatibility location for RedHat 7.1
+set gdbm/ndbm.h i_gdbmndbm
+eval $inhdr
+: Compatibility location for Debian 4.0
+set gdbm-ndbm.h i_gdbm_ndbm
 eval $inhdr
 
-case "$t_ndbm" in
-$undef)
-    # Some Linux distributions such as RedHat 7.1 put the
-    # ndbm.h header in /usr/include/gdbm/ndbm.h.
-    if $test -f /usr/include/gdbm/ndbm.h; then
-	echo '<gdbm/ndbm.h> found.'
-        ccflags="$ccflags -I/usr/include/gdbm"
-        cppflags="$cppflags -I/usr/include/gdbm"
-        t_ndbm=$define
-    fi
-    ;;
-esac
-
-case "$t_ndbm" in
-$define)
+if $test "$i_ndbm" = "$define" -o "$i_gdbmndbm" = "$define" -o "$i_gdbm_ndbm" = "$define"; then
 	: see if dbm_open exists
 	set dbm_open d_dbm_open
 	eval $inlibc
 	case "$d_dbm_open" in
 	$undef)
-		t_ndbm="$undef"
+		i_ndbm="$undef"
+		i_gdbmndbm="$undef"
+		i_gdbm_ndbm="$undef"
 		echo "We won't be including <ndbm.h>"
+	    val="$undef"
 		;;
+	*) val="$define"
+	   ;;
 	esac
-	;;
-esac
-val="$t_ndbm"
-set i_ndbm
+fi
+set d_ndbm
 eval $setvar
 
