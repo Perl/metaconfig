@@ -248,6 +248,16 @@ EOM
 	''|' ') dflt='none' ;;
 	esac
 
+	case "$ldflags" in
+	*-fstack-protector*)
+	    case "$dflt" in
+			*-fstack-protector*) ;; # Don't add it again
+			*) dflt="$dflt -fstack-protector" ;; 
+		esac
+		;;
+	esac
+
+
     rp="Any special flags to pass to $ld to create a dynamically loaded library?"
     . ./myread
     case "$ans" in

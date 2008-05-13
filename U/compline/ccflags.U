@@ -230,7 +230,7 @@ default|recommended)
 	# as that way the compiler can do the right implementation dependant
 	# thing. (NWC)
 	case "$gccversion" in
-	?*)	set stack-protector -fstack-protector 'ldflags="$ldflags -fstack-protector"'
+	?*)	set stack-protector -fstack-protector
 		eval $checkccflag
 		;;
 	esac
@@ -376,6 +376,10 @@ case "$ldflags" in
 	fi
 	case "$ccflags" in
 	*-posix*) dflt="$dflt -posix" ;;
+	esac
+	# See note above about -fstack-protector
+	case "$ccflags" in
+	*-fstack-protector*) dflt="$dflt -fstack-protector" ;;
 	esac
 	;;
 *) dflt="$ldflags";;
