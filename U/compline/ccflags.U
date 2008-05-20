@@ -377,12 +377,17 @@ case "$ldflags" in
 	case "$ccflags" in
 	*-posix*) dflt="$dflt -posix" ;;
 	esac
-	# See note above about -fstack-protector
-	case "$ccflags" in
-	*-fstack-protector*) dflt="$dflt -fstack-protector" ;;
-	esac
 	;;
 *) dflt="$ldflags";;
+esac
+# See note above about -fstack-protector
+case "$ccflags" in
+*-fstack-protector*) 
+	case "$dflt" in
+	*-fstack-protector*) ;; # Don't add it again
+	*) dflt="$dflt -fstack-protector" ;; 
+	esac
+	;;
 esac
 
 : Try to guess additional flags to pick up local libraries.
