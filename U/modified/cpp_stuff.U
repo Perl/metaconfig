@@ -100,6 +100,7 @@
 ?H:?%<:#endif
 ?H:.
 ?W:%<:CAT2 CAT3 CAT4 CAT5 STRINGIFY SCAT2 SCAT3 SCAT4 SCAT5
+?F:!cpp_stuff.c
 ?LINT:known StGiFy
 ?LINT:known PeRl_CaTiFy
 ?LINT:known PeRl_StGiFy

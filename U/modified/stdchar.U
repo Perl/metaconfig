@@ -1,12 +1,12 @@
-?RCS: $Id: stdchar.U,v 3.0 1993/08/18 12:09:52 ram Exp $
+?RCS: $Id: stdchar.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: stdchar.U,v $
 ?RCS: Revision 3.0  1993/08/18  12:09:52  ram
@@ -24,12 +24,11 @@
 ?C:.
 ?H:#define STDCHAR $stdchar	/**/
 ?H:.
-?F:stdioh
+?F:!stdioh
 : see what type of char stdio uses.
 echo " "
 ?X: untangle the #include nest
-echo '#include <stdio.h>' > stdio.c
-$cppstdin $cppminus < stdio.c > stdioh
+echo '#include <stdio.h>' | $cppstdin $cppminus > stdioh
 if $contains 'unsigned.*char.*_ptr;' stdioh >/dev/null 2>&1 ; then
 	echo "Your stdio uses unsigned chars." >&4
 	stdchar="unsigned char"
@@ -37,5 +36,5 @@ else
 	echo "Your stdio uses signed chars." >&4
 	stdchar="char"
 fi
-$rm -f stdio.* stdioh
+$rm -f stdioh
 

@@ -1,12 +1,12 @@
-?RCS: $Id: sig_name.U,v 3.0.1.5 1997/02/28 16:21:25 ram Exp $
+?RCS: $Id: sig_name.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: sig_name.U,v $
 ?RCS: Revision 3.0.1.5  1997/02/28  16:21:25  ram
@@ -109,7 +109,7 @@
 ?H:#define SIG_SIZE $sig_size			/**/
 ?H:.
 ?T:i doinit
-?F:!signal_cmd
+?F:!= !signal_cmd
 ?X:	signal.cmd creates a file  signal.lst which has two columns:
 ?X:	NAME  number, e.g.
 ?X:	 HUP 1

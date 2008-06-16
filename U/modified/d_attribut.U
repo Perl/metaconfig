@@ -1,6 +1,6 @@
-?RCS: $Id: d_attribut.U,v 3.0.1.3 1995/01/30 14:33:45 ram Exp $
+?RCS: $Id: d_attribut.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -99,6 +99,7 @@
 ?H:?%<:#$d_attribute_unused HASATTRIBUTE_UNUSED	/**/
 ?H:?%<:#$d_attribute_warn_unused_result HASATTRIBUTE_WARN_UNUSED_RESULT	/**/
 ?H:.
+?F:!attrib !attrib.out !attrib.c
 ?LINT:set d_attribute_format
 ?LINT:set d_printf_format_null
 ?LINT:set d_attribute_malloc
