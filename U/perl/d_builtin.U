@@ -32,6 +32,7 @@
 ?H:#$d_builtin_expect HAS_BUILTIN_EXPECT	/**/
 ?H:#$d_builtin_choose_expr HAS_BUILTIN_CHOOSE_EXPR	/**/
 ?H:.
+?F:!try
 ?LINT:set d_builtin_expect d_builtin_choose_expr
 : Look for GCC-style __builtin_choose_expr
 case "$d_builtin_choose_expr" in
