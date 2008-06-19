@@ -1,4 +1,4 @@
-?RCS: Copyright (c) 2005-2007 H.Merijn Brand
+?RCS: Copyright (c) 2005-2008 H.Merijn Brand
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
@@ -64,7 +64,6 @@ int main(int argc, char **argv) {
 EOP
 set try
 
-d_sprintf_returns_strlen="$undef"
 if eval $compile; then
     xxx="`$run ./try`"
     case "$?" in
@@ -79,6 +78,9 @@ EOM
 	d_sprintf_returns_strlen="$undef"
         ;;
     esac
+lse
+    echo "(I can't seem to compile the test program--assuming it doesn't)" >&4
+    d_sprintf_returns_strlen="$undef"
 fi
 $rm_try
 
