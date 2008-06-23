@@ -4,8 +4,8 @@
 ?RCS: Copyright (c) 2000, Jarkko Hietaniemi
 ?RCS:
 ?X:
-?X: This unit produces a bit of shell code that must be dotted in order
-?X: to make quick check on whether the current C compiler is working.
+?X: This unit tries to create a symlink tree on a -Dmksymlinks request
+?X: to Configure
 ?X:
 ?MAKE:Mksymlinks: lns issymlink src
 ?MAKE:	-pick add $@ %<
