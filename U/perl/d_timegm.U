@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2008 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_timegm: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_timegm:
+?S:	This variable conditionally defines the HAS_TIMEGM symbol, which
+?S:	indicates to the C program that the timegm () routine is available.
+?S:.
+?C:HAS_TIMEGM:
+?C:	This symbol, if defined, indicates that the timegm routine is
+?C:	available to do the opposite of gmtime ()
+?C:.
+?H:#$d_timegm HAS_TIMEGM		/**/
+?H:.
+?LINT:set d_timegm
+: see if timegm exists
+set timegm d_timegm
+eval $inlibc
+
