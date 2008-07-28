@@ -8,7 +8,7 @@
 ?MAKE:libperl useshrplib shrpenv ldlibpthname: \
 	Myread Oldconfig archlibexp awk cat libc \
 	_a osname osvers so patchlevel subversion usedl ld \
-	lib_ext ccdlflags installarchlib
+	ccdlflags installarchlib
 ?MAKE:	-pick wipe $@ %<
 ?S:libperl:
 ?S:	The perl executable is obtained by linking perlmain.c with
@@ -116,9 +116,9 @@ true)
 		# a version-specific architecture-dependent library, the version
 		# number isn't really that important, except for making cc/ld happy.
 		#
-		# A name such as libperl.so.3.1
+		# A name such as libperl.so.10.1
 		majmin="libperl.$so.$patchlevel.$subversion"
-		# A name such as libperl.so.301
+		# A name such as libperl.so.100
 		majonly=`echo $patchlevel $subversion |
 			$awk '{printf "%d%02d", $1, $2}'`
 		majonly=libperl.$so.$majonly
@@ -132,8 +132,12 @@ true)
 		linux*|gnu*)  # ld won't link with a bare -lperl otherwise.
 			dflt=libperl.$so
 			;;
-		cygwin*) # ld links against an importlib
-			dflt=libperl$lib_ext
+		cygwin*) # ld links now against the dll directly
+			majmin="cygperl5_${patchlevel}_${subversion}.${so}"
+			majonly=`echo $patchlevel $subversion |
+				$awk '{printf "%03d%03d", $1, $2}'`
+			majonly=cygperl5.$majonly.$so
+			dflt=$majmin
 			;;
 		*)	# Try to guess based on whether libc has major.minor.
 			case "$libc" in
@@ -228,6 +232,9 @@ if "$useshrplib"; then
 	hpux*)
 		# hpux doesn't like the default, either.
 		tmp_shrpenv="env LDOPTS=\"+s +b${shrpdir}\""
+		;;
+	cygwin)
+		# cygwin needs only ldlibpth
 		;;
 	*)
 		tmp_shrpenv="env LD_RUN_PATH=$shrpdir"
