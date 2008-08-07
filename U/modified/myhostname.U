@@ -207,11 +207,11 @@ case "$myhostname" in
 ?X: Look for either a search or a domain directive.
 				dflt=.`$sed -n -e 's/	/ /g' \
 				  -e 's/^search  *\([^ ]*\).*/\1/p' $tans \
-				  | ./tr '[A-Z]' '[a-z]' 2>/dev/null`
+				  -e 1q 2>/dev/null`
 				case "$dflt" in
 				.) dflt=.`$sed -n -e 's/	/ /g' \
 				     -e 's/^domain  *\([^ ]*\).*/\1/p' $tans \
-				     | ./tr '[A-Z]' '[a-z]' 2>/dev/null`
+				     -e 1q 2>/dev/null`
   					;;
 				esac
 			fi
