@@ -1,0 +1,28 @@
+These units are intended to eventually live up to the INSTALL-1.58
+specifications.  Right now, they are woefully incomplete, but I am
+about to fall off the end of the e-world for quite a while, so I'm
+sending you what I have now in the hopes that someone will be able to
+pick up on it and complete it.  I think this is the best I'll be able to
+do prior to the perl conference.
+
+If the squirrel hadn't climbed into the campus power transformer and
+taken us down for most of Monday and Tuesday, and if I hadn't spent 10
+hours yesterday at the car repair shop (and another 4 hours on the road)
+I might have gotten further.  Sorry about that :-(.
+
+I'll be unsubscribing from p5p, so if you have questions, please
+contact me directly.  I will still check my mail about once
+a week, but probably not more often for a while.
+
+The vendor* stuff is only vaguely sketched out.  Since it all
+defaults to being unused, you may delete it if
+implementing it is taking too long.
+
+I've tried to mark with XXX some known problem spots, but I know
+I've missed many.
+
+Good luck and have the appropriate amount of fun :-).
+
+    Andy Dougherty		doughera@lafayette.edu
+    Dept. of Physics
+    Lafayette College, Easton PA 18042
