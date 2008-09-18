@@ -1,0 +1,109 @@
+#!/pro/bin/perl
+
+use strict;
+use warnings;
+
+use Cwd;
+use File::Find;
+
+my ($pfx, $pwd, $pc) = ("", (getcwd) x 2);
+$pwd =~ m/CPAN/ and ($pc, $pfx) = ("/pro/3gl/CPAN/perl-current", "perl/");
+
+use Getopt::Long;
+my $opt_v =  1;	# Verbosity
+my $opt_r =  0;	# Revert instead of edit
+my $opt_p = -1;	# Stript ## elements from path in patch
+GetOptions (
+    "v:1" => \$opt_v,
+    "r"   => \$opt_r,
+    "p:1" => \$opt_p,
+    ) or die "usage: patch2p4 [-r] patch [...]\n";
+
+my %fqfn = ( null => "/dev/null" );
+my $nfqfn = 0;
+find (sub {
+    -f or return;	# Only files
+    my $f = $File::Find::name;
+    $f =~ s{^$pc/}{$pfx}o;
+    $opt_v > 4 and print STDERR "$f\n";
+    $fqfn{$f} = $f;
+
+    $nfqfn++;
+    my $x = $f;
+    while ($x =~ s{^[^/]+/}{}) {
+	if (exists $fqfn{$x} && !ref $fqfn{$x}) {
+	    $opt_v > 2 and warn "$f already in top-level. skipped\n";
+	    next;
+	    }
+	push @{$fqfn{$x}}, $f;
+	}
+    }, $pc);
+$opt_v and print STDERR "Tagged $nfqfn files\n";
+
+my @p4f;
+my %chunk;
+my $old_file;
+while (<>) {
+    m/^diff\b/ and next;
+    m/$(=====================|Index: )/ and next;
+
+    if (s{^--- }{}) {
+	m{^(\S+).*1970\b.*00:00} and print STDERR "File $1 will be added!\n";
+	m{^/dev/null}		 and print STDERR "A new file will be added\n";
+	m{^([^/]\w\S+)}		 and $old_file = $1;
+	next;
+	}
+
+    unless (m/^(?:\+\+\+|\*\*\*)\s+(\S+)/) {
+	@p4f and push @{$chunk{$p4f[-1]}}, $_;
+	next;
+	}
+
+    $1 eq "/dev/null" and print "\n\e[33;41;1m*** File $old_file is planned to be removed ***\e[0m\n\n";
+
+    @p4f && $p4f[-1] eq "${pfx}MANIFEST" and
+	print STDERR +(grep m/^[-+]/, @{$chunk{$p4f[-1]}}), "\n";
+
+    # now check if the file exists
+    my $f = $1;
+    $f =~ m/^\d+,\d+$/ and next;	# Grr, diff not -u
+
+    if ($opt_p < 0) {
+	my $ff = $f;
+	do {
+	    $opt_p++;
+	    -f "$pfx$ff" and $ff = "";
+	    } while $ff =~ s{^[^/]+/}{};
+	$opt_v > 1 and print STDERR "\$opt_p set to $opt_p\n";
+	}
+
+    $f =~ s{^[^/]+/}{} for 1 .. $opt_p;
+    -f "$pfx$f" and $f = "$pfx$f";
+
+    unless (exists $fqfn{$f}) {
+	$opt_v and print STDERR "finding FQFN for $f ...\n";
+	while ($f =~ m{/} && !exists $fqfn{$f}) {
+	    $f =~ s{^[^/]*/}{};
+	    }
+	$f or die "No match for $f\n";
+	}
+
+    my $x = $fqfn{$f};
+    #print STDERR "FQFN for '$f' = '", $x//"--undef--", "'\n";
+    if (ref $x) {
+	my @f = @$x;
+	@f == 0 and next;	# Hmmm
+	@f > 1 and die "$f matches (@f)\n";
+	$x = $f[0];
+	}
+    $x eq "${pfx}MANIFEST"  and print "\n\e[33;41;1m*** MANIFEST will be changed ***\e[0m\n\n";
+    $x eq "${pfx}embed.fnc" and print "\n\e[33;41;1m*** regen needed ***\e[0m\n\n";
+    push @p4f, $x;
+    }
+
+if (@p4f) {
+    $" = " ";
+    my $action = $opt_r ? "revert" : "sedit";
+    s{^/dev/null$}{} for @p4f;
+    print "p4 $action @p4f\n";
+    }

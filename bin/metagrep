@@ -1,0 +1,35 @@
+#!/pro/bin/perl
+
+use strict;
+use warnings;
+
+use Getopt::Long qw(:config bundling nopermute passthrough);
+my $opt_w = 0;
+GetOptions (
+    "-w"	=> \$opt_w,
+    ) or die "usage: metagrep [-w] pattern\n";
+
+use File::Find;
+
+my $pat = shift or die "usage: metagrep pattern\n";
+$opt_w and $pat = "\\b$pat\\b";
+$pat = qr/$pat/i;
+
+my %dir; # I don't want a file for which any path component symlinks
+find (sub {
+    -l and return;
+    -d and $dir{$File::Find::name}++;
+    }, "metaconfig");
+
+print STDERR "<$pat>\n";
+find (sub {
+    -l and return;
+    -f or  return;
+    m/\.U$/ or return;
+
+    exists $dir{$File::Find::dir} or return;
+    #print STDERR "$File::Find::dir - $_\n";
+
+    open my $f, "<$_" or die "$File::Find::name: $!\n";
+    print map { "$File::Find::name:$_" } grep /$pat/, <$f>;
+    }, "metaconfig");
