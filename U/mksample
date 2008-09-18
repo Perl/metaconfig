@@ -4,12 +4,17 @@
 #  Andy Dougherty   	July 14, 1998
 
 rm -f config.sh Policy.sh
+cat >Policy.sh <<'EOP'
+libswanted="cl pthread $libswanted"
+EOP
+
 sh ./Configure -Dprefix=/opt/perl \
-	-Dcf_by='yourname' \
+	-Dcf_by='merijn' \
 	-Dcf_email='yourname@yourhost.yourplace.com' \
 	-Dperladmin='yourname@yourhost.yourplace.com' \
 	-Dmydomain='.yourplace.com' \
 	-Dmyhostname='yourhost' \
+	-Duse64bitint \
 	-Dusedevel \
 	-dE
 test $? = 0 || exit 1
@@ -26,20 +31,19 @@ cat config.h >> Porting/config_H
 rm config.sh config.h
 if newer Configure Porting/Glossary; then
     pwd=`pwd`
-    cd U
-    perl mkglossary > $pwd/Porting/Glossary
-    cd $pwd/Porting
-    rm -f Glossary.rej
-    # The standard 'dist' units contain some strings that upset
-    # pod2man.  This patch silences pod2man's warnings.
-    patch < $pwd/U/Glossary.patch
-    if test -f Glossary.rej; then
-	echo 'Check possible failed patch to Porting/Glossary!'
-	exit 2
+    U/mkgloss.pl >Porting/Glossary
+#    cd Porting
+#    rm -f Glossary.rej
+#    # The standard 'dist' units contain some strings that upset
+#    # pod2man.  This patch silences pod2man's warnings.
+#    patch < $pwd/U/Glossary.patch
+#    if test -f Glossary.rej; then
+#	echo 'Check possible failed patch to Porting/Glossary!'
+#	exit 2
+#	fi
+#    cd $pwd
     fi
-    cd $pwd
-fi
 # Remove detritus.
-if test -f makeaperl -a -f pod/Makefile; then
-    rm -f cflags config.h cppstdin makeaperl makedepend makedir Makefile myconfig pod/Makefile Policy.sh writemain x2p/cflags x2p/Makefile Obsolete Wanted
-fi
+#if test -f makeaperl -a -f pod/Makefile; then
+#    rm -f cflags config.h cppstdin makeaperl makedepend makedir Makefile myconfig pod/Makefile Policy.sh writemain x2p/cflags x2p/Makefile Obsolete Wanted
+#    fi
