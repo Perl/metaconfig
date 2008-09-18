@@ -1,0 +1,32 @@
+: This file was created by running packinit on Mon Jul 15 09:57:23 EDT 1996.
+: Do not hand edit; run packinit again if changes are to be made.
+packver='3.036'
+: Basic variables
+package=u.check
+baserev=1.1
+patchbranch=1
+copyright='COPYRIGHT'
+mydiff='gdiff -c'
+maintname='Andy Dougherty'
+maintloc='doughera@fractal.phys.lafayette.edu'
+ftpsite=''
+orgname='Dept. of Physics, Lafayette College'
+newsgroups='comp.sources.bugs'
+recipients='source-archives@mirror.TMC.COM'
+ftpdir=''
+mailagent='false'
+changelog='ChangeLog'
+changercs=
+: File lookup extensions
+cext=''
+shext='PL'
+: Mailing list variables
+list_users='false'
+list_name=''
+list_addr=''
+list_request=''
+list_manager=''
+list_sub=''
+list_unsub=''
+: Derivative variables -- do not change
+revbranch="$baserev.$patchbranch"

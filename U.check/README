@@ -1,0 +1,8 @@
+Since metaconfig units are modular, you don't have to regenerate perl5's entire
+Configure every time you want to test just one unit.  Instead, you can 
+run metaconfig against a smaller project that tests just one (or a few)
+units.  That's what this U.check directory is for.
+
+Just edit main.c and dummy.SH to use whatever metaconfig symbols you're
+trying to test.  Then run  metaconfig -m  to regenerate Configure.
+You'll get a slimmed-down Configure that tests just what you want to test.
