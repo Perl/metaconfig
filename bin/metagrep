@@ -9,17 +9,23 @@ GetOptions (
     "-w"	=> \$opt_w,
     ) or die "usage: metagrep [-w] pattern\n";
 
+use Cwd qw(getcwd abs_path);
 use File::Find;
 
 my $pat = shift or die "usage: metagrep pattern\n";
 $opt_w and $pat = "\\b$pat\\b";
 $pat = qr/$pat/i;
 
+my $cwd    = getcwd;
+my $mcpath = abs_path "/pro/3gl/CPAN/metaconfig" or die "cannot cd metaconfig\n";
+
+my $onmeta = $cwd =~ m{CPAN/meta[^/]+$} ? 1 : 0;
+
 my %dir; # I don't want a file for which any path component symlinks
 find (sub {
     -l and return;
     -d and $dir{$File::Find::name}++;
-    }, "metaconfig");
+    }, $mcpath);
 
 print STDERR "<$pat>\n";
 find (sub {
@@ -31,5 +37,7 @@ find (sub {
     #print STDERR "$File::Find::dir - $_\n";
 
     open my $f, "<$_" or die "$File::Find::name: $!\n";
-    print map { "$File::Find::name:$_" } grep /$pat/, <$f>;
-    }, "metaconfig");
+    my $fnm = $File::Find::name;
+    $fnm =~ s{^$cwd/}{};
+    print map { "$fnm:$_" } grep /$pat/, <$f>;
+    }, $mcpath);
