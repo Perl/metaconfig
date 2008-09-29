@@ -150,7 +150,10 @@ time_t pt;
 
 void local_check (time_t t)
 {
-    tmp = localtime (&t);
+    if (sizeof (time_t) > 4 && t > 0x7ffffffffffff000LL)
+	tmp = NULL;
+    else
+	tmp = localtime (&t);
     if (tmp == NULL || tmp->tm_year < -1900)
 	tmp = NULL;
     else
