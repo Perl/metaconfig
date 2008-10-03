@@ -1,0 +1,85 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2008 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_ctime64 d_localtime64 d_gmtime64 d_mktime64 d_difftime64 d_asctime64: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_ctime64:
+?S:	This variable conditionally defines the HAS_CTIME64 symbol, which
+?S:	indicates to the C program that the ctime64 () routine is available.
+?S:.
+?S:d_localtime64:
+?S:	This variable conditionally defines the HAS_LOCALTIME64 symbol, which
+?S:	indicates to the C program that the localtime64 () routine is available.
+?S:.
+?S:d_gmtime64:
+?S:	This variable conditionally defines the HAS_GMTIME64 symbol, which
+?S:	indicates to the C program that the gmtime64 () routine is available.
+?S:.
+?S:d_mktime64:
+?S:	This variable conditionally defines the HAS_MKTIME64 symbol, which
+?S:	indicates to the C program that the mktime64 () routine is available.
+?S:.
+?S:d_difftime64:
+?S:	This variable conditionally defines the HAS_DIFFTIME64 symbol, which
+?S:	indicates to the C program that the difftime64 () routine is available.
+?S:.
+?S:d_asctime64:
+?S:	This variable conditionally defines the HAS_ASCTIME64 symbol, which
+?S:	indicates to the C program that the asctime64 () routine is available.
+?S:.
+?C:HAS_CTIME64:
+?C:	This symbol, if defined, indicates that the ctime64 () routine is
+?C:	available to do the 64bit variant of ctime ()
+?C:.
+?C:HAS_LOCALTIME64:
+?C:	This symbol, if defined, indicates that the localtime64 () routine is
+?C:	available to do the 64bit variant of localtime ()
+?C:.
+?C:HAS_GMTIME64:
+?C:	This symbol, if defined, indicates that the gmtime64 () routine is
+?C:	available to do the 64bit variant of gmtime ()
+?C:.
+?C:HAS_MKTIME64:
+?C:	This symbol, if defined, indicates that the mktime64 () routine is
+?C:	available to do the 64bit variant of mktime ()
+?C:.
+?C:HAS_DIFFTIME64:
+?C:	This symbol, if defined, indicates that the difftime64 () routine is
+?C:	available to do the 64bit variant of difftime ()
+?C:.
+?C:HAS_ASCTIME64:
+?C:	This symbol, if defined, indicates that the asctime64 () routine is
+?C:	available to do the 64bit variant of asctime ()
+?C:.
+?H:#$d_ctime64	HAS_CTIME64		/**/
+?H:#$d_localtime64	HAS_LOCALTIME64		/**/
+?H:#$d_gmtime64	HAS_GMTIME64		/**/
+?H:#$d_mktime64	HAS_MKTIME64		/**/
+?H:#$d_difftime64	HAS_DIFFTIME64		/**/
+?H:#$d_asctime64	HAS_ASCTIME64		/**/
+?H:.
+?LINT:set d_ctime64 d_localtime64 d_gmtime64 d_mktime64 d_difftime64 d_asctime64
+: see if 64bit time functions exists
+
+set ctime64 d_ctime64
+eval $inlibc
+
+set localtime64 d_localtime64
+eval $inlibc
+
+set gmtime64 d_gmtime64
+eval $inlibc
+
+set mktime64 d_mktime64
+eval $inlibc
+
+set difftime64 d_difftime64
+eval $inlibc
+
+set asctime64 d_asctime64
+eval $inlibc
+
