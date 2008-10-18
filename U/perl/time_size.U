@@ -98,7 +98,7 @@ int check_max ()
 	}
     printf ("sGMTIME_max=%ld\n", pt);
     return (0);
-  } /* check_max */
+    } /* check_max */
 
 int check_min ()
 {
@@ -180,7 +180,7 @@ int check_max ()
 	}
     printf ("sLOCALTIME_max=%ld\n", pt);
     return (0);
-  } /* check_max */
+   } /* check_max */
 
 int check_min ()
 {
