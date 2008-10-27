@@ -7,7 +7,7 @@
 ?RCS:
 ?MAKE:socksizetype: \
 	Protochk Oldconfig Myread cat d_socket d_socklen_t sizetype \
-	usesocks i_socks i_systypes
+	usesocks i_socks i_systypes extern_C
 ?MAKE:	-pick add $@ %<
 ?S:socksizetype:
 ?S:	This variable holds the type used for the size argument
@@ -36,7 +36,7 @@ EOM
 	yyy="$yyy $sizetype int long unsigned"
 	for xxx in $yyy; do
 		case "$socksizetype" in
-		'')	try="extern int accept(int, struct sockaddr *, $xxx *);"
+		'')	try="$extern_C int accept(int, struct sockaddr *, $xxx *);"
 			case "$usesocks" in
 			"$define")
 				if ./protochk "$try" $i_systypes sys/types.h $d_socket sys/socket.h literal '#define INCLUDE_PROTOTYPES' $i_socks socks.h.; then

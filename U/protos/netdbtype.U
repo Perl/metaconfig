@@ -12,7 +12,7 @@
 ?MAKE:netdb_host_type netdb_hlen_type netdb_name_type netdb_net_type: \
 	Protochk Oldconfig Myread cat \
 	d_gethbyaddr d_gethbyname d_getnbyaddr \
-	i_niin i_netdb i_unistd d_socket sizetype
+	i_niin i_netdb i_unistd d_socket sizetype extern_C
 ?MAKE:	-pick add $@ %<
 ?S:netdb_host_type:
 ?S:	This variable holds the type used for the 1st argument to
@@ -76,7 +76,7 @@ EOM
 		for xxx in in_addr_t 'const void *' 'const char *' 'void *' 'char *'; do
 			for yyy in size_t long int; do
 				case "$netdb_host_type" in
-				'')	try="extern struct hostent *gethostbyaddr($xxx, $yyy, int);"
+				'')	try="$extern_C struct hostent *gethostbyaddr($xxx, $yyy, int);"
 					if ./protochk "$try" $hdrs; then
 						echo "Your system accepts $xxx for the first arg."
 						echo "...and $yyy for the second arg."
@@ -127,7 +127,7 @@ EOM
 			$i_unistd unistd.h"
 		for xxx in "const char *" "char *"; do
 			case "$netdb_name_type" in
-			'')	try="extern struct hostent *gethostbyname($xxx);"
+			'')	try="$extern_C struct hostent *gethostbyname($xxx);"
 				if ./protochk "$try" $hdrs; then
 					echo "Your system accepts $xxx."
 					netdb_name_type="$xxx"
@@ -167,7 +167,7 @@ EOM
 			$i_unistd unistd.h"
 		for xxx in in_addr_t "unsigned long" long "unsigned int" int; do
 			case "$netdb_net_type" in
-			'')	try="extern struct netent *getnetbyaddr($xxx, int);"
+			'')	try="$extern_C struct netent *getnetbyaddr($xxx, int);"
 				if ./protochk "$try" $hdrs; then
 					echo "Your system accepts $xxx."
 					netdb_net_type="$xxx"

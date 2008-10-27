@@ -21,7 +21,7 @@
 ?RCS: patch30: created by ADO
 ?RCS:
 ?MAKE:selecttype: Protochk Oldconfig Myread cat \
-	d_fd_set d_select d_socket i_systime i_sysselct
+	d_fd_set d_select d_socket i_systime i_sysselct extern_C
 ?MAKE:	-pick add $@ %<
 ?S:selecttype:
 ?S:	This variable holds the type used for the 2nd, 3rd, and 4th
@@ -59,7 +59,7 @@ EOM
 			for nfd in 'int' 'size_t' 'unsigned long' 'unsigned' ; do
 				for tmo in 'struct timeval *' 'const struct timeval *'; do
 					case "$val" in
-					'')	try="extern select _(($nfd, $xxx, $xxx, $xxx, $tmo));"
+					'')	try="$extern_C select _(($nfd, $xxx, $xxx, $xxx, $tmo));"
 						if ./protochk "$try" $hdrs; then
 							echo "Your system accepts $xxx."
 							val="$xxx"

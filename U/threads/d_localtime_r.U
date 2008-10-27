@@ -9,7 +9,7 @@
 ?RCS:
 ?MAKE:d_localtime_r d_localtime_r_needs_tzset localtime_r_proto: Inlibc \
 	cat run Protochk Hasproto i_systypes usethreads i_time i_systime \
-	rm_try Compile
+	rm_try Compile extern_C
 ?MAKE:	-pick add $@ %<
 ?S:d_localtime_r:
 ?S:	This variable conditionally defines the HAS_LOCALTIME_R symbol,
@@ -73,11 +73,11 @@ case "$d_localtime_r" in
 	define)
 	case "$localtime_r_proto" in
 	''|0) try='struct tm* localtime_r(const time_t*, struct tm*);'
-	./protochk "extern $try" $hdrs && localtime_r_proto=S_TS ;;
+	./protochk "$extern_C $try" $hdrs && localtime_r_proto=S_TS ;;
 	esac
 	case "$localtime_r_proto" in
 	''|0) try='int localtime_r(const time_t*, struct tm*);'
-	./protochk "extern $try" $hdrs && localtime_r_proto=I_TS ;;
+	./protochk "$extern_C $try" $hdrs && localtime_r_proto=I_TS ;;
 	esac
 	case "$localtime_r_proto" in
 	''|0)	d_localtime_r=undef
