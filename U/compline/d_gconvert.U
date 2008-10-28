@@ -22,7 +22,7 @@
 ?RCS: patch36: created by ADO
 ?RCS:
 ?MAKE:d_Gconvert: \
-	Compile cat Inlibc rm _o rm_try i_stdlib d_qgcvt run \
+	Compile cat Inlibc rm _o rm_try i_stdlib i_string d_qgcvt run \
 	uselongdouble d_longdbl d_PRIgldbl sPRIgldbl
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
@@ -120,15 +120,18 @@ char *myname = "sprintf";
 
 #include <stdio.h>
 
-#define I_STDLIB $i_stdlib
+#$i_stdlib I_STDLIB
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
+#$i_string I_STRING
+#ifdef I_STRING
+#  include <string.h>
+#else
+#  include <strings.h>
+#endif
 
-int
-checkit(expect, got)
-char *expect;
-char *got;
+int checkit(char *expect, char *got)
 {
     if (strcmp(expect, got)) {
 		printf("%s oddity:  Expected %s, got %s\n",
