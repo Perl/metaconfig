@@ -212,6 +212,7 @@ EOM
     case "$lddlflags" in
     '') case "$osname" in
   			beos) dflt='-nostart' ;;
+  			haiku) dflt='-shared' ;;
 			hpux) dflt='-b';
 			      case "$gccversion" in
 			      '') dflt="$dflt +vnocompatwarnings" ;;
