@@ -1,7 +1,7 @@
 ?RCS: $Id: i_ndbm.U,v 3.0.1.1 1995/05/12 12:16:53 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -15,18 +15,20 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:23  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:i_ndbm i_gdbmndbm i_gdbm_ndbm d_ndbm: Inhdr Inlibc Setvar test
+?MAKE:i_ndbm i_gdbmndbm i_gdbm_ndbm d_ndbm d_ndbm_h_uses_prototypes \
+	d_gdbmndbm_h_uses_prototypes d_gdbm_ndbm_h_uses_prototypes: \
+	    Inhdr Inlibc Setvar test d_cplusplus extern_C echo Protochk
 ?MAKE:	-pick add $@ %<
-?S:i_ndbm :
+?S:i_ndbm:
 ?S:	This variable conditionally defines the I_NDBM symbol, which
 ?S:	indicates to the C program that <ndbm.h> exists and should
 ?S:	be included.
 ?S:.
-?C:I_NDBM :
+?C:I_NDBM:
 ?C:	This symbol, if defined, indicates that <ndbm.h> exists and should
 ?C:	be included.
 ?C:.
-?S:i_gdbmndbm :
+?S:i_gdbmndbm:
 ?S:	This variable conditionally defines the I_GDBMNDBM symbol, which
 ?S:	indicates to the C program that <gdbm/ndbm.h> exists and should
 ?S:	be included.  This was the location of the ndbm.h compatibility file
@@ -37,7 +39,7 @@
 ?C:	be included.  This was the location of the ndbm.h compatibility file
 ?C:	in RedHat 7.1.
 ?C:.
-?S:i_gdbm_ndbm :
+?S:i_gdbm_ndbm:
 ?S:	This variable conditionally defines the I_GDBM_NDBM symbol, which
 ?S:	indicates to the C program that <gdbm-ndbm.h> exists and should
 ?S:	be included.  This is the location of the ndbm.h compatibility file
@@ -60,13 +62,61 @@
 ?C:	This symbol, if defined, indicates that some form of ndbm.h or compatibility
 ?C:	include exists, along with the appropriate library.
 ?C:.
+?S:d_ndbm_h_uses_prototypes:
+?S:	This variable conditionally defines the NDBM_H_USES_PROTOTYPES symbol,
+?S:	which indicates that the ndbm.h include file uses real ANSI C
+?S:	prototypes instead of K&R style function declarations. K&R style
+?S:	declarations are unsupported in C++, so the include file requires
+?S:	special handling when using a C++ compiler and this variable is
+?S:	undefined. Consult the different d_*ndbm_h_uses_prototypes variables
+?S:	to get the same information for alternative ndbm.h include files.
+?S:.
+?C:NDBM_H_USES_PROTOTYPES:
+?C:	This symbol, if defined, indicates that <ndbm.h> uses real ANSI C
+?C:	prototypes instead of K&R style function declarations without any
+?C:	parameter information. While ANSI C prototypes are supported in C++,
+?C:	K&R style function declarations will yield errors.
+?C:.
+?S:d_gdbmndbm_h_uses_prototypes:
+?S:	This variable conditionally defines the NDBM_H_USES_PROTOTYPES symbol,
+?S:	which indicates that the gdbm/ndbm.h include file uses real ANSI C
+?S:	prototypes instead of K&R style function declarations. K&R style
+?S:	declarations are unsupported in C++, so the include file requires
+?S:	special handling when using a C++ compiler and this variable is
+?S:	undefined. Consult the different d_*ndbm_h_uses_prototypes variables
+?S:	to get the same information for alternative ndbm.h include files.
+?S:.
+?C:GDBMNDBM_H_USES_PROTOTYPES:
+?C:	This symbol, if defined, indicates that <gdbm/ndbm.h> uses real ANSI C
+?C:	prototypes instead of K&R style function declarations without any
+?C:	parameter information. While ANSI C prototypes are supported in C++,
+?C:	K&R style function declarations will yield errors.
+?C:.
+?S:d_gdbm_ndbm_h_uses_prototypes:
+?S:	This variable conditionally defines the NDBM_H_USES_PROTOTYPES symbol,
+?S:	which indicates that the gdbm-ndbm.h include file uses real ANSI C
+?S:	prototypes instead of K&R style function declarations. K&R style
+?S:	declarations are unsupported in C++, so the include file requires
+?S:	special handling when using a C++ compiler and this variable is
+?S:	undefined. Consult the different d_*ndbm_h_uses_prototypes variables
+?S:	to get the same information for alternative ndbm.h include files.
+?S:.
+?C:GDBM_NDBM_H_USES_PROTOTYPES:
+?C:	This symbol, if defined, indicates that <gdbm-ndbm.h> uses real ANSI C
+?C:	prototypes instead of K&R style function declarations without any
+?C:	parameter information. While ANSI C prototypes are supported in C++,
+?C:	K&R style function declarations will yield errors.
+?C:.
 ?H:#$i_ndbm I_NDBM	/**/
 ?H:#$i_gdbmndbm I_GDBMNDBM	/**/
 ?H:#$i_gdbm_ndbm I_GDBM_NDBM	/**/
 ?H:#$d_ndbm HAS_NDBM	/**/
+?H:#$d_ndbm_h_uses_prototypes NDBM_H_USES_PROTOTYPES	/**/
+?H:#$d_gdbmndbm_h_uses_prototypes GDBMNDBM_H_USES_PROTOTYPES	/**/
+?H:#$d_gdbm_ndbm_h_uses_prototypes GDBM_NDBM_H_USES_PROTOTYPES	/**/
 ?H:.
-?T:d_dbm_open
-?LINT:set d_ndbm
+?T:d_dbm_open name hdr ihdr ndbm_hdr_protochk
+?LINT:set d_ndbm d_gdbmndbm_h_uses_prototypes d_ndbm_h_uses_prototypes
 : see if ndbm.h is available
 set ndbm.h i_ndbm
 eval $inhdr
@@ -77,6 +127,7 @@ eval $inhdr
 set gdbm-ndbm.h i_gdbm_ndbm
 eval $inhdr
 
+val="$undef"
 if $test "$i_ndbm" = "$define" -o "$i_gdbmndbm" = "$define" -o "$i_gdbm_ndbm" = "$define"; then
 	: see if dbm_open exists
 	set dbm_open d_dbm_open
@@ -87,7 +138,7 @@ if $test "$i_ndbm" = "$define" -o "$i_gdbmndbm" = "$define" -o "$i_gdbm_ndbm" = 
 		i_gdbmndbm="$undef"
 		i_gdbm_ndbm="$undef"
 		echo "We won't be including <ndbm.h>"
-	    val="$undef"
+		val="$undef"
 		;;
 	*) val="$define"
 	   ;;
@@ -95,4 +146,28 @@ if $test "$i_ndbm" = "$define" -o "$i_gdbmndbm" = "$define" -o "$i_gdbm_ndbm" = 
 fi
 set d_ndbm
 eval $setvar
+
+ndbm_hdr_protochk='name=$1; hdr=$2;
+eval "ihdr=\$""i_$name";
+val="$undef";
+if $test "$ihdr" = "$define"; then
+	$echo "Checking if your <$hdr> uses prototypes..." >&4;
+	case "$d_cplusplus" in
+	$define) ./protochk "$extern_C void dbm_close(DBM *);" literal "extern \"C\" {" $ihdr $hdr literal "}" && val="$define" ;;
+	*) ./protochk "$extern_C void dbm_close(int, int);" $ihdr $hdr || val="$define" ;;
+	esac;
+	case "$val" in
+	$define) $echo "Your <$hdr> seems to have prototypes";;
+	*) $echo "Your <$hdr> does not seem to have prototypes";;
+	esac;
+fi;
+set "d_${name}_h_uses_prototypes";
+eval $setvar'
+
+set ndbm ndbm.h
+eval $ndbm_hdr_protochk
+set gdbmndbm gdbm/ndbm.h
+eval $ndbm_hdr_protochk
+set gdbm_ndbm gdbm-ndbm.h
+eval $ndbm_hdr_protochk
 

@@ -29,7 +29,7 @@
 ?MAKE:Csym mistrustnm extern_C: Options contains libc libs runnm test \
 	+cc +optimize +ccflags +ldflags run rm_try _exe d_cplusplus
 ?MAKE:	-pick add $@ %<
-?LINT:define csym extern_C
+?LINT:define csym
 ?LINT:use libc
 ?LINT:extern mistrustnm
 ?LINT:set mistrustnm
