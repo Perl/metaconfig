@@ -8,20 +8,30 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:Devel: Myread rsrc package
+?MAKE:Devel usedevel: Myread rsrc package
 ?MAKE:	-pick wipe $@ %<
 ?T:xversion
 ?X: waiver of rights
-?LINT:extern usedevel
+?S:usedevel:
+?S:	This variable indicates that Perl was configured with development
+?S:	features enabled.  This should not be done for production builds.
+?S:.
+?C:PERL_USE_DEVEL:
+?C:	This symbol, if defined, indicates that Perl was configured with
+?C:	-Dusedevel, to enable development features.  This should not be
+?C:	done for production builds.
+?C:.
+?H:#$usedevel	PERL_USE_DEVEL		/**/
+?H:.
 ?LINT:extern versiononly
 ?LINT:extern installusrbinperl
-?LINT:change usedevel
 ?LINT:change versiononly
 ?LINT:change installusrbinperl
 : See if we are using a devel version and want that
 xversion=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $rsrc/patchlevel.h`
 case "$usedevel" in
-$define|true|[yY]*) ;;
+$define|true|[yY]*)
+    usedevel="$define" ;;
 *) case "$xversion" in
    *[13579])
 	cat >&4 <<EOH
@@ -54,6 +64,7 @@ EOH
 	esac
 	;;
     esac
+    usedevel="$undef"
     ;;
 esac
 case "$usedevel" in
