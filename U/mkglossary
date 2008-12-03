@@ -94,7 +94,7 @@ for (@WANTED) {
 		# for example).
 		print <<EOE;
 	This variable is defined but not used by Configure.
-	The value is a plain '' and is not useful.
+	The value is the empty string and is not useful.
 
 EOE
 		}
