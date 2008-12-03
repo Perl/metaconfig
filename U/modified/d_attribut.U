@@ -20,47 +20,53 @@
 ?RCS: Revision 3.0.1.1  1994/10/29  16:08:55  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_attribute_format d_attribute_malloc d_attribute_nonnull \
-	d_attribute_noreturn d_attribute_pure d_attribute_unused \
-	d_attribute_warn_unused_result d_printf_format_null: \
+?MAKE:d_attribute_deprecated d_attribute_format d_attribute_malloc \
+	d_attribute_nonnull d_attribute_noreturn d_attribute_pure \
+	d_attribute_unused d_attribute_warn_unused_result \
+	d_printf_format_null: \
 	    Myread Oldconfig cat cc ccflags rm Setvar contains i_stdlib run
 ?MAKE:	-pick add $@ %<
-?S:d_attribute_format (d_attribut_format.U):
+?S:d_attribute_format:
 ?S:	This variable conditionally defines HASATTRIBUTE_FORMAT, which
 ?S:	indicates the C compiler can check for printf-like formats.
+?S:.
+?S:d_attribute_deprecated:
+?S:	This variable conditionally defines HASATTRIBUTE_DEPRECATED, which
+?S:	indicates that GCC can handle the attribute for marking deprecated
+?S:	APIs
 ?S:.
 ?S:d_printf_format_null:
 ?S:	This variable conditionally defines PRINTF_FORMAT_NULL_OK, which
 ?S:	indicates the C compiler allows printf-like formats to be null.
 ?S:.
-?S:d_attribute_malloc (d_attribute_malloc.U):
+?S:d_attribute_malloc:
 ?S:	This variable conditionally defines HASATTRIBUTE_MALLOC, which
 ?S:	indicates the C compiler can understand functions as having
 ?S:	malloc-like semantics.
 ?S:.
-?S:d_attribute_nonnull (d_attribute_nonnull.U):
+?S:d_attribute_nonnull:
 ?S:	This variable conditionally defines HASATTRIBUTE_NONNULL, which
 ?S:	indicates that the C compiler can know that certain arguments
 ?S:	must not be NULL, and will check accordingly at compile time.
 ?S:.
-?S:d_attribute_noreturn (d_attribute_noreturn.U):
+?S:d_attribute_noreturn:
 ?S:	This variable conditionally defines HASATTRIBUTE_NORETURN, which
 ?S:	indicates that the C compiler can know that certain functions
 ?S:	are guaranteed never to return.
 ?S:.
-?S:d_attribute_pure (d_attribute_pure.U):
+?S:d_attribute_pure:
 ?S:	This variable conditionally defines HASATTRIBUTE_PURE, which
 ?S:	indicates that the C compiler can know that certain functions
 ?S:	are "pure" functions, meaning that they have no side effects, and
 ?S:	only rely on function input and/or global data for their results.
 ?S:.
-?S:d_attribute_unused (d_attribute_unused.U):
+?S:d_attribute_unused:
 ?S:	This variable conditionally defines HASATTRIBUTE_UNUSED, which
 ?S:	indicates that the C compiler can know that certain variables
 ?S:	and arguments may not always be used, and to not throw warnings
 ?S:	if they don't get used.
 ?S:.
-?S:d_attribute_warn_unused_result (d_attribute_warn_unused_result.U):
+?S:d_attribute_warn_unused_result:
 ?S:	This variable conditionally defines
 ?S:	HASATTRIBUTE_WARN_UNUSED_RESULT, which indicates that the C
 ?S:	compiler can know that certain functions have a return values
@@ -87,9 +93,13 @@
 ?C:HASATTRIBUTE_UNUSED:
 ?C:	Can we handle GCC attribute for unused variables and arguments
 ?C:.
+?C:HASATTRIBUTE_DEPRECATED:
+?C:	Can we handle GCC attribute for marking deprecated APIs
+?C:.
 ?C:HASATTRIBUTE_WARN_UNUSED_RESULT ~ %< (HASATTRIBUTE):
 ?C:	Can we handle GCC attribute for warning on unused results
 ?C:.
+?H:?%<:#$d_attribute_deprecated HASATTRIBUTE_DEPRECATED	/**/
 ?H:?%<:#$d_attribute_format HASATTRIBUTE_FORMAT	/**/
 ?H:?%<:#$d_printf_format_null PRINTF_FORMAT_NULL_OK	/**/
 ?H:?%<:#$d_attribute_noreturn HASATTRIBUTE_NORETURN	/**/
@@ -100,6 +110,7 @@
 ?H:?%<:#$d_attribute_warn_unused_result HASATTRIBUTE_WARN_UNUSED_RESULT	/**/
 ?H:.
 ?F:!attrib !attrib.out !attrib.c
+?LINT:set d_attribute_deprecated
 ?LINT:set d_attribute_format
 ?LINT:set d_printf_format_null
 ?LINT:set d_attribute_malloc
@@ -317,6 +328,34 @@ fi
 *) val="$d_attribute_unused" ;;
 esac
 set d_attribute_unused
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute deprecated
+case "$d_attribute_deprecated" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((deprecated)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+int I_am_deprecated(void) __attribute__((deprecated));
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((deprecated))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((deprecated))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_deprecated" ;;
+esac
+set d_attribute_deprecated
 eval $setvar
 $rm -f attrib*
 
