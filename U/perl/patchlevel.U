@@ -141,7 +141,9 @@ fi
 version_patchlevel_string="version $patchlevel subversion $subversion"
 case "$perl_patchlevel" in
 0|'') ;;
-*) version_patchlevel_string="$version_patchlevel_string patch $perl_patchlevel" ;;
+*)  perl_patchlevel=`echo $perl_patchlevel | sed 's/.* //'`
+    version_patchlevel_string="$version_patchlevel_string patch $perl_patchlevel"
+    ;;
 esac
 
 $echo "(You have $package $version_patchlevel_string.)"
