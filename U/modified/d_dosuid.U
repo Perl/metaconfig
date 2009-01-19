@@ -140,7 +140,7 @@ val="$undef"
 case "$d_suidsafe" in
 "$define")
 	val="$undef"
-	echo "No need to emulate SUID scripts since they are secure here." >& 4
+	echo "No need to emulate SUID scripts since they are secure here." >&4
 	;;
 *)
 	$cat <<EOM
