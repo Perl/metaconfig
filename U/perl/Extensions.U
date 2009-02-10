@@ -81,7 +81,6 @@ find_extensions='
 	    this_ext=`echo $xxx | $sed -e s/-/\\\//g`;
 	    leaf=`echo $xxx | $sed -e s/.*-//`;
 	    if $test -d File-Glob; then
-		: All ext/ flattened
 		if $test -f $xxx/$leaf.xs -o -f $xxx/$leaf.c; then
 		    known_extensions="$known_extensions $this_ext";
 		elif $test -d $xxx; then
