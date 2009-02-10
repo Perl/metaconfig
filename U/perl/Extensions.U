@@ -12,7 +12,7 @@
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
 	i_ndbm usethreads use5005threads package test cat rsrc \
 	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
-	libs d_cplusplus
+	libs d_cplusplus sed
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:known_extensions:
@@ -51,7 +51,7 @@
 ?S:	for users to skip the Opcode extension from the Configure
 ?S:	command line.
 ?S:.
-?T:xxx avail_ext tdir nonxs_extensions find_extensions
+?T:xxx avail_ext this_ext leaf tdir nonxs_extensions find_extensions
 ?INIT:: set useposix=false in your hint file to disable the POSIX extension.
 ?INIT:useposix=true
 ?INIT:: set useopcode=false in your hint file to disable the Opcode extension.
@@ -78,17 +78,28 @@ find_extensions='
 	case "$xxx" in
 	    DynaLoader|dynaload) ;;
 	    *)
-	    if $test -f $xxx/$xxx.xs -o -f $xxx/$xxx.c; then
-		known_extensions="$known_extensions $1$xxx";
-	    elif $test -f $xxx/Makefile.PL; then
-		nonxs_extensions="$nonxs_extensions $1$xxx";
+	    this_ext=`echo $xxx | $sed -e s/-/\\\//g`;
+	    leaf=`echo $xxx | $sed -e s/.*-//`;
+	    if $test -d File-Glob; then
+		: All ext/ flattened
+		if $test -f $xxx/$leaf.xs -o -f $xxx/$leaf.c; then
+		    known_extensions="$known_extensions $this_ext";
+		elif $test -d $xxx; then
+		    nonxs_extensions="$nonxs_extensions $this_ext";
+		fi
 	    else
-		if $test -d $xxx -a $# -lt 10; then
-		    set $1$xxx/ $*;
-		    cd "$xxx";
-		    eval $find_extensions;
-		    cd ..;
-		    shift;
+		if $test -f $xxx/$leaf.xs -o -f $xxx/$leaf.c; then
+		    known_extensions="$known_extensions $1$this_ext";
+		elif $test -f $xxx/Makefile.PL; then
+		    nonxs_extensions="$nonxs_extensions $1$this_ext";
+		else
+		    if $test -d $xxx -a $# -lt 10; then
+			set $1$xxx/ $*;
+			cd "$xxx";
+			eval $find_extensions;
+			cd ..;
+			shift;
+		    fi;
 		fi;
 	    fi
 	    ;;
@@ -99,12 +110,16 @@ cd "$rsrc/ext"
 set X
 shift
 eval $find_extensions
-# Special case:  Add in modules that nest beyond the first level.
-# Currently threads/shared and Hash/Util/FieldHash, since they are
-# not picked up by the recursive find above (and adding in general
-# recursive finding breaks SDBM_File/sdbm).
-# A.D. 20011025 (SDBM), ajgough 20071008 (FieldHash)
-known_extensions="$known_extensions threads/shared Hash/Util/FieldHash"
+if $test -d File-Glob; then
+    : All ext/ flattened
+else
+    # Special case:  Add in modules that nest beyond the first level.
+    # Currently threads/shared and Hash/Util/FieldHash, since they are
+    # not picked up by the recursive find above (and adding in general
+    # recursive finding breaks SDBM_File/sdbm).
+    # A.D. 20011025 (SDBM), ajgough 20071008 (FieldHash)
+    known_extensions="$known_extensions threads/shared Hash/Util/FieldHash"
+fi
 set X $known_extensions
 shift
 known_extensions="$*"
@@ -219,6 +234,8 @@ for xxx in $known_extensions ; do
 		# been compiled in.
 		# --jhi
 		avail_ext="$avail_ext $xxx"
+		;;
+	VMS*)
 		;;
 	Win32*)
 		case "$osname" in
