@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2009 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_inetpton: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_inetpton:
+?S:	This variable conditionally defines the HAS_INETPTON symbol,
+?S:	which indicates to the C program that the inet_pton() function
+?S:	is available.
+?S:.
+?C:HAS_INETPTON:
+?C:	This symbol, if defined, indicates that the inet_pton() function
+?C:	is available to parse IPv4 and IPv6 strings.
+?C:.
+?H:#$d_inetpton HAS_INETPTON		/**/
+?H:.
+?LINT:set d_inetpton
+: see if inet_pton exists
+set inet_pton d_inetpton
+eval $inlibc
+

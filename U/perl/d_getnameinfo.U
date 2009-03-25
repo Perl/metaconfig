@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2009 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getnameinfo: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getnameinfo:
+?S:	This variable conditionally defines the HAS_GETNAMEINFO symbol,
+?S:	which indicates to the C program that the getnameinfo() function
+?S:	is available.
+?S:.
+?C:HAS_GETNAMEINFO:
+?C:	This symbol, if defined, indicates that the getnameinfo() function
+?C:	is available for use.
+?C:.
+?H:#$d_getnameinfo HAS_GETNAMEINFO		/**/
+?H:.
+?LINT:set d_getnameinfo
+: see if getnameinfo exists
+set getnameinfo d_getnameinfo
+eval $inlibc
+
