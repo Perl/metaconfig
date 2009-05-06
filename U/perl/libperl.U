@@ -8,7 +8,7 @@
 ?MAKE:libperl useshrplib shrpenv ldlibpthname: \
 	Myread Oldconfig archlibexp awk cat libc \
 	_a osname osvers so patchlevel subversion usedl ld \
-	ccdlflags installarchlib
+	ccdlflags installarchlib userelocatableinc
 ?MAKE:	-pick wipe $@ %<
 ?S:libperl:
 ?S:	The perl executable is obtained by linking perlmain.c with
@@ -110,6 +110,13 @@ esac
 
 case "$useshrplib" in
 true)
+	case "$userelocatableinc" in
+	true|define)
+		echo "Cannot build with both -Duserelocatableinc and -Duseshrplib" >&4
+		echo "See INSTALL for an explanation why that won't work." >&4
+		exit 4
+		;;
+	esac
 	case "$libperl" in
 	'')
 		# Figure out a good name for libperl.so.  Since it gets stored in
