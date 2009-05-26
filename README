@@ -6,9 +6,11 @@ written by Larry Wall, and was subsequently enhanced and maintained
 by Raphael Manfredi.
 
 You have presumably obtained the metaconfig from the repository e.g.
-  p4 sync //depot/metaconfig/...
-(those are three literal dots) or some other way to obtain this file,
-like a complete compressed archive from the previous pumpkin.
+
+  $ git clone git://perl5.git.perl.org/metaconfig.git metaconfig
+
+or some other way to obtain this file, like a complete compressed archive
+from the previous pumpkin.
 
 Normally this directory and perl directory are next to each other
 so ../perl will get you to perl and ../perl/../metaconfig will get you
@@ -28,9 +30,9 @@ Contents of this directory:
 		applied.  This version was never officially released, but
 		the patches are essential, so this is the version we use for 
 		perl.  Actually, I've also applied U/dist_patches/dist-p70c
-		to this tree.  If someone with perforce access wants to change
-		the name of the directory, that'd be fine.  Otherwise, it really 
-		doesn't matter.
+		to this tree.  If someone with commit power wants to change
+		the name of the directory, that'd be fine. Otherwise, it
+		really doesn't matter.
     dist-3.5-20:
 		dist-3.5-20 is almost meta-4.0, still maintained by Raphael
 		Manfredi, but with a lot of fixes over 3.0, some changes
@@ -47,7 +49,7 @@ Contents of this directory:
     Unsurprisingly 'dist' uses (its) Configure to generate itself:
 
     cd dist-3.5-20
-    chmod -R +w .     # We have derived files in perforce :-(
+    chmod -R +w .     # We have derived files in git :-(
     ./Configure
     make
     make install
@@ -75,9 +77,10 @@ Contents of this directory:
      3) have a symlink to MANIFEST called MANIFEST.new
      4) chmod +w Configure config_h.SH Porting/Glossary Porting/config*
 
-(c) Write the new unit as U/foo/bar.U (usually 'foo' is just 'perl',
-    but sometimes there's some more appropriate subdir of U.  See
-    U/README for a description of the various subdirectories.)
+(c) Write the new unit as U/perl/d_bar.U ('perl' can also be 'modified',
+    'compline' or any other existing folder, except for 'all'). Choose
+    the best appropriate subdir of U.  See U/README for a description of
+    the various subdirectories.)
 
 (d) Run metalint to see nits: as opposed to lint, the gripings of
     metalint are usually serious :-) and need fixing
@@ -96,7 +99,9 @@ Contents of this directory:
 
     which is apparently normal ...
 
-(e) p4 edit Configure config_h.SH
+-- the next steps are in the perl folder
+
+(e) chmod +w Configure config_h.SH
 
 (f) metaconfig -m to regenerate Configure
 
@@ -128,11 +133,15 @@ Contents of this directory:
     you see fit.
     You can skip this phase, it's not essential, just good housekeeping.
 
-(k) make veryclean;sh Configure -des -Dusedevel;make all test
+(k) make veryclean; sh Configure -des -Dusedevel; make all test
 
-(l) p4 add ../metaconfig/foo/bar.U when you are ready ...
+-- the next steps are in the metaconfig folder again
 
-(m) p4 submit
-    IF your $EDITOR and/or $VISUAL start a background edit session
-    ('elvis -fork' or 'gvim'), be sure to set $P4EDITOR to an
-    editor call that is waited for.
+(l) git add U/perl/foo/bar.U when you are ready ...
+
+(m) git commit -m "Your commit description"
+
+(n) When all patches are applied, tested and committed, and you are happy,
+    git push
+
+    Merijn prefers to do steps (l) through (n) in git-gui
