@@ -16,7 +16,7 @@
 ?X:	  cc -c +z module_b.c
 ?X:	  ld -b module_a.o module_b.o -o module.sl
 ?X:
-?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags: rm_try \
+?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags bin_ELF: rm_try \
 	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar src run \
 	cc ccflags ldflags optimize ls gccversion cat rsrc i_stdlib i_unistd
 ?MAKE:	-pick add $@ %<
@@ -52,6 +52,11 @@
 ?S:	passed to cc to link with a shared library for dynamic loading.
 ?S:	It is up to the makefile to use it.  For sunos 4.1, it should
 ?S:	be empty.
+?S:.
+?S:bin_ELF:
+?S:	This variable saves the result from configure if generated binaries
+?S:	are in ELF format. Only set to defined when the test has actually
+?S:	been performed, and the result was positive.
 ?S:.
 ?C:USE_DYNAMIC_LOADING ~ %<:
 ?C:	This symbol, if defined, indicates that dynamic loading of
@@ -89,6 +94,7 @@ esac
 rp="Do you wish to use dynamic loading?"
 . ./myread
 usedl="$ans"
+bin_ELF="$undef"
 case "$ans" in
 y*) usedl="$define"
 	case "$dlsrc" in
@@ -186,6 +192,7 @@ EOM
 You appear to have ELF support.  I'll use $cc to build dynamic libraries.
 EOM
 			dflt="$cc"
+			bin_ELF="$define"
 		else
 			echo "I'll use ld to build dynamic libraries."
 			dflt='ld'
