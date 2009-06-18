@@ -116,7 +116,7 @@
 ?H:#$d_gdbm_ndbm_h_uses_prototypes GDBM_NDBM_H_USES_PROTOTYPES	/**/
 ?H:.
 ?T:d_dbm_open name hdr ihdr ndbm_hdr_protochk
-?LINT:set d_ndbm d_gdbmndbm_h_uses_prototypes d_ndbm_h_uses_prototypes
+?LINT:set d_ndbm d_gdbmndbm_h_uses_prototypes d_gdbm_ndbm_h_uses_prototypes d_ndbm_h_uses_prototypes
 : see if ndbm.h is available
 set ndbm.h i_ndbm
 eval $inhdr
