@@ -12,7 +12,7 @@
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
 	i_ndbm usethreads use5005threads package test cat rsrc \
 	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
-	libs d_cplusplus sed
+	libs d_cplusplus sed ls rm contains
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:known_extensions:
@@ -81,11 +81,15 @@ find_extensions='
 	    this_ext=`echo $xxx | $sed -e s/-/\\\//g`;
 	    leaf=`echo $xxx | $sed -e s/.*-//`;
 	    if $test -d File-Glob; then
-		if $test -f $xxx/$leaf.xs -o -f $xxx/$leaf.c; then
+		$ls -1 $xxx > $$.tmp;
+		if $contains "\.xs$" $$.tmp > /dev/null 2>&1; then
+		    known_extensions="$known_extensions $this_ext";
+		elif $contains "\.c$" $$.tmp; then
 		    known_extensions="$known_extensions $this_ext";
 		elif $test -d $xxx; then
 		    nonxs_extensions="$nonxs_extensions $this_ext";
-		fi
+		fi;
+		$rm -f $$.tmp;
 	    else
 		if $test -f $xxx/$leaf.xs -o -f $xxx/$leaf.c; then
 		    known_extensions="$known_extensions $1$this_ext";
