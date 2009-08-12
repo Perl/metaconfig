@@ -25,11 +25,6 @@
 ?MAKE:	-pick add $@ %<
 ?T:PERL_CONFIG_SH PERL_PATCHLEVEL sym tmp
 ?F:!UU
-?X: Command line options can be saved by the Options.U unit in the
-?X: temporary file UU/cmdline.opt.
-: Add in command line options if available
-$test -f UU/cmdline.opt && $cat UU/cmdline.opt >> config.sh
-
 : add special variables
 $test -f $src/patchlevel.h && \
 awk '/^#define[ 	]+PERL_/ {printf "%s=%s\n",$2,$3}' $src/patchlevel.h >>config.sh

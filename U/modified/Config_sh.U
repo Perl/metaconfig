@@ -121,6 +121,8 @@ $startsh
 EOT
 ?X: Command line options are saved by the Options.U unit in the
 ?X: temporary file UU/cmdline.opt
+: Add in command line options if available
 $test -f UU/cmdline.opt && $cat UU/cmdline.opt >> config.sh
+
 $spitshell <<EOT >>config.sh
 
