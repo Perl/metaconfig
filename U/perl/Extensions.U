@@ -10,7 +10,7 @@
 ?MAKE:known_extensions extensions dynamic_ext static_ext nonxs_ext \
 	useposix useopcode : \
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
-	i_ndbm usethreads use5005threads package test cat rsrc \
+	d_ndbm usethreads use5005threads package test cat rsrc \
 	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
 	libs d_cplusplus sed ls rm contains
 ?MAKE:	-pick add $@ %<
@@ -165,7 +165,7 @@ for xxx in $known_extensions ; do
 		esac
 		;;
 	NDBM_File|ndbm_fil)
-		case "$i_ndbm" in
+		case "$d_ndbm" in
 		$define)
 		    case "$osname-$use64bitint" in
 		    hpux-define)
