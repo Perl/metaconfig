@@ -12,7 +12,7 @@
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
 	d_ndbm usethreads use5005threads package test cat rsrc \
 	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
-	libs d_cplusplus sed ls rm contains
+	libs d_cplusplus sed ls rm contains trnl sort
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:known_extensions:
@@ -135,10 +135,10 @@ else
 fi
 set X $known_extensions
 shift
-known_extensions="$*"
+known_extensions=`echo "$*" | tr ' ' $trnl | $sort | tr $trnl ' '`
 set X $nonxs_extensions
 shift
-nonxs_extensions="$*"
+nonxs_extensions=`echo "$*" | tr ' ' $trnl | $sort | tr $trnl ' '`
 cd "$tdir"
 
 : Now see which are supported on this system.
