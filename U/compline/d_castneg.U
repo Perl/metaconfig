@@ -84,7 +84,7 @@ int main()
 	   optimized the whole file away
 	*/
 	/* Store the number in a writable string for gcc to pass to
-	   sscanf under HP/UX.
+	   sscanf under HP-UX.
 	*/
 	sprintf(str, "-123");
 	sscanf(str, "%lf", &f);  /* f = -123.; */
