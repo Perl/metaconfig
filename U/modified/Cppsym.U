@@ -39,7 +39,7 @@
 ?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: run \
 	eunicefix Guess awk cat tr sed sort rm rm_try startsh osname \
 	+cc +gccversion test comm uniq echo Options trnl \
-	optimize ccflags ldflags libs cpp_stuff
+	optimize ccflags ldflags libs cpp_stuff cpp
 ?MAKE:	-pick add $@ %<
 ?T:also symbols i postprocess_cc_v tHdrH
 ?X:
@@ -223,7 +223,7 @@ case "$osname::$gccversion" in
     tHdrH=_tmpHdr
     rm -f $tHdrH'.h' $tHdrH
     touch $tHdrH'.h'
-    if cpp -dM $tHdrH'.h' > $tHdrH'_cppsym.h' && [ -s $tHdrH'_cppsym.h' ]; then
+    if $cpp -dM $tHdrH'.h' > $tHdrH'_cppsym.h' && [ -s $tHdrH'_cppsym.h' ]; then
        sed 's/#define[\ \  ]*//;s/[\ \     ].*$//' <$tHdrH'_cppsym.h' >$tHdrH'_cppsym.real'
        if [ -s $tHdrH'_cppsym.real' ]; then
 	  cat $tHdrH'_cppsym.real' Cppsym.know | sort | uniq | ./Cppsym | sort | uniq > Cppsym.true
