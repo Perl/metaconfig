@@ -80,6 +80,7 @@ close $fh or die "$0: close $Loc: $!";
 for (@WANTED) {
     chomp;
     m/^#/ and next;	# Skip comments
+    m/^:/ and next;	# Skip comments
     m/^$/ and next;	# Skip empty sections
     my ($var, $val) = split /=/, $_, 2;
 
@@ -118,6 +119,8 @@ EOE
     # with capital letters, metalint considers them to be "special
     # unit" symbols.  It's easier to define them here than to try
     # to fool metalint any further.   --AD  22 Oct 1999
+    # Similarly, handle the config_arg* variables from Options.U.
+    # -- AD 8 Dec 2009
     if (exists $predef{$var}) {
 	print  $predef{$var};
 	next;
@@ -178,4 +181,21 @@ PERL_PATCHLEVEL (Oldsyms.U):
 	This symbol reflects the patchlevel, if available. Will usually
 	come from the .patch file, which is available when the perl
 	source tree was fetched with rsync.
+
+config_args (Options.U):
+	This variable contains a single string giving the command-line
+	arguments passed to Configure.	Spaces within arguments,
+	quotes, and escaped characters are not correctly preserved.
+	To reconstruct the command line, you must assemble the individual
+	command line pieces, given in config_arg[0-9]*.
+
+config_arg0 (Options.U):
+	This variable contains the string used to invoke the Configure
+	command, as reported by the shell in the $0 variable.
+
+config_argc (Options.U):
+	This variable countains the number of command-line arguments
+	passed to Configure, as reported by the shell in the $# variable.
+	The individual arguments are stored as variables config_argc1,
+	config_argc2, etc.
 
