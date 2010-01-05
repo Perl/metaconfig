@@ -129,7 +129,7 @@ true || exec sh $0 $argv:q
 rm -f c1$$ c2$$
 
 if test -f /dev/cputype -a -f /dev/drivers -a -f /dev/osversion; then
-	cat >&4 <<EOF
+	cat <<EOF
 ***
 *** I'm sorry but this system looks like Plan 9 and Plan 9 doesn't do
 *** Configure that well.  (Plan 9 is close to UNIX but not close enough.)
@@ -141,7 +141,7 @@ EOF
 fi
 
 if test ! -c /dev/null ; then
-	cat >&4 <<EOF
+	cat <<EOF
 ***
 *** I'm sorry, but /dev/null appears to be a file rather than a device.
 *** Please consult your operating sytem's notes for making a device
