@@ -219,7 +219,7 @@ $eunicefix Cppsym.try
 ./Cppsym < Cppsym.know > Cppsym.true
 : Add in any linux cpp "predefined macros":
 case "$osname::$gccversion" in
-  *linux*::*.*|*gnukfreebsd*::*.*)
+  *linux*::*.*|*gnukfreebsd*::*.*|gnu::*.*)
     tHdrH=_tmpHdr
     rm -f $tHdrH'.h' $tHdrH
     touch $tHdrH'.h'
