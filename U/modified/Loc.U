@@ -77,7 +77,7 @@
 ?V::pth loclist trylist
 ?F:./loc test_h
 ?T:thisthing thing xxx dir file say _test DJGPP
-?LINT:change PATH _egrep _ln _make
+?LINT:change PATH _egrep _ln _make _less
 ?LINT:extern _exe
 : find out where common programs are
 echo " "
@@ -297,6 +297,17 @@ egrep)
 	_egrep=$grep
 	;;
 esac
+@if less
+case "$less" in
+'')	;;
+*)	if $less -R </dev/null >/dev/null; then
+	       echo "Substituting less -R for less."
+	       less="$less -R"
+	       _less=$less
+	fi
+	;;
+esac
+@end
 @if ln
 case "$ln" in
 ln)
