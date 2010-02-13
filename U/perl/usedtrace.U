@@ -28,6 +28,8 @@
 ?LINT:set dtrace
 : DTrace support
 dflt_dtrace='/usr/sbin/dtrace'
+$test -x /usr/bin/dtrace && dflt_dtrace='/usr/bin/dtrace'
+
 cat <<EOM
 
 Perl can be built to support DTrace on platforms that support it.
