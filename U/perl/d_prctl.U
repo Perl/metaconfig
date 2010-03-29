@@ -1,0 +1,55 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2010 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_prctl d_prctl_set_name: Inlibc cat Compile run rm_try
+?MAKE:	-pick add $@ %<
+?S:d_prctl:
+?S:	This variable conditionally defines the HAS_PRCTL symbol, which
+?S:	indicates to the C program that the prctl() routine is available.
+?S:.
+?S:d_prctl_set_name:
+?S:	This variable conditionally defines the HAS_PRCTL symbol, which
+?S:	indicates to the C program that the prctl() routine is available.
+?S:.
+?C:HAS_PRCTL:
+?C:	This symbol, if defined, indicates that the prctl routine is
+?C:	available to set process title.
+?C:.
+?C:HAS_PRCTL_SET_NAME:
+?C:	This symbol, if defined, indicates that the prctl routine is
+?C:	available to set process title and supports PR_SET_NAME.
+?C:.
+?H:#$d_prctl HAS_PRCTL		/**/
+?H:#$d_prctl_set_name HAS_PRCTL_SET_NAME		/**/
+?H:.
+?F:!try
+?LINT:set d_prctl
+: see if prctl exists
+set prctl d_prctl
+eval $inlibc
+
+: see if prctl supports PR_SET_NAME
+d_prctl_set_name=$undef
+case $d_prctl in
+    $define)
+	$cat >try.c <<EOM
+#include <sys/prctl.h>
+
+int main (int argc, char *argv[])
+{
+    return (prctl (PR_SET_NAME, "Test"));
+    } /* main */
+EOM
+	set try
+	if eval $compile_ok && $run ./try; then
+	    echo "Your prctl (PR_SET_NAME, ...) works"
+	    d_prctl_set_name=$define
+	    fi
+	$rm_try
+	;;
+    esac
+
