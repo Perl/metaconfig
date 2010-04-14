@@ -12,8 +12,9 @@
 ?S:	indicates to the C program that the prctl() routine is available.
 ?S:.
 ?S:d_prctl_set_name:
-?S:	This variable conditionally defines the HAS_PRCTL symbol, which
-?S:	indicates to the C program that the prctl() routine is available.
+?S:	This variable conditionally defines the HAS_PRCTL_SET_NAME symbol,
+?S:	which indicates to the C program that the prctl() routine supports
+?S:	the PR_SET_NAME option.
 ?S:.
 ?C:HAS_PRCTL:
 ?C:	This symbol, if defined, indicates that the prctl routine is
