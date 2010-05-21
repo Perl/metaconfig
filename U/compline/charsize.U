@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:34  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:charsize charbits: cat rm_try Myread Compile run i_stdlib
+?MAKE:charsize charbits: cat rm_try Myread Compile run
 ?MAKE:	-pick add $@ %<
 ?S:charsize:
 ?S:	This variable contains the value of the CHARSIZE symbol, which
@@ -37,39 +37,9 @@
 ?H:#define CHARBITS $charbits		/**/
 ?H:.
 ?F:!try
-: check for length of character
-echo " "
-case "$charsize" in
-'')
-	echo "Checking to see how big your characters are (hey, you never know)..." >&4
-	$cat >try.c <<EOCP
-#include <stdio.h>
-#$i_stdlib I_STDLIB
-#ifdef I_STDLIB
-#include <stdlib.h>
-#endif
-int main()
-{
-    printf("%d\n", (int)sizeof(char));
-    exit(0);
-}
-EOCP
-	set try
-	if eval $compile_ok; then
-		dflt=`$run ./try`
-	else
-		dflt='1'
-		echo "(I can't seem to compile the test program.  Guessing...)"
-	fi
-	;;
-*)
-	dflt="$charsize"
-	;;
-esac
-rp="What is the size of a character (in bytes)?"
-. ./myread
-charsize="$ans"
-$rm_try
+: length of character in bytes. Is always 1, otherwise it isnt C
+: This used to be a test using sizeof
+charsize=1
 
 : Check for the number of bits in a character
 case "$charbits" in
