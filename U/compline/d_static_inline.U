@@ -1,0 +1,120 @@
+?RCS: $Id: d_static_inline.U,v $
+?RCS:
+?RCS: Copyright (c) 2010 Andrew Dougherty
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafayette.edu>
+?RCS:
+?MAKE:d_static_inline perl_static_inline: Compile Setvar cat echo run rm_try
+?MAKE:	-pick add $@ %<
+?S:d_static_inline:
+?S:	This variable conditionally defines the HAS_STATIC_INLINE symbol, 
+?S:	which indicates that the C compiler supports C99-style static
+?S:	inline.  That is, the function can't be called from another
+?S:	translation unit.
+?S:.
+?S:perl_static_inline:
+?S:	This variable defines the PERL_STATIC_INLINE symbol to
+?S:	the best-guess incantation to use for static inline functions.
+?S:	Possibilities include
+?S:		static inline       (c99)
+?S:		static __inline__   (gcc -ansi)
+?S:		static __inline     (MSVC)
+?S:		static              (c89 compilers)
+?S:.
+?C:HAS_STATIC_INLINE :
+?C:	This symbol, if defined, indicates that the C compiler supports
+?C:	supports C99-style static inline.  That is, the function can't 
+?C:	be called from another translation unit.
+?C:.
+?C:PERL_STATIC_INLINE:
+?C:	This symbol gives the best-guess incantation to use for static
+?C:	inline functions.  If HAS_STATIC_INLINE is defined, this will
+?C:	give C99-style inline.  If HAS_STATIC_INLINE is not defined,
+?C:	this will give a plain 'static'.  It will always be defined
+?C:	to something that gives static linkage.
+?C:	Possibilities include
+?C:		static inline       (c99)
+?C:		static __inline__   (gcc -ansi)
+?C:		static __inline     (MSVC)
+?C:		static              (c89 compilers)
+?C:.
+?H:#$d_static_inline HAS_STATIC_INLINE				/**/
+?H:#define PERL_STATIC_INLINE $perl_static_inline	/**/
+?H:.
+?LINT:set d_static_inline
+?F:!try
+: see what flavor, if any, of static inline is supported
+echo " "
+?X:	Build two programs.  The first uses static inline in file a.c and
+?X:	should work.  The second also includes b.c which tries to link against
+?X:	the static function in a.c.  This should fail.
+?X:.
+$cat > try.c <<'EOCP'
+#include <stdlib.h>
+extern int f_via_a(int x);
+extern int f_via_b(int x);
+int main(int argc, char **argv)
+{
+    int y;
+
+    y = f_via_a(0);
+#ifdef USE_B
+    y = f_via_b(0);
+#endif
+    if (y == 42) {
+        return EXIT_SUCCESS;
+    }
+    else {
+        return EXIT_FAILURE;
+    }
+}
+EOCP
+$cat > a.c <<'EOCP'
+static inline int f(int x) { 
+    int y;
+    y = x + 42;
+    return y;
+}
+
+int f_via_a(int x)
+{
+    return f(x);
+}
+EOCP
+$cat > b.c <<'EOCP'
+extern int f(int x);
+
+int f_via_b(int x)
+{
+    return f(x);
+}
+EOCP
+val="$undef"
+set try a.c
+if eval $compile && $run ./try; then
+	# Now make sure there is no external linkage of static
+	# functions
+	set try -DUSE_B a.c b.c
+	if eval $compile && $run ./try; then
+		$echo "Your compiler supports static inline, " >&4
+		$echo "but it also creates an external definition," >&4
+		$echo "so I won't use it." >&4
+	    val=$undef
+	else
+		$echo "Your compiler supports static inline." >&4
+	    val=$define
+	fi
+else
+    $echo "Your compiler does NOT support static inline." >&4
+    val="$undef"
+fi
+set d_static_inline
+eval $setvar
+$rm_try
+
