@@ -10,10 +10,11 @@
 ?RCS:
 ?RCS: Original Author: Andy Dougherty <doughera@lafayette.edu>
 ?RCS:
-?MAKE:d_static_inline perl_static_inline: Compile Setvar cat echo run rm_try
+?MAKE:d_static_inline perl_static_inline: Compile Setvar gccversion \
+	cat echo run hint rm rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_static_inline:
-?S:	This variable conditionally defines the HAS_STATIC_INLINE symbol, 
+?S:	This variable conditionally defines the HAS_STATIC_INLINE symbol,
 ?S:	which indicates that the C compiler supports C99-style static
 ?S:	inline.  That is, the function can't be called from another
 ?S:	translation unit.
@@ -25,12 +26,13 @@
 ?S:		static inline       (c99)
 ?S:		static __inline__   (gcc -ansi)
 ?S:		static __inline     (MSVC)
+?S:		static _inline      (older MSVC)
 ?S:		static              (c89 compilers)
 ?S:.
 ?C:HAS_STATIC_INLINE :
 ?C:	This symbol, if defined, indicates that the C compiler supports
-?C:	supports C99-style static inline.  That is, the function can't 
-?C:	be called from another translation unit.
+?C:	C99-style static inline.  That is, the function can't be called
+?C:	from another translation unit.
 ?C:.
 ?C:PERL_STATIC_INLINE:
 ?C:	This symbol gives the best-guess incantation to use for static
@@ -42,15 +44,18 @@
 ?C:		static inline       (c99)
 ?C:		static __inline__   (gcc -ansi)
 ?C:		static __inline     (MSVC)
+?C:		static _inline      (older MSVC)
 ?C:		static              (c89 compilers)
 ?C:.
 ?H:#$d_static_inline HAS_STATIC_INLINE				/**/
 ?H:#define PERL_STATIC_INLINE $perl_static_inline	/**/
 ?H:.
 ?LINT:set d_static_inline
+?T:inline xxx
 ?F:!try
 : see what flavor, if any, of static inline is supported
 echo " "
+echo "Checking to see if your system supports static inline..."
 ?X:	Build two programs.  The first uses static inline in file a.c and
 ?X:	should work.  The second also includes b.c which tries to link against
 ?X:	the static function in a.c.  This should fail.
@@ -76,7 +81,7 @@ int main(int argc, char **argv)
 }
 EOCP
 $cat > a.c <<'EOCP'
-static inline int f(int x) { 
+static INLINE int f(int x) {
     int y;
     y = x + 42;
     return y;
@@ -95,26 +100,66 @@ int f_via_b(int x)
     return f(x);
 }
 EOCP
-val="$undef"
-set try a.c
-if eval $compile && $run ./try; then
-	# Now make sure there is no external linkage of static
-	# functions
-	set try -DUSE_B a.c b.c
-	if eval $compile && $run ./try; then
-		$echo "Your compiler supports static inline, " >&4
-		$echo "but it also creates an external definition," >&4
-		$echo "so I won't use it." >&4
-	    val=$undef
-	else
-		$echo "Your compiler supports static inline." >&4
-	    val=$define
-	fi
-else
-    $echo "Your compiler does NOT support static inline." >&4
-    val="$undef"
-fi
+
+# Respect a hint (or previous) value for perl_static_inline, if there is one.
+case "$perl_static_inline" in
+'')	# Check the various possibilities, and break out on success.
+	# For gcc, prefer __inline__, which will still permit 
+	# cflags.SH to add in -ansi.
+	case "$gccversion" in
+		'') xxx="inline __inline__ __inline _inline";;
+		*)  xxx="__inline__ inline __inline _inline";;
+	esac
+	for inline in $xxx; do
+		set try -DINLINE=$inline a.c
+		if eval $compile && $run ./try; then
+			# Now make sure there is no external linkage of static
+			# functions
+			set try -DINLINE=$inline -DUSE_B a.c b.c
+			if eval $compile && $run ./try; then
+				$echo "Your compiler supports static $inline, " >&4
+				$echo "but it also creates an external definition," >&4
+				$echo "so I won't use it." >&4
+				val=$undef
+			else
+				$echo "Your compiler supports static $inline." >&4
+				val=$define
+				perl_static_inline="static $inline";
+				break;
+			fi
+		else
+			$echo "Your compiler does NOT support static $inline." >&4
+			val="$undef"
+		fi
+	done
+	;;
+*inline*) # Some variant of inline exists.
+	echo "Keeping your $hint value of $perl_static_inline."
+	val=$define
+	;;
+static)  # No inline capabilities
+	echo "Keeping your $hint value of $perl_static_inline."
+	val=$undef
+	;;
+*)  # Unrecognized previous value -- blindly trust the supplied
+	# value and hope it makes sense.  Use old value for
+	# d_static_inline, if there is one.
+	echo "Keeping your $hint value of $perl_static_inline."
+	case "$d_static_inline" in
+		'') val=$define ;;
+		*)  val=$d_static_inline ;;
+	esac
+	;;
+esac
+# Fallback to plain 'static' if nothing worked.
+case "$perl_static_inline" in
+'')
+	perl_static_inline="static"
+	val=$undef
+	;;
+esac
 set d_static_inline
 eval $setvar
+$rm -f a.[co] b.[co]
 $rm_try
 
