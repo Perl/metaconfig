@@ -271,7 +271,8 @@ xrun='eval "<libc.tmp $com >libc.list"; echo "done." >&4'
 ?X: Some versions of Linux include a leading __IO in the symbol name.
 ?X: HPUX10 reportedly has trailing spaces, though I'm suprised it has
 ?X: BSD-like output.  (AD).
-xxx='[ADTSIW]'
+?X: GNU extension: i is "indirect function"
+xxx='[ADTSIWi]'
 if com="$sed -n -e 's/__IO//' -e 's/^.* $xxx  *//p'";\
 	eval $xscan;\
 	$contains '^fprintf$' libc.list >/dev/null 2>&1; then
