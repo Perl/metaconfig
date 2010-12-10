@@ -20,7 +20,7 @@
 ?RCS:
 ?MAKE:d_socket d_oldsock d_sockpair socketlib sockethdr \
 	d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy \
-	d_scm_rights: \
+	d_scm_rights d_sockaddr_sa_len: \
 	contains echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
 	Compile cat rm_try Setvar Hasfield
 ?MAKE:	-pick add $@ %<
@@ -65,6 +65,11 @@
 ?S:	This variable conditionally defines the HAS_SCM_RIGHTS symbol,
 ?S:	which indicates that the SCM_RIGHTS is available.  #ifdef is
 ?S:	not enough because it may be an enum, glibc has been known to do this.
+?S:.
+?S:d_sockaddr_sa_len:
+?S:	This variable conditionally defines the HAS_SOCKADDR_SA_LEN symbol,
+?S:	which indicates that a struct sockaddr structure has the sa_len
+?S:	member.
 ?S:.
 ?S:socketlib:
 ?S:	This variable has the names of any libraries needed for socket support.
@@ -115,8 +120,14 @@
 ?C:	Checking just with #ifdef might not be enough because this symbol
 ?C:	has been known to be an enum.
 ?C:.
+?C:HAS_SOCKADDR_SA_LEN:
+?C:	This symbol, if defined, indicates that the struct sockaddr
+?C:	structure has a member called sa_len, indicating the length of
+?C:	the structure.
+?C:.
 ?H:#$d_socket	HAS_SOCKET		/**/
 ?H:#$d_sockpair	HAS_SOCKETPAIR	/**/
+?H:#$d_sockaddr_sa_len	HAS_SOCKADDR_SA_LEN	/**/
 ?H:#$d_oldsock	USE_OLDSOCKET	/**/
 ?H:#$d_msg_ctrunc	HAS_MSG_CTRUNC	/**/
 ?H:#$d_msg_dontroute	HAS_MSG_DONTROUTE	/**/
@@ -127,7 +138,7 @@
 ?H:.
 ?T:val net ENUM enum
 ?F:try.c
-?LINT:set d_sockpair
+?LINT:set d_sockpair d_sockaddr_sa_len
 ?LINT:set d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy
 ?LINT:set d_scm_rights
 : see whether socket exists
@@ -202,6 +213,24 @@ set socketpair d_sockpair
 eval $inlibc
 
 @end
+
+echo " "
+?X: ...
+echo "Checking the availability sa_len in the sock struct ..." >&4
+$cat >try.c <<EOF
+#include <sys/types.h>
+#include <sys/socket.h>
+int main() {
+struct sockaddr sa;
+return (sa.sa_len);
+}
+EOF
+val="$undef"
+set try; if eval $compile; then
+	val="$define"
+fi
+set d_sockaddr_sa_len; eval $setvar
+$rm_try
 
 echo " "
 ?X: these constants are known to be troublesomely defined as enums
