@@ -244,7 +244,7 @@ done
 
 case "$d_longdbl$uselongdouble" in
 "$define$define")
-    : again, add prefered functions to our list first
+    : again, add preferred functions to our list first
     xxx_ld_list=""
     for xxx_convert in $gconvert_ld_preference; do
         case $xxx_convert in

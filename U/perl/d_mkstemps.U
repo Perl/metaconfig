@@ -15,7 +15,7 @@
 ?S:.
 ?C:HAS_MKSTEMPS :
 ?C:	This symbol, if defined, indicates that the mkstemps routine is
-?C:	available to excluslvely create and open a uniquely named
+?C:	available to exclusively create and open a uniquely named
 ?C:	(with a suffix) temporary file.
 ?C:.
 ?H:#$d_mkstemps HAS_MKSTEMPS		/**/

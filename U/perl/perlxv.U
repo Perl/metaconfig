@@ -175,7 +175,7 @@
 ?C:NV_OVERFLOWS_INTEGERS_AT:
 ?C:	This symbol gives the largest integer value that NVs can hold. This
 ?C:	value + 1.0 cannot be stored accurately. It is expressed as constant
-?C:	floating point expression to reduce the chance of decimale/binary
+?C:	floating point expression to reduce the chance of decimal/binary
 ?C:	conversion issues. If it can not be determined, the value 0 is given.
 ?C:.
 ?C:NV_ZERO_IS_ALLBITS_ZERO:

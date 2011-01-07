@@ -24,7 +24,7 @@
 ?H:?%<:#endif
 ?H:.
 ?F:!try
-: Checking 32bit aligndness
+: Checking 32bit alignedness
 $cat <<EOM
 
 Checking to see whether you can access character data unalignedly...

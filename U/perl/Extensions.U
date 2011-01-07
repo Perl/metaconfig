@@ -280,7 +280,7 @@ avail_ext="$*"
 case "$onlyextensions" in
 '') ;;
 *)  keepextensions=''
-    echo "You have requested that only certains extensions be included..." >&4
+    echo "You have requested that only certain extensions be included..." >&4
     for i in $onlyextensions; do
         case " $avail_ext " in
         *" $i "*)

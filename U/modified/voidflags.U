@@ -39,7 +39,7 @@
 ?C:	    2 = supports arrays of pointers to functions returning void
 ?C:	    4 = supports comparisons between pointers to void functions and
 ?C:		    addresses of void functions
-?C:	    8 = suports declaration of generic void pointers
+?C:	    8 = supports declaration of generic void pointers
 ?C:
 ?C:	The package designer should define VOIDUSED to indicate the requirements
 ?C:	of the package.  This can be done either by #defining VOIDUSED before

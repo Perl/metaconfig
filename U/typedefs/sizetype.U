@@ -27,7 +27,7 @@
 ?C:	unsigned long, int, etc.  It may be necessary to include
 ?C:	<sys/types.h> to get any typedef'ed information.
 ?C:.
-?H:#define Size_t $sizetype	 /* length paramater for string functions */
+?H:#define Size_t $sizetype	 /* length parameter for string functions */
 ?H:.
 ?LINT: set sizetype
 : see what type is used for size_t

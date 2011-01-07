@@ -59,7 +59,7 @@
 ?LINT: change pthread_h_first
 ?LINT: change usethreads
 ?LINT: change i_pthread
-: define a fucntion to check prototypes
+: define a function to check prototypes
 $cat > protochk <<EOSH
 $startsh
 cc="$cc"

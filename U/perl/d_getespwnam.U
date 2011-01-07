@@ -12,11 +12,11 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_getespwnam:
 ?S:	This variable conditionally defines HAS_GETESPWNAM if getespwnam() is
-?S:	available to retrieve enchanced (shadow) password entries by name.
+?S:	available to retrieve enhanced (shadow) password entries by name.
 ?S:.
 ?C:HAS_GETESPWNAM:
 ?C:	This symbol, if defined, indicates that the getespwnam system call is
-?C:	available to retrieve enchanced (shadow) password entries by name.
+?C:	available to retrieve enhanced (shadow) password entries by name.
 ?C:.
 ?H:#$d_getespwnam HAS_GETESPWNAM		/**/
 ?H:.
