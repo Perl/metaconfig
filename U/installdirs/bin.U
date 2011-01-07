@@ -47,7 +47,7 @@
 ?D:installbin=''
 ?S:installbin:
 ?S:	This variable is the same as binexp unless AFS is running in which case
-?S:	the user is explicitely prompted for it. This variable should always
+?S:	the user is explicitly prompted for it. This variable should always
 ?S:	be used in your makefiles for maximum portability.
 ?S:.
 ?D:userelocatableinc=''

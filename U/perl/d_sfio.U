@@ -13,7 +13,7 @@
 ?S:usesfio:
 ?S:	This variable is set to true when the user agrees to use sfio.
 ?S:	It is set to false when sfio is not available or when the user
-?S:	explicitely requests not to use sfio.  It is here primarily so
+?S:	explicitly requests not to use sfio.  It is here primarily so
 ?S:	that command-line settings can override the auto-detection of
 ?S:	d_sfio without running into a "WHOA THERE".
 ?S:.

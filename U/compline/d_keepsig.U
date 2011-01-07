@@ -16,7 +16,7 @@
 ?RCS: patch45: protected "sh -c" within backquotes for Linux and SGI
 ?RCS:
 ?RCS: Revision 3.0.1.2  1994/10/29  16:13:59  ram
-?RCS: patch36: call ./bsd explicitely instead of relying on PATH
+?RCS: patch36: call ./bsd explicitly instead of relying on PATH
 ?RCS:
 ?RCS: Revision 3.0.1.1  1993/10/16  13:48:47  ram
 ?RCS: patch12: comment for SIGNALS_KEPT was the other way round

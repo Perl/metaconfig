@@ -17,7 +17,7 @@
 ?RCS:
 ?RCS: Revision 3.0.1.1  1994/05/13  15:28:27  ram
 ?RCS: patch27: made conformant to its gidtype.U companion
-?RCS: patch27: question now explicitely mentions getuid()
+?RCS: patch27: question now explicitly mentions getuid()
 ?RCS:
 ?RCS: Revision 3.0  1993/08/18  12:09:56  ram
 ?RCS: Baseline for dist 3.0 netwide release.

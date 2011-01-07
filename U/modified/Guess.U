@@ -14,7 +14,7 @@
 ?RCS:
 ?RCS: Revision 3.0.1.4  1994/10/29  15:53:55  ram
 ?RCS: patch36: added ?F: line for metalint file checking
-?RCS: patch36: call ./xenix explicitely instead of relying on PATH
+?RCS: patch36: call ./xenix explicitly instead of relying on PATH
 ?RCS:
 ?RCS: Revision 3.0.1.3  1993/12/15  08:14:35  ram
 ?RCS: patch15: variable d_bsd was not always set properly
@@ -39,7 +39,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_eunice:
 ?S:	This variable conditionally defines the symbols EUNICE and VAX, which
-?S:	alerts the C program that it must deal with idiosyncracies of VMS.
+?S:	alerts the C program that it must deal with idiosyncrasies of VMS.
 ?S:.
 ?S:d_xenix:
 ?S:	This variable conditionally defines the symbol XENIX, which alerts

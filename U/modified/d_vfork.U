@@ -19,7 +19,7 @@
 ?RCS: patch27: modified to avoid spurious Whoa warnings (ADO)
 ?RCS:
 ?RCS: Revision 3.0.1.3  1994/05/06  14:59:09  ram
-?RCS: patch23: now explicitely ask whether vfork() should be used (ADO)
+?RCS: patch23: now explicitly ask whether vfork() should be used (ADO)
 ?RCS:
 ?RCS: Revision 3.0.1.2  1993/10/16  13:49:39  ram
 ?RCS: patch12: added magic for vfork()
@@ -40,7 +40,7 @@
 ?S:usevfork:
 ?S:	This variable is set to true when the user accepts to use vfork.
 ?S:	It is set to false when no vfork is available or when the user
-?S:	explicitely requests not to use vfork.
+?S:	explicitly requests not to use vfork.
 ?S:.
 ?S:d_pseudofork:
 ?S:	This variable conditionally defines the HAS_PSEUDOFORK symbol,

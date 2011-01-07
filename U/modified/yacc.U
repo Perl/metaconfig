@@ -66,7 +66,7 @@ esac
 $cat <<EOH
 
 Your yacc program may need extra flags to normally process the parser sources.
-Do NOT specify any -d or -v flags here, since those are explicitely known
+Do NOT specify any -d or -v flags here, since those are explicitly known
 by the various Makefiles. However, if your machine has strange/undocumented
 options (like -Sr# on SCO to specify the maximum number of grammar rules), then
 please add them here.  To use no flags, specify the word "none".

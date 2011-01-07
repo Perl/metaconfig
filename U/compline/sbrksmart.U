@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS: $Log: sbrksmart.U,v $
 ?RCS: Revision 3.0.1.2  1995/01/11  15:35:41  ram
-?RCS: patch45: now sets sbrksmart to undef explicitely when lacking sbrk()
+?RCS: patch45: now sets sbrksmart to undef explicitly when lacking sbrk()
 ?RCS: patch45: forgot a cast when using return value from sbrk()
 ?RCS:
 ?RCS: Revision 3.0.1.1  1994/01/24  14:16:45  ram

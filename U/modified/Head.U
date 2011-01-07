@@ -275,7 +275,7 @@ true/[a-z]*)
 	;;
 esac
 ?X: Warn them if they use ksh on other systems, which are those where
-?X: we don't need ksh nor want to avoid it explicitely, yet are using it.
+?X: we don't need ksh nor want to avoid it explicitly, yet are using it.
 case "$inksh/$needksh-$avoidksh-" in
 true/--)
 		cat <<EOM

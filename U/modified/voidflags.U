@@ -29,7 +29,7 @@
 ?S:defvoidused:
 ?S:	This variable contains the default value of the VOIDUSED symbol (15).
 ?S:.
-?X:	Exceptionally, we have to explicitely alias the symbol name for
+?X:	Exceptionally, we have to explicitly alias the symbol name for
 ?X: config_h.SH, otherwise the comment would not appear.
 ?C:VOIDFLAGS ~ %<:
 ?C:	This symbol indicates how much support of the void type is given by this

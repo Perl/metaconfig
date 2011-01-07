@@ -33,7 +33,7 @@
 ?RCS: patch23: magically added cc flags now only done the first time
 ?RCS:
 ?RCS: Revision 3.0.1.3  1993/09/13  15:58:29  ram
-?RCS: patch10: explicitely mention -DDEBUG just in case they need it (WAD)
+?RCS: patch10: explicitly mention -DDEBUG just in case they need it (WAD)
 ?RCS: patch10: removed all the "tans" variable usage (WAD)
 ?RCS:
 ?RCS: Revision 3.0.1.2  1993/08/27  14:39:38  ram
