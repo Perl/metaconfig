@@ -35,7 +35,7 @@
 ?LINT:set mistrustnm
 ?S:csym:
 ?S:	This shell variable is used internally by Configure to check
-?S:	wether a given C symbol is defined or not. A typical use is:
+?S:	whether a given C symbol is defined or not. A typical use is:
 ?S:		set symbol result [-fva] [previous]
 ?S:		eval $csym
 ?S:	That will set result to 'true' if the function [-f], variable [-v]

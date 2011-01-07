@@ -27,7 +27,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_castneg:
 ?S:	This variable conditionally defines CASTNEG, which indicates
-?S:	wether the C compiler can cast negative float to unsigned.
+?S:	whether the C compiler can cast negative float to unsigned.
 ?S:.
 ?S:castflags:
 ?S:	This variable contains a flag that precise difficulties the

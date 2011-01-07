@@ -11,28 +11,28 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_PRId64:
 ?S:	This variable conditionally defines the PERL_PRId64 symbol, which
-?S:	indiciates that stdio has a symbol to print 64-bit decimal numbers.
+?S:	indicates that stdio has a symbol to print 64-bit decimal numbers.
 ?S:.
 ?S:d_PRIi64:
 ?S:	This variable conditionally defines the PERL_PRIi64 symbol, which
-?S:	indiciates that stdio has a symbol to print 64-bit decimal numbers.
+?S:	indicates that stdio has a symbol to print 64-bit decimal numbers.
 ?S:.
 ?S:d_PRIu64:
 ?S:	This variable conditionally defines the PERL_PRIu64 symbol, which
-?S:	indiciates that stdio has a symbol to print 64-bit unsigned decimal
+?S:	indicates that stdio has a symbol to print 64-bit unsigned decimal
 ?S:	numbers.
 ?S:.
 ?S:d_PRIo64:
 ?S:	This variable conditionally defines the PERL_PRIo64 symbol, which
-?S:	indiciates that stdio has a symbol to print 64-bit octal numbers.
+?S:	indicates that stdio has a symbol to print 64-bit octal numbers.
 ?S:.
 ?S:d_PRIx64:
 ?S:	This variable conditionally defines the PERL_PRIx64 symbol, which
-?S:	indiciates that stdio has a symbol to print 64-bit hexadecimal numbers.
+?S:	indicates that stdio has a symbol to print 64-bit hexadecimal numbers.
 ?S:.
 ?S:d_PRIXU64:
 ?S:	This variable conditionally defines the PERL_PRIXU64 symbol, which
-?S:	indiciates that stdio has a symbol to print 64-bit hExADECimAl numbers.
+?S:	indicates that stdio has a symbol to print 64-bit hExADECimAl numbers.
 ?S:	The 'U' in the name is to separate this from d_PRIx64 so that even
 ?S:	case-blind systems can see the difference.
 ?S:.

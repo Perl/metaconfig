@@ -26,7 +26,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_scannl:
 ?S:	This variable conditionally defines SCAN_NL, which indicates
-?S:	wether the C library routines scanf() and friends can deal with
+?S:	whether the C library routines scanf() and friends can deal with
 ?S:	a '\n' in the input correctly. They do most of the time.
 ?S:.
 ?C:SCAN_NL:

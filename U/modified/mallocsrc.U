@@ -30,7 +30,7 @@
 ?S:usemymalloc:
 ?S:	This variable contains y if the malloc that comes with this package
 ?S:	is desired over the system's version of malloc.  People often include
-?S:	special versions of malloc for effiency, but such versions are often
+?S:	special versions of malloc for efficiency, but such versions are often
 ?S:	less portable.  See also mallocsrc and mallocobj.
 ?S:	If this is 'y', then -lmalloc is removed from $libs.
 ?S:.

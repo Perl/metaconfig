@@ -30,7 +30,7 @@
 ?S:		eval 'exec perl -S $0 ${1+"$@"}'
 ?S:			if $running_under_some_shell;
 ?S:	to guarantee perl startup should the shell execute the script. Note
-?S:	that this magic incatation is not understood by csh.
+?S:	that this magic incantation is not understood by csh.
 ?S:.
 ?C:STARTPERL:
 ?C:	This variable contains the string to put in front of a perl

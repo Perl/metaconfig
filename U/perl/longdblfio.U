@@ -14,37 +14,37 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_PRIfldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
-?S:	indiciates that stdio has a symbol to print long doubles.
+?S:	indicates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIgldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
-?S:	indiciates that stdio has a symbol to print long doubles.
+?S:	indicates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIeldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
-?S:	indiciates that stdio has a symbol to print long doubles.
+?S:	indicates that stdio has a symbol to print long doubles.
 ?S:.
 ?S:d_PRIFUldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
-?S:	indiciates that stdio has a symbol to print long doubles.
+?S:	indicates that stdio has a symbol to print long doubles.
 ?S:	The 'U' in the name is to separate this from d_PRIfldbl so that even
 ?S:	case-blind systems can see the difference.
 ?S:.
 ?S:d_PRIGUldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
-?S:	indiciates that stdio has a symbol to print long doubles.
+?S:	indicates that stdio has a symbol to print long doubles.
 ?S:	The 'U' in the name is to separate this from d_PRIgldbl so that even
 ?S:	case-blind systems can see the difference.
 ?S:.
 ?S:d_PRIEUldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
-?S:	indiciates that stdio has a symbol to print long doubles.
+?S:	indicates that stdio has a symbol to print long doubles.
 ?S:	The 'U' in the name is to separate this from d_PRIeldbl so that even
 ?S:	case-blind systems can see the difference.
 ?S:.
 ?S:d_SCNfldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
-?S:	indiciates that stdio has a symbol to scan long doubles.
+?S:	indicates that stdio has a symbol to scan long doubles.
 ?S:.
 ?S:sPRIfldbl:
 ?S:	This variable, if defined, contains the string used by stdio to

@@ -34,7 +34,7 @@
 ?S:extensions:
 ?S:	This variable holds a list of all extension files (both XS and
 ?S:	non-xs linked into the package.  It is propagated to Config.pm
-?S:	and is typically used to test whether a particular extesion
+?S:	and is typically used to test whether a particular extension
 ?S:	is available.
 ?S:.
 ?S:useposix:

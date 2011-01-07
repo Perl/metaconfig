@@ -32,7 +32,7 @@
 ?S:	usually /usr/include. It is mainly used by other Configure units.
 ?S:.
 ?S:incpath:
-?S:	This variable must preceed the normal include path to get hte
+?S:	This variable must precede the normal include path to get the
 ?S:	right one, as in "$incpath/usr/include" or "$incpath/usr/lib".
 ?S:	Value can be "" or "/bsd43" on mips.
 ?S:.

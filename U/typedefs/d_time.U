@@ -24,7 +24,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_time:
 ?S:	This variable conditionally defines the HAS_TIME symbol, which indicates
-?S:	that the time() routine exists.  The time() routine is normaly
+?S:	that the time() routine exists.  The time() routine is normally
 ?S:	provided on UNIX systems.
 ?S:.
 ?S:timetype:

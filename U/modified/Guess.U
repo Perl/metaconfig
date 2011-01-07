@@ -39,7 +39,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_eunice:
 ?S:	This variable conditionally defines the symbols EUNICE and VAX, which
-?S:	alerts the C program that it must deal with ideosyncracies of VMS.
+?S:	alerts the C program that it must deal with idiosyncracies of VMS.
 ?S:.
 ?S:d_xenix:
 ?S:	This variable conditionally defines the symbol XENIX, which alerts
