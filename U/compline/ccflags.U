@@ -95,7 +95,7 @@
 ?INIT:
 ?INIT:: Enable -DEBUGGING and -DDEBUGGING from the command line
 ?INIT:EBUGGING=''
-?INIT:DEBUGGING=old
+?INIT:DEBUGGING=''
 ?INIT:
 : determine optimization, if desired, or use for debug flag also
 ?X: Allow for Configure -Uoptimize -- it's not strictly sensible, but
