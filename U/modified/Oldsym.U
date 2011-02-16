@@ -46,16 +46,16 @@ if $test -f UU/config.sh; then
 	$sed -n 's/^\([a-zA-Z_0-9]*\)=.*/\1/p' \
 		config.sh config.sh UU/oldconfig.sh |\
 		$sort | $uniq -u >UU/oldsyms
-	set X `cat UU/oldsyms`
+	set X `$cat UU/oldsyms`
 	shift
 	case $# in
 	0) ;;
 	*)
-		cat <<EOM
+		$cat <<EOM
 Hmm...You had some extra variables I don't know about...I'll try to keep 'em...
 EOM
 		echo ": Variables propagated from previous config.sh file." >>config.sh
-		for sym in `cat UU/oldsyms`; do
+		for sym in `$cat UU/oldsyms`; do
 			echo "    Propagating $hint variable "'$'"$sym..."
 			eval 'tmp="$'"${sym}"'"'
 			echo "$tmp" | \

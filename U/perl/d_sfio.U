@@ -8,7 +8,7 @@
 ?RCS: $Log: d_sfio.U,v $
 ?RCS:
 ?MAKE:usesfio d_sfio: i_sfio Inlibc Myread Oldconfig sed libs \
-	Setvar package useperlio
+	Setvar package
 ?MAKE:	-pick add $@ %<
 ?S:usesfio:
 ?S:	This variable is set to true when the user agrees to use sfio.
@@ -29,7 +29,6 @@
 ?H:.
 ?LINT:set d_sfio
 ?LINT:change libs
-?LINT:change useperlio
 : see if sfio library is available
 case "$i_sfio" in
 $define)
@@ -49,17 +48,10 @@ $define)
 	*) dflt='n';;
 	esac
 	echo "$package can use the sfio library, but it is experimental."
-	case "$useperlio" in
-	"$undef")
-	    echo "For sfio also the PerlIO abstraction layer is needed."
-	    echo "Earlier you said you wouldn't want that."
-	    ;;
-	esac
 	rp="You seem to have sfio available, do you want to try using it?"
 	. ./myread
 	case "$ans" in
-	y|Y)	echo "Ok, turning on both sfio and PerlIO, then."
-		useperlio="$define"
+	y|Y)	echo "Ok, turning on sfio then."
 		val="$define"
 		;;
 	*)	echo "Ok, avoiding sfio this time.  I'll use stdio instead."
