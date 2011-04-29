@@ -22,21 +22,13 @@ Contents of this directory:
     U:		Metaconfig units used for buliding Perl's Configure
     U.check:	Sample directory used for testing new metaconfig units.
     		see U.check/README for more information.
-    dist-3.0at70: 
-    		dist-3.0 at patchlevel 70.  This is the final version released
-    		by Raphael Manfredi.  Don't use it.  Instead, use ...
-    dist-3.0at70b:
-    		dist-3.0 at patchlevel 70 with unofficial patches 'a' and 'b'
-		applied.  This version was never officially released, but
-		the patches are essential, so this is the version we use for 
-		perl.  Actually, I've also applied U/dist_patches/dist-p70c
-		to this tree.  If someone with commit power wants to change
-		the name of the directory, that'd be fine. Otherwise, it
-		really doesn't matter.
     dist-3.5-20:
 		dist-3.5-20 is almost meta-4.0, still maintained by Raphael
 		Manfredi, but with a lot of fixes over 3.0, some changes
-		from the perl modifications merged and a much better metalint
+		from the perl modifications merged and a much better
+		metalint. This directory comes from a tar distribution.
+    dist-svn:
+		a git clone of "dist". Optionally present. See (a) below.
     dist:
 		a symlink to the lib you actually use. For Merijn that is
 		metaconfig/dist -> ../lib/dist
@@ -45,14 +37,21 @@ Contents of this directory:
     in your $PATH.
     The dist version used for perl is dist-3.5-20 in this directory, which is
     a slightly modified version of the original, which you can get at the SVN
-    repository https://dist.svn.sourceforge.net/svnroot/dist/trunk
+    repository https://dist.svn.sourceforge.net/svnroot/dist/trunk. If you'd
+    like to keep up to date with changes in dist, you can either use svn or
+    git to create your own clone. For git, that would be something like:
+
+    $ git svn clone \
+      http://dist.svn.sourceforge.net/svnroot/dist/trunk/dist \
+      dist-svn
+
     Unsurprisingly 'dist' uses (its) Configure to generate itself:
 
-    cd dist-3.5-20
-    chmod -R +w .     # We have derived files in git :-(
-    ./Configure
-    make
-    make install
+    $ cd dist-3.5-20	# or dist-svn
+    $ chmod -R +w .     # We have derived files in git :-(
+    $ ./Configure
+    $ make
+    $ make install
 
     After make install, remove lib/U/d_debugging.U in your target lib, as perl
     uses it's own way to set/define debugging (see INSTALL)
