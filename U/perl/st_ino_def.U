@@ -1,0 +1,96 @@
+?RCS: Copyright (c) 2011, H.Merijn Brand & Tony Cook
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:st_ino_size st_ino_sign: cat echo i_stdlib Setvar Compile run rm_try
+?MAKE:	-pick add $@ %<
+?S:st_ino_sign:
+?S:	This variable contains the signedness of struct stat's st_ino.
+?S:	1 for unsigned, -1 for signed.
+?S:.
+?S:st_ino_size:
+?S:	This variable contains the size of struct stat's st_ino in bytes.
+?S:.
+?C:ST_INO_SIZE:
+?C:	This variable contains the size of struct stat's st_ino in bytes.
+?C:.
+?C:ST_INO_SIGN:
+?C:	This symbol holds the signedess of struct stat's st_ino.
+?C:	1 for unsigned, -1 for signed.
+?C:.
+?H:#define ST_INO_SIGN $st_ino_sign	/* st_ino sign */
+?H:#define ST_INO_SIZE $st_ino_size	/* st_ino size */
+?H:.
+?F:!try
+: Check the size of st_ino
+$echo " "
+$echo "Checking the size of st_ino..." >&4
+$cat > try.c <<EOCP
+#include <sys/stat.h>
+#include <stdio.h>
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
+int main() {
+    struct stat st;
+    printf("%d\n", (int)sizeof(st.st_ino));
+    exit(0);
+}
+EOCP
+set try
+if eval $compile_ok; then
+	val=`$run ./try`
+	case "$val" in
+	'')	st_ino_size=4
+		$echo "(I can't execute the test program--guessing $st_ino_size.)" >&4
+		;;
+	*)	st_ino_size=$val
+		$echo "Your st_ino is $st_ino_size bytes long."
+		;;
+	esac
+else
+	st_ino_size=4
+	$echo "(I can't compile the test program--guessing $st_ino_size.)" >&4
+fi
+$rm_try
+
+: Check if st_ino is signed
+$echo " "
+$echo "Checking the sign of st_ino..." >&4
+$cat > try.c <<EOCP
+#include <sys/stat.h>
+#include <stdio.h>
+int main() {
+	struct stat foo;
+        foo.st_ino = -1;
+	if (foo.st_ino < 0)
+		printf("-1\n");
+	else
+		printf("1\n");
+}
+EOCP
+set try
+if eval $compile; then
+	val=`$run ./try`
+	case "$val" in
+	'')	st_ino_sign=1
+		$echo "(I can't execute the test program--guessing unsigned.)" >&4
+		;;
+	*)	st_ino_sign=$val
+		case "$st_ino_sign" in
+		 1) $echo "Your st_ino is unsigned." ;;
+		-1) $echo "Your st_ino is signed."   ;;
+		esac
+		;;
+	esac
+else
+	st_ino_sign=1
+	$echo "(I can't compile the test program--guessing unsigned.)" >&4
+fi
+$rm_try
+
