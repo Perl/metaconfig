@@ -67,6 +67,28 @@ Contents of this directory:
     We have not yet arranged for metaconfig to use perl's versions of the
     'units' by default so you need some housekeeping in the perl directory...
 
+(aa)  -- optional --
+
+    If you plan to make changes to metaconfig or metalint locally (and you
+    probably want to, as both are written for perl4), consider installing
+    mconfig and mlint from the cmon subdirectory into your $PATH too. These
+    are the non-autoloading versions and can easily be changed. Here is what
+    I added at the beginning of mconfig:
+
+    --8<---
+    BEGIN { $ENV{LC_ALL} = "C"; }
+    chdir "/pro/3gl/CPAN/perl";
+    {   my @Cc = qw( Configure config_h.SH );
+	system "chown merijn @Cc";
+	chmod 0775, @Cc;
+	#-d "merijn" or mkdir "merijn";
+	#system "cp -f Configure config_h.SH Porting/Glossary Porting/config.sh merijn/";
+	system "ls", "-l", @Cc;
+	}
+    -->8---
+
+    I also added the foirst two lines of that patch to mlint
+
 (b) You need to be in a/the Perl directory, i.e. either something from
     //depot/perl/... or one of its branches
     (e.g. Nick I-S is usually in //depot/perlio/...)
@@ -81,8 +103,8 @@ Contents of this directory:
     the best appropriate subdir of U.  See U/README for a description of
     the various subdirectories.)
 
-(d) Run metalint to see nits: as opposed to lint, the gripings of
-    metalint are usually serious :-) and need fixing
+(d) Run metalint (or mlint) to see nits: as opposed to lint, the gripings
+    of metalint are usually serious :-) and need fixing
 
     Exceptions are lots of
       Your private U/modified/voidflags.U overrides the public one.
@@ -90,7 +112,10 @@ Contents of this directory:
 
     an alias to something like
     $ metalint      |& grep -v -e '^    Your private U/'
-    will make the process silence up on that
+    will make the process silence up on that (of course you can add an
+    option to mlint to disable that warning (which is already disabled
+    by the undocumented and forgotten -s option, but that also suppresses
+    other warnings)
 
     and
 
@@ -102,7 +127,7 @@ Contents of this directory:
 
 (e) chmod +w Configure config_h.SH
 
-(f) metaconfig -m to regenerate Configure
+(f) metaconfig -m to regenerate Configure (or mconfig -m)
 
 (g) metaconfig does not deal with depends in config_h.SH, so some
     reorganization is needed.
