@@ -1,6 +1,6 @@
 #!/pro/bin/perl
 
-# (c)'06 H.Merijn Brand [ 16 Nov 2006 ]
+# (c)'11 H.Merijn Brand [ 26 Aug 2011 ]
 
 # This script combines the output of mkglossary, with the suggested
 # patches (see README), and sorts the list

@@ -2,7 +2,7 @@
 		     Perl5 Metaconfig Units
 
 	     Copyright (c) 1996-1998, Andy Dougherty
-	     Copyright (c) 1999-2006, H.Merijn Brand
+	     Copyright (c) 1999-2011, H.Merijn Brand
 			All rights reserved.
 
 These units are the ones used to build Configure and config_h.SH

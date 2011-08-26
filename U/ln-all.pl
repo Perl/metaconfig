@@ -1,6 +1,6 @@
 #!/pro/bin/perl
 
-# (c)'06 H.Merijn Brand [ 09 Apr 2006 ]
+# (c)'11 H.Merijn Brand [ 26 Aug 2011 ]
 
 # Small script to regenerate the links in U/all, that should
 # represent all the modules used in the current Configure
@@ -26,7 +26,7 @@ for (@safe) {
     copy "$perl/$_", $_;
     }
 
-@ARGV = ("metaconfig -v -m 2>&1 |");
+@ARGV = ("mconfig -v -m -O 2>&1 |");
 while (<>) {
     s{^\s+$perl/U}{} or next;
     chomp;

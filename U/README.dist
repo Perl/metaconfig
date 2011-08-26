@@ -2,7 +2,7 @@
 		     Perl5 Metaconfig Units
 
 	     Copyright (c) 1996-1998, Andy Dougherty
-	     Copyright (c) 1999-2006, H.Merijn Brand
+	     Copyright (c) 1999-2011, H.Merijn Brand
 			All rights reserved.
 
 These units are the ones I used to build Configure and config_h.SH
@@ -42,13 +42,13 @@ Instructions:
 
 6.  From your main perl5 source directory, run
 
-	metalint
+	metalint (or mlint)
 
     and repair every failure it reports.
 
 7.  From your main perl5 source directory, run
 
-	metaconfig -m
+	metaconfig -m (or mconfig -m)
 
 8.  Edit U/mkglossary and/or U/mkgloss.pl to point to your dist-3.0pl70
     location.  (See comments at the top.)
