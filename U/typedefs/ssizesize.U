@@ -15,7 +15,7 @@
 ?C:Ssize_t_size:
 ?C:	This symbol holds the size of a Ssize_t in bytes.
 ?C:.
-?H:#define Ssize_t_size $ssizesize		/* */
+?H:#define Ssize_t_size $ssizesize		/**/
 ?H:.
 ?T:yyy zzz
 ?F:!try
