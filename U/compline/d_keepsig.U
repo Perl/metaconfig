@@ -1,12 +1,12 @@
 ?RCS: $Id: d_keepsig.U,v 3.0.1.4 1995/07/25 13:57:56 ram Exp $
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: d_keepsig.U,v $
 ?RCS: Revision 3.0.1.4  1995/07/25  13:57:56  ram
@@ -16,7 +16,7 @@
 ?RCS: patch45: protected "sh -c" within backquotes for Linux and SGI
 ?RCS:
 ?RCS: Revision 3.0.1.2  1994/10/29  16:13:59  ram
-?RCS: patch36: call ./bsd explicitly instead of relying on PATH
+?RCS: patch36: call ./bsd explicitely instead of relying on PATH
 ?RCS:
 ?RCS: Revision 3.0.1.1  1993/10/16  13:48:47  ram
 ?RCS: patch12: comment for SIGNALS_KEPT was the other way round
@@ -37,7 +37,7 @@
 ?C:.
 ?H:#$d_keepsig SIGNALS_KEPT	/**/
 ?H:.
-?F:!try
+?F:!try !try.out
 ?LINT:set d_keepsig
 : see if signals are kept
 val="$undef";
