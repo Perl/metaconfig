@@ -29,7 +29,8 @@
 ?C:HAS_QUAD:
 ?C:	This symbol, if defined, tells that there's a 64-bit integer type,
 ?C:	Quad_t, and its unsigned counterpart, Uquad_t. QUADKIND will be one
-?C:	of QUAD_IS_INT, QUAD_IS_LONG, QUAD_IS_LONG_LONG, or QUAD_IS_INT64_T.
+?C:	of QUAD_IS_INT, QUAD_IS_LONG, QUAD_IS_LONG_LONG, QUAD_IS_INT64_T,
+?C:	or QUAD_IS___INT64.
 ?C:.
 ?H:#$d_quad HAS_QUAD	/**/
 ?H:?%<:#ifdef HAS_QUAD
@@ -40,6 +41,7 @@
 ?H:?%<:#   define QUAD_IS_LONG	2
 ?H:?%<:#   define QUAD_IS_LONG_LONG	3
 ?H:?%<:#   define QUAD_IS_INT64_T	4
+?H:?%<:#   define QUAD_IS___INT64	5
 ?H:?%<:#endif
 ?H:.
 ?LINT:set quadtype
