@@ -1,0 +1,25 @@
+?RCS: $Id: i_stdbool.U,v $
+?RCS:
+?RCS: Copyright (c) 2011 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_stdbool: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_stdbool:
+?S:	This variable conditionally defines the I_STDBOOL symbol, which
+?S:	indicates to the C program that <stdbool.h> exists and should
+?S:	be included.
+?S:.
+?C:I_STDBOOL:
+?C:	This symbol, if defined, indicates that <stdbool.h> exists and
+?C:	can be included.
+?C:.
+?H:#$i_stdbool	I_STDBOOL		/**/
+?H:.
+?LINT:set i_stdbool
+: see if stdbool is available
+set stdbool.h i_stdbool
+eval $inhdr
+
