@@ -87,7 +87,7 @@ Contents of this directory:
 	}
     -->8---
 
-    I also added the foirst two lines of that patch to mlint
+    I also added the first two lines of that patch to mlint
 
 (b) You need to be in a/the Perl directory, i.e. either something from
     //depot/perl/... or one of its branches
@@ -157,7 +157,24 @@ Contents of this directory:
     you see fit.
     You can skip this phase, it's not essential, just good housekeeping.
 
-(k) make veryclean; sh Configure -des -Dusedevel; make all test
+(k) Run the perl build chain
+
+    make veryclean
+    sh ./Configure -des -Dusedevel
+
+    The dependency for uconfig.h isn't carved in stone, so you might
+    need to regenerate it
+
+    perl regen/uconfig_h.pl
+
+    Then make and make test or make test_harness (with TEST_JOBS=5)
+
+    make all test_harness
+
+    Before you start committing, make sure that the other developers
+    are happy and run
+
+    make test_porting
 
 -- the next steps are in the metaconfig folder again
 
