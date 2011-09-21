@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:i_stdbool: Inhdr
+?MAKE:i_stdbool: cat Compile rm_try Setvar
 ?MAKE:	-pick add $@ %<
 ?S:i_stdbool:
 ?S:	This variable conditionally defines the I_STDBOOL symbol, which
@@ -20,6 +20,31 @@
 ?H:.
 ?LINT:set i_stdbool
 : see if stdbool is available
-set stdbool.h i_stdbool
-eval $inhdr
+: we want a real compile instead of Inhdr because some Solaris systems
+: have stdbool.h, but it can only be used if the compiler indicates it
+: is sufficiently c99-compliant.
+echo " "
+$cat >try.c <<EOCP
+#include <stdio.h>
+#include <stdbool.h>
+int func(bool x)
+{
+    return x ? 1 : 0;
+}
+int main(int argc, char **argv)
+{
+    return func(0);
+}
+EOCP
+set try
+if eval $compile; then
+	echo "<stdbool.h> found." >&4
+	val="$define"
+else
+	echo "<stdbool.h> NOT found." >&4
+	val="$undef"
+fi
+$rm_try
+set i_stdbool
+eval $setvar
 
