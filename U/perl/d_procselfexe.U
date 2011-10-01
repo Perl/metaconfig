@@ -24,29 +24,31 @@
 ?H:?%<:#define PROCSELFEXE_PATH	$procselfexe	/**/
 ?H:?%<:#endif
 ?H:.
+?T:try type
 ?LINT: set d_procselfexe
 : Check if exe is symlink to abs path of executing program
 echo " "
 procselfexe=''
 val="$undef"
 case "$d_readlink" in
-"$define")
-	if $issymlink /proc/self/exe ; then
-		$ls -l /proc/self/exe > reflect
+    "$define")
+	: NetBSD first as /proc/self is a symlink to /proc/curproc, and it feels
+	: more tidy to avoid an extra level of symlink
+	set NetBSD /proc/curproc/exe Linux /proc/self/exe FreeBSD /proc/curproc/file Solaris /proc/self/path/a.out
+	while test $# -gt 0; do
+	    type=$1; try=$2
+	    shift; shift
+	    if $issymlink $try; then
+		$ls -l $try > reflect
 		if $contains /`basename $ls` reflect >/dev/null 2>&1; then
-			echo "You have Linux-like /proc/self/exe."
-			procselfexe='"/proc/self/exe"'
-			val="$define"
+		    echo "You have $type-like $try."
+		    procselfexe='"'$try'"'
+		    val="$define"
+		    : This will break out of the loop
+		    set X; shift
 		fi
-	fi
-	if $issymlink /proc/curproc/file ; then
-		$ls -l /proc/curproc/file > reflect
-		if $contains /`basename $ls` reflect >/dev/null 2>&1; then
-			echo "You have BSD-like /proc/curproc/file."
-			procselfexe='"/proc/curproc/file"'
-			val="$define"
-		fi
-	fi
+	    fi
+	done
 	;;
 esac
 $rm -f reflect
