@@ -28,7 +28,7 @@ $cat >isblank.c <<'EOCP'
 #include <stdio.h>
 #include <ctype.h>
 int main() {
-	int c = 'A';
+	int c = ' ';
 	if (isblank(c))
 		exit(0);
 	else
