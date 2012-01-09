@@ -1,0 +1,48 @@
+?RCS: Copyright (c) 2012-2012, H.Merijn Brand
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: Original Author: H.Merijn Brand
+?RCS:
+?MAKE:d_isblank: cc cat ccflags ldflags rm libs Setvar
+?MAKE:	-pick add $@ %<
+?S:d_isblank:
+?S:	This variable conditionally defines the HAS_ISBLANK constant,
+?S:	which indicates to the C program that isblank() is available.
+?S:.
+?C:HAS_ISBLANK:
+?C:	This manifest constant lets the C program know that isblank 
+?C:	is available.
+?C:.
+?H:#$d_isblank HAS_ISBLANK		/**/
+?H:.
+?LINT:set d_isblank
+?X: Can't use Inlibc because isblank() might be a macro.
+: Look for isblank
+echo " "
+$cat >isblank.c <<'EOCP'
+#include <stdio.h>
+#include <ctype.h>
+int main() {
+	int c = 'A';
+	if (isblank(c))
+		exit(0);
+	else
+		exit(1);
+}
+EOCP
+if $cc $ccflags $ldflags -o isblank isblank.c $libs >/dev/null 2>&1 ; then
+	echo "isblank() found." >&4
+	val="$define"
+else
+	echo "isblank() NOT found." >&4
+	val="$undef"
+fi
+set d_isblank
+eval $setvar
+$rm -f isblank*
+
