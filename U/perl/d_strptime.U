@@ -1,0 +1,22 @@
+?RCS: Copyright (c) 2012 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_strptime: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_strptime:
+?S:	This variable conditionally defines the HAS_STRPTIME symbol, which
+?S:	indicates to the C program that the strptime() routine is available.
+?S:.
+?C:HAS_STRPTIME:
+?C:	This symbol, if defined, indicates that the strptime routine is
+?C:	available to set process title.
+?C:.
+?H:#$d_strptime HAS_STRPTIME		/**/
+?H:.
+?LINT:set d_strptime
+: see if strptime exists
+set strptime d_strptime
+eval $inlibc
+
