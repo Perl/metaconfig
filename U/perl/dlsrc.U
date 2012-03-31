@@ -16,9 +16,10 @@
 ?X:	  cc -c +z module_b.c
 ?X:	  ld -b module_a.o module_b.o -o module.sl
 ?X:
-?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags bin_ELF: rm_try \
-	Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar src run \
-	cc ccflags ldflags optimize ls gccversion cat rsrc i_stdlib i_unistd
+?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags bin_ELF ld_can_script: \
+	rm_try Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar \
+	src run cc ccflags ldflags optimize ls gccversion cat rsrc i_stdlib \
+	i_unistd
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:usedl:
@@ -57,6 +58,11 @@
 ?S:	This variable saves the result from configure if generated binaries
 ?S:	are in ELF format. Only set to defined when the test has actually
 ?S:	been performed, and the result was positive.
+?S:.
+?S:ld_can_script:
+?S:	This variable shows if the loader accepts scripts in the form of
+?S:	-Wl,--version-script=ld.script. This is currently only supported
+?S:	for GNU ld on ELF in dynamic loading builds.
 ?S:.
 ?C:USE_DYNAMIC_LOADING ~ %<:
 ?C:	This symbol, if defined, indicates that dynamic loading of
@@ -304,6 +310,34 @@ EOM
     dlsrc='dl_none.xs'
     lddlflags=''
     ccdlflags=''
+    ;;
+esac
+
+ld_can_script="$undef"
+case "$bin_ELF$usedl" in
+$define$define)
+    # Abuse try.h and a.out names for neat cleanup
+    $cat >try.c <<EOM
+void foo() {}
+void bar() {}
+EOM
+    $cat >try.h <<EOM
+LIBTEST_42 {
+ global:
+  foo;
+ local: *;
+ };
+EOM
+    if $cc $cccdlflags $ccdlflags $ccflags \
+           $ldflags $lddlflags -o a.out try.c \
+           -Wl,--version-script=try.h >/dev/null 2>&1 \
+       &&  $test -s a.out ; then
+	echo "ld supports scripting" >&4
+	ld_can_script="$define"
+    else
+	echo "ld does not support scripting" >&4
+    fi
+    $rm_try
     ;;
 esac
 
