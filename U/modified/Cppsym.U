@@ -216,7 +216,7 @@ $cc -o try -Dcpp_stuff=$cpp_stuff $optimize \$ccflags $ldflags try.c $libs && $r
 EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try
-./Cppsym < Cppsym.know > Cppsym.true
+./Cppsym < Cppsym.know | $sort | $uniq > Cppsym.true
 : Add in any linux cpp "predefined macros":
 case "$osname::$gccversion" in
   *linux*::*.*|*gnukfreebsd*::*.*|gnu::*.*)
