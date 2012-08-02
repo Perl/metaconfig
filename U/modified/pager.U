@@ -1,0 +1,62 @@
+?RCS: $Id: pager.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: pager.U,v $
+?RCS: Revision 3.0.1.2  1995/01/30  14:41:26  ram
+?RCS: patch49: ensure dflt gets initialized in case no pagers are found (WED)
+?RCS:
+?RCS: Revision 3.0.1.1  1994/10/29  16:27:45  ram
+?RCS: patch36: replaced Myread by Getfile in the dependency line
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:09:30  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:pager: pg more less Getfile Oldconfig
+?MAKE:	-pick add $@ %<
+?S:pager:
+?S:	This variable contains the name of the preferred pager on the system.
+?S:	Usual values are (the full pathnames of) more, less, pg, or cat.
+?S:.
+: locate the preferred pager for this system
+fn=f/
+case "$pager" in
+'')
+	dflt=''
+	case "$pg" in
+	/*) dflt=$pg;;
+	[a-zA-Z]:/*) dflt=$pg;;
+	esac
+	case "$more" in
+	/*) dflt=$more;;
+	[a-zA-Z]:/*) dflt=$more;;
+	esac
+	case "$less" in
+	/*) dflt=$less;;
+	[a-zA-Z]:/*) dflt=$less;;
+	esac
+	case "$dflt" in
+	'') dflt=/usr/ucb/more;;
+	esac
+	;;
+*)	dflt="$pager"
+	;;
+esac
+?X: Instruct ./getfile to trust the default pager value,
+?X: even if it does not begin with a slash.  For example, on os2,
+?X: pager might be cmd /c more.  Also, it might include some options,
+?X: such as '/usr/bin/less -R'.  ./getfile would report that 
+?X: "/usr/bin/less -R" doesn't exist.
+?X: See comments in Getfile.U.
+fn="f/($dflt)"
+echo " "
+rp='What pager is used on your system?'
+. ./getfile
+pager="$ans"
+
