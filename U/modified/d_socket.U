@@ -21,7 +21,7 @@
 ?MAKE:d_socket d_oldsock d_sockpair socketlib sockethdr \
 	d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy \
 	d_scm_rights d_sockaddr_sa_len d_sockaddr_in6 d_sin6_scope_id \
-	d_ip_mreq d_ipv6_mreq: \
+	d_ip_mreq d_ip_mreq_source d_ipv6_mreq d_ipv6_mreq_source: \
 	contains echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
 	Compile cat rm_try Setvar Hasfield
 ?MAKE:	-pick add $@ %<
@@ -85,9 +85,17 @@
 ?S:	This variable conditionally defines the HAS_IP_MREQ symbol, which
 ?S:	indicates the availability of a struct ip_mreq.
 ?S:.
+?S:d_ip_mreq_source:
+?S:	This variable conditionally defines the HAS_IP_MREQ_SOURCE symbol,
+?S:	which indicates the availability of a struct ip_mreq_source.
+?S:.
 ?S:d_ipv6_mreq:
 ?S:	This variable conditionally defines the HAS_IPV6_MREQ symbol, which
 ?S:	indicates the availability of a struct ipv6_mreq.
+?S:.
+?S:d_ipv6_mreq_source:
+?S:	This variable conditionally defines the HAS_IPV6_MREQ_SOURCE symbol,
+?S:	which indicates the availability of a struct ipv6_mreq_source.
 ?S:.
 ?S:socketlib:
 ?S:	This variable has the names of any libraries needed for socket support.
@@ -155,9 +163,17 @@
 ?C:	This symbol, if defined, indicates the availability of
 ?C:	struct ip_mreq;
 ?C:.
+?C:HAS_IP_MREQ_SOURCE:
+?C:	This symbol, if defined, indicates the availability of
+?C:	struct ip_mreq_source;
+?C:.
 ?C:HAS_IPV6_MREQ:
 ?C:	This symbol, if defined, indicates the availability of
 ?C:	struct ipv6_mreq;
+?C:.
+?C:HAS_IPV6_MREQ_SOURCE:
+?C:	This symbol, if defined, indicates the availability of
+?C:	struct ipv6_mreq_source;
 ?C:.
 ?H:#$d_socket	HAS_SOCKET		/**/
 ?H:#$d_sockpair	HAS_SOCKETPAIR	/**/
@@ -172,13 +188,16 @@
 ?H:#$d_sockaddr_in6	HAS_SOCKADDR_IN6	/**/
 ?H:#$d_sin6_scope_id	HAS_SIN6_SCOPE_ID	/**/
 ?H:#$d_ip_mreq	HAS_IP_MREQ	/**/
+?H:#$d_ip_mreq_source	HAS_IP_MREQ_SOURCE	/**/
 ?H:#$d_ipv6_mreq	HAS_IPV6_MREQ	/**/
+?H:#$d_ipv6_mreq_source	HAS_IPV6_MREQ_SOURCE	/**/
 ?H:.
 ?T:val net ENUM enum
 ?F:try.c
 ?LINT:set d_sockpair d_sockaddr_sa_len
 ?LINT:set d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy
-?LINT:set d_scm_rights d_sockaddr_in6 d_sin6_scope_id d_ip_mreq d_ipv6_mreq
+?LINT:set d_scm_rights d_sockaddr_in6 d_sin6_scope_id d_ip_mreq
+?LINT:set d_ip_mreq_source d_ipv6_mreq d_ipv6_mreq_source
 : see whether socket exists
 socketlib=''
 sockethdr=''
@@ -329,6 +348,25 @@ $rm_try
 
 echo " "
 ?X: ...
+echo "Checking the availability struct ip_mreq_source ..." >&4
+$cat >try.c <<EOF
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+int main() {
+struct ip_mreq_source mreq;
+return (mreq.imr_multiaddr.s_addr);
+}
+EOF
+val="$undef"
+set try; if eval $compile; then
+       val="$define"
+fi
+set d_ip_mreq_source; eval $setvar
+$rm_try
+
+echo " "
+?X: ...
 echo "Checking the availability struct ipv6_mreq ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -344,6 +382,25 @@ set try; if eval $compile; then
 	val="$define"
 fi
 set d_ipv6_mreq; eval $setvar
+$rm_try
+
+echo " "
+?X: ...
+echo "Checking the availability struct ipv6_mreq_source ..." >&4
+$cat >try.c <<EOF
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+int main() {
+struct ipv6_mreq_source mreq;
+return (mreq.imr_multiaddr.s_addr);
+}
+EOF
+val="$undef"
+set try; if eval $compile; then
+       val="$define"
+fi
+set d_ipv6_mreq_source; eval $setvar
 $rm_try
 
 echo " "
