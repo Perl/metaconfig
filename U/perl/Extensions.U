@@ -231,12 +231,7 @@ for xxx in $known_extensions ; do
 		;;
 	Socket|socket)
 		case "$d_socket" in
-		true|$define|y)
-		    case "$osname" in
-		    beos) ;; # not unless BONE
-		    *) avail_ext="$avail_ext $xxx" ;;
-		    esac
-		    ;;
+		true|$define|y) avail_ext="$avail_ext $xxx" ;;
 		esac
 		;;
 	Sys/Syslog|sys/syslog)

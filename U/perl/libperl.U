@@ -62,7 +62,7 @@ $undef)
 	;;
 *)	case "$useshrplib" in
 	'')	case "$osname" in
-		svr4*|nonstopux|dgux|dynixptx|esix|powerux|beos|haiku|cygwin*)
+		svr4*|nonstopux|dgux|dynixptx|esix|powerux|haiku|cygwin*)
 			dflt=y
 			also='Building a shared libperl is required for dynamic loading to work on your system.'
 			;;
@@ -232,9 +232,6 @@ if "$useshrplib"; then
 		;;
 	next)
 		# next doesn't like the default...
-		;;
-	beos)
-		# beos doesn't like the default, either.
 		;;
 	haiku)
 		# Haiku doesn't like the default, either.
