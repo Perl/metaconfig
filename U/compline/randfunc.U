@@ -161,9 +161,9 @@ echo "Checking to see how many bits your $randfunc() function produces..." >&4
 #endif
 int main()
 {
-	register int i;
-	register unsigned long tmp;
-	register unsigned long max = 0L;
+	int i;
+	unsigned long tmp;
+	unsigned long max = 0L;
 
 	for (i = 1000; i; i--) {
 		tmp = (unsigned long) $randfunc();
