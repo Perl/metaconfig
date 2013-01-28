@@ -42,7 +42,7 @@ Contents of this directory:
     git to create your own clone. For git, that would be something like:
 
     $ git svn clone \
-      http://dist.svn.sourceforge.net/svnroot/dist/trunk/dist \
+      svn://svn.code.sf.net/p/dist/code/trunk/dist \
       dist-svn
 
     Unsurprisingly 'dist' uses (its) Configure to generate itself:
