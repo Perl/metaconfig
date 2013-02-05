@@ -93,6 +93,7 @@ EOCP
 	$rm_try
 	;;
 *)	echo "You don't have <stdarg.h>, not checking for va_copy()." >&4
+	need_va_copy="$undef"
 	;;
 esac
 

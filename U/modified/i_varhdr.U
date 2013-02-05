@@ -126,6 +126,7 @@ chmod +x varargs
 : now check which varargs header should be included
 echo " "
 i_varhdr=''
+val=''
 case "$valstd" in
 "$define")
 	if `./varargs I_STDARG`; then
