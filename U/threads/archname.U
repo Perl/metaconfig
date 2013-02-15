@@ -18,9 +18,10 @@
 ?RCS: Revision 3.0.1.1  1995/02/15  14:14:21  ram
 ?RCS: patch51: created
 ?RCS:
-?MAKE:archname myarchname: sed Loc Myread Oldconfig osname test rm \
-	usethreads usemultiplicity use64bitint use64bitall archname64 \
-	uselongdouble longdblsize doublesize targetarch
+?MAKE:archname myarchname useversionedarchname: sed Loc Myread Oldconfig \
+	osname test rm usethreads usemultiplicity use64bitint use64bitall \
+	archname64 uselongdouble longdblsize doublesize targetarch Setvar \
+	api_versionstring
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current
@@ -30,6 +31,10 @@
 ?S:	This variable holds the architecture name computed by Configure in
 ?S:	a previous run. It is not intended to be perused by any user and
 ?S:	should never be set in a hint file.
+?S:.
+?S:useversionedarchname:
+?S:	This variable indicates whether to include the $api_versionstring
+?S:	as a component of the $archname.
 ?S:.
 ?C:ARCHNAME:
 ?C:	This symbol holds a string representing the architecture name.
@@ -82,6 +87,32 @@ esac
 rp='What is your architecture name'
 . ./myread
 archname="$ans"
+
+: optionally add api version to the architecture for versioned archlibs
+case "$useversionedarchname" in
+$define|true|[yY]*) dflt='y';;
+*)                  dflt='n';;
+esac
+rp='Add the Perl API version to your archname?'
+. ./myread
+case "$ans" in
+y|Y)	useversionedarchname="$define" ;;
+*)      useversionedarchname="$undef" ;;
+esac
+case "$useversionedarchname" in
+$define)
+        case "$archname" in
+        *-$api_versionstring)
+                echo "...and architecture name already has -$api_versionstring" >&4
+                ;;
+        *)
+                archname="$archname-$api_versionstring"
+                echo "...setting architecture name to $archname." >&4
+                ;;
+        esac
+        ;;
+esac
+
 @if usethreads
 case "$usethreads" in
 $define)
