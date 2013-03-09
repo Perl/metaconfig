@@ -8,19 +8,30 @@
 ?RCS:	Original author Jarkko Hietaniemi <jhi@iki.fi>
 ?RCS:	Merged into dist by Andy Dougherty  July 13, 1998
 ?RCS:
-?MAKE:ebcdic: Compile Setvar cat rm_try run
+?MAKE:ebcdic bootstrap_charset: Compile Setvar cat rm_try run
 ?MAKE:	-pick add $@ %<
 ?S:ebcdic:
 ?S:	This variable conditionally defines EBCDIC if this
-?S:	system uses EBCDIC encoding.  Among other things, this
-?S:	means that the character ranges are not contiguous.
-?S:	See trnl.U
+?S:	system uses EBCDIC encoding.
+?S:.
+?S:bootstrap_charset:
+?S:	This variable conditionally defines BOOTSTRAP_CHARSET if
+?S:	this system uses non-ASCII encoding.
 ?S:.
 ?C:EBCDIC:
-?C:     This symbol, if defined, indicates that this system uses
+?C:	This symbol, if defined, indicates that this system uses
 ?C:	EBCDIC encoding.
 ?C:.
+?C:BOOTSTRAP_CHARSET:
+?C:	This symbol, if defined, indicates that this system needs
+?C:	converting various files to the native character set before
+?C:	bringing up perl on a system that has a non-ASCII character
+?C:	set and no working perl.
+?C:.
+?LINT:extern BOOTSTRAP_CHARSET
+?D:bootstrap_charset=undef
 ?H:#$ebcdic	EBCDIC 		/**/
+?H:#$bootstrap_charset	BOOTSTRAP_CHARSET	/**/
 ?H:.
 ?F:!try
 ?LINT:set ebcdic
@@ -34,6 +45,11 @@ int main()
   return 1;
 }
 EOM
+
+case "$BOOTSTRAP_CHARSET" in
+    Y|y|define) bootstrap_charset=$define	;;
+    *)		bootstrap_charset=$undef	;;
+esac
 
 val=$undef
 set try
