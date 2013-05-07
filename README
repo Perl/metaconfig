@@ -37,9 +37,9 @@ Contents of this directory:
     in your $PATH.
     The dist version used for perl is dist-3.5-20 in this directory, which is
     a slightly modified version of the original, which you can get at the SVN
-    repository https://dist.svn.sourceforge.net/svnroot/dist/trunk. If you'd
-    like to keep up to date with changes in dist, you can either use svn or
-    git to create your own clone. For git, that would be something like:
+    repository https://svn.code.sf.net/p/dist/code/trunk/dist. If you'd like
+    to keep up to date with changes in dist, you can either use svn or git to
+    create your own clone. For git, that would be something like:
 
     $ git svn clone \
       svn://svn.code.sf.net/p/dist/code/trunk/dist \
