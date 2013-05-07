@@ -19,7 +19,7 @@ back here.
 Contents of this directory:
 
     README:	This file.
-    U:		Metaconfig units used for buliding Perl's Configure
+    U:		Metaconfig units used for building Perl's Configure
     U.check:	Sample directory used for testing new metaconfig units.
     		see U.check/README for more information.
     dist-3.5-20:
@@ -54,7 +54,7 @@ Contents of this directory:
     $ make install
 
     After make install, remove lib/U/d_debugging.U in your target lib, as perl
-    uses it's own way to set/define debugging (see INSTALL)
+    uses its own way to set/define debugging (see INSTALL)
 
     the dist-3.5-20 installation as used by Merijn is available on his CPAN as
     perl-meta-3.5-20.tgz
