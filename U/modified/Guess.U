@@ -62,7 +62,7 @@
 ?X:?C:	VMS.  It is currently only set in conjunction with the EUNICE symbol.
 ?X:?C:.
 ?C:XENIX:
-?C:	This symbol, if defined, indicates thet the program is running under
+?C:	This symbol, if defined, indicates that the program is running under
 ?C:	Xenix (at least 3.0 ?).
 ?C:.
 ?X:  We don't use BSD in the perl source.  It's too vague, and already

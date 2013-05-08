@@ -14,7 +14,7 @@
 ?S:	1 for unsigned, -1 for signed.
 ?S:.
 ?C:Pid_t_sign:
-?C:	This symbol holds the signedess of a Pid_t.
+?C:	This symbol holds the signedness of a Pid_t.
 ?C:	1 for unsigned, -1 for signed.
 ?C:.
 ?H:#define Pid_t_sign	$pidsign		/* PID sign */

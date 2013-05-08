@@ -19,7 +19,7 @@
 ?C:	This variable contains the size of struct stat's st_ino in bytes.
 ?C:.
 ?C:ST_INO_SIGN:
-?C:	This symbol holds the signedess of struct stat's st_ino.
+?C:	This symbol holds the signedness of struct stat's st_ino.
 ?C:	1 for unsigned, -1 for signed.
 ?C:.
 ?H:#define ST_INO_SIGN $st_ino_sign	/* st_ino sign */

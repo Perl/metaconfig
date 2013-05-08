@@ -14,7 +14,7 @@
 ?S:	1 for unsigned, -1 for signed.
 ?S:.
 ?C:Uid_t_sign:
-?C:	This symbol holds the signedess of a Uid_t.
+?C:	This symbol holds the signedness of a Uid_t.
 ?C:	1 for unsigned, -1 for signed.
 ?C:.
 ?H:#define Uid_t_sign	$uidsign		/* UID sign */

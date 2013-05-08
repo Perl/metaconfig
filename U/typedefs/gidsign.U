@@ -14,7 +14,7 @@
 ?S:	1 for unsigned, -1 for signed.
 ?S:.
 ?C:Gid_t_sign:
-?C:	This symbol holds the signedess of a Gid_t.
+?C:	This symbol holds the signedness of a Gid_t.
 ?C:	1 for unsigned, -1 for signed.
 ?C:.
 ?H:#define Gid_t_sign	$gidsign		/* GID sign */

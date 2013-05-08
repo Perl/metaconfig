@@ -31,7 +31,7 @@
 ?C:	This symbol holds the hexadecimal constant defined in byteorder,
 ?C:	in a UV, i.e. 0x1234 or 0x4321 or 0x12345678, etc...
 ?C:	If the compiler supports cross-compiling or multiple-architecture
-?C:	binaries (eg. on NeXT systems), use compiler-defined macros to
+?C:	binaries (e.g. on NeXT systems), use compiler-defined macros to
 ?C:	determine the byte order.
 ?C:	On NeXT 3.2 (and greater), you can build "Fat" Multiple Architecture
 ?C:	Binaries (MAB) on either big endian or little endian machines.

@@ -46,6 +46,7 @@ foreach my $u (sort @u) {
 	my $loc = sprintf "%-27s %4d", $u, ++$n;
 
 	m{^(?| \?RCS:   \s+ (\w.*)
+	     | \?C:     \s+ (\w.*)
 	     | \?S:     \s+ (\w.*)
 	     | \?INIT:: \s+ (\w.*)
 	     | \?X:	\s* (\w.*)
@@ -56,7 +57,16 @@ foreach my $u (sort @u) {
 	             )}x or next;
 
 	my $t = $1;
-	$t =~ s/\b([Ww]as|[Dd]id|[Ii]s|[Cc]ould|[Dd]oes|[Aa]re)n't\b/$1 not/g;
+	$t =~ s/\b( [Ww]as
+	          | [Dd]id
+	          | [Ii]s
+	          | [Cc]ould
+	          | [Ss]hould
+	          | [Dd]oes
+	          | [Nn]eed
+	          | [Aa]re
+	          ) n't
+	          \b/$1 not/gx;
 	$t =~ s{\b[fh]tt?ps?://\S+}{}g;	# possible url
 	$t =~ s{<\S+\@\S+>}{}g;		# possible e-mail address
 	$t =~ s{<\S+\.h>}{}g;		# possibly header file reference
@@ -105,15 +115,20 @@ andreas
 ansic
 archlibs
 arg
+argc
 args
+argv
 arrgh
+asctime
 asm
 atof
 attrlist
 backquotes
+backslashitis
 backticks
 basename
 basenames
+baz
 bcopy
 bene
 bincompat
@@ -123,6 +138,7 @@ braindead
 brand
 bsd
 bsdtypes
+buf
 buglet
 builtin
 calloc
@@ -154,20 +170,26 @@ copysignl
 cposix
 css
 csym
+ctermid
 cthreads
+ctime
 ctype
 cygwin
 datatype
 dbm
 dbminit
 dec
+denormalized
 dev
 dflt
 dg
+difftime
 dir
 dirent
 dirfd
+dirname
 dirnames
+dirstream
 djgpp
 dl
 dld
@@ -196,6 +218,7 @@ endprotoent
 endpwent
 endservent
 endspent
+enoent
 enosys
 enum
 enums
@@ -204,8 +227,11 @@ eof
 eofpipe
 eom
 eot
+eqnchar
 errno
+errnolistc
 esac
+euid
 eval
 evals
 exe
@@ -222,14 +248,18 @@ fd
 fflush
 fi
 fielnames
+fifos
 filename
 filenames
 filesystem
+filesystems
 finitel
 fiosnbio
+firstkey
 fixme
 fn
 fndelay
+foo
 fp
 fpa
 fpclass
@@ -242,6 +272,7 @@ frexpl
 fseek
 fseeko
 fsetpos
+fstat
 fstatfs
 fstatvfs
 fsync
@@ -262,6 +293,8 @@ getfile
 getfsstat
 getgid
 getgrent
+getgrgid
+getgrnam
 gethost
 gethostbyaddr
 gethostbyname
@@ -269,8 +302,10 @@ gethostent
 gethostname
 gethostxxx
 getitimer
+getlogin
 getmnt
 getmntent
+getmntinfo
 getnameinfo
 getnet
 getnetbyaddr
@@ -279,17 +314,24 @@ getnetent
 getnetxxx
 getpagesize
 getpgrp
+getpos
 getproto
+getprotobyaddr
 getprotobyname
 getprotobynumber
 getprotoent
 getprotoxxx
 getprpwnam
+getpw
 getpwent
+getpwnam
+getpwuid
 getrlimit
+getrusage
 getsbyname
 getsbyport
 getserv
+getservbyaddr
 getservbyname
 getservbyport
 getservent
@@ -306,6 +348,7 @@ gnu
 gnulibc
 grp
 hallvard
+hardwire
 hardwiring
 hasmntopt
 hdrs
@@ -316,6 +359,7 @@ hostname
 hpux
 html
 htonl
+htons
 hup
 hurd
 iconv
@@ -326,6 +370,7 @@ ihdr
 ilogbl
 incpth
 incpush
+indices
 inet
 inhdr
 init
@@ -342,6 +387,7 @@ inttypes
 iovec
 ip
 ipc
+irix
 is
 isascii
 isblank
@@ -381,6 +427,7 @@ localtime
 loclist
 login
 logname
+longjmp
 longlong
 lookup
 lookups
@@ -411,9 +458,11 @@ mips
 misconfigured
 mk
 mkdtemp
+mkfifo
 mknod
 mkstemp
 mkstemps
+mktime
 mman
 mmap
 mntent
@@ -430,7 +479,10 @@ multiplatform
 myconfig
 myinit
 myread
+nan
 nanosleep
+nanq
+nans
 ndbm
 ndir
 netbsd
@@ -442,6 +494,7 @@ netwide
 neumann
 nevermind
 next
+nextkey
 nfs
 nis
 nlist
@@ -452,6 +505,8 @@ noreturn
 nota
 nrand
 nsig
+ntohl
+ntohs
 nvs
 nwc
 odbm
@@ -466,6 +521,7 @@ optdef
 os
 osf
 oslevel
+pagefull
 pase
 passwd
 pathname
@@ -498,10 +554,12 @@ pvs
 pwd
 qgcvt
 qnx
+readdir
 readv
 realloc
 realpath
 realsilent
+recompiles
 recvmsg
 redhat
 reentr
@@ -509,6 +567,7 @@ resolv
 ret
 rp
 rsrc
+ruid
 runtime
 rusage
 sahlbach
@@ -524,17 +583,21 @@ sem
 semctl
 semun
 sendmsg
+setgid
 setgrent
 sethostent
 setitimer
 setjmp
+setlocale
 setnetent
 setpgrp
+setpos
 setproctitle
 setprotoent
 setpwent
 setresgid
 setresuid
+setrgid
 setrlimit
 setservent
 setsockopt
@@ -552,11 +615,13 @@ sigabrt
 sigaction
 sigarraysize
 sigiot
+siglongjmp
 signbit
 signedchar
 signedness
 sigprocmask
 sigqueue
+sigquit
 sigrtmax
 sigsetjmp
 sigstksize
@@ -596,8 +661,10 @@ stdout
 strerror
 strftime
 stringification
+stringifies
 strlcat
 strlcpy
+strlen
 strptime
 strtold
 strtoll
@@ -610,6 +677,8 @@ structs
 su
 subdirectories
 subdirectory
+subprocesses
+subr
 subshell
 subversions
 suid
@@ -643,13 +712,18 @@ thatlib
 thislib
 timegm
 timestamp
+timestamps
 timeval
+timevals
 tm
 tmp
+tmpfile
+tmpnam
 tromey
 tryh
 trylist
 tsort
+ttyname
 tye
 typedef
 typedefs
@@ -693,6 +767,7 @@ variadic
 varval
 venix
 verdoolaege
+versa
 versioned
 versioning
 vfork
@@ -711,10 +786,13 @@ wildcard
 wildcards
 winfried
 workshop
+writeup
 writev
 xenix
 xlc
+xrun
 xs
+xscan
 xvt
 yp
 ypmatch

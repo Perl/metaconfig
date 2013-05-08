@@ -26,7 +26,7 @@
 ?C:	This symbol, if defined, indicates that EOF condition will be detected
 ?C:	by the reader of the pipe when it is closed by the writing process.
 ?C:	That is, a select() call on that file descriptor will not block when
-?C:	only an EOF remains (typical behaviour for BSD systems).
+?C:	only an EOF remains (typical behavior for BSD systems).
 ?C:.
 ?H:#$d_eofpipe EOFPIPE		/**/
 ?H:.
