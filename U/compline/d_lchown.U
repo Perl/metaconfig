@@ -1,11 +1,11 @@
 ?RCS: $Id: d_lchown.U,v 3.0.1.1 1994/08/29 16:07:14 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
@@ -32,11 +32,11 @@
 : see if lchown exists
 echo " "
 ?X: Some functions (such as lchown()) are present in libc, but are
-?X: unimplmented.  That is, they always fail and set errno=ENOSYS.
-?X: 
+?X: unimplemented.  That is, they always fail and set errno=ENOSYS.
+?X:
 ?X: Thomas Bushnell provided the following sample code and the explanation
 ?X: that follows.
-?X: 
+?X:
 ?X: The choice of <assert.h> is essentially arbitrary.  The GNU libc
 ?X: macros are found in <gnu/stubs.h>.  You can include that file instead
 ?X: of <assert.h> (which itself includes <gnu/stubs.h>) if you test for
@@ -45,7 +45,7 @@ echo " "
 ?X: the stubs macros.  If either __stub_NAME or __stub___NAME is defined,
 ?X: then the function doesn't actually exist.  Tests using <assert.h> work
 ?X: on every system around.
-?X: 
+?X:
 ?X: The declaration of FOO is there to override builtin prototypes for
 ?X: ANSI C functions.
 ?X:

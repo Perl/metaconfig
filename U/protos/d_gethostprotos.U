@@ -1,11 +1,11 @@
 ?RCS: $Id: d_gethostprotos.U,v $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?MAKE:d_gethostprotos : Hasproto i_netdb
@@ -13,7 +13,7 @@
 ?S:d_gethostprotos:
 ?S:	This variable conditionally defines the HAS_GETHOST_PROTOS symbol,
 ?S:	which indicates to the C program that <netdb.h> supplies
-?S:	prototypes for the various gethost*() functions.  
+?S:	prototypes for the various gethost*() functions.
 ?S:	See also netdbtype.U for probing for various netdb types.
 ?S:.
 ?C:HAS_GETHOST_PROTOS:
@@ -24,7 +24,7 @@
 ?C:.
 ?H:#$d_gethostprotos	HAS_GETHOST_PROTOS	/**/
 ?H:.
-?LINT:set d_gethostprotos 
+?LINT:set d_gethostprotos
 ?X: This test actually only checks for gethostent() and assumes the
 ?X: others follow suit.  This test fails for ChorusOS, which has
 ?X: gethostbyname and gethostbyaddr, but not gethostent.

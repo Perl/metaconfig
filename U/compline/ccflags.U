@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: ccflags.U,v $
@@ -21,7 +21,7 @@
 ?RCS: patch54: now checks for cc/ccflags/ldflags coherency
 ?RCS:
 ?RCS: Revision 3.0.1.6  1994/10/29  16:07:02  ram
-?RCS: patch36: gcc versionning no longer relies on the C compiler's name
+?RCS: patch36: gcc versioning no longer relies on the C compiler's name
 ?RCS: patch36: simplified check for gcc version checking (ADO)
 ?RCS:
 ?RCS: Revision 3.0.1.5  1994/08/29  16:06:35  ram
@@ -382,10 +382,10 @@ case "$ldflags" in
 esac
 # See note above about -fstack-protector
 case "$ccflags" in
-*-fstack-protector*) 
+*-fstack-protector*)
 	case "$dflt" in
 	*-fstack-protector*) ;; # Don't add it again
-	*) dflt="$dflt -fstack-protector" ;; 
+	*) dflt="$dflt -fstack-protector" ;;
 	esac
 	;;
 esac

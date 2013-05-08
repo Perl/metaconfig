@@ -1,11 +1,11 @@
 ?RCS: $Id: Guess.U,v 3.0.1.5 1995/07/25 13:37:14 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: Guess.U,v $
@@ -29,11 +29,11 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:57  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This unit hazards some guesses as to what the general nature of the system
 ?X: is.  The information it collects here is used primarily to establish default
 ?X: answers to other questions.
-?X: 
+?X:
 ?MAKE:Guess d_eunice d_xenix d_bsd: cat test echo n c contains \
 	rm Loc eunicefix tr
 ?MAKE:	-pick add $@ %<

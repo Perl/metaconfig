@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: Csym.U,v $
@@ -14,7 +14,7 @@
 ?RCS: patch56: added quotes for OS/2 support
 ?RCS:
 ?RCS: Revision 3.0.1.3  1995/05/12  12:00:33  ram
-?RCS: patch54: fixed C test program to bypasss gcc builtin type checks (ADO)
+?RCS: patch54: fixed C test program to bypass gcc builtin type checks (ADO)
 ?RCS:
 ?RCS: Revision 3.0.1.2  1994/10/31  09:34:13  ram
 ?RCS: patch44: added Options to the MAKE line since it's no longer in Init.U
@@ -87,7 +87,7 @@ yes)
 ?X: type), the compiler assuming it's a built-in declaration given that the
 ?X: returned size matches. At least with 'short' we are safe! -- RAM, for ADO
 ?X:
-?X: Let's thank GNU cc for making our lifes so easy! :-)
+?X: Let's thank GNU cc for making our lives so easy! :-)
 ?X: (An alternative for the future would be to use our knowledge about gcc
 ?X: to force a -fno-builtin option in the compile test, in case the 'short'
 ?X: trick is obsoleted by future gcc releases). -- RAM

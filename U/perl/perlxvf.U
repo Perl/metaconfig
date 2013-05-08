@@ -39,7 +39,7 @@
 ?S:	a Perl NV using %e-ish floating point format.
 ?S:.
 ?S:nvfformat:
-?S:	This variable confains the format string used for printing
+?S:	This variable contains the format string used for printing
 ?S:	a Perl NV using %f-ish floating point format.
 ?S:.
 ?S:nvgformat:
@@ -51,7 +51,7 @@
 ?S:	a Perl NV using %E-ish floating point format.
 ?S:.
 ?S:nvFUformat:
-?S:	This variable confains the format string used for printing
+?S:	This variable contains the format string used for printing
 ?S:	a Perl NV using %F-ish floating point format.
 ?S:.
 ?S:nvGUformat:

@@ -32,7 +32,7 @@
 ?X:
 ?X:	For determining argument types, your compiler must support
 ?X:	prototypes, and the header files must use them.  Determining
-?X:	return types, however, is easier.  Just give an ridiculuous
+?X:	return types, however, is easier.  Just give an ridiculous
 ?X:	return type, something like
 ?X:	./protochk 'extern int atof _((void));' $i_stdlib stdlib.h
 ?X:	that should surely fail if atof() is defined in <stdlib.h>

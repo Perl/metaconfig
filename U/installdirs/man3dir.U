@@ -3,10 +3,10 @@
 ?RCS: Copyright (c) 1996-1999, Andy Dougherty
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: man3dir.U,v $
@@ -94,7 +94,7 @@ echo "If you don't want the manual sources installed, answer 'none'."
 ?X: However, opinion seems to be shifting such that 'man POSIX' ought
 ?X: to just work.  -- Andy Dougherty  July 8, 1999
 ?X:
-?X: remove any trailing -3.0 or other version indification from $package
+?X: remove any trailing -3.0 or other version indication from $package
 prog=`echo $package | $sed 's/-*[0-9.]*$//'`
 case "$man3dir" in
 '')	dflt=`echo "$man1dir" | $sed -e 's/man1/man3/g' -e 's/man\.1/man\.3/g'`

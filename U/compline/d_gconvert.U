@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
@@ -29,7 +29,7 @@
 ?S:	This variable holds what Gconvert is defined as to convert
 ?S:	floating point numbers into strings.  By default, Configure
 ?S:	sets this macro to use the first of gconvert, gcvt, or sprintf
-?S:	that pass sprintf-%g-like behaviour tests.  If perl is using
+?S:	that pass sprintf-%g-like behavior tests.  If perl is using
 ?S:	long doubles, the macro uses the first of the following
 ?S:	functions that pass Configure's tests: qgcvt, sprintf (if
 ?S:	Configure knows how to make sprintf format long doubles--see

@@ -1,11 +1,11 @@
 ?RCS: $Id: prototype.U,v 3.0.1.3 1994/05/06 15:11:49 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: prototype.U,v $
@@ -25,7 +25,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:prototype:
 ?S:	This variable holds the eventual value of CAN_PROTOTYPE, which
-?S:	indicates the C compiler can handle funciton prototypes.
+?S:	indicates the C compiler can handle function prototypes.
 ?S:.
 ?C:CAN_PROTOTYPE ~ %<:
 ?C:	If defined, this macro indicates that the C compiler can handle

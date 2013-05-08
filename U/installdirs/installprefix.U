@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1999 Andy Dougherty
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
@@ -19,7 +19,7 @@
 	Oldconfig afs cat package prefix
 ?MAKE:	-pick add $@ %<
 ?S:installprefix:
-?S:	This variable holds the name of the directory below which 
+?S:	This variable holds the name of the directory below which
 ?S:	"make install" will install the package.  For most users, this
 ?S:	is the same as prefix.  However, it is useful for
 ?S:	installing the software into a different (usually temporary)
@@ -31,7 +31,7 @@
 ?S:	with all ~-expansion done.
 ?S:.
 : determine installation prefix for where package is to be installed.
-if $afs; then 
+if $afs; then
 $cat <<EOM
 
 Since you are running AFS, I need to distinguish the directory in which

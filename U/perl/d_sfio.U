@@ -69,7 +69,7 @@ $define)
 	;;
 esac
 ?X:
-?X: Only set d_sfio when final value is known to avoid spurious Whoas
+?X: Only set d_sfio when final value is known to avoid spurious Whoa's
 ?X: Then set usesfio accordingly to the current value, for next run
 ?X:
 set d_sfio

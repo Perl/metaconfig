@@ -1,13 +1,13 @@
 ?RCS: $Id: otherlibdirs.U,v 1.1 1999/07/08 18:32:57 doughera Exp doughera $
 ?RCS:
 ?RCS: Copyright (c) 1999-2000, Andy Dougherty
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
-?RCS: 
+?RCS:
 ?RCS: $Log: otherlibdirs.U,v $
 ?RCS: Revision 1.1  1999/07/08 18:32:57  doughera
 ?RCS: Initial revision
@@ -51,9 +51,9 @@ $cat <<EOM
 
 Lastly, you can have perl look in other directories for extensions and
 modules in addition to those already specified.
-These directories will be searched after 
-	$sitearch 
-	$sitelib 
+These directories will be searched after
+	$sitearch
+	$sitelib
 EOM
 test X"$vendorlib" != "X" && echo '	' $vendorlib
 test X"$vendorarch" != "X" && echo '	' $vendorarch
@@ -71,7 +71,7 @@ EOM
 rp='Colon-separated list of additional directories for perl to search?'
 . ./myread
 case "$ans" in
-' '|''|none)	otherlibdirs=' ' ;;     
+' '|''|none)	otherlibdirs=' ' ;;
 *)	otherlibdirs="$ans" ;;
 esac
 case "$otherlibdirs" in

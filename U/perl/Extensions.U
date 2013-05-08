@@ -111,7 +111,7 @@ find_extensions='
 		    n*|N*) ;;
 		    *) echo >&4;
 		       echo "Ok.  Stopping Configure." >&4;
-		       echo "Please remove the duplicate directory (eg using git clean) and then re-run Configure" >&4;
+		       echo "Please remove the duplicate directory (e.g. using git clean) and then re-run Configure" >&4;
 			exit 1;;
 		    esac;
 		    echo "Ok.  You will need to correct config.sh before running make." >&4;

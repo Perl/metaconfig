@@ -1,11 +1,11 @@
 ?RCS: $Id: d_strerror.U,v 3.0.1.3 1994/05/13 15:20:27 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: d_strerror.U,v $
@@ -37,9 +37,9 @@
 ?S:	is available to translate error numbers to the symbolic name.
 ?S:.
 ?S:d_strerrm:
-?S:	This variable holds what Strerrr is defined as to translate an error
+?S:	This variable holds what Strerror is defined as to translate an error
 ?S:	code condition into an error message string. It could be 'strerror'
-?S:	or a more complex macro emulating strrror with sys_errlist[], or the
+?S:	or a more complex macro emulating strerror with sys_errlist[], or the
 ?S:	"unknown" string when both strerror and sys_errlist are missing.
 ?S:.
 ?C:HAS_STRERROR (STRERROR):
@@ -74,7 +74,7 @@ echo " "
 ?X: MPE/iX needs this protection of hint values.
 ?X: Background: strerror exists in kernel but not in libc.
 ?X: Scanning the kernel for symbols would be a bad idea, however,
-?X: because many symbols that look unixish exist in the kernel.
+?X: because many symbols that look unix-ish exist in the kernel.
 ?X: The stress is on the 'look'.
 ?X: --jhi 9/1998
 if test "X$d_strerror" = X -o "X$d_syserrlst" = X; then
@@ -82,11 +82,11 @@ if test "X$d_strerror" = X -o "X$d_syserrlst" = X; then
 		echo 'strerror() found.' >&4
 		d_strerror="$define"
 		d_strerrm='strerror(e)'
-		if set sys_errlist val -a d_syserrlst; eval $csym; $val; then	
-			echo "(You also have sys_errlist[], so we could roll our own strerror.)" 
+		if set sys_errlist val -a d_syserrlst; eval $csym; $val; then
+			echo "(You also have sys_errlist[], so we could roll our own strerror.)"
 			d_syserrlst="$define"
 		else
-			echo "(Since you don't have sys_errlist[], sterror() is welcome.)"
+			echo "(Since you don't have sys_errlist[], strerror() is welcome.)"
 			d_syserrlst="$undef"
 		fi
     elif xxx=`./findhdr string.h`; test "$xxx" || xxx=`./findhdr strings.h`; \
@@ -94,7 +94,7 @@ if test "X$d_strerror" = X -o "X$d_syserrlst" = X; then
 		echo 'strerror() found in string header.' >&4
 		d_strerror="$define"
 		d_strerrm='strerror(e)'
-		if set sys_errlist val -a d_syserrlst; eval $csym; $val; then	
+		if set sys_errlist val -a d_syserrlst; eval $csym; $val; then
 			echo "(Most probably, strerror() uses sys_errlist[] for descriptions.)"
 				d_syserrlst="$define"
 		else

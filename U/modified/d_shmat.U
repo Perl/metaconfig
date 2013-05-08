@@ -1,11 +1,11 @@
 ?RCS: $Id: d_shmat.U,v 3.0.1.3 1995/07/25 14:04:23 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: d_shmat.U,v $
@@ -33,7 +33,7 @@
 ?S:	It can be 'void *' or 'char *'.
 ?S:.
 ?S:d_shmatprototype:
-?S:	This variable conditionally defines the HAS_SHMAT_PROTOTYPE 
+?S:	This variable conditionally defines the HAS_SHMAT_PROTOTYPE
 ?S:	symbol, which indicates that sys/shm.h has a prototype for
 ?S:	shmat.
 ?S:.

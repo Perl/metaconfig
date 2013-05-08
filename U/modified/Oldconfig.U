@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: Oldconfig.U,v $
@@ -121,7 +121,7 @@ case "$config_sh" in
 myuname=`$uname -a 2>/dev/null`
 $test -z "$myuname" && myuname=`hostname 2>/dev/null`
 # Downcase everything to avoid ambiguity.
-# Remove slashes and single quotes so we can use parts of this in 
+# Remove slashes and single quotes so we can use parts of this in
 # directory and file names.
 # Remove newlines so myuname is sane to use elsewhere.
 # tr '[A-Z]' '[a-z]' would not work in EBCDIC
@@ -271,7 +271,7 @@ EOM
 ?X:  $3 and $4 are version/subversion
 ?X:  $5 is always "pc", but that might not be unique to DJGPP.
 ?X: (e.g. Solaris_x86 has $5 = i86pc, which doesn't actually conflict,
-?X: but it's close enought that I can easily imagine other vendors also
+?X: but it's close enough that I can easily imagine other vendors also
 ?X: using variants of pc* in $5.)
 ?X:  The "DJGPP" environment variable is always set when djgpp is active.
 		pc*)

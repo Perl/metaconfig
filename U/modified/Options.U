@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Options.U,v $
@@ -23,7 +23,7 @@
 ?RCS: patch49: this unit now exports file optdef.sh, not a variable
 ?RCS:
 ?RCS: Revision 3.0.1.3  1995/01/11  15:19:00  ram
-?RCS: patch45: new -O option allowing -D and -U to override config.sh setttings
+?RCS: patch45: new -O option allowing -D and -U to override config.sh settings
 ?RCS: patch45: file optdef.sh is no longer removed after sourcing
 ?RCS:
 ?RCS: Revision 3.0.1.2  1994/10/29  15:58:06  ram
@@ -139,7 +139,7 @@ EOF
 : process the command line options
 ?X: Use "$@" to keep arguments with spaces in them from being split apart.
 ?X: For the same reason, awk will output quoted arguments and the final eval
-?X: removes them and sets a proper $* array. An 'X' is prependend to each
+?X: removes them and sets a proper $* array. An 'X' is prepended to each
 ?X: argument before being fed to echo to guard against 'echo -x', where -x
 ?X: would be understood as an echo option! It is removed before feeding awk.
 set X `for arg in "$@"; do echo "X$arg"; done |

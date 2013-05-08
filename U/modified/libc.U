@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: libc.U,v $
@@ -262,14 +262,14 @@ $echo $n ".$c"
 ?X:
 $grep fprintf libc.tmp > libc.ptf
 ?X:
-?X: In order to ehance readability and save some space, we define
+?X: In order to enhance readability and save some space, we define
 ?X:	some variables that will be "eval"ed.
 ?X:
 xscan='eval "<libc.ptf $com >libc.list"; $echo $n ".$c" >&4'
 xrun='eval "<libc.tmp $com >libc.list"; echo "done." >&4'
 ?X: BSD-like output, I and W types added for Linux
 ?X: Some versions of Linux include a leading __IO in the symbol name.
-?X: HPUX10 reportedly has trailing spaces, though I'm suprised it has
+?X: HP-UX 10 reportedly has trailing spaces, though I'm surprised it has
 ?X: BSD-like output.  (AD).
 ?X: GNU extension: i is "indirect function"
 xxx='[ADTSIWi]'

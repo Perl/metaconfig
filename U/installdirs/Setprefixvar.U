@@ -17,7 +17,7 @@
 	prefix prefixexp installprefix installprefixexp
 ?MAKE:	-pick add $@ %<
 ?LINT:extern prefixvar
-?X: metalins still sees "`\$${prefixvar}exp`" as variable :(
+?X: metalint still sees "`\$${prefixvar}exp`" as variable :(
 ?T:prefixvarexp
 ?F:./setprefixvar
 ?F:./installprefix

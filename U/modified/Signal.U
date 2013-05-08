@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Signal.U,v $
@@ -47,7 +47,7 @@
 : Trace out the files included by signal.h, then look for SIGxxx names.
 ?X: Remove SIGARRAYSIZE used by HPUX.
 ?X: Remove SIGSTKSIZE used by Linux.
-?X: Remove SIGSTKSZ used by Posix.
+?X: Remove SIGSTKSZ used by POSIX.
 ?X: Remove SIGTYP void lines used by OS2.
 ?X: Some cpps, like os390, do not give the file name anywhere
 if [ "X$fieldn" = X ]; then

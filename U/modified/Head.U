@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Head.U,v $
@@ -162,7 +162,7 @@ esac
 ?X:
 ?X: To be able to run under OS/2, we must detect that early enough to use
 ?X: the proper path separator, stored in $p_. It is : on UNIX and ; on
-?X: DOSish systems such as OS/2.
+?X: DOS-ish systems such as OS/2.
 ?X:
 : Proper separator for the PATH environment variable
 p_=:
@@ -186,7 +186,7 @@ fi
 ?X: There are two schools of thoughts here. Some people correctly argue that
 ?X: the user has a better chance than we do of setting a reasonable PATH and
 ?X: others argue that Configure is the best place there is to set up a suitable
-?X: PATH. Well, here we try to compromize by keeping the user's PATH and
+?X: PATH. Well, here we try to compromise by keeping the user's PATH and
 ?X: appending some directories which are known to work on some machine or the
 ?X: other. The rationale behind this being that a novice user might not have a
 ?X: proper environment variable set, and some directories like /etc (where
@@ -302,7 +302,7 @@ esac
 ?X: 2004.06.09 rac
 ?X: having $newsh persist as ksh here is bad news if ksh doesn't really
 ?X: exist. this causes us to toss away a perfectly good working test in
-?X: bash in favour of more exotic external options. see bug 42665.
+?X: bash in favor of more exotic external options. see bug 42665.
 test -x "${newsh}" || unset newsh
 
 ?X: Unset CDPATH to avoid surprises when using cd under some shells

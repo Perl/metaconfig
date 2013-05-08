@@ -22,7 +22,7 @@
 ?Y:BOTTOM
 ?S:dlext:
 ?S:	This variable contains the extension that is to be used for the
-?S:	dynamically loaded modules that perl generaties.
+?S:	dynamically loaded modules that perl generates.
 ?S:.
 : Check what extension to use for shared libs
 case "$usedl" in

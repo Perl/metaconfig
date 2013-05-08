@@ -5,7 +5,9 @@ use warnings;
 use autodie;
 
 use File::Find;
+
 use Pod::Spell::CommonMistakes::WordList qw( _check_case _check_common );
+use Text::Aspell;
 
 my @u;
 find (sub { m/\.U$/ && !-l && -s and push @u, $File::Find::name }, glob "*");
@@ -18,14 +20,30 @@ my %ignore = (
 	"subversion"    => "Subversion",	# perl's subversion, not svn
 	},
     );
+my %skip = map { m/^(\S+)/; lc $1 => 1 } <DATA>;
+if (open my $fh, "<", "/pro/3gl/CPAN/perl-git/Porting/Glossary") {
+    while (<$fh>) {
+	m/^(\S+)\s+\(\S+\)\s*:\s*$/ and $skip{lc $1}++;
+	}
+    }
+if (open my $fh, "<", "/pro/3gl/CPAN/perl-git/config_h.SH") {
+    while (<$fh>) {
+	m{^/\* ([A-Z_]+):$} and $skip{lc $1}++;
+	}
+    }
+
+my $asp = Text::Aspell->new;
 
 foreach my $u (sort @u) {
     open my $fh, "<", $u;
 
+    my ($m) = ($u =~ m{([^/]+)\.U$});
+    $skip{lc $m}++;
+
     my $n = 0;
     while (<$fh>) {
 
-	$n++;
+	my $loc = sprintf "%-27s %4d", $u, ++$n;
 
 	m{^(?| \?RCS:   \s+ (\w.*)
 	     | \?S:     \s+ (\w.*)
@@ -33,18 +51,27 @@ foreach my $u (sort @u) {
 	     | \?X:	\s* (\w.*)
 	     | :        \s+ (\w.*)
 	     )}x or
-	m{echo \s+ (?| "([^"]+)" | '([^']+)')}x or next;
+	m{echo \s+ (?| "([^"]+)"
+	             | '([^']+)'
+	             )}x or next;
 
 	my $t = $1;
-	my @w = split m/[,\s]+/ => $t;
+	$t =~ s/\b([Ww]as|[Dd]id|[Ii]s|[Cc]ould|[Dd]oes|[Aa]re)n't\b/$1 not/g;
+	$t =~ s{\b[fh]tt?ps?://\S+}{}g;	# possible url
+	$t =~ s{<\S+\@\S+>}{}g;		# possible e-mail address
+	$t =~ s{<\S+\.h>}{}g;		# possibly header file reference
+	$t =~ s{"\S+\.h"}{}g;		# possibly header file reference
 
+	my @w = split m([!-#'-,./:-?[-^`{-~\s]+) => $t;
+
+	# CommonMistakes
 	my ($err, %seen);
 	$err = _check_case (\@w);
 	if (ref $err eq "HASH" && keys %$err) {
 	    for (sort keys %$err) {
 		exists $ignore{$u}{$_} and next;
 		$seen{$_}++ and next;;
-		printf "%-25s %4d %-20s => %s\n", $u, $n, $_, $err->{$_};
+		printf "%s %-20s => %s\n", $loc, $_, $err->{$_};
 		}
 	    }
 
@@ -53,8 +80,642 @@ foreach my $u (sort @u) {
 	    for (sort keys %$err) {
 		exists $ignore{$u}{$_} and next;
 		$seen{$_}++ and next;;
-		printf "%-25s %4d %-20s => %s\n", $u, $n, $_, $err->{$_};
+		printf "%s %-20s => %s\n", $loc, $_, $err->{$_};
 		}
+	    }
+
+	# aspell
+	for (grep { !m/[-0-9_\$@%~]/ } @w) {
+	    exists $ignore{$u}{$_} and next;
+	    exists $skip{lc $_}    and next;
+	    $asp->check ($_)       and next;
+	    my @s = $asp->suggest ($_);
+	    printf "%s %-20s => %s\n", $loc, $_, "(@s)";
 	    }
 	}
     }
+
+__END__
+abcdef
+accessx
+aintl
+aix
+alignedness
+andreas
+ansic
+archlibs
+arg
+args
+arrgh
+asm
+atof
+attrlist
+backquotes
+backticks
+basename
+basenames
+bcopy
+bene
+bincompat
+bitness
+bourne
+braindead
+brand
+bsd
+bsdtypes
+buglet
+builtin
+calloc
+canonicalize
+castneg
+catify
+cbu
+ccs
+cd
+cdpath
+ceil
+cflags
+charvsprintf
+chorusos
+chown
+cjk
+clearenv
+clib
+closedir
+cmd
+cmdline
+cmsghdr
+cnt
+conf
+config
+configpm
+const
+copysignl
+cposix
+css
+csym
+cthreads
+ctype
+cygwin
+datatype
+dbm
+dbminit
+dec
+dev
+dflt
+dg
+dir
+dirent
+dirfd
+dirnames
+djgpp
+dl
+dld
+dll
+dlobj
+dlopen
+dlsym
+doughera
+dougherty
+drepper
+dst
+dwhatever
+dynaloader
+dynix
+eaccess
+edu
+elif
+emx
+emximp
+endgrent
+endhostent
+endian
+endif
+endnetent
+endprotoent
+endpwent
+endservent
+endspent
+enosys
+enum
+enums
+env
+eof
+eofpipe
+eom
+eot
+errno
+esac
+eval
+evals
+exe
+executables
+extern
+extliblist
+extutils
+fallthrough
+fastread
+faststdio
+fchdir
+fcntl
+fd
+fflush
+fi
+fielnames
+filename
+filenames
+filesystem
+finitel
+fiosnbio
+fixme
+fn
+fndelay
+fp
+fpa
+fpclass
+fpclassify
+fpclassl
+fprintf
+fread
+freebsd
+frexpl
+fseek
+fseeko
+fsetpos
+fstatfs
+fstatvfs
+fsync
+ftell
+ftello
+furuseth
+futimes
+fwrite
+gconvert
+gcvt
+gdbm
+getaddrinfo
+getc
+getcwd
+getdtablesize
+getespwnam
+getfile
+getfsstat
+getgid
+getgrent
+gethost
+gethostbyaddr
+gethostbyname
+gethostent
+gethostname
+gethostxxx
+getitimer
+getmnt
+getmntent
+getnameinfo
+getnet
+getnetbyaddr
+getnetbyname
+getnetent
+getnetxxx
+getpagesize
+getpgrp
+getproto
+getprotobyname
+getprotobynumber
+getprotoent
+getprotoxxx
+getprpwnam
+getpwent
+getrlimit
+getsbyname
+getsbyport
+getserv
+getservbyname
+getservbyport
+getservent
+getservxxx
+getspent
+getspnam
+getuid
+getvar
+gid
+gids
+glibc
+gmtime
+gnu
+gnulibc
+grp
+hallvard
+hardwiring
+hasmntopt
+hdrs
+hexadecimal
+hietaniemi
+hmb
+hostname
+hpux
+html
+htonl
+hup
+hurd
+iconv
+ieeefp
+ifdef
+ifndef
+ihdr
+ilogbl
+incpth
+incpush
+inet
+inhdr
+init
+initprog
+inlibc
+inode
+inodes
+installdirs
+installlocalarch
+installlocallib
+installperl
+ints
+inttypes
+iovec
+ip
+ipc
+is
+isascii
+isblank
+isc
+isdone
+isfinite
+isinf
+isnan
+isnanl
+ivs
+ix
+jaeger
+jarkko
+jhi
+joinable
+keepalive
+koenig
+korn
+k&r
+lafayette
+langinfo
+lchmod
+lchown
+ldopts
+lex
+libexec
+libexp
+libm
+libso
+libsocks
+libutil
+llseek
+loc
+localarchexp
+locallibexp
+localtime
+loclist
+login
+logname
+longlong
+lookup
+lookups
+lorder
+lseek
+lst
+lutimes
+lvalue
+machten
+madvise
+makedist
+makefile
+makefiles
+makemaker
+malloc
+mandirstyle
+manfredi
+manoj
+mansrc
+memchr
+memcmp
+memcpy
+memmove
+merijn
+metaconfig
+metalint
+mips
+misconfigured
+mk
+mkdtemp
+mknod
+mkstemp
+mkstemps
+mman
+mmap
+mntent
+modfl
+monash
+morebits
+mpe
+mprotect
+mqueue
+msg
+msghdr
+msvc
+multiplatform
+myconfig
+myinit
+myread
+nanosleep
+ndbm
+ndir
+netbsd
+netdb
+netdbtype
+netinet
+netinfo
+netwide
+neumann
+nevermind
+next
+nfs
+nis
+nlist
+nofile
+nonnull
+nonxs
+noreturn
+nota
+nrand
+nsig
+nvs
+nwc
+odbm
+ok
+okamoto
+oldconfig
+oldprefix
+oldsocket
+oldsyms
+opcode
+optdef
+os
+osf
+oslevel
+pase
+passwd
+pathname
+pathnames
+pc
+perldoc
+perlio
+perlmain
+perly
+pgrp
+pid
+pids
+popen
+posix
+posixized
+posthint
+prctl
+prefixvar
+prepend
+prepended
+preprocess
+preprocessor
+printf
+prot
+pthread
+pthreads
+ptr
+ptx
+pvs
+pwd
+qgcvt
+qnx
+readv
+realloc
+realpath
+realsilent
+recvmsg
+redhat
+reentr
+resolv
+ret
+rp
+rsrc
+runtime
+rusage
+sahlbach
+salzenberg
+sbin
+sbrk
+scalbnl
+scanf
+sched
+sco
+sdbm
+sem
+semctl
+semun
+sendmsg
+setgrent
+sethostent
+setitimer
+setjmp
+setnetent
+setpgrp
+setproctitle
+setprotoent
+setpwent
+setresgid
+setresuid
+setrlimit
+setservent
+setsockopt
+setspent
+setuid
+setvar
+setvbuf
+sfio
+sgi
+shlib
+shm
+shmat
+sig
+sigabrt
+sigaction
+sigarraysize
+sigiot
+signbit
+signedchar
+signedness
+sigprocmask
+sigqueue
+sigrtmax
+sigsetjmp
+sigstksize
+sigstksz
+sigtimedwait
+sigtyp
+sigwait
+sigwaitinfo
+sigxxx
+sigzero
+sitecustomize
+sitescriptdirexp
+sizeof
+skimo
+sl
+snprintf
+sockaddr
+sockatmark
+socketpair
+socklib
+solaris
+sony
+sprintf
+sqrtl
+srand
+srandom
+src
+srivastava
+statfs
+statvfs
+stdarg
+stdbool
+stderr
+stdin
+stdlib
+stdout
+strerror
+strftime
+stringification
+strlcat
+strlcpy
+strptime
+strtold
+strtoll
+strtoq
+strtoul
+strtoull
+strtouq
+struct
+structs
+su
+subdirectories
+subdirectory
+subshell
+subversions
+suid
+sunmath
+sunos
+sunworks
+superseed
+symlink
+symlinking
+symlinks
+sys
+syscall
+syscalls
+sysctl
+syslib
+syslog
+syspath
+systemid
+systype
+sysv
+targetdir
+targetfrom
+targethost
+targetmkdir
+targetrun
+targetto
+targetuser
+tcp
+telldir
+thatlib
+thislib
+timegm
+timestamp
+timeval
+tm
+tmp
+tromey
+tryh
+trylist
+tsort
+tye
+typedef
+typedefs
+tzset
+ualarm
+ucb
+uid
+uids
+uint
+uio
+uis
+ulimit
+ulrich
+ultrix
+undef
+undefines
+undefining
+undetached
+unicos
+unistd
+unix
+unlink
+unordered
+unorderedl
+unsetenv
+unsplit
+uppercased
+usg
+ushort
+usleep
+usr
+ustat
+util
+utimes
+utsname
+uu
+uvs
+ux
+varargs
+variadic
+varval
+venix
+verdoolaege
+versioned
+versioning
+vfork
+vfs
+voidsig
+voidused
+vos
+vpath
+vprintf
+vsnprintf
+vsprintf
+whoami
+wifexited
+wifxxx
+wildcard
+wildcards
+winfried
+workshop
+writev
+xenix
+xlc
+xs
+xvt
+yp
+ypmatch
+zsh

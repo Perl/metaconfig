@@ -1,11 +1,11 @@
 ?RCS: $Id: d_static_inline.U,v $
 ?RCS:
 ?RCS: Copyright (c) 2010 Andrew Dougherty
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: Original Author: Andy Dougherty <doughera@lafayette.edu>
@@ -104,7 +104,7 @@ EOCP
 # Respect a hint (or previous) value for perl_static_inline, if there is one.
 case "$perl_static_inline" in
 '')	# Check the various possibilities, and break out on success.
-	# For gcc, prefer __inline__, which will still permit 
+	# For gcc, prefer __inline__, which will still permit
 	# cflags.SH to add in -ansi.
 	case "$gccversion" in
 		'') xxx="inline __inline__ __inline _inline";;

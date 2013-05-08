@@ -2,10 +2,10 @@
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: i_varhdr.U,v $
@@ -54,7 +54,7 @@
 ?T:valstd
 ?LINT:set i_stdarg i_varargs
 ?X:
-?X: Don't use setvar because the varags test below might override these.
+?X: Don't use setvar because the varargs test below might override these.
 ?X: Actually, the messages here are just informative. We don't wish to set
 ?X: i_varargs or i_stdarg to their final value before knowing which of the
 ?X: two we'll include.
@@ -69,7 +69,7 @@ else
 	valstd="$undef"
 fi
 
-: see if varags is available
+: see if varargs is available
 echo " "
 if $test `./findhdr varargs.h`; then
 	echo "<varargs.h> found." >&4

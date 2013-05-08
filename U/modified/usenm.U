@@ -1,11 +1,11 @@
 ?RCS: $Id: usenm.U,v 3.0.1.1 1997/02/28 16:26:40 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: usenm.U,v $
@@ -40,7 +40,7 @@
 ?S:	Maybe Linux should just always set usenm=false.
 ?S:.
 : see if nm is to be used to determine whether a symbol is defined or not
-?X: If there is enough enquiries, it might be worth to wait for the nm
+?X: If there is enough inquiries, it might be worth to wait for the nm
 ?X: extraction. Otherwise, the C compilations might be a better deal.
 ?X:
 ?X: Don't bother if we're using GNU libc -- skimo
@@ -56,11 +56,11 @@ case "$usenm" in
 		;;
 	esac
 	case "$dflt" in
-	'') 
+	'')
 		if $test "$osname" = aix -a "X$PASE" != "Xdefine" -a ! -f /lib/syscalls.exp; then
 			echo " "
 			echo "Whoops!  This is an AIX system without /lib/syscalls.exp!" >&4
-			echo "'nm' won't be sufficient on this sytem." >&4
+			echo "'nm' won't be sufficient on this system." >&4
 			dflt=n
 		fi
 		;;

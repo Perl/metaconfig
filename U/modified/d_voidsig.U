@@ -1,11 +1,11 @@
 ?RCS: $Id: d_voidsig.U,v 3.0.1.3 1995/05/12 12:12:46 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
 ?RCS: $Log: d_voidsig.U,v $
@@ -65,7 +65,7 @@ elif $contains 'extern[ 	]*[(\*]*signal' $$.tmp >/dev/null 2>&1 ; then
 ?X:	This next test is kind of sloppy, but it catches Linux
 ?X:	which has a
 ?X:		typedef void (*__sighandler_t)  (int)  ;
-?X:	A better fix would be to compile a C program with the propoer
+?X:	A better fix would be to compile a C program with the proper
 ?X:	prototype, but since nearly everyone uses void, we'll just go with
 ?X:	this.
 elif $contains 'void.*\*.*sig' $$.tmp >/dev/null 2>&1 ; then
