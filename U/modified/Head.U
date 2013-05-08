@@ -176,7 +176,7 @@ if test -d c:/. || ( uname -a | grep -i 'os\(/\|\)2' ) 2>&1 >/dev/null ; then
 		is_os2=yes
 	elif test -n "$DJGPP"; then
 		case "X${MACHTYPE:-nonesuchmach}" in
-		*cygwin) ;;
+		*cygwin|*msys) ;;
 		*) p_=\; ;;
 		esac
 	fi

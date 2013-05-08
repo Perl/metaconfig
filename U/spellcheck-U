@@ -1,0 +1,60 @@
+#!/pro/bin/perl
+
+use 5.016;
+use warnings;
+use autodie;
+
+use File::Find;
+use Pod::Spell::CommonMistakes::WordList qw( _check_case _check_common );
+
+my @u;
+find (sub { m/\.U$/ && !-l && -s and push @u, $File::Find::name }, glob "*");
+
+my %ignore = (
+    "modified/Oldconfig.U"	=> {
+	"gnu"		=> "GNU",		# output of uname
+	},
+    "perl/patchlevel.U"		=> {
+	"subversion"    => "Subversion",	# perl's subversion, not svn
+	},
+    );
+
+foreach my $u (sort @u) {
+    open my $fh, "<", $u;
+
+    my $n = 0;
+    while (<$fh>) {
+
+	$n++;
+
+	m{^(?| \?RCS:   \s+ (\w.*)
+	     | \?S:     \s+ (\w.*)
+	     | \?INIT:: \s+ (\w.*)
+	     | \?X:	\s* (\w.*)
+	     | :        \s+ (\w.*)
+	     )}x or
+	m{echo \s+ (?| "([^"]+)" | '([^']+)')}x or next;
+
+	my $t = $1;
+	my @w = split m/[,\s]+/ => $t;
+
+	my ($err, %seen);
+	$err = _check_case (\@w);
+	if (ref $err eq "HASH" && keys %$err) {
+	    for (sort keys %$err) {
+		exists $ignore{$u}{$_} and next;
+		$seen{$_}++ and next;;
+		printf "%-25s %4d %-20s => %s\n", $u, $n, $_, $err->{$_};
+		}
+	    }
+
+	$err = _check_common (\@w);
+	if (ref $err eq "HASH" && keys %$err) {
+	    for (sort keys %$err) {
+		exists $ignore{$u}{$_} and next;
+		$seen{$_}++ and next;;
+		printf "%-25s %4d %-20s => %s\n", $u, $n, $_, $err->{$_};
+		}
+	    }
+	}
+    }

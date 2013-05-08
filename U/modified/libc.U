@@ -19,8 +19,8 @@
 ?RCS: Revision 3.0.1.8  1995/05/12  12:20:47  ram
 ?RCS: patch54: made sure only most recent version of shared lib is picked
 ?RCS: patch54: final "nm -p" check now uses xscan and xrun like everybody
-?RCS: patch54: can now grok linux nm output with lead __IO (ADO)
-?RCS: patch54: added support for linux ELF output, using 'W' for alias (ADO)
+?RCS: patch54: can now grok Linux nm output with lead __IO (ADO)
+?RCS: patch54: added support for Linux ELF output, using 'W' for alias (ADO)
 ?RCS:
 ?RCS: Revision 3.0.1.7  1994/10/29  16:23:40  ram
 ?RCS: patch36: now looks for shared libraries before anything else (ADO)

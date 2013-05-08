@@ -41,7 +41,7 @@
 : does scanf handle "\n" correctly ?
 echo " "
 val="$define"
-?X: I really want to say "\n" instead of '\n', becasue I am refering
+?X: I really want to say "\n" instead of '\n', becasue I am referring
 ?X:	to the string given as argument to scanf().
 echo 'Let'"'"'s see if scanf() handles "\\n" correctly...' >&4
 $cat >try.c <<'EOCP'

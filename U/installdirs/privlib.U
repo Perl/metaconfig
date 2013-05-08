@@ -84,7 +84,7 @@ There are some auxiliary files for $package that need to be put into a
 private library directory that is accessible by everyone.
 
 EOM
-?X: Force dependancy on bin.U
+?X: Force dependency on bin.U
 fn=$binexp
 fn=d~+
 rp='Pathname where the private library files will reside?'

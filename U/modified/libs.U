@@ -65,7 +65,7 @@
 ?X:
 ?X: This order is chosen so that libraries  -lndir, -ldir, -lucb, -lbsd,
 ?X: -lBSD, -lPW, and -lx only get used if there are unresolved
-?X: routines at link time.  Usually, these are backwards compatability
+?X: routines at link time.  Usually, these are backwards compatibility
 ?X: libraries, and may not be as reliable as the standard c library.
 ?X:
 ?X: The -lsocket -linet -lnsl order has been reported to be necessary

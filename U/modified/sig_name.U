@@ -13,7 +13,7 @@
 ?RCS: patch61: brand new algorithm for sig_name and (new!) sig_num
 ?RCS:
 ?RCS: Revision 3.0.1.4  1995/07/25  14:14:54  ram
-?RCS: patch56: added <asm/signal.h> lookup for linux
+?RCS: patch56: added <asm/signal.h> lookup for Linux
 ?RCS:
 ?RCS: Revision 3.0.1.3  1995/05/12  12:24:11  ram
 ?RCS: patch54: now looks for <linux/signal.h> too (ADO)

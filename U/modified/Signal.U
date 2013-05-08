@@ -49,7 +49,7 @@
 ?X: Remove SIGSTKSIZE used by Linux.
 ?X: Remove SIGSTKSZ used by Posix.
 ?X: Remove SIGTYP void lines used by OS2.
-?X: Some cpps, like os390, dont give the file name anywhere
+?X: Some cpps, like os390, do not give the file name anywhere
 if [ "X$fieldn" = X ]; then
 	: Just make some guesses.  We check them later.
 	xxx='/usr/include/signal.h /usr/include/sys/signal.h'

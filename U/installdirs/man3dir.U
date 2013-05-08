@@ -85,10 +85,10 @@ esac
 
 echo "If you don't want the manual sources installed, answer 'none'."
 ?X: In 5.005_57 and earlier, I had the following notes:
-?X: We dont use /usr/local/man/man3 because some man programs will
+?X: We do not use /usr/local/man/man3 because some man programs will
 ?X: only show the /usr/local/man/man3 contents, and not the system ones,
 ?X: thus man less will show the perl module less.pm, but not the system
-?X: less command.  We might also conflict with TCL man pages.
+?X: less command.  We might also conflict with Tcl man pages.
 ?X: However, something like /opt/perl/man/man3 is fine.
 ?X:
 ?X: However, opinion seems to be shifting such that 'man POSIX' ought

@@ -88,7 +88,7 @@ rp='What is your architecture name'
 . ./myread
 archname="$ans"
 
-: optionally add api version to the architecture for versioned archlibs
+: optionally add API version to the architecture for versioned archlibs
 case "$useversionedarchname" in
 $define|true|[yY]*) dflt='y';;
 *)                  dflt='n';;

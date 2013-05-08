@@ -217,7 +217,7 @@ EOSH
 chmod +x Cppsym.try
 $eunicefix Cppsym.try
 ./Cppsym < Cppsym.know | $sort | $uniq > Cppsym.true
-: Add in any linux cpp "predefined macros":
+: Add in any Linux cpp "predefined macros":
 case "$osname::$gccversion" in
   *linux*::*.*|*gnukfreebsd*::*.*|gnu::*.*)
     tHdrH=_tmpHdr

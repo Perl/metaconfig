@@ -192,7 +192,7 @@ EOM
     useithreads="$usethreads"
 fi
 
-?X: Check out what kind of threads api we have
+?X: Check out what kind of threads API we have
 case "$d_oldpthreads" in
 '')	: Configure tests would be welcome here.  For now, assume undef.
 	val="$undef" ;;

@@ -101,7 +101,7 @@ these files in a separate location.  Otherwise, you can just include
 them with the rest of the public library files.
 
 EOM
-?X: Force dependancy on bin.U
+?X: Force dependency on bin.U
 fn=$binexp
 fn=d+~
 rp='Where do you want to put the public architecture-dependent libraries?'
