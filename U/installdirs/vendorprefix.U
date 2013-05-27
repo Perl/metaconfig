@@ -65,7 +65,7 @@ case "$ans" in
 [yY]*)	fn=d~+
 	rp='Installation prefix to use for vendor-supplied add-ons?'
 	case "$vendorprefix" in
-	'') dflt='' ;;
+	'') dflt="$prefix" ;;
 	*)  dflt=$vendorprefix ;;
 	esac
 	. ./getfile
