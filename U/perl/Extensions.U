@@ -16,8 +16,12 @@
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:known_extensions:
-?S:	This variable holds a list of all XS extensions included in
-?S:	the package.
+?S:	This variable holds a list of all extensions (both XS and non-xs)
+?S:	included in the package source distribution.  This information is
+?S:	only really of use during the Perl build, as the list makes no
+?S:	distinction between extensions which were build and installed, and
+?S:	those which where not.  See "extensions" for the list of extensions
+?S:	actually built and available.
 ?S:.
 ?S:dynamic_ext:
 ?S:	This variable holds a list of XS extension files we want to
@@ -28,12 +32,14 @@
 ?S:	link statically into the package.  It is used by Makefile.
 ?S:.
 ?S:nonxs_ext:
-?S:	This variable holds a list of all non-xs extensions included
-?S:	in the package.  All of them will be built.
+?S:	This variable holds a list of all non-xs extensions built and
+?S:	installed by the package.  By default, all non-xs extensions
+?S:	distributed will be built, with the exception of platform-specific
+?S:	extensions (currently only one VMS specific extension).
 ?S:.
 ?S:extensions:
 ?S:	This variable holds a list of all extension files (both XS and
-?S:	non-xs linked into the package.  It is propagated to Config.pm
+?S:	non-xs) installed with the package.  It is propagated to Config.pm
 ?S:	and is typically used to test whether a particular extension
 ?S:	is available.
 ?S:.
@@ -51,7 +57,7 @@
 ?S:	for users to skip the Opcode extension from the Configure
 ?S:	command line.
 ?S:.
-?T:xxx avail_ext this_ext leaf tdir nonxs_extensions find_extensions
+?T:xxx avail_ext this_ext tdir xs_extensions nonxs_extensions find_extensions
 ?INIT:: set useposix=false in your hint file to disable the POSIX extension.
 ?INIT:useposix=true
 ?INIT:: set useopcode=false in your hint file to disable the Opcode extension.
@@ -62,10 +68,10 @@
 : Check extensions
 echo " "
 echo "Looking for extensions..." >&4
-: If we are using the old config.sh, known_extensions may contain
-: old or inaccurate or duplicate values.
-known_extensions=''
+: If we are using the old config.sh, nonxs_extensions and xs_extensions may
+: contain old or inaccurate or duplicate values.
 nonxs_extensions=''
+xs_extensions=''
 : We do not use find because it might not be available.
 : We do not just use MANIFEST because the user may have dropped
 : some additional extensions into the source tree and expect them
@@ -81,51 +87,34 @@ find_extensions='
 	    DynaLoader|dynaload) ;;
 	    *)
 	    this_ext=`echo $xxx | $sed -e s/-/\\\//g`;
-	    leaf=`echo $xxx | $sed -e s/.*-//`;
-	    if $test -d File; then
-		if $test -f $xxx/$leaf.xs -o -f $xxx/$leaf.c; then
-		    known_extensions="$known_extensions $1$this_ext";
-		elif $test -f $xxx/Makefile.PL; then
-		    nonxs_extensions="$nonxs_extensions $1$this_ext";
-		else
-		    if $test -d $xxx -a $# -lt 10; then
-			set $1$xxx/ $*;
-			cd "$xxx";
-			eval $find_extensions;
-			cd ..;
-			shift;
-		    fi;
-		fi;
-	    else
-		echo " $known_extensions $nonxs_extensions" > $$.tmp;
-		if $contains " $this_ext " $$.tmp; then
-		    echo >&4;
-		    echo "Duplicate directories detected for extension $xxx" >&4;
-		    echo "Configure cannot correctly recover from this - shall I abort?" >&4;
-		    case "$knowitall" in
-		    "") dflt=y;;
-		    *) dflt=n;;
-		    esac;
-		    . ../UU/myread;
-		    case "$ans" in
-		    n*|N*) ;;
-		    *) echo >&4;
-		       echo "Ok.  Stopping Configure." >&4;
-		       echo "Please remove the duplicate directory (e.g. using git clean) and then re-run Configure" >&4;
-			exit 1;;
-		    esac;
-		    echo "Ok.  You will need to correct config.sh before running make." >&4;
-		fi;
-		$ls -1 $xxx > $$.tmp;
-		if   $contains "\.xs$" $$.tmp > /dev/null 2>&1; then
-		    known_extensions="$known_extensions $this_ext";
-		elif $contains "\.c$"  $$.tmp > /dev/null 2>&1; then
-		    known_extensions="$known_extensions $this_ext";
-		elif $test -d $xxx; then
-		    nonxs_extensions="$nonxs_extensions $this_ext";
-		fi;
-		$rm -f $$.tmp;
-	    fi
+	    echo " $xs_extensions $nonxs_extensions" > $$.tmp;
+	    if $contains " $this_ext " $$.tmp; then
+		echo >&4;
+		echo "Duplicate directories detected for extension $xxx" >&4;
+		echo "Configure cannot correctly recover from this - shall I abort?" >&4;
+		case "$knowitall" in
+		"") dflt=y;;
+		*) dflt=n;;
+		esac;
+		. ../UU/myread;
+		case "$ans" in
+		n*|N*) ;;
+		*) echo >&4;
+		    echo "Ok.  Stopping Configure." >&4;
+		    echo "Please remove the duplicate directory (e.g. using git clean) and then re-run Configure" >&4;
+		    exit 1;;
+		esac;
+		echo "Ok.  You will need to correct config.sh before running make." >&4;
+	    fi;
+	    $ls -1 $xxx > $$.tmp;
+	    if   $contains "\.xs$" $$.tmp > /dev/null 2>&1; then
+		xs_extensions="$xs_extensions $this_ext";
+	    elif $contains "\.c$"  $$.tmp > /dev/null 2>&1; then
+		xs_extensions="$xs_extensions $this_ext";
+	    elif $test -d $xxx; then
+		nonxs_extensions="$nonxs_extensions $this_ext";
+	    fi;
+	    $rm -f $$.tmp;
 	    ;;
 	esac;
     done'
@@ -142,28 +131,19 @@ cd "$rsrc/ext"
 set X
 shift
 eval $find_extensions
-if $test -d File-Glob; then
-    : All ext/ flattened
-else
-    # Special case:  Add in modules that nest beyond the first level.
-    # Currently threads/shared and Hash/Util/FieldHash, since they are
-    # not picked up by the recursive find above (and adding in general
-    # recursive finding breaks SDBM_File/sdbm).
-    # A.D. 20011025 (SDBM), ajgough 20071008 (FieldHash)
-    known_extensions="$known_extensions threads/shared Hash/Util/FieldHash"
-fi
-set X $known_extensions
+set X $xs_extensions
 shift
-known_extensions=`echo "$*" | tr ' ' $trnl | $sort | tr $trnl ' '`
+xs_extensions=`echo "$*" | tr ' ' $trnl | $sort | tr $trnl ' '`
 set X $nonxs_extensions
 shift
 nonxs_extensions=`echo "$*" | tr ' ' $trnl | $sort | tr $trnl ' '`
 cd "$tdir"
+known_extensions=`echo $nonxs_extensions $xs_extensions  | tr ' ' $trnl | $sort | tr $trnl ' '`
 
 : Now see which are supported on this system.
 ?X: avail_ext lists available XS extensions.
 avail_ext=''
-for xxx in $known_extensions ; do
+for xxx in $xs_extensions ; do
 	case "$xxx" in
 ?X: Handle possible DOS 8.3 filename and case alterations
 	DB_File|db_file)
@@ -329,6 +309,8 @@ esac
 nonxs_ext=''
 for xxx in $nonxs_extensions ; do
 	case "$xxx" in
+	VMS*)
+		;;
 	*)	nonxs_ext="$nonxs_ext $xxx"
 		;;
 	esac
@@ -470,6 +452,7 @@ case " $static_ext " in
 	cd "$rsrc/cpan"
 	for xxx in `ls Encode/*/Makefile.PL|awk -F/ '{print $2}'`; do
 		static_ext="$static_ext Encode/$xxx"
+		known_extensions="$known_extensions Encode/$xxx"
 	done
 	cd "$tdir"
 	;;
