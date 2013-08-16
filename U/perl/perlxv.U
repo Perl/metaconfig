@@ -276,7 +276,7 @@ int main() {
 #endif
 #ifdef INT16
    int16_t i =  INT16_MAX;
-  uint16_t i = UINT16_MAX;
+  uint16_t u = UINT16_MAX;
   printf("int16_t\n");
 #endif
 #ifdef INT32
