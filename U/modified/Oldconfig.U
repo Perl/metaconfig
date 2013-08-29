@@ -301,6 +301,9 @@ EOM
 			*) osvers=$tmp;;
 			esac
 			;;
+		bitrig) osname=bitrig
+			osvers="$3"
+			;;
 		bsd386) osname=bsd386
 			osvers=`$uname -r`
 			;;
