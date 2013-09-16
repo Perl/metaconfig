@@ -107,7 +107,7 @@ Contents of this directory:
     of metalint are usually serious :-) and need fixing
 
     Exceptions are lots of
-      Your private U/modified/voidflags.U overrides the public one.
+      Your private U/modified/issymlink.U overrides the public one.
     due to the perl special units
 
     an alias to something like

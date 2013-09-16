@@ -56,7 +56,6 @@
 ?H:?%<:#define M_VOID			/* Xenix strikes again */
 ?H:?%<:#endif
 ?H:.
-?W:%<:void
 ?INIT:: full support for void wanted by default
 ?INIT:defvoidused=15
 ?INIT:

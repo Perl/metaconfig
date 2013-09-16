@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:37  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:ptrsize: cat rm_try Myread Compile voidflags run use64bitall i_stdlib d_quad
+?MAKE:ptrsize: cat rm_try Myread Compile run use64bitall i_stdlib d_quad
 ?MAKE:	-pick add $@ %<
 ?S:ptrsize:
 ?S:	This variable contains the value of the PTRSIZE symbol, which
@@ -36,11 +36,6 @@ echo " "
 case "$ptrsize" in
 '')
 	echo "Checking to see how big your pointers are..." >&4
-	if test "$voidflags" -gt 7; then
-		echo '#define VOID_PTR char *' > try.c
-	else
-		echo '#define VOID_PTR void *' > try.c
-	fi
 	$cat >>try.c <<EOCP
 #include <stdio.h>
 #$i_stdlib I_STDLIB
@@ -49,7 +44,7 @@ case "$ptrsize" in
 #endif
 int main()
 {
-    printf("%d\n", (int)sizeof(VOID_PTR));
+    printf("%d\n", (int)sizeof(void *));
     exit(0);
 }
 EOCP
