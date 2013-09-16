@@ -17,7 +17,7 @@
 ?X:	  ld -b module_a.o module_b.o -o module.sl
 ?X:
 ?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags bin_ELF ld_can_script: \
-	rm_try Getfile Myread test osname sed i_dld d_dlopen Findhdr Setvar \
+	rm_try Getfile Myread test osname sed d_dlopen Findhdr Setvar \
 	src run cc ccflags ldflags optimize ls gccversion cat rsrc i_stdlib \
 	i_unistd osvers
 ?MAKE:	-pick add $@ %<
@@ -90,9 +90,6 @@ $undef|n|false)
 	case "$d_dlopen" in
 	    $define) dflt='y' ;;
 	esac
-	case "$i_dld" in
-	    $define) dflt='y' ;;
-	esac
 	: Does a dl_xxx.xs file exist for this operating system
 	$test -f $rsrc/$dldir/dl_${osname}.xs && dflt='y'
 	;;
@@ -109,8 +106,6 @@ y*) usedl="$define"
 			dflt="$dldir/dl_${osname}.xs"
 		elif $test "$d_dlopen" = "$define" ; then
 			dflt="$dldir/dl_dlopen.xs"
-		elif $test "$i_dld" = "$define" ; then
-			dflt="$dldir/dl_dld.xs"
 		else
 			dflt=''
 		fi
