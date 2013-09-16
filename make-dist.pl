@@ -12,7 +12,7 @@ my @today = localtime;
 my $today = (($today[5] + 1900) * 100 + $today[4] + 1) * 100 + $today[3];
 
 my @mc;
-find (sub { -d or push @mc, $File::Find::name }, "metaconfig");
+find (sub { -d || m/\.git/ or push @mc, $File::Find::name }, "metaconfig");
 
 my $tgz = "/tmp/mc_units-$today.tgz";
 unlink $tgz;
