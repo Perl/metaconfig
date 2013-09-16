@@ -13,8 +13,10 @@
 	d_sysconf i_unistd d_stdio_stream_array stdio_stream_array i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:fflushNULL:
-?S:	This symbol, if defined, tells that fflush(NULL) does flush
-?S:	all pending stdio output.
+?S:	This symbol, if defined, tells that fflush(NULL) correctly
+?S:	flushes all pending stdio output without side effects. In
+?S:	particular, on some platforms calling fflush(NULL) *still*
+?S:	corrupts STDIN if it is a pipe.
 ?S:.
 ?S:fflushall:
 ?S:	This symbol, if defined, tells that to flush
@@ -24,8 +26,10 @@
 ?S:	even be probed for and will be left undefined.
 ?S:.
 ?C:FFLUSH_NULL:
-?C:	This symbol, if defined, tells that fflush(NULL) does flush
-?C:	all pending stdio output.
+?C:	This symbol, if defined, tells that fflush(NULL) correctly
+?C:	flushes all pending stdio output without side effects. In
+?C:	particular, on some platforms calling fflush(NULL) *still*
+?C:	corrupts STDIN if it is a pipe.
 ?C:.
 ?C:FFLUSH_ALL:
 ?C:	This symbol, if defined, tells that to flush
