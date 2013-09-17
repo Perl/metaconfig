@@ -67,6 +67,9 @@ elif test -f "/system/gnu_library/bin/ar.pm"; then
 elif test -n "$DJGPP"; then
 : DOS DJGPP
     _exe=".exe"
+elif test -f /kern/cookiejar; then
+: MiNT
+    _exe=""
 elif test -d c:/. -o -n "$is_os2" ; then
 : OS/2 or cygwin
     _exe=".exe"
