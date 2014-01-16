@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_statfs3: \
-	d_statfs Compile rm cat i_sysparam i_sysmount i_systypes \
+	d_statfs Compile rm_try cat i_sysparam i_sysmount i_systypes \
 	i_sysvfs i_sysstatfs Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_statfs3:
@@ -59,6 +59,7 @@ EOCP
 	case "$val" in
 	$define) echo "Yes, it can."  ;;
 	$undef)  echo "No, it can't." ;;
+	$rm_try
 	esac
 	;;
 *)	val="$undef"
@@ -66,6 +67,4 @@ EOCP
 esac
 set d_statfs3
 eval $setvar
-
-$rm -f try.* try
 

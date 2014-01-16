@@ -193,7 +193,6 @@
 ?H:#$d_ipv6_mreq_source	HAS_IPV6_MREQ_SOURCE	/**/
 ?H:.
 ?T:val net ENUM enum
-?F:try.c
 ?LINT:set d_sockpair d_sockaddr_sa_len
 ?LINT:set d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy
 ?LINT:set d_scm_rights d_sockaddr_in6 d_sin6_scope_id d_ip_mreq
