@@ -1,40 +1,9 @@
 Line	Description
 ======= =======================================================================
 
-?C:	Comments for #defines
+?MAKE:	The ?MAKE: line records dependencies
 
-?D:	Set default value for variable
-
-	?D:osname=''
-
-?F:	Defines what files are created by this module
-
-?H:	Defines the part to be included in the generated config_h.SH
-
-	To get #ifdefs in config_h.SH, you'll need strange constructs like
-
-	?H:?%<:@if USE_SITECUSTOMIZE
-	?H:?%<:#ifndef USE_SITECUSTOMIZE
-	?H:?%<:#$usesitecustomize     USE_SITECUSTOMIZE               /**/
-	?H:?%<:#endif
-	?H:?%<:@end
-
-?I:	Include
-
-?INIT:	?
-
-?L:	Library
-
-?LINT:	tell what is to be expected extern and what is changed
-
-	?LINT:define fieldn
-	?LINT:extern CONFIG_H
-	?LINT:change CONFIG_H
-	?LINT:use PERL_CONFIG_SH
-
-?M:	Magic
-
-?MAKE:	symbol list: dependency list [+optional]
+    ?MAKE:symbol list: dependency list [+optional]
 
 	This is the first dependency line. The first "symbol list"
 	should list all the symbols built by this unit (i.e. whose
@@ -52,7 +21,7 @@ Line	Description
 	if, and only if, that symbol is otherwise really wanted;
 	otherwise the default value will be used.
 
-?MAKE:	<tab> command
+    ?MAKE: <tab> command
 
 	There can be one or more command lines following the initial
 	dependency lines.  Those commands will be executed when the
@@ -60,15 +29,85 @@ Line	Description
 	Note that the leading <tab> character is required before the
 	"command".
 
-?O:	Obsoleted?
+?INIT:	Initializations printed verbatim
 
-?P:	Public
+?LINT:	Hints for metalint
 
-?RCS:	free text
+	set		Listed variables are set
+	    ?LINT:set d_getservprotos
+	describe	Listed shell variables are described
+	    ?LINT:describe awk ar bash bison byacc cat chgrp chmod chown
+	create		Listed created files in regular units
+	    ?LINT:create mips
+	known		Listed C variables are described
+	    ?LINT:known StGiFy
+	change		Shell variable ok to be changed
+	    ?LINT:change CONFIG_H
+	extern		Variables known to be externally defined
+	    ?LINT:extern CONFIG_H
+	usefile		Files marked as being used
+	    ?LINT:usefile foobar
+	use		Variables declared as used by unit
+	    ?LINT:use PERL_CONFIG_SH
+	define		Listed variables are defined
+	    ?LINT:define fieldn
+	empty		Empty unit file
+	    ?LINT:empty
+	unclosed	Unclosed here-documents
+	    ?LINT:unclosed EOT
+	nothere		Not a here-document name
+	nocomment	OK if leading unit ': comment' missing
+	    ?LINT:nocomment
+
+?RCS:	RCS comments are ignored
 
 	To be used for RCS comments, at the top of the unit.
 
-?S:	symbol_name (obsolete symbol list)]:
+?C:	C symbols
+
+	Comments for #defines
+
+?D:	Default value for conditional symbols
+
+	?D:osname=''
+
+?E:	Example of usage
+
+?F:	Produced files
+
+	Defines what files are created by this module
+
+	Files produced in the UU directory and which are identified by the
+	convention ./filename. Files !filename are not produced, i.e. they are
+	temporary or externally provided.
+
+	?F:cppstdin !testcpp.out !testcpp.c
+
+?H:	Process the config.h lines
+
+	Defines the part to be included in the generated config_h.SH
+
+	To get #ifdefs in config_h.SH, you'll need strange constructs like
+
+	?H:?%<:@if USE_SITECUSTOMIZE
+	?H:?%<:#ifndef USE_SITECUSTOMIZE
+	?H:?%<:#$usesitecustomize     USE_SITECUSTOMIZE               /**/
+	?H:?%<:#endif
+	?H:?%<:@end
+
+?I:	Added includes
+
+?L:	Added libraries
+
+?M:	Process the confmagic.h lines
+
+?O:	Unit obsolescence
+
+?P:	Location of PD implementation file
+
+?S:	Shell variables
+
+    ?S:symbol_name (obsolete symbol list)]:
 
 	Introduces a shell symbol. This first line names the symbol,
 	optionally followed by a list enclosed between parenthesis and
@@ -76,29 +115,31 @@ Line	Description
 	remapped to the new "symbol_name" if the -o option is given to
 	"metaconfig".
 
-?S:	any text, for "Porting/Glossary"
+    ?S: <tab> any text, for "Porting/Glossary"
 
 	Basically a comment describing the shell symbol, which will be
 	extracted by "makegloss" into the Glossary file.
 
-?S:	.
+    ?S:.
 
 	Closes the shell symbol comment.
 
-?T:	What variables are used as temporary variables
+?T:	Shell temporaries used
 
-?V:	Visible?
+	What variables are used as temporary variables
+
+?V:	Visible symbols like 'rp', 'dflt'
 
 	?V:fieldn
 
-?W:	Wanted
+?W:	Wanted value for interpreter
 
-?X:	any text
+?X:	User comment is ignored
 
 	General purpose comments. May appear anywhere in the unit but must be
 	left justfied. For RCS comments, please use the ?RCS: comment form.
 
-?Y:	layout
+?Y:	User-defined layout preference
 
 	Declare a layout directive for this unit. That directive may be one
 	of the strings "top", "default" or "bottom" (case does not matter,
