@@ -19,7 +19,7 @@
 ?MAKE:usedl ld dlsrc cccdlflags lddlflags ccdlflags bin_ELF ld_can_script: \
 	rm_try Getfile Myread test osname sed d_dlopen Findhdr Setvar \
 	src run cc ccflags ldflags optimize ls gccversion cat rsrc i_stdlib \
-	i_unistd osvers
+	i_unistd osvers sysroot
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
 ?S:usedl:
@@ -77,15 +77,15 @@
 echo " "
 dldir="ext/DynaLoader"
 case "$usedl" in
-$define|y|true)
+    $define|y|true)
 	dflt='y'
 	usedl="$define"
 	;;
-$undef|n|false)
+    $undef|n|false)
 	dflt='n'
 	usedl="$undef"
 	;;
-*)
+    *)
 	dflt='n'
 	case "$d_dlopen" in
 	    $define) dflt='y' ;;
@@ -99,21 +99,20 @@ rp="Do you wish to use dynamic loading?"
 usedl="$ans"
 bin_ELF="$undef"
 case "$ans" in
-y*) usedl="$define"
+    y*) usedl="$define"
 	case "$dlsrc" in
-	'')
-		if $test -f $rsrc/$dldir/dl_${osname}.xs ; then
-			dflt="$dldir/dl_${osname}.xs"
+	    '') if $test -f $rsrc/$dldir/dl_${osname}.xs ; then
+		    dflt="$dldir/dl_${osname}.xs"
 		elif $test "$d_dlopen" = "$define" ; then
-			dflt="$dldir/dl_dlopen.xs"
+		    dflt="$dldir/dl_dlopen.xs"
 		else
-			dflt=''
+		    dflt=''
 		fi
 		;;
-	*)	dflt="$dldir/$dlsrc"
+	    *)  dflt="$dldir/$dlsrc"
 		;;
 	esac
-    echo "The following dynamic loading files are available:"
+	echo "The following dynamic loading files are available:"
 	: Can not go over to $dldir because getfile has path hard-coded in.
 	tdir=`pwd`; cd "$rsrc"; $ls -C $dldir/dl*.xs; cd "$tdir"
 	rp="Source file to use for dynamic loading"
@@ -131,8 +130,8 @@ compile modules that will be used to create a shared library.
 To use no flags, say "none".
 
 EOM
-    case "$cccdlflags" in
-    '')	case "$gccversion" in
+	case "$cccdlflags" in
+	    '') case "$gccversion" in
 		'') case "$osname" in
 			hpux)	dflt='+z' ;;
 			next)	dflt='none' ;;
@@ -141,25 +140,48 @@ EOM
 			sunos)	dflt='-pic' ;;
 			*)	dflt='none' ;;
 		    esac
-			;;
+		    ;;
 		*)  case "$osname" in
-	                darwin) dflt='none' ;;
-			linux*|svr4*|esix*|solaris|nonstopux) dflt='-fPIC' ;;
+			darwin) dflt='none' ;;
+			*linux*|svr4*|esix*|solaris|nonstopux) dflt='-fPIC' ;;
 			*)	dflt='-fpic' ;;
 		    esac ;;
-	    esac ;;
-	' ') dflt='none' ;;
-    *)	dflt="$cccdlflags" ;;
-    esac
-    rp="Any special flags to pass to $cc -c to compile shared library modules?"
-    . ./myread
-    case "$ans" in
-?X: Use ' ' so that a subsequent Configure run preserves the old state.
-    none) cccdlflags=' ' ;;
-    *) cccdlflags="$ans" ;;
-    esac
+		esac ;;
+	    ' ') dflt='none' ;;
+	    *)   dflt="$cccdlflags" ;;
+	esac
 
-    cat << EOM
+	case "$dflt" in
+	    none) dflt='' ;;
+	esac
+
+	# If -Dsysroot was specified, now's the time to add it
+	# to cccdlflags
+	if test "X$sysroot" != X; then
+	    case "$gccversion" in
+		'') ;;
+		*)  case "$dflt" in
+			*sysroot*) ;;
+			'undef'|*)
+			    dflt="$dflt --sysroot=$sysroot" ;;
+		    esac
+		    ;;
+	    esac
+	fi
+
+	case "$dflt" in
+	    '') dflt='none';;
+	esac
+
+	rp="Any special flags to pass to $cc -c to compile shared library modules?"
+	. ./myread
+	case "$ans" in
+?X: Use ' ' so that a subsequent Configure run preserves the old state.
+	    none) cccdlflags=' ' ;;
+	    *)    cccdlflags="$ans" ;;
+	esac
+
+	cat << EOM
 
 Some systems use ld to create libraries that can be dynamically loaded,
 while other systems (such as those using ELF) use $cc.
@@ -179,41 +201,40 @@ EOM
 #include <unistd.h>
 #endif
 int main() {
-	char b[4];
-	int i = open("a.out",O_RDONLY);
-	if(i == -1)
-		exit(1); /* fail */
-	if(read(i,b,4)==4 && b[0]==127 && b[1]=='E' && b[2]=='L' && b[3]=='F')
-		exit(0); /* succeed (yes, it is ELF) */
-	else
-		exit(1); /* fail */
+    char b[4];
+    int i = open("a.out",O_RDONLY);
+    if(i == -1)
+	exit(1); /* fail */
+    if(read(i,b,4)==4 && b[0]==127 && b[1]=='E' && b[2]=='L' && b[3]=='F')
+	exit(0); /* succeed (yes, it is ELF) */
+    exit(1); /* fail */
 }
 EOM
 	if $cc $ccflags $ldflags try.c >/dev/null 2>&1 && $run ./a.out; then
-		bin_ELF="$define"
+	    bin_ELF="$define"
 	fi
 	$rm_try
 
 	case "$ld" in
-	'')	if $test $bin_ELF = "$define"; then
-			cat <<EOM
+	    '') if $test $bin_ELF = "$define"; then
+		    cat <<EOM
 You appear to have ELF support.  I'll use $cc to build dynamic libraries.
 EOM
-			dflt="$cc"
+		    dflt="$cc"
 		else
-			echo "I'll use ld to build dynamic libraries."
-			dflt='ld'
+		    echo "I'll use ld to build dynamic libraries."
+		    dflt='ld'
 		fi
 		;;
-	*)	dflt="$ld"
+	    *)  dflt="$ld"
 		;;
 	esac
 
-    rp="What command should be used to create dynamic libraries?"
-    . ./myread
+	rp="What command should be used to create dynamic libraries?"
+	. ./myread
 	ld="$ans"
 
-    cat << EOM
+	cat << EOM
 
 Some systems may require passing special flags to $ld to create a
 library that can be dynamically loaded.  If your ld flags include
@@ -222,76 +243,84 @@ search path, you may need to specify those -L options here as well.  To
 use no flags, say "none".
 
 EOM
-    case "$lddlflags" in
-    '') case "$osname" in
-  			haiku) dflt='-shared' ;;
-			hpux) dflt='-b';
-			      case "$gccversion" in
+	case "$lddlflags" in
+	    '') case "$osname" in
+		    haiku) dflt='-shared' ;;
+		    hpux) dflt='-b';
+			  case "$gccversion" in
 			      '') dflt="$dflt +vnocompatwarnings" ;;
-			      esac
-			      ;;
-			linux|irix*|gnu*)  dflt="-shared $optimize" ;;
-			next)  dflt='none' ;;
-			solaris) # See [perl #66604].
-				# On Solaris 11, gcc -m64 on amd64 
-				# appears not to understand -G.  gcc versions at
-				# least as old as 3.4.3 support -shared, so just
-				# use that with Solaris 11 and later, but keep
-				# the old behavior for older Solaris versions.
-				case "$gccversion" in
-					'') dflt='-G' ;;
-					*)	case "$osvers" in
-							2.?|2.10) dflt='-G' ;;
-							*) dflt='-shared' ;;
-						esac
-						;;
-				esac
-				;;
-			sunos) dflt='-assert nodefinitions' ;;
-			svr4*|esix*|nonstopux) dflt="-G $ldflags" ;;
-	        *)     dflt='none' ;;
-			esac
-			;;
-    *) dflt="$lddlflags" ;;
-    esac
+			  esac
+			  ;;
+		    *linux*|irix*|gnu*)  dflt="-shared $optimize" ;;
+		    next)  dflt='none' ;;
+		    solaris) # See [perl #66604].
+			    # On Solaris 11, gcc -m64 on amd64
+			    # appears not to understand -G.  gcc versions at
+			    # least as old as 3.4.3 support -shared, so just
+			    # use that with Solaris 11 and later, but keep
+			    # the old behavior for older Solaris versions.
+			    case "$gccversion" in
+				'') dflt='-G' ;;
+				*)  case "$osvers" in
+					2.?|2.10) dflt='-G' ;;
+					*) dflt='-shared' ;;
+				    esac
+				    ;;
+			    esac
+			    ;;
+		    sunos) dflt='-assert nodefinitions' ;;
+		    svr4*|esix*|nonstopux) dflt="-G $ldflags" ;;
+		    *)     dflt='none' ;;
+		esac
+		;;
+	    *) dflt="$lddlflags" ;;
+	esac
+
+	: Only do this for gcc, since, for example, qcc has no concept
+	: of --sysroot.
+	if $test "X$sysroot" != X; then
+	    case "$gccversion" in
+		'') ;;
+		*)  dflt="$dflt --sysroot $sysroot" ;;
+	    esac
+	fi
 
 	: Try to guess additional flags to pick up local libraries.
 	: Be careful not to append to a plain 'none'
 	case "$dflt" in
-	none) dflt='' ;;
+	    none) dflt='' ;;
 	esac
 	for thisflag in $ldflags; do
-		case "$thisflag" in
+	    case "$thisflag" in
 		-L*|-R*|-Wl,-R*)
-			case " $dflt " in
+		    case " $dflt " in
 			*" $thisflag "*) ;;
 			*) dflt="$dflt $thisflag" ;;
-			esac
-			;;
-		esac
+		    esac
+		    ;;
+	    esac
 	done
 
 	case "$dflt" in
-	''|' ') dflt='none' ;;
+	    ''|' ') dflt='none' ;;
 	esac
 
 	case "$ldflags" in
-	*-fstack-protector*)
-	    case "$dflt" in
-			*-fstack-protector*) ;; # Don't add it again
-			*) dflt="$dflt -fstack-protector" ;; 
+	    *-fstack-protector*)
+		case "$dflt" in
+		    *-fstack-protector*) ;; # Don't add it again
+		    *) dflt="$dflt -fstack-protector" ;;
 		esac
 		;;
 	esac
 
-
-    rp="Any special flags to pass to $ld to create a dynamically loaded library?"
-    . ./myread
-    case "$ans" in
+	rp="Any special flags to pass to $ld to create a dynamically loaded library?"
+	. ./myread
+	case "$ans" in
 ?X: Use ' ' so that a subsequent Configure run preserves the old state.
-    none) lddlflags=' ' ;;
-    *) lddlflags="$ans" ;;
-    esac
+	    none) lddlflags=' ' ;;
+	    *) lddlflags="$ans" ;;
+	esac
 
 	cat <<EOM
 
@@ -300,57 +329,58 @@ the resulting executable will use dynamic linking.  To use no flags,
 say "none".
 
 EOM
-    case "$ccdlflags" in
-    '') case "$osname" in
-	    linux|hpux|gnu*)	dflt='-Wl,-E' ;;
-	    next|sunos)	dflt='none' ;;
-	    *)		dflt='none' ;;
-	    esac ;;
-    ' ')  dflt='none' ;;
-    *)  dflt="$ccdlflags" ;;
-    esac
-    rp="Any special flags to pass to $cc to use dynamic linking?"
-    . ./myread
-    case "$ans" in
+	case "$ccdlflags" in
+	    '') case "$osname" in
+		    *linux*|hpux|gnu*) dflt='-Wl,-E' ;;
+		    next|sunos)      dflt='none'   ;;
+		    *)               dflt='none'   ;;
+		esac ;;
+	    ' ') dflt='none' ;;
+	    *)   dflt="$ccdlflags" ;;
+	esac
+	rp="Any special flags to pass to $cc to use dynamic linking?"
+	. ./myread
+	case "$ans" in
 ?X: Use ' ' so that a subsequent Configure run preserves the old state.
-    none) ccdlflags=' ' ;;
-    *) ccdlflags="$ans" ;;
-    esac
-    ;;
+	    none) ccdlflags=' ' ;;
+	    *)    ccdlflags="$ans" ;;
+	esac
+	;;
 ?X: End of usedl=y section
-*)  usedl="$undef"
+
+    *)  usedl="$undef"
 	ld='ld'
-    dlsrc='dl_none.xs'
-    lddlflags=''
-    ccdlflags=''
-    ;;
+	dlsrc='dl_none.xs'
+	lddlflags=''
+	ccdlflags=''
+	;;
 esac
 
 ld_can_script="$undef"
 case "$bin_ELF$usedl" in
-$define$define)
-    # Abuse try.h and a.out names for neat cleanup
-    $cat >try.c <<EOM
+    $define$define)
+	# Abuse try.h and a.out names for neat cleanup
+	$cat >try.c <<EOM
 void foo() {}
 void bar() {}
 EOM
-    $cat >try.h <<EOM
+	$cat >try.h <<EOM
 LIBTEST_42 {
  global:
   foo;
  local: *;
  };
 EOM
-    if $cc $cccdlflags $ccdlflags $ccflags \
-           $ldflags $lddlflags -o a.out try.c \
-           -Wl,--version-script=try.h >/dev/null 2>&1 \
-       &&  $test -s a.out ; then
-	echo "ld supports scripting" >&4
-	ld_can_script="$define"
-    else
-	echo "ld does not support scripting" >&4
-    fi
-    $rm_try
-    ;;
+	if $cc $cccdlflags $ccdlflags $ccflags \
+	       $ldflags $lddlflags -o a.out try.c \
+	       -Wl,--version-script=try.h >/dev/null 2>&1 \
+	   &&  $test -s a.out ; then
+	    echo "ld supports scripting" >&4
+	    ld_can_script="$define"
+	else
+	    echo "ld does not support scripting" >&4
+	fi
+	$rm_try
+	;;
 esac
 

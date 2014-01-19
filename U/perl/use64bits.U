@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:use64bitint use64bitall archname64: Myread Oldconfig Setvar test \
-	usemorebits longsize ccflags d_quad uquadtype Compile rm_try
+	usemorebits longsize ccflags d_quad uquadtype Compile rm_try run
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:use64bitint:
@@ -246,7 +246,7 @@ int main (void)
 EOCP
 	set try
 	if eval $compile_ok; then
-	    libcquad=`./try`
+	    libcquad=`$run ./try`
 	    echo "Your C library's 64-bit functions are $libcquad."
 	else
 	    echo "(I can't seem to compile the test program.)"

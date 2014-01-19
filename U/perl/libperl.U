@@ -136,7 +136,7 @@ true)
 			dflt=libperl.5.$so
 			# XXX How handle the --version stuff for MAB?
 			;;
-		linux*|gnu*)  # ld won't link with a bare -lperl otherwise.
+		*linux*|gnu*)  # ld won't link with a bare -lperl otherwise.
 			dflt=libperl.$so
 			;;
 		cygwin*) # ld links now against the dll directly

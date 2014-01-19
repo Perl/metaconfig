@@ -35,7 +35,7 @@
 ?X: answers to other questions.
 ?X:
 ?MAKE:Guess d_eunice d_xenix d_bsd: cat test echo n c contains \
-	rm Loc eunicefix tr
+	rm Loc eunicefix tr sysroot
 ?MAKE:	-pick add $@ %<
 ?S:d_eunice:
 ?S:	This variable conditionally defines the symbols EUNICE and VAX, which
@@ -96,8 +96,8 @@ d_bsd="$undef"
 ?X: Do not use 'usrinc', or we get a circular dependency. because
 ?X: usrinc is defined in usrinc.U, which relies on us...
 ?X:
-$cat /usr/include/signal.h /usr/include/sys/signal.h >foo 2>/dev/null
-if test -f /osf_boot || $contains 'OSF/1' /usr/include/ctype.h >/dev/null 2>&1
+$cat $sysroot/usr/include/signal.h $sysroot/usr/include/sys/signal.h >foo 2>/dev/null
+if test -f /osf_boot || $contains 'OSF/1' $sysroot/usr/include/ctype.h >/dev/null 2>&1
 then
 	echo "Looks kind of like an OSF/1 system, but we'll see..."
 	echo exit 0 >osf1

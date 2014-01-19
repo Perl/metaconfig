@@ -35,7 +35,7 @@
 ?X:	This unit initializes the path for C library lookup.
 ?X:
 ?MAKE:libpth glibpth xlibpth plibpth loclibpth: \
-	usrinc incpath test cat Myread Oldconfig
+	usrinc incpath test cat Myread Oldconfig sysroot
 ?MAKE:	-pick add $@ %<
 ?S:libpth:
 ?S:	This variable holds the general path (space-separated) used to find
@@ -87,8 +87,8 @@
 case "$plibpth" in
 '') if ./mips; then
 ?X: on mips, we DO NOT want /lib, and we want $incpath/usr/lib
-		plibpth="$incpath/usr/lib /usr/local/lib /usr/ccs/lib"
-	fi;;
+	plibpth="$incpath/usr/lib $sysroot/usr/local/lib $sysroot/usr/ccs/lib"
+    fi;;
 esac
 case "$libpth" in
 ' ') dlist='';;
@@ -97,7 +97,6 @@ case "$libpth" in
 esac
 
 : Now check and see which directories actually exist, avoiding duplicates
-libpth=''
 for xxx in $dlist
 do
     if $test -d $xxx; then
@@ -115,6 +114,14 @@ know not to be holding relevant libraries, and add any that are needed.
 Say "none" for none.
 
 EOM
+
+if test "X$sysroot" != X; then
+    $cat <<EOM
+You have set sysroot to $sysroot, please supply the directories excluding sysroot
+
+EOM
+fi
+
 case "$libpth" in
 '') dflt='none';;
 *)

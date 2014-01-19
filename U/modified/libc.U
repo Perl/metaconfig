@@ -50,7 +50,7 @@
 ?RCS:
 ?MAKE:libc +nm_extract: echo n c rm test grep Getfile Myread Oldconfig Loc \
 	sed libs incpath libpth ar runnm nm nm_opt nm_so_opt contains xlibpth \
-	so _a _o osname trnl tr sort uniq
+	so _a _o osname trnl tr sort uniq sysroot
 ?MAKE:	-pick add $@ %<
 ?S:libc:
 ?S:	This variable contains the location of the C library.
@@ -149,8 +149,8 @@ unknown)
 			 $sort | $sed -e 's/^.* //'`
 		eval set \$$#
 	done
-	$test -r $1 || set /usr/ccs/lib/libc.$so
-	$test -r $1 || set /lib/libsys_s$_a
+	$test -r $1 || set $sysroot/usr/ccs/lib/libc.$so
+	$test -r $1 || set $sysroot/lib/libsys_s$_a
 	;;
 *)
 ?X: ensure the test below for the (shared) C library will fail

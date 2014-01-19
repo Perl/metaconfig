@@ -5,8 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:run to from targetarch usecrosscompile: src awk grep test rm \
-	echo sed mkdir cp touch chmod
+?MAKE:run to from targetarch targetdir targetmkdir targethost targetport usecrosscompile: \
+	    src test rm echo sed mkdir cp chmod
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usecrosscompile:
@@ -35,6 +35,24 @@
 ?S:	If cross-compiling, this variable contains the target architecture.
 ?S:	If not, this will be empty.
 ?S:.
+?S:targetdir:
+?S:	This variable contains a path that will be created on the target
+?S:	host using targetmkdir, and then used to copy the cross-compiled
+?S:	executables to. Defaults to '/tmp' if not set.
+?S:.
+?S:targetmkdir:
+?S:	This variable contains the command used by Configure to create a
+?S:	new directory on the target host.
+?S:.
+?S:targethost:
+?S:	This variable contains the name of a separate host machine that
+?S:	can be used to run compiled test programs and perl tests on.
+?S:	Set to empty string if not in use.
+?S:.
+?S:targetport:
+?S:	This variable contains the number of a network port to be used to
+?S:	connect to the host in targethost, if unset defaults to 22 for ssh.
+?S:.
 ?C:USE_CROSS_COMPILE:
 ?C:	This symbol, if defined, indicates that Perl is being cross-compiled.
 ?C:.
@@ -47,95 +65,72 @@
 ?H:?%<:#define	PERL_TARGETARCH	"$targetarch"	/**/
 ?H:?%<:#endif
 ?H:.
-?T:croak pwd exe f q i j cwd
+?D:targethost=''
+?D:targetmkdir=''
+?T:croak pwd exe f q cwd file xxx
 ?LINT:extern usecrosscompile
 ?LINT:extern cc
 ?LINT:extern usrinc
-?LINT:change usrinc
 ?LINT:change ar
 ?LINT:change nm
 ?LINT:change ranlib
-?LINT:extern targethost
+?LINT:extern targetport
 ?LINT:extern targetdir
-?LINT:change targetdir
 ?LINT:extern targetuser
 ?LINT:change targetuser
 ?LINT:extern targetrun
 ?LINT:extern targetfrom
 ?LINT:extern targetto
-?LINT:extern targetmkdir
 ?LINT:change targetrun
 ?LINT:change targetfrom
 ?LINT:change targetto
-?LINT:change targetmkdir
 ?LINT:extern incpth
 ?LINT:extern libpth
-?LINT:change incpth
-?LINT:change libpth
 ?LINT:extern locincpth
 ?LINT:extern loclibpth
 ?LINT:change locincpth
 ?LINT:change loclibpth
+?LINT:extern hostperl
+?LINT:extern hostgenerate
 : Check for Cross-Compilation
+?X: targethost mainly set to allow ?S: documentation
+?X:otherwise it could have been declared extern
+if $test "X$targethost" = "X"; then
+    targethost=""
+fi
 case "$usecrosscompile" in
 $define|true|[yY]*)
 	$echo "Cross-compiling..."
-        croak=''
-    	case "$cc" in
-	*-*-gcc) # A cross-compiling gcc, probably.
-	    targetarch=`$echo $cc|$sed 's/-gcc$//'`
-	    ar=$targetarch-ar
+	croak=''
+	case "$cc" in
+	*-gcc*|*-g++*) # A cross-compiling gcc, probably.
+	    # arm-linux-androideabi-gcc  -> arm-linux-androideabi
+	    # x86_64-w64-mingw32-gcc.exe -> x86_64-w64-mingw32
+	    targetarch=`$echo $cc|$sed 's/-g[c\+][c\+].*$//'`
+	    ar=`$echo $cc|$sed 's/-g[c\+][c\+]/-ar/'`
 	    # leave out ld, choosing it is more complex
-	    nm=$targetarch-nm
-	    ranlib=$targetarch-ranlib
-	    $echo 'extern int foo;' > try.c
-	    set X `$cc -v -E try.c 2>&1 | $awk '/^#include </,/^End of search /'|$grep '/include'`
-	    shift
-            if $test $# -gt 0; then
-	        incpth="$incpth $*"
-		incpth="`$echo $incpth|$sed 's/^ //'`"
-                echo "Guessing incpth '$incpth'." >&4
-                for i in $*; do
-		    j="`$echo $i|$sed 's,/include$,/lib,'`"
-		    if $test -d $j; then
-			libpth="$libpth $j"
-		    fi
-                done   
-		libpth="`$echo $libpth|$sed 's/^ //'`"
-                echo "Guessing libpth '$libpth'." >&4
-	    fi
-	    $rm -f try.c
-	    ;;
+	    nm=`$echo $cc|$sed 's/-g[c\+][c\+]/-nm/'`
+	    ranlib=`$echo $cc|$sed 's/-g[c\+][c\+]/-ranlib/'`
+	    # We are in a weird spot. Just before us, some values
+	    # were 'saved', to be restored after the hints are
+	    # run.  This means that the changes we made to ar,
+	    # nm and ranlib will get reverted.
+	    # To avoid that, we hijack the saving mechanism and
+	    # have it save our new values.
+	    for file in ar nm ranlib; do
+		eval xxx=\$$file
+		eval $file=$xxx$_exe
+		eval _$file=$xxx
+	    done
+	;;
 	esac
 	case "$targetarch" in
 	'') echo "Targetarch not defined." >&4; croak=y ;;
-        *)  echo "Using targetarch $targetarch." >&4 ;;
-	esac
-	case "$incpth" in
-	'') echo "Incpth not defined." >&4; croak=y ;;
-        *)  echo "Using incpth '$incpth'." >&4 ;;
-	esac
-	case "$libpth" in
-	'') echo "Libpth not defined." >&4; croak=y ;;
-        *)  echo "Using libpth '$libpth'." >&4 ;;
-	esac
-	case "$usrinc" in
-	'') for i in $incpth; do
-	        if $test -f $i/errno.h -a -f $i/stdio.h -a -f $i/time.h; then
-		    usrinc=$i
-	            echo "Guessing usrinc $usrinc." >&4
-		    break
-		fi
-	    done
-	    case "$usrinc" in
-	    '') echo "Usrinc not defined." >&4; croak=y ;;
-	    esac
-            ;;
-        *)  echo "Using usrinc $usrinc." >&4 ;;
+	*)  echo "Using targetarch $targetarch." >&4 ;;
 	esac
 	case "$targethost" in
 	'') echo "Targethost not defined." >&4; croak=y ;;
-        *)  echo "Using targethost $targethost." >&4
+	*)  echo "Using targethost $targethost." >&4
 	esac
 	locincpth=' '
 	loclibpth=' '
@@ -164,18 +159,23 @@ $define|true|[yY]*)
 	case "$targetfrom" in
 	'') targetfrom=scp ;;
 	esac
-    	run=$run-$targetrun
-    	to=$to-$targetto
-    	from=$from-$targetfrom
+	run=$run-$targetrun
+	to=$to-$targetto
+	from=$from-$targetfrom
 	case "$targetdir" in
 	'')  targetdir=/tmp
-             echo "Guessing targetdir $targetdir." >&4
-             ;;
+	     echo "Guessing targetdir $targetdir." >&4
+	     ;;
 	esac
 	case "$targetuser" in
 	'')  targetuser=root
-             echo "Guessing targetuser $targetuser." >&4
-             ;;
+	     echo "Guessing targetuser $targetuser." >&4
+	     ;;
+	esac
+	case "$targetport" in
+	'')  targetport=22
+	     echo "Guessing targetport $targetport." >&4
+	     ;;
 	esac
 	case "$targetfrom" in
 	scp)	q=-q ;;
@@ -197,11 +197,8 @@ case "\$cwd" in
 esac
 exe=\$1
 shift
-if $test ! -f \$exe.xok; then
-  $to \$exe
-  $touch \$exe.xok
-fi
-$targetrun -l $targetuser $targethost "cd \$cwd && ./\$exe \$@"
+$to \$exe
+$targetrun -p $targetport -l $targetuser $targethost "cd \$cwd && ./\$exe \$@"
 EOF
 	    ;;
 	*)  echo "Unknown targetrun '$targetrun'" >&4
@@ -212,7 +209,7 @@ EOF
 	*/Cross/mkdir)
 	    cat >$targetmkdir <<EOF
 #!/bin/sh
-$targetrun -l $targetuser $targethost "mkdir -p \$@"
+$targetrun -p $targetport -l $targetuser $targethost "mkdir -p \$@"
 EOF
 	    $chmod a+rx $targetmkdir
 	    ;;
@@ -229,11 +226,11 @@ do
   case "\$f" in
   /*)
     $targetmkdir \`dirname \$f\`
-    $targetto $q \$f $targetuser@$targethost:\$f            || exit 1
+    $targetto -P $targetport $q \$f $targetuser@$targethost:\$f            || exit 1
     ;;
   *)
     $targetmkdir $targetdir/\`dirname \$f\`
-    $targetto $q \$f $targetuser@$targethost:$targetdir/\$f || exit 1
+    $targetto -P $targetport $q \$f $targetuser@$targethost:$targetdir/\$f || exit 1
     ;;
   esac
 done
@@ -269,7 +266,7 @@ EOF
 for f in \$@
 do
   $rm -f \$f
-  $targetfrom $q $targetuser@$targethost:$targetdir/\$f . || exit 1
+  $targetfrom -P $targetport $q $targetuser@$targethost:$targetdir/\$f . || exit 1
 done
 exit 0
 EOF

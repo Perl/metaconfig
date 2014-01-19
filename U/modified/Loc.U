@@ -66,7 +66,7 @@
 	gmake gzip grep inews ksh less line lint ln lp lpr ls mail mailx \
 	make mkdir more mv nm nroff perl pg pmake pr rm rmail sed sendmail \
 	shar sleep smail sort submit tail tar tbl tee test touch tr troff \
-	uname uniq uuname vi zcat zip:  eunicefix n c startsh Instruct
+	uname uniq uuname vi zcat zip: eunicefix n c startsh Instruct sysroot
 ?MAKE:	-pick weed $@ %<
 ?LINT:describe awk ar bash bison byacc cat chgrp chmod chown \
 	comm compress cp cpio cpp csh date echo egrep emacs expr find flex \
@@ -217,7 +217,7 @@ trylist="
 	shar sleep smail sort submit tail tar tbl tee touch tr troff \
 	uname uniq uuname vi zcat zip
 pth=`echo $PATH | sed -e "s/$p_/ /g"`
-pth="$pth /lib /usr/lib"
+pth="$pth $sysroot/lib $sysroot/usr/lib"
 for file in $loclist; do
 ?X:
 ?X: Allow them to -Dmake=pmake on the command line for instance...

@@ -38,7 +38,8 @@
 ?X: This unit is then used by sig_name.U.
 ?X:
 ?MAKE:Signal: test tr rm awk cat grep startsh eunicefix sed sort uniq \
-	Findhdr cppstdin +cppflags cppminus Compile _o _exe trnl run i_stdlib
+	Findhdr cppstdin +cppflags cppminus Compile _o _exe trnl run i_stdlib \
+	sysroot
 ?MAKE:	-pick add $@ %<
 ?X:all files declared as "public" since they're used from other units
 ?F:signal.c signal_cmd signal.lst signal signal.awk
@@ -52,7 +53,7 @@
 ?X: Some cpps, like os390, do not give the file name anywhere
 if [ "X$fieldn" = X ]; then
 	: Just make some guesses.  We check them later.
-	xxx='/usr/include/signal.h /usr/include/sys/signal.h'
+	xxx="$sysroot/usr/include/signal.h $sysroot/usr/include/sys/signal.h"
 else
 	xxx=`echo '#include <signal.h>' |
 	$cppstdin $cppminus $cppflags 2>/dev/null |

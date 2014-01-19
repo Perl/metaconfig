@@ -1,0 +1,68 @@
+?RCS: $Id$
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:sysroot _sysroot: Head
+?MAKE:	-pick add $@ %<
+?S:sysroot:
+?S:	This variable is empty unless supplied by the Configure user.
+?S:	It can contain a path to an alternative root directory, under which
+?S:	headers and libraries for the compilation target can be found. This
+?S:	is generally used when cross-compiling using a gcc-like compiler.
+?S:.
+?S:_sysroot:
+?S:	This is only used inside Configure and determines the --sysroot=
+?S:	argument to gcc or g++ but only when sysroot and gcc/g++ is used
+?S:.
+?LINT:extern cc
+?LINT:extern cppflags
+?LINT:change cppflags
+?LINT:extern ccflags
+?LINT:change ccflags
+?LINT:extern ldflags
+?LINT:change ldflags
+?LINT:extern cccdlflags
+?T:var xxx path
+: Set 'sysroot' to change the logical root directory to your headers and libraries see man gcc
+: This is primarily meant for cross-compile environments, and may fail to be useful in other cases
+if test "X$sysroot" = X; then
+    sysroot=""
+else
+    case "$cc" in
+	*gcc*|*g++*)
+	    echo "Using $sysroot to find your headers and libraries, adding to ccflags"
+	    # _sysroot is used in places where we need --sysroot=foo
+	    # but using the rest of the flags could cause issues.
+	    _sysroot="--sysroot=$sysroot";
+	    case "$ccflags" in
+		*sysroot*) ;;
+		'undef'|*)
+		ccflags="$ccflags $_sysroot"
+	    esac
+	    case "$ldflags" in
+		*sysroot*) ;;
+		'undef'|*)
+		ldflags="$ldflags $_sysroot"
+	    esac
+	    case "$cppflags" in
+		*sysroot*) ;;
+		'undef'|*)
+		cppflags="$cppflags $_sysroot"
+	    esac
+	    # lddlflags updated below in lddlflags section;
+	    # same with cccdlflags
+	    ;;
+    esac
+
+    # Adjust some defaults to also use $sysroot
+    for var in xlibpth loclibpth locincpth glibpth; do
+	eval xxx=\$$var
+	eval $var=''
+	for path in $xxx; do
+	    eval $var=\"\$$var $sysroot$path\"
+	done
+    done
+
+fi
+

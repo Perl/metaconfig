@@ -48,7 +48,7 @@
 ?MAKE:ccflags ldflags lkflags cppflags optimize locincpth: test cat \
 	Myread Guess Options Oldconfig +gccversion mips_type +usrinc \
 	package contains rm +cc cppstdin cppminus cpprun cpplast libpth \
-	libs loclibpth hint usesocks sh run rm_try
+	libs loclibpth hint usesocks sh run rm_try _sysroot
 ?MAKE:	-pick add $@ %<
 ?S:ccflags:
 ?S:	This variable contains any additional C compiler flags desired by
@@ -85,6 +85,7 @@
 ?D:ccflags=''
 ?D:ldflags=''
 ?D:optimize=''
+?LINT:extern _sysroot
 ?INIT:: Possible local include directories to search.
 ?INIT:: Set locincpth to "" in a hint file to defeat local include searches.
 ?INIT:locincpth="/usr/local/include /opt/local/include /usr/gnu/include"
@@ -157,7 +158,7 @@ checkccflag='check=$1; flag=$2; callback=$3;
 echo " ";
 echo "Checking if your compiler accepts $flag" 2>&1;
 echo "int main(void) { return 0; }" > gcctest.c;
-if $cc -O2 $flag -o gcctest gcctest.c 2>gcctest.out && ./gcctest; then
+if $cc $_sysroot -O2 $flag -o gcctest gcctest.c 2>gcctest.out && $run ./gcctest; then
     echo "Yes, it does." 2>&1;
     if $test -s gcctest.out ; then
         echo "But your platform does not like it:";
@@ -488,31 +489,12 @@ dflt=y
 ?X: We need to try the resulting executable, because cc might yield a 0 status
 ?X: even when ld failed, in which case the executable will not run properly,
 ?X: if its x bit is set at all...
-?X:
-?X: Also check the xxx=`$run ./try` output to check for misconfigured -lsfio.
-?X: If sfio's iffe goofed and it uses _exit instead of exit, then the
-?X: output buffers don't get flushed and we don't see any output
-?X: when run from within `backticks`.  What fun.
-?X: --Andy Dougherty 2/13/1998
 if $sh -c "$cc -o try $optimize $ccflags $ldflags try.c $libs" >>try.msg 2>&1; then
 	if $sh -c "$run ./try " >>try.msg 2>&1; then
 		xxx=`$run ./try`
 		case "$xxx" in
 		"Ok") dflt=n ;;
-		*)	echo 'The program compiled OK, but produced no output.' >> try.msg
-			case " $libs " in
-			*" -lsfio "*)
-				cat >> try.msg <<'EOQS'
-If $libs contains -lsfio, and sfio is mis-configured, then it
-sometimes (apparently) runs and exits with a 0 status, but with no
-output!  It may have to do with sfio's use of _exit vs. exit.
-
-EOQS
-				rp="You have a big problem.  Shall I abort Configure"
-				dflt=y
-				;;
-			esac
-			;;
+		*)    echo 'The program compiled OK, but produced no output.' >> try.msg ;;
 		esac
 	else
 		echo "The program compiled OK, but exited with status $?." >>try.msg

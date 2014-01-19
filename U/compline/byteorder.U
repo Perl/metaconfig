@@ -19,7 +19,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:byteorder: cat Myread Oldconfig Loc Compile rm_try run \
-	usecrosscompile multiarch uvtype uvsize i_stdlib
+	multiarch uvtype uvsize i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:byteorder:
 ?S:	This variable holds the byte order in a UV. In the following,
@@ -74,10 +74,10 @@
 ?F:!try
 : check for ordering of bytes in a UV
 echo " "
-case "$usecrosscompile$multiarch" in
+case "$multiarch" in
 *$define*)
 	$cat <<EOM
-You seem to be either cross-compiling or doing a multiarchitecture build,
+You seem to be doing a multiarchitecture build,
 skipping the byteorder check.
 
 EOM
