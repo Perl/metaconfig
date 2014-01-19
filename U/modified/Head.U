@@ -49,7 +49,7 @@
 ?MAKE:Head:
 ?MAKE:	-pick wipe $@ %<
 ?V:PATH p_ _exe me newsh
-?T:argv Id p paths OS2_SHELL DJGPP
+?T:argv p paths OS2_SHELL DJGPP
 ?T:inksh needksh avoidksh newsh changesh reason
 ?F:!*
 ?LINT:extern ENV CDPATH SHELL MACHTYPE _exe is_os2
