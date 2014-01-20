@@ -25,7 +25,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:usrinc incpath mips_type: test cat echo n c Getfile Guess \
-	Oldconfig eunicefix contains rm
+	Oldconfig eunicefix contains rm sysroot cc
 ?MAKE:	-pick add $@ %<
 ?S:usrinc:
 ?S:	This variable holds the path of the include files, which is
@@ -41,13 +41,15 @@
 ?S:	Possible values are "BSD 4.3" and "System V".
 ?S:.
 ?D:usrinc='/usr/include'
+?LINT:extern cppflags
 ?LINT:create mips
 ?T:xxx_prompt
 ?F:./mips
 : What should the include directory be ?
+: Use sysroot if set, so findhdr looks in the right place.
 echo " "
 $echo $n "Hmm...  $c"
-dflt='/usr/include'
+dflt="$sysroot/usr/include"
 incpath=''
 ?X:	mips_type is used later, to add -DSYSTYPE_BSD43 to cppflags if needed.
 mips_type=''
@@ -61,7 +63,7 @@ if $test -f /bin/mips && /bin/mips; then
 /bsd43
 #endif
 EOCP
-	if cc -E usr.c > usr.out && $contains / usr.out >/dev/null 2>&1; then
+	if $cc $cppflags -E usr.c > usr.out && $contains / usr.out >/dev/null 2>&1; then
 		dflt='/bsd43/usr/include'
 		incpath='/bsd43'
 		mips_type='BSD 4.3'
