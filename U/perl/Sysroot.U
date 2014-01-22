@@ -3,17 +3,13 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:sysroot _sysroot: Head
+?MAKE:sysroot: Head
 ?MAKE:	-pick add $@ %<
 ?S:sysroot:
 ?S:	This variable is empty unless supplied by the Configure user.
 ?S:	It can contain a path to an alternative root directory, under which
 ?S:	headers and libraries for the compilation target can be found. This
 ?S:	is generally used when cross-compiling using a gcc-like compiler.
-?S:.
-?S:_sysroot:
-?S:	This is only used inside Configure and determines the --sysroot=
-?S:	argument to gcc or g++ but only when sysroot and gcc/g++ is used
 ?S:.
 ?LINT:extern cc
 ?LINT:extern cppflags
@@ -23,7 +19,8 @@
 ?LINT:extern ldflags
 ?LINT:change ldflags
 ?LINT:extern cccdlflags
-?T:var xxx path
+?X: _sysroot is later used in ccflags, but we do not want it in config.sh
+?T:var xxx path _sysroot
 : Set 'sysroot' to change the logical root directory to your headers and libraries see man gcc
 : This is primarily meant for cross-compile environments, and may fail to be useful in other cases
 if test "X$sysroot" = X; then
