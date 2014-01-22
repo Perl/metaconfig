@@ -34,8 +34,9 @@
 ?X:
 ?X:	This unit initializes the path for C library lookup.
 ?X:
-?MAKE:libpth glibpth xlibpth plibpth loclibpth: \
-	usrinc incpath test cat Myread Oldconfig sysroot
+?MAKE:libpth glibpth xlibpth plibpth loclibpth incpth: \
+	usrinc incpath test cat Myread Oldconfig sysroot osname \
+	ccname echo cppstdin awk grep sed rm usecrosscompile
 ?MAKE:	-pick add $@ %<
 ?S:libpth:
 ?S:	This variable holds the general path (space-separated) used to find
@@ -61,8 +62,14 @@
 ?S:	Its value is prepend to libpth. This variable takes care of special
 ?S:	machines, like the mips.  Usually, it should be empty.
 ?S:.
-?T: xxx dlist
-?LINT:use usrinc
+?S:incpth:
+?S:	This variable must precede the normal include path to get the
+?S:	right one, as in "$incpath/usr/include" or "$incpath/usr/lib".
+?S:	Value can be "" or "/bsd43" on mips.
+?S:.
+?T: xxx dlist i j croak
+?LINT:extern incpth
+?LINT:change usrinc
 ?INIT:: change the next line if compiling for Xenix/286 on Xenix/386
 ?INIT:xlibpth='/usr/lib/386 /lib/386'
 ?INIT:: Possible local library directories to search.
@@ -83,6 +90,87 @@
 ?INIT:: machines, like the mips.  Usually, it should be empty.
 ?INIT:plibpth=''
 ?INIT:
+?X:cppfilter is later used in Findhdr.U, but we not want to expose it to config.h
+?T:cppfilter
+: Adjust cppfilter for path component separator
+case "$osname" in
+vos) cppfilter="tr '\\\\>' '/' |" ;; # path component separator is >
+os2) cppfilter="sed -e 's|\\\\\\\\|/|g' |" ;; # path component separator is \
+*)   cppfilter='' ;;
+esac
+
+: Use gcc to determine libpth and incpth
+# If using gcc or clang, we can get better values for libpth, incpth
+# and usrinc directly from the compiler.
+# Note that ccname for clang is also gcc.
+case "$ccname" in
+    gcc)
+	$echo 'extern int foo;' > try.c
+	set X `$cppstdin -v try.c 2>&1 | $awk '/^#include </,/^End of search /'|$cppfilter $grep '/include'`
+	shift
+	if $test $# -gt 0; then
+	    incpth="$incpth $*"
+	    incpth="`$echo $incpth|$sed 's/^ //'`"
+	    for i in $*; do
+		j="`$echo $i|$sed 's,/include$,/lib,'`"
+		if $test -d $j; then
+		    libpth="$libpth $j"
+		fi
+	    done
+	    libpth="`$echo $libpth|$sed 's/^ //'`"
+	    for xxx in $libpth $loclibpth $plibpth $glibpth; do
+		if $test -d $xxx; then
+		    case " $libpth " in
+		    *" $xxx "*) ;;
+		    *) libpth="$libpth $xxx";;
+		    esac
+		fi
+	    done
+	fi
+	$rm -f try.c
+	case "$usrinc" in
+	'') for i in $incpth; do
+		if $test -f $i/errno.h -a -f $i/stdio.h -a -f $i/time.h; then
+		    usrinc="$i"
+		    break
+		fi
+	    done
+	    ;;
+	esac
+
+	case "$usecrosscompile" in
+	$define|true|[yY]*)
+	    case "$incpth" in
+		'') echo "Incpth not defined." >&4; croak=y ;;
+		*)  echo "Using incpth '$incpth'." >&4 ;;
+	    esac
+	    case "$libpth" in
+		'') echo "Libpth not defined." >&4; croak=y ;;
+		*)  echo "Using libpth '$libpth'." >&4 ;;
+	    esac
+	    case "$usrinc" in
+		'') echo "Usrinc not defined." >&4; croak=y ;;
+		*)  echo "Using usrinc $usrinc." >&4 ;;
+	    esac
+	    case "$croak" in
+		y)
+		if test "X$sysroot" = X; then
+		    echo "Cannot continue, aborting." >&4; exit 1
+		else
+		    echo "Cross-compiling using sysroot $sysroot, failing to guess inc/lib paths is not fatal" >&4
+		fi
+		;;
+	    esac
+	    ;;
+	esac
+    ;;
+esac
+
+: Default value for incpth is just usrinc
+case "$incpth" in
+'') incpth="$usrinc";;
+esac
+
 : Set private lib path
 case "$plibpth" in
 '') if ./mips; then

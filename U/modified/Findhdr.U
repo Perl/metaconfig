@@ -27,9 +27,10 @@
 ?X: and it returns the full path of the include file and a zero status or an
 ?X: empty string with an error status if the file could not be located.
 ?X:
-?MAKE:Findhdr: grep test tr rm +usrinc awk cat startsh \
+?MAKE:Findhdr: grep test tr rm incpth awk cat startsh \
 	cppstdin cppminus +cppflags osname
 ?MAKE:	-pick add $@ %<
+?LINT:extern cppfilter
 ?LINT:define fieldn
 ?S:fieldn:
 ?S:	This variable is used internally by Configure. It contains the position
@@ -40,7 +41,7 @@
 ?S:.
 ?V:fieldn
 ?F:./findhdr !fieldn
-?T:cline pos wanted name awkprg usrincdir status cppfilter testaccess
+?T:cline pos wanted name awkprg usrincdir status testaccess
 : determine filename position in cpp output
 echo " "
 echo "Computing filename position in cpp output for #include directives..." >&4
@@ -78,11 +79,6 @@ case $fieldn in
 esac
 echo "Your cpp writes the filename in the $pos field of the line."
 
-case "$osname" in
-vos) cppfilter="tr '\\\\>' '/' |" ;; # path component separator is >
-os2) cppfilter="sed -e 's|\\\\\\\\|/|g' |" ;; # path component separator is \
-*)   cppfilter='' ;;
-esac
 ?X: To locate a header file, we cannot simply check for $usrinc/file.h, since
 ?X: some machine have the headers in weird places and our only hope is that
 ?X: the C pre-processor will know how to find those headers. Thank you NexT!
@@ -91,7 +87,7 @@ $cat >findhdr <<EOF
 $startsh
 wanted=\$1
 name=''
-for usrincdir in $usrinc
+for usrincdir in $incpth
 do
 	if test -f \$usrincdir/\$wanted; then
 		echo "\$usrincdir/\$wanted"
