@@ -43,7 +43,7 @@
 ?C:	so the default case (for NeXT) is big endian to catch them.
 ?C:	This might matter for NeXT 3.0.
 ?C:.
-?H:?%<:#if defined(USE_CROSS_COMPILE) || defined(MULTIARCH)
+?H:?%<:#if defined(MULTIARCH)
 ?H:?%<:#  ifdef __LITTLE_ENDIAN__
 ?H:?%<:#    if LONGSIZE == 4
 ?H:?%<:#      define BYTEORDER 0x1234
