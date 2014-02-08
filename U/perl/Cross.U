@@ -5,8 +5,9 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:run to from targetarch targetdir targetmkdir targethost targetport usecrosscompile: \
-	    src test rm echo sed mkdir cp chmod
+?MAKE:run to from targetarch targetdir targetmkdir targethost targetport \
+	usecrosscompile hostperl hostgenerate hostosname targetenv: \
+	    src test rm echo sed mkdir cp chmod make touch
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usecrosscompile:
@@ -53,6 +54,32 @@
 ?S:	This variable contains the number of a network port to be used to
 ?S:	connect to the host in targethost, if unset defaults to 22 for ssh.
 ?S:.
+?S:hostperl:
+?S:	This variable contains the path to a miniperl binary that can be
+?S:	run on the host OS when cross-compiling.  Useful and available only
+?S:	during Perl build.
+?S:	Empty string '' if not cross-compiling.
+?S:.
+?S:hostgenerate:
+?S:	This variable contains the path to a generate_uudmap binary that
+?S:	can be run on the host OS when cross-compiling.  Useful and
+?S:	available only during Perl build.
+?S:	Empty string '' if not cross-compiling.
+?S:.
+?S:hostosname:
+?S:	This variable contains the original value of '$^O' for hostperl
+?S:	when cross-compiling.  This is useful to pick the proper tools
+?S:	when running build code in the host.
+?S:	Empty string '' if not cross-compiling.
+?S:.
+?S:targetenv:
+?S:	If cross-compiling, this variable can be used to modify the
+?S:	environment on the target system.
+?S:	However, how and where it's used, and even if it's used at all, is
+?S:	entirely dependent on both the transport mechanism (targetrun) and
+?S:	what the target system is.  Unless the relevant documentation says
+?S:	otherwise, it is genereally not useful.
+?S:.
 ?C:USE_CROSS_COMPILE:
 ?C:	This symbol, if defined, indicates that Perl is being cross-compiled.
 ?C:.
@@ -65,15 +92,17 @@
 ?H:?%<:#define	PERL_TARGETARCH	"$targetarch"	/**/
 ?H:?%<:#endif
 ?H:.
+?D:targetenv=''
 ?D:targethost=''
 ?D:targetmkdir=''
-?T:croak pwd exe f q cwd file xxx
+?T:croak pwd exe f q cwd file xxx env
 ?LINT:extern usecrosscompile
 ?LINT:extern cc
 ?LINT:extern usrinc
 ?LINT:change ar
 ?LINT:change nm
 ?LINT:change ranlib
+?LINT:change src
 ?LINT:extern targetport
 ?LINT:extern targetdir
 ?LINT:extern targetuser
@@ -92,6 +121,10 @@
 ?LINT:change loclibpth
 ?LINT:extern hostperl
 ?LINT:extern hostgenerate
+?LINT:extern before_host
+?LINT:change before_host
+?LINT:extern hostosname
+?LINT:extern multiarch
 : Check for Cross-Compilation
 ?X: targethost mainly set to allow ?S: documentation
 ?X:otherwise it could have been declared extern
@@ -137,6 +170,56 @@ $define|true|[yY]*)
 	case "$croak" in
 	y) echo "Cannot continue, aborting." >&4; exit 1 ;;
 	esac
+    : compile a host miniperl and generate_uudmap, unless we got passed them
+    if $test "X$hostperl" = X; then
+      echo "Building host miniperl and generate_uudmap binaries" >&4
+      before_host=`pwd`
+      cd ..
+      cd $src
+      src=`pwd`
+      rm -rf $src/host
+      mkdir $src/host
+      cd $src/host
+      $src/Configure -des -Dusedevel -Dmksymlinks
+      $make miniperl
+      case "$hostgenerate" in
+      '') $make generate_uudmap
+          hostgenerate=$src/host/generate_uudmap
+          ;;
+       "$undef") hostgenerate=''
+          ;;
+      esac
+      hostperl=$src/host/miniperl
+      cd $before_host
+    fi
+    hostosname=`$hostperl -le 'print $^O'`
+    ;;
+*)
+    usecrosscompile="$undef"
+    ;;
+esac
+
+: Define -Dtargethost=somecomputer to run compiled tests on another machine
+case "$targethost" in
+    '') echo "Checking for cross-compile" >&4
+    case "$usecrosscompile$multiarch" in
+       *$define*) echo "Skipping the try tests in the rest of Configure as no targethost was defined when cross-compiling" >&4
+         if [ -f Makefile ]; then
+           echo " "
+           echo "Now you must ensure config.sh, config.h and the generated headers exist and run a $make."
+         else
+           echo "Configure done."
+         fi
+       exit 0
+       ;;
+     *) echo "No targethost for running compiler tests against defined, running locally" >&4
+        run=''
+        to=:
+        from=:
+        ;;
+    esac
+    ;;
+    *) echo "Using targethost $targethost." >&4
 	case "$src" in
 	/*) run=$src/Cross/run
 	    targetmkdir=$src/Cross/mkdir
@@ -185,10 +268,18 @@ $define|true|[yY]*)
 	ssh|rsh)
 	    cat >$run <<EOF
 #!/bin/sh
+env=''
 case "\$1" in
 -cwd)
   shift
   cwd=\$1
+  shift
+  ;;
+esac
+case "\$1" in
+-env)
+  shift
+  env=\$1
   shift
   ;;
 esac
@@ -198,8 +289,11 @@ esac
 exe=\$1
 shift
 $to \$exe
-$targetrun -p $targetport -l $targetuser $targethost "cd \$cwd && ./\$exe \$@"
+$targetrun -p $targetport -l $targetuser $targethost "cd \$cwd && \$env \$exe \$@"
 EOF
+	    ;;
+	adb)
+	    $touch $run
 	    ;;
 	*)  echo "Unknown targetrun '$targetrun'" >&4
 	    exit 1
@@ -226,11 +320,11 @@ do
   case "\$f" in
   /*)
     $targetmkdir \`dirname \$f\`
-    $targetto -P $targetport $q \$f $targetuser@$targethost:\$f            || exit 1
+    $targetto -P $targetport -r $q \$f $targetuser@$targethost:\$f           2>/dev/null  || exit 1
     ;;
   *)
     $targetmkdir $targetdir/\`dirname \$f\`
-    $targetto -P $targetport $q \$f $targetuser@$targethost:$targetdir/\$f || exit 1
+    $targetto -P $targetport -r $q \$f $targetuser@$targethost:$targetdir/\$f 2>/dev/null || exit 1
     ;;
   esac
 done
@@ -312,7 +406,7 @@ EOF
 *)	run=''
 	to=:
 	from=:
-	usecrosscompile='undef'
+	usecrosscompile="$undef"
 	targetarch=''
 	;;
 esac

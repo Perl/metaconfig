@@ -13,7 +13,7 @@
 ?RCS: Revision 3.0.1.1  1997/02/28  16:20:13  ram
 ?RCS: patch61: created
 ?RCS:
-?MAKE:sh: Head
+?MAKE:sh targetsh: Head
 ?MAKE:	-pick wipe $@ %<
 ?S:sh:
 ?S:	This variable contains the full pathname of the shell used
@@ -24,6 +24,11 @@
 ?S:	This unit comes before Options.U, so you can't set sh with a -D
 ?S:	option, though you can override this (and startsh)
 ?S:	with -O -Dsh=/bin/whatever -Dstartsh=whatever
+?S:.
+?S:targetsh:
+?S:	If cross-compiling, this variable contains the location of sh on the
+?S:	target system.
+?S:	If not, this will be the same as $sh.
 ?S:.
 ?C:SH_PATH:
 ?C:	This symbol contains the full pathname to the shell used on this
@@ -89,4 +94,8 @@ EOM
 	exit 1
 	;;
 esac
+
+: When cross-compiling we need to separate the sh-to-run-Configure-with from the sh-to-use-in-Perl
+: default both to the same thing, cross-compilers can then set targetsh differently if they like
+targetsh=$sh
 
