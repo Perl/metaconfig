@@ -202,9 +202,9 @@ EOCP
 		    if $test "X$targethost" != X; then
 			$to tryp.c
 			$to tryp
-			$run "cat tryp.c | ./tryp" 2>/dev/null > tryp.out
+			$run "cat tryp.c | ./tryp " 2>/dev/null > tryp.out
 		    else
-			$cat tryp.c | $run ./tryp 2>/dev/null > tryp.out
+			$cat tryp.c | $run ./tryp   2>/dev/null > tryp.out
 		    fi
 		    if cmp tryp.c tryp.out >/dev/null 2>&1; then
 		       $cat >&4 <<EOM
@@ -272,9 +272,9 @@ EOCP
 	    if $test "X$targethost" != X; then
 		$to tryp.c
 		$to tryp
-		$run "cat tryp.c | ./tryp" 2>/dev/null > tryp.out
+		$run "cat tryp.c | ./tryp " 2>/dev/null > tryp.out
 	    else
-		$cat tryp.c | $run ./tryp 2>/dev/null > tryp.out
+		$cat tryp.c | $run ./tryp   2>/dev/null > tryp.out
 	    fi
 	    if cmp tryp.c tryp.out >/dev/null 2>&1; then
 	       $cat >&4 <<EOM

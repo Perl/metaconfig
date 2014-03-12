@@ -103,6 +103,7 @@
 ?LINT:change nm
 ?LINT:change ranlib
 ?LINT:change src
+?LINT:extern targetenv
 ?LINT:extern targetport
 ?LINT:extern targetdir
 ?LINT:extern targetuser
@@ -126,10 +127,13 @@
 ?LINT:extern hostosname
 ?LINT:extern multiarch
 : Check for Cross-Compilation
-?X: targethost mainly set to allow ?S: documentation
+?X: targethost and targetenv mainly set to allow ?S: documentation
 ?X:otherwise it could have been declared extern
 if $test "X$targethost" = "X"; then
     targethost=""
+fi
+if $test "X$targetenv" = "X"; then
+    targetenv=""
 fi
 case "$usecrosscompile" in
 $define|true|[yY]*)
