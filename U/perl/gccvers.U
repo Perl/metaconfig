@@ -141,7 +141,7 @@ esac
 # disables -fwrapv, or if the user requests -fsanitize=undefined,
 # which turns the overflows -fwrapv ignores into runtime errors.
 case "$gccversion" in
-4.9.*|4.1[0-9].*|[5-9].*)
+4.[3-9].*|4.[1-9][0-9]*|[5-9].*|[1-9][0-9]*)
     case "$ccflags" in
     *-fno-wrapv*|*-fsanitize=undefined*|*-fwrapv*) ;;
     *) ccflags="$ccflags -fwrapv" ;;
