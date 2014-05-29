@@ -37,7 +37,7 @@
 ?C:	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
 ?C:	D:/bin/sh.exe.
 ?C:.
-?H:#define SH_PATH "$sh"  /**/
+?H:#define SH_PATH "$targetsh"  /**/
 ?H:.
 ?T:xxx try pth p SYSTYPE
 ?LINT:extern maintloc maintname _exe
