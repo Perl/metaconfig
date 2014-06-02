@@ -1,0 +1,53 @@
+?RCS: Copyright (c) 2014-2014, Karl Williamson & H.Merijn Brand
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_wcsxfrm: Compile cat rm_try run Oldconfig Setvar
+?MAKE:	-pick add $@ %<
+?S:d_wcsxfrm:
+?S:	This variable conditionally defines the HAS_WCSXFRM symbol if the
+?S:	wcsxfrm() routine is available and can be used to compare wide
+?S:	character strings.
+?S:.
+?C:HAS_WCSXFRM:
+?C:	This symbol, if defined, indicates that the wcsxfrm routine is
+?C:	available to tranform a wide character string for wcscmp().
+?C:.
+?H:#$d_wcsxfrm HAS_WCSXFRM	/**/
+?H:.
+?F:!try
+?LINT: set d_wcsxfrm
+: look for wcsxfrm
+echo " "
+$cat >try.c <<'EOCP'
+#include <errno.h>
+#include <wchar.h>
+int main ()
+{
+    wchar_t dst[4], *src = L" ";
+    errno = 0;
+    return (wcsxfrm (dst, src, 1) ? errno ? errno : 0 : 1);
+    }
+EOCP
+set try
+?X: if $cc $ccflags $ldflags -o try try.c $libs >/dev/null 2>&1 ; then
+val="$undef"
+if eval $compile; then
+    `$run ./try`
+    case "$?" in
+	0)  echo "A working wcsxfrm() found." >&4
+	    val="$define" ;;
+	*)  echo "wcsxfrm() found, but it doesn't work" >&4
+	    ;;
+	esac
+else
+    echo "wcsxfrm() NOT found." >&4
+    fi
+set d_wcsxfrm
+eval $setvar
+$rm_try
+
