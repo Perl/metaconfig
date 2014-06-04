@@ -40,13 +40,13 @@ freebsd)
         h_shm=false
 	val="$undef"
 	set shmctl d_shmctl
-	evat $setvar
+	eval $setvar
 	set shmget d_shmget
-	evat $setvar
+	eval $setvar
 	set shmat d_shmat
-	evat $setvar
+	eval $setvar
 	set shmdt d_shmdt
-	evat $setvar
+	eval $setvar
 	;;
     esac
     ;;
