@@ -20,11 +20,11 @@
 ?C:.
 ?H:#$usecbacktrace USE_CBACKTRACE		/**/
 ?H:.
-?D:usecbacktrace=''
 ?LINT:extern ccflags
 ?LINT:change ccflags
 : add flags if using c backtrace
 case "$usecbacktrace" in
+  "") usecbacktrace=$undef ;;
   [yY]*|true|$define)
     case "$d_backtrace" in
       [yY]*|true|$define)
