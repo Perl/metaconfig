@@ -1,0 +1,43 @@
+?RCS: $Id: usecbacktrace.U,v $
+?RCS:
+?RCS: Copyright (c) 2014 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?RCS: $Log: usecbacktrace.U,v $
+?RCS:
+?MAKE:usecbacktrace: Myread Oldconfig Setvar Getfile d_backtrace
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usecbacktrace:
+?S:	This variable indicates whether we are compiling with backtrace
+?S:	support.
+?S:.
+?C:USE_CBACKTRACE:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	be built with support for backtrace.
+?C:.
+?H:#$usecbacktrace USE_CBACKTRACE		/**/
+?H:.
+?D:usecbacktrace=''
+?LINT:extern ccflags
+?LINT:change ccflags
+: add flags if using c backtrace
+case "$usecbacktrace" in
+  [yY]*|true|$define)
+    case "$d_backtrace" in
+      [yY]*|true|$define)
+        case " $ccflags " in
+	  *" -DUSE_C_BACKTRACE "*) ;; # Already there.
+	  *) ccflags="$ccflags -DUSE_C_BACKTRACE -g" ;;
+	  esac
+        ;;
+      *)
+        echo "This system does not support backtrace" >&4
+        usecbacktrace=$undef
+        ;;
+      esac
+    ;;
+  esac
+

@@ -1,0 +1,31 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2014, H.Merijn Brand
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: d_dladdr.U,v $
+?RCS:
+?MAKE:d_dladdr: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_dladdr:
+?S:	This variable conditionally defines the HAS_DLADDR symbol, which
+?S:	indicates to the C program that the dladdr() routine is available
+?S:	to get a stack trace.
+?S:.
+?C:HAS_DLADDR:
+?C:	This symbol, if defined, indicates that the dladdr() routine is
+?C:	available to get a stack trace.  The <execinfo.h> header must be
+?C:	included to use this routine.
+?C:.
+?H:#$d_dladdr HAS_DLADDR	/**/
+?H:.
+?LINT:set d_dladdr
+: see if dladdr exists
+set dladdr d_dladdr
+eval $inlibc
+

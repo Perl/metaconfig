@@ -1,0 +1,27 @@
+?RCS: $Id: i_execinfo.U 34 2010-11-27 11:55:39Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 2011, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:i_execinfo: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_execinfo:
+?S:	This variable conditionally defines the I_EXECINFO symbol, and indicates
+?S:	whether a C program may include <execinfo.h>, for backtrace() support.
+?S:.
+?C:I_EXECINFO:
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <execinfo.h> for backtrace() support.
+?C:.
+?H:#$i_execinfo I_EXECINFO		/**/
+?H:.
+?LINT:set i_execinfo
+: see if this is an execinfo.h system
+set execinfo.h i_execinfo
+eval $inhdr
+

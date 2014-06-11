@@ -1,0 +1,31 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2014, H.Merijn Brand
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: d_backtrace.U,v $
+?RCS:
+?MAKE:d_backtrace: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_backtrace:
+?S:	This variable conditionally defines the HAS_BACKTRACE symbol, which
+?S:	indicates to the C program that the backtrace() routine is available
+?S:	to get a stack trace.
+?S:.
+?C:HAS_BACKTRACE:
+?C:	This symbol, if defined, indicates that the backtrace() routine is
+?C:	available to get a stack trace.  The <execinfo.h> header must be
+?C:	included to use this routine.
+?C:.
+?H:#$d_backtrace HAS_BACKTRACE	/**/
+?H:.
+?LINT:set d_backtrace
+: see if backtrace exists
+set backtrace d_backtrace
+eval $inlibc
+

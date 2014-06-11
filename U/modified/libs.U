@@ -88,6 +88,7 @@
 ?INIT:libswanted=''
 ?INIT:: some systems want to use only the non-versioned libso:s
 ?INIT:ignore_versioned_solibs=''
+?LINT:extern usecbacktrace
 ?LINT:extern libscheck
 ?LINT:extern p
 ?LINT:use uselongdouble
@@ -105,6 +106,9 @@ esac
 ?X: This does not work if somebody wants SOCKS 4.
 case "$usesocks" in
 "$define") libswanted="$libswanted socks5 socks5_sh" ;;
+esac
+case "$usecbacktrace" in
+"$define") libswanted="$libswanted bfd" ;;
 esac
 libsfound=''
 libsfiles=''
