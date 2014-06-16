@@ -41,9 +41,6 @@ $cat >dirfd.c <<EOM
 #endif
 #if defined(I_DIRENT)
 #include <dirent.h>
-#if defined(NeXT) && defined(I_SYS_DIR) /* NeXT needs dirent + sys/dir.h */
-#include <sys/dir.h>
-#endif
 #else
 #ifdef I_SYS_NDIR
 #include <sys/ndir.h>

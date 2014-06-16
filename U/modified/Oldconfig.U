@@ -199,8 +199,6 @@ EOM
 	$test -f /unicosmk && osname=unicosmk && osvers=`$uname -r`
 	$test -f /unicosmk.ar && osname=unicosmk && osvers=`$uname -r`
 	$test -f /bin/mips && /bin/mips && osname=mips
-	$test -d /NextApps && set X `hostinfo | grep 'NeXT Mach.*:' | \
-		$sed -e 's/://' -e 's/\./_/'` && osname=next && osvers=$4
 	$test -d /usr/apollo/bin && osname=apollo
 	$test -f /etc/saf/_sactab && osname=svr4
 	$test -d /usr/include/minix && osname=minix
@@ -244,7 +242,6 @@ EOM
 			*) osname=mips ;;
 			esac;;
 		[23]100) osname=mips ;;
-		next*) osname=next ;;
 ?X: Interactive Unix.
 		i386*)
 			tmp=`/bin/uname -X 2>/dev/null|awk '/3\.2v[45]/{ print $(NF) }'`
@@ -370,7 +367,6 @@ EOM
 			*) osname=newsos ;;
 			esac
 			;;
-		next*) osname=next ;;
 		nonstop-ux) osname=nonstopux ;;
 		openbsd) osname=openbsd
                 	osvers="$3"

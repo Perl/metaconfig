@@ -27,7 +27,7 @@
 ?H:.
 : Check if is a multiplatform env
 case "$osname" in
-next|darwin) multiarch="$define" ;;
+darwin) multiarch="$define" ;;
 esac
 case "$multiarch" in
 ''|[nN]*) multiarch="$undef" ;;

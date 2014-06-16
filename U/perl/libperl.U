@@ -66,15 +66,6 @@ $undef)
 			dflt=y
 			also='Building a shared libperl is required for dynamic loading to work on your system.'
 			;;
-		next*)
-			case "$osvers" in
-			4*)	dflt=y
-				also='Building a shared libperl is needed for MAB support.'
-				;;
-			*)	dflt=n
-				;;
-			esac
-			;;
 		*)	dflt=n
 			;;
 		esac
@@ -132,10 +123,6 @@ true)
 		# I'd prefer to keep the os-specific stuff here to a minimum, and
 		# rely on figuring it out from the naming of libc.
 		case "${osname}${osvers}" in
-		next4*)
-			dflt=libperl.5.$so
-			# XXX How handle the --version stuff for MAB?
-			;;
 		*linux*|gnu*)  # ld won't link with a bare -lperl otherwise.
 			dflt=libperl.$so
 			;;
@@ -229,9 +216,6 @@ if "$useshrplib"; then
 		;;
 	bsdos|linux|irix*|dec_osf|gnu*)
 		xxx="-Wl,-rpath,$shrpdir"
-		;;
-	next)
-		# next doesn't like the default...
 		;;
 	haiku)
 		# Haiku doesn't like the default, either.

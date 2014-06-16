@@ -134,7 +134,6 @@ EOM
 	    '') case "$gccversion" in
 		'') case "$osname" in
 			hpux)	dflt='+z' ;;
-			next)	dflt='none' ;;
 			irix*)	dflt='-KPIC' ;;
 			svr4*|esix*|solaris|nonstopux) dflt='-KPIC' ;;
 			sunos)	dflt='-pic' ;;
@@ -252,7 +251,6 @@ EOM
 			  esac
 			  ;;
 		    *linux*|irix*|gnu*)  dflt="-shared $optimize" ;;
-		    next)  dflt='none' ;;
 		    solaris) # See [perl #66604].
 			    # On Solaris 11, gcc -m64 on amd64
 			    # appears not to understand -G.  gcc versions at
@@ -332,8 +330,8 @@ EOM
 	case "$ccdlflags" in
 	    '') case "$osname" in
 		    *linux*|hpux|gnu*) dflt='-Wl,-E' ;;
-		    next|sunos)      dflt='none'   ;;
-		    *)               dflt='none'   ;;
+		    sunos)             dflt='none'   ;;
+		    *)                 dflt='none'   ;;
 		esac ;;
 	    ' ') dflt='none' ;;
 	    *)   dflt="$ccdlflags" ;;

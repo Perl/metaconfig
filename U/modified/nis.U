@@ -49,58 +49,6 @@
 ?X: and NetInfo. But since it has both, it's ok to put the test inside the if.
 ?X: Contributed by Thomas Neumann <tom@smart.bo.open.de>.
 if $test -d /usr/etc/yp || $test -d /etc/yp || $test -d /usr/lib/yp; then
-	if $test -f /usr/etc/nibindd; then
-		echo " "
-		echo "I'm fairly confident you're on a NeXT."
-@if passcat || groupcat
-		echo " "
-		rp='Do you get the passwd file via NetInfo?'
-		dflt=y
-		case "$passcat" in
-		nidump*) ;;
-		'') ;;
-		*) dflt=n;;
-		esac
-		. ./myread
-		case "$ans" in
-		y*) passcat='nidump passwd .'
-@if groupcat
-			echo "(Assuming /etc/group is also distributed.)"
-			groupcat='nidump group .'
-@end
-			;;
-		*)	echo "You told me, so don't blame me."
-			case "$passcat" in
-			nidump*) passcat=''
-@if groupcat
-				 groupcat='';;
-@end
-			esac
-@if groupcat
-			echo "(Assuming /etc/group is handled the same way.)"
-@end
-			;;
-		esac
-@end
-@if hostcat
-		echo " "
-		rp='Do you get the hosts file via NetInfo?'
-		dflt=y
-		case "$hostcat" in
-		nidump*) ;;
-		'') ;;
-		*) dflt=n;;
-		esac
-		. ./myread
-		case "$ans" in
-		y*) hostcat='nidump hosts .';;
-		*)	case "$hostcat" in
-			nidump*) hostcat='';;
-			esac
-			;;
-		esac
-@end
-	fi
 @if passcat || groupcat
 	case "$passcat" in
 	nidump*) ;;
