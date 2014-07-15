@@ -1,0 +1,37 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2014 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_ptrdiff_t: Inlibc Setvar Compile rm_try cat
+?MAKE:	-pick add $@ %<
+?S:d_ptrdiff_t:
+?S:	This symbol will be defined if the C compiler supports ptrdiff_t.
+?S:.
+?C:HAS_PTRDIFF_T:
+?C:	This symbol will be defined if the C compiler supports ptrdiff_t.
+?C:.
+?H:#$d_ptrdiff_t	HAS_PTRDIFF_T    		/**/
+?H:.
+?LINT:set d_ptrdiff_t
+: check for ptrdiff_t
+echo " "
+echo "Checking to see if you have ptrdiff_t..." >&4
+$cat >try.c <<EOCP
+#include <stddef.h>
+int main() { ptrdiff_t x = 7; }
+EOCP
+set try
+if eval $compile; then
+	val="$define"
+	echo "You have ptrdiff_t."
+else
+	val="$undef"
+	echo "You do not have ptrdiff_t."
+fi
+$rm_try
+set d_ptrdiff_t
+eval $setvar
+
