@@ -93,7 +93,7 @@ c cadmus clipper CMU COFF COMPILER_VERSION concurrent convex cpu
 CRAY cray CRAYMPP ctix CX_UX CYGWIN
 DECC DGUX DGUX_SOURCE DJGPP dmert DOLPHIN DPX2 DSO Dynix DynixPTX
 ELF encore EPI EXTENSIONS
-FAVOR_BSD FILE_OFFSET_BITS FreeBSD
+FAVOR_BSD FILE_OFFSET_BITS FORTIFY_SOURCE FreeBSD
 GCC_NEW_VARARGS gcos gcx gimpel GLIBC GLIBC_MINOR GNUC GNUC_MINOR
 GNU_LIBRARY GNU_SOURCE GO32 gould GOULD_PN
 H3050R H3050RX hbullx20 hcx host_mips hp200 hp300 HP700 hp700
@@ -157,8 +157,8 @@ $startsh
 if $test \$# -gt 0; then
     echo \$* | $tr " " "$trnl" | ./Cppsym.try > Cppsym.got
     if $test -s Cppsym.got; then
-        $rm -f Cppsym.got
-        exit 0
+	$rm -f Cppsym.got
+	exit 0
     fi
     $rm -f Cppsym.got
     exit 1
@@ -255,9 +255,9 @@ $eunicefix ccsym
 ?X: AIX complains if $uniq is passed an empty file.  ($sort apparently
 ?X: doesn't care.)  --AD  14 July 1998
 if $test -s ccsym1.raw; then
-       $sort ccsym1.raw | $uniq >ccsym.raw
+    $sort ccsym1.raw | $uniq >ccsym.raw
 else
-       mv ccsym1.raw ccsym.raw
+    mv ccsym1.raw ccsym.raw
 fi
 
 ?X: canonicalize symbols for easier sort/uniq/comm usage: append =1 if no = sign
@@ -273,9 +273,9 @@ if $test -z ccsym.raw; then
 	echo " "
 	echo "However, your C preprocessor defines the following symbols:"
 	$cat Cppsym.true
-    	ccsymbols=''
+	ccsymbols=''
 	cppsymbols=`$cat Cppsym.true`
-        cppsymbols=`echo $cppsymbols`
+	cppsymbols=`echo $cppsymbols`
 	cppccsymbols="$cppsymbols"
 else
 	if $test -s ccsym.com; then
@@ -301,9 +301,29 @@ else
 		echo "Your C compiler ${also}defines the following cpp symbols:"
 		$sed -e 's/\(..*\)=1/\1/' ccsym.own
 		$sed -e 's/\(..*\)=.*/\1/' ccsym.own | $uniq >>Cppsym.true
-	        ccsymbols=`$cat ccsym.own`
-	        ccsymbols=`echo $ccsymbols`
+		ccsymbols=`$cat ccsym.own`
+		ccsymbols=`echo $ccsymbols`
 		$test "$silent" || sleep 1
 	fi
 fi
+
+: add -D_FORTIFY_SOURCE if feasible and not already there
+case "$gccversion" in
+4.*)	case "$optimize$ccflags" in
+	*-O*)	case "$ccflags$cppsymbols" in
+		*_FORTIFY_SOURCE=*) # Don't add it again.
+			echo "You seem to have -D_FORTIFY_SOURCE already, not adding it." >&4
+			;;
+		*)	echo "Adding -D_FORTIFY_SOURCE=2 to ccflags..." >&4
+			ccflags="$ccflags -D_FORTIFY_SOURCE=2"
+			;;
+		esac
+		;;
+	*)	echo "You have gcc 4.* but not optimizing, not adding -D_FORTIFY_SOURCE." >&4
+		;;
+	esac
+	;;
+*)	echo "You seem not to have gcc 4.*, not adding -D_FORTIFY_SOURCE." >&4
+	;;
+esac
 
