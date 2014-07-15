@@ -31,17 +31,8 @@
 ?C:	This symbol holds the hexadecimal constant defined in byteorder,
 ?C:	in a UV, i.e. 0x1234 or 0x4321 or 0x12345678, etc...
 ?C:	If the compiler supports cross-compiling or multiple-architecture
-?C:	binaries (e.g. on NeXT systems), use compiler-defined macros to
+?C:	binaries, use compiler-defined macros to
 ?C:	determine the byte order.
-?C:	On NeXT 3.2 (and greater), you can build "Fat" Multiple Architecture
-?C:	Binaries (MAB) on either big endian or little endian machines.
-?C:	The endian-ness is available at compile-time.  This only matters
-?C:	for perl, where the config.h can be generated and installed on
-?C:	one system, and used by a different architecture to build an
-?C:	extension.  Older versions of NeXT that might not have
-?C:	defined either *_ENDIAN__ were all on Motorola 680x0 series,
-?C:	so the default case (for NeXT) is big endian to catch them.
-?C:	This might matter for NeXT 3.0.
 ?C:.
 ?H:?%<:#if defined(MULTIARCH)
 ?H:?%<:#  ifdef __LITTLE_ENDIAN__
@@ -63,12 +54,9 @@
 ?H:?%<:#      endif
 ?H:?%<:#    endif
 ?H:?%<:#  endif
-?H:?%<:#  if !defined(BYTEORDER) && (defined(NeXT) || defined(__NeXT__))
-?H:?%<:#    define BYTEORDER 0x4321
-?H:?%<:#  endif
 ?H:?%<:#else
 ?H:?%<:#define BYTEORDER 0x$byteorder	/* large digits for MSB */
-?H:?%<:#endif /* NeXT */
+?H:?%<:#endif
 ?H:.
 ?T:xxx_prompt
 ?F:!try
