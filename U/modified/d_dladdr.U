@@ -19,8 +19,8 @@
 ?S:.
 ?C:HAS_DLADDR:
 ?C:	This symbol, if defined, indicates that the dladdr() routine is
-?C:	available to get a stack trace.  The <execinfo.h> header must be
-?C:	included to use this routine.
+?C:	available to query dynamic linker information for an address.
+?C:	The <dlfcn.h> header must be included to use this routine.
 ?C:.
 ?H:#$d_dladdr HAS_DLADDR	/**/
 ?H:.
