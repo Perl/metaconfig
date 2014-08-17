@@ -7,17 +7,28 @@
 ?RCS:
 ?RCS: $Log: d_longdbl.U,v $
 ?RCS:
-?MAKE:d_longdbl longdblsize: Compile Setvar Myread run \
-	cat rm_try test doublesize
+?MAKE:d_longdbl longdblsize d_ldexpl longdblkind: Compile Setvar Myread \
+	Inlibc run echo cat rm_try test doublesize i_stdlib i_float
 ?MAKE:	-pick add $@ %<
 ?S:d_longdbl:
 ?S:	This variable conditionally defines HAS_LONG_DOUBLE if
 ?S:	the long double type is supported.
 ?S:.
+?S:d_ldexpl:
+?S:	This variable conditionally defines the HAS_LDEXPL symbol, which
+?S:	indicates to the C program that the ldexpl() routine is available.
+?S:.
 ?S:longdblsize:
 ?S:	This variable contains the value of the LONG_DOUBLESIZE symbol, which
 ?S:	indicates to the C program how many bytes there are in a long double,
 ?S:	if this system supports long doubles.
+?S:.
+?S:longdblkind:
+?S:	This variable, if defined, encodes the type of a long double:
+?S:	0 = double, 1 = IEEE 754 128-bit big little endian,
+?S:	2 = IEEE 754 128-bit big big endian, 3 = x86 80-bit little endian,
+?S:	4 = x86 80-bit big endian, 5 = double-double 128-bit little endian,
+?S:	6 = double-double 128-bit big endian, -1 = unknown format.
 ?S:.
 ?C:HAS_LONG_DOUBLE:
 ?C:	This symbol will be defined if the C compiler supports long
@@ -28,13 +39,45 @@
 ?C:	C preprocessor can make decisions based on it.  It is only
 ?C:	defined if the system supports long doubles.
 ?C:.
+?C:HAS_LDEXPL:
+?C:	This symbol, if defined, indicates that the ldexpl routine is
+?C:	available to shift a long double floating-point number
+?C:	by an integral power of 2.
+?C:.
+?C:LONG_DOUBLEKIND:
+?C:	LONG_DOUBLEKIND will be one of
+?C:	LONG_DOUBLE_IS_DOUBLE
+?C:	LONG_DOUBLE_IS_IEEE_754_128_BIT_LITTLE_ENDIAN
+?C:	LONG_DOUBLE_IS_IEEE_754_128_BIT_BIG_ENDIAN
+?C:	LONG_DOUBLE_IS_X86_80_BIT_LITTLE_ENDIAN
+?C:	LONG_DOUBLE_IS_X86_80_BIT_BIG_ENDIAN
+?C:	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LITTLE_ENDIAN
+?C:	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BIG_ENDIAN
+?C:	LONG_DOUBLE_IS_UNKNOWN_FORMAT
+?C:	It is only defined if the system supports long doubles.
+?C:.
+?H:#$d_ldexpl  HAS_LDEXPL		/**/
 ?H:#$d_longdbl HAS_LONG_DOUBLE		/**/
 ?H:?LONG_DOUBLESIZE:#ifdef HAS_LONG_DOUBLE
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLESIZE $longdblsize		/**/
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLEKIND $longdblkind		/**/
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLE				0
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_IEEE_754_128_BIT_LITTLE_ENDIAN	1
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_IEEE_754_128_BIT_BIG_ENDIAN	2
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_X86_80_BIT_LITTLE_ENDIAN		3
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_X86_80_BIT_BIG_ENDIAN		4
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LITTLE_ENDIAN	5
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BIG_ENDIAN	6
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_UNKNOWN_FORMAT			-1
 ?H:?LONG_DOUBLESIZE:#endif
 ?H:.
 ?F:!try
+?LINT:known LONG_DOUBLE_IS_DOUBLE LONG_DOUBLE_IS_IEEE_754_128_BIT_LITTLE_ENDIAN
+?LINT:known LONG_DOUBLE_IS_IEEE_754_128_BIT_BIG_ENDIAN LONG_DOUBLE_IS_X86_80_BIT_LITTLE_ENDIAN
+?LINT:known LONG_DOUBLE_IS_X86_80_BIT_BIG_ENDIAN LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LITTLE_ENDIAN
+?LINT:known LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BIG_ENDIAN LONG_DOUBLE_IS_UNKNOWN_FORMAT
 ?LINT:set d_longdbl
+?LINT:set d_ldexpl
 : check for long doubles
 echo " "
 echo "Checking to see if you have long double..." >&4
@@ -50,6 +93,10 @@ fi
 $rm_try
 set d_longdbl
 eval $setvar
+
+: see if ldexpl exists
+set ldexpl d_ldexpl
+eval $inlibc
 
 @if LONG_DOUBLESIZE || longdblsize
 : check for length of long double
@@ -89,4 +136,86 @@ EOCP
 esac
 $rm_try
 @end
+
+$echo "Checking the kind of long doubles you have..." >&4
+case "$d_longdbl" in
+define)
+$cat <<EOP >try.c
+#$i_float I_FLOAT
+#$i_stdlib I_STDLIB
+#define LONGDBLSIZE $longdblsize
+#ifdef I_FLOAT
+#include <float.h>
+#endif
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
+#include <stdio.h>
+static const long double d = -0.1L;
+int main() {
+  unsigned const char* b = (unsigned const char*)(&d);
+#if LDBL_MANT_DIG == 113 && LONGDBLSIZE == 16
+  if (b[0] == 0x9A && b[1] == 0x99 && b[15] == 0xBF) {
+    /* IEEE 754 128-bit little-endian */
+    printf("1\n");
+    exit(0);
+  }
+  if (b[0] == 0xBF && b[14] == 0x99 && b[15] == 0x9A) {
+    /* IEEE 128-bit big-endian, e.g. solaris sparc */
+    printf("2\n");
+    exit(0);
+  }
+#endif
+#if LDBL_MANT_DIG == 64 && (LONGDBLSIZE == 16 || LONGDBLSIZE == 12)
+  if (b[0] == 0xCD && b[9] == 0xBF && b[10] == 0x00) {
+    /* x86 80-bit little-endian, sizeof 12 (ILP32, Solaris x86)
+     * or 16 (LP64, Linux and OS X), 4 or 6 bytes of padding.
+     * Also known as "extended precision". */
+    printf("3\n");
+    exit(0);
+  }
+  if (b[LONGDBLSIZE - 11] == 0x00 && b[LONGDBLSIZE - 10] == 0xBF &&
+      b[LONGDBLSIZE -  1] == 0xCD) {
+    /* is there ever big-endian 80-bit, really? */
+    printf("4\n");
+    exit(0);
+  }
+#endif
+#if LDBL_MANT_DIG == 106 && LONGDBLSIZE == 16
+  /* software "double double", the 106 is 53+53 */
+  if (b[0] == 0x9A && b[7] == 0x3C && b[8] == 0x9A && b[15] == 0xBF) {
+    /* double double 128-bit little-endian,
+     * 9a 99 99 99 99 99 59 3c 9a 99 99 99 99 99 b9 bf */
+    printf("5\n");
+    exit(0);
+  }
+  if (b[0] == 0xBF && b[7] == 0x9A && b[8] == 0x3C && b[15] == 0x9A) {
+    /* double double 128-bit big-endian, e.g. PPC/Power and MIPS:
+     * bf b9 99 99 99 99 99 9a 3c 59 99 99 99 99 99 9a */
+    printf("6\n");
+    exit(0);
+  }
+#endif
+  printf("-1\n"); /* unknown */
+  exit(0);
+}
+EOP
+set try
+if eval $compile; then
+    longdblkind=`$run ./try`
+else
+    longdblkind=-1
+fi
+;;
+*) longdblkind=0 ;;
+esac
+case "$longdblkind" in
+0) echo "Your long doubles are doubles." >&4 ;;
+1) echo "You have IEEE 754 128-bit little endian long doubles." >&4 ;;
+2) echo "You have IEEE 754 128-bit big endian long doubles." >&4 ;;
+3) echo "You have x86 80-bit little endian long doubles." >& 4 ;;
+*) echo "Cannot figure out your long double." >&4 ;;
+esac
+$rm_try
+
 
