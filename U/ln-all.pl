@@ -26,7 +26,7 @@ for (@safe) {
     copy "$perl/$_", $_;
     }
 
-@ARGV = ("mconfig -v -m -O 2>&1 |");
+@ARGV = ("/pro/3gl/CPAN/bin/mconfig -v -m -O 2>&1 |");
 while (<>) {
     s{^\s+$perl/U}{} or next;
     chomp;
