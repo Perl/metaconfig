@@ -2,11 +2,11 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 2000, Jarkko Hietaniemi
-?RCS: 
-?X: 
+?RCS:
+?X:
 ?X: This unit produces a bit of shell code that must be dotted in order
 ?X: to make quick check on whether the current C compiler is working.
-?X:	
+?X:
 ?MAKE:IncClean: ccflags cppflags
 ?MAKE:	-pick add $@ %<
 ?LINT:extern ccflags

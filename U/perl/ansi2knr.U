@@ -8,7 +8,7 @@
 ?MAKE:ansi2knr: prototype +cc +ccflags package
 ?MAKE:	-pick add $@ %<
 ?S:ansi2knr:
-?S:	This variable is set if the user needs to run ansi2knr.  
+?S:	This variable is set if the user needs to run ansi2knr.
 ?S:	Currently, this is not supported, so we just abort.
 ?S:.
 ?Y:TOP
@@ -20,12 +20,12 @@ case "$prototype" in
 	cat <<EOM >&4
 
 $me:  FATAL ERROR:
-This version of $package can only be compiled by a compiler that 
-understands function prototypes.  Unfortunately, your C compiler 
+This version of $package can only be compiled by a compiler that
+understands function prototypes.  Unfortunately, your C compiler
 	$cc $ccflags
 doesn't seem to understand them.  Sorry about that.
 
-If GNU cc is available for your system, perhaps you could try that instead.  
+If GNU cc is available for your system, perhaps you could try that instead.
 
 Eventually, we hope to support building Perl with pre-ANSI compilers.
 If you would like to help in that effort, please contact <perlbug@perl.org>.

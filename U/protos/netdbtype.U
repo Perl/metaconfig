@@ -58,7 +58,7 @@
 ?H:.
 ?T:xxx yyy try hdrs
 @if netdb_host_type || Netdb_host_t || netdb_hlen_type || Netdb_hlen_t
-: check for type of arguments to gethostbyaddr. 
+: check for type of arguments to gethostbyaddr.
 if test "X$netdb_host_type" = X -o "X$netdb_hlen_type" = X; then
 	case "$d_gethbyaddr" in
 	$define)
@@ -67,8 +67,8 @@ if test "X$netdb_host_type" = X -o "X$netdb_hlen_type" = X; then
 Checking to see what type of arguments are accepted by gethostbyaddr().
 EOM
 		hdrs="$define sys/types.h
-			$d_socket sys/socket.h 
-			$i_niin netinet/in.h 
+			$d_socket sys/socket.h
+			$i_niin netinet/in.h
 			$i_netdb netdb.h
 			$i_unistd unistd.h"
 		: The first arg can 'char *' or 'void *'
@@ -105,14 +105,14 @@ EOM
 		netdb_hlen_type="$sizetype"
 		;;
 	esac
-	# Remove the "const" if needed. -- but then we'll have a 
+	# Remove the "const" if needed. -- but then we'll have a
 	# prototype clash!
 	# netdb_host_type=`echo "$netdb_host_type" | sed 's/^const //'`
 fi
 @end
 
 @if netdb_name_type || Netdb_name_t
-: check for type of argument to gethostbyname. 
+: check for type of argument to gethostbyname.
 if test "X$netdb_name_type" = X ; then
 	case "$d_gethbyname" in
 	$define)
@@ -121,8 +121,8 @@ if test "X$netdb_name_type" = X ; then
 Checking to see what type of argument is accepted by gethostbyname().
 EOM
 		hdrs="$define sys/types.h
-			$d_socket sys/socket.h 
-			$i_niin netinet/in.h 
+			$d_socket sys/socket.h
+			$i_niin netinet/in.h
 			$i_netdb netdb.h
 			$i_unistd unistd.h"
 		for xxx in "const char *" "char *"; do
@@ -152,7 +152,7 @@ fi
 @end
 
 @if netdb_net_type || Netdb_net_t
-: check for type of 1st argument to getnetbyaddr. 
+: check for type of 1st argument to getnetbyaddr.
 if test "X$netdb_net_type" = X ; then
 	case "$d_getnbyaddr" in
 	$define)
@@ -161,8 +161,8 @@ if test "X$netdb_net_type" = X ; then
 Checking to see what type of 1st argument is accepted by getnetbyaddr().
 EOM
 		hdrs="$define sys/types.h
-			$d_socket sys/socket.h 
-			$i_niin netinet/in.h 
+			$d_socket sys/socket.h
+			$i_niin netinet/in.h
 			$i_netdb netdb.h
 			$i_unistd unistd.h"
 		for xxx in in_addr_t "unsigned long" long "unsigned int" int; do

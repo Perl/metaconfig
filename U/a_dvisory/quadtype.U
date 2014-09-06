@@ -14,7 +14,7 @@
 ?S:	quadtype.
 ?S:.
 ?S:quadtype:
-?S:	This variable defines Quad_t to be something like long, int, 
+?S:	This variable defines Quad_t to be something like long, int,
 ?S:	long long, int64_t, or whatever type is used for 64-bit integers.
 ?S:.
 ?S:quadkind:

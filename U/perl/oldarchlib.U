@@ -16,11 +16,11 @@
 ?S:.
 ?S:oldarchlib:
 ?S:	This variable holds the name of the directory in which perl5.000
-?S:	and perl5.001 stored 
+?S:	and perl5.001 stored
 ?S:	architecture-dependent public library files.
 ?S:.
 ?S:oldarchlibexp:
-?S:	This variable is the same as the oldarchlib variable, but is 
+?S:	This variable is the same as the oldarchlib variable, but is
 ?S:	filename expanded at configuration time, for convenient use.
 ?S:.
 ?C:OLDARCHLIB:
@@ -32,7 +32,7 @@
 ?C:.
 ?C:OLDARCHLIB_EXP:
 ?C:	This symbol contains the ~name expanded version of OLDARCHLIB, to be
-?C:	used in programs that are not prepared to deal with ~ expansion at 
+?C:	used in programs that are not prepared to deal with ~ expansion at
 ?C:	run-time.
 ?C:.
 ?H:#$d_oldarchlib OLDARCHLIB "$oldarchlib"		/**/
@@ -47,7 +47,7 @@ case "$oldarchlib" in
 		;;
 	esac
 	;;
-*)	dflt="$oldarchlib" 
+*)	dflt="$oldarchlib"
 	;;
 esac
 if $test ! -d "$dflt/auto"; then
@@ -56,12 +56,12 @@ fi
 cat <<EOM
 
 In 5.001, Perl stored architecture-dependent library files in a directory
-with a name such as $privlib/$archname, 
-and this directory contained files from the standard extensions and 
-files from any additional extensions you might have added.  Starting 
-with version 5.002, all the architecture-dependent standard extensions 
+with a name such as $privlib/$archname,
+and this directory contained files from the standard extensions and
+files from any additional extensions you might have added.  Starting
+with version 5.002, all the architecture-dependent standard extensions
 will go into a version-specific directory such as
-$archlib, 
+$archlib,
 while locally-added extensions will go into
 $sitearch.
 

@@ -1,11 +1,11 @@
 ?RCS: $Id: Myinit.U,v 3.0 1993/08/18 12:05:07 ram Exp $
 ?RCS:
 ?RCS: Copyright (c) 1991-1993, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: This file is included with or a derivative work of a file included
 ?RCS: with the metaconfig program of Raphael Manfredi's "dist" distribution.
 ?RCS: In accordance with clause 7 of dist's modified Artistic License:
-?RCS: 
+?RCS:
 ?RCS:     You may distribute under the terms of either the GNU General Public
 ?RCS:     License or the Artistic License, as specified in the README file.
 ?RCS:
