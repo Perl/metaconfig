@@ -1,0 +1,25 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_isfinitel: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_isfinitel:
+?S:	This variable conditionally defines the HAS_ISFINITEL symbol, which
+?S:	indicates to the C program that the isfinitel() routine is available.
+?S:.
+?C:HAS_ISFINITEL:
+?C:	This symbol, if defined, indicates that the isfinitel routine is
+?C:	available to check whether a long double is finite.
+?C:	(non-infinity non-NaN).
+?C:.
+?H:#$d_isfinitel HAS_ISFINITEL		/**/
+?H:.
+?LINT:set d_isfinitel
+: see if isfinitel exists
+set isfinitel d_isfinitel
+eval $inlibc
+

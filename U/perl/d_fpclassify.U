@@ -1,15 +1,22 @@
-?RCS: $Id$
-?RCS:
-?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS: Copyright (c) 2000,2014 Jarkko Hietaniemi
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_fpclassify: Inlibc
+?MAKE:d_fpclassify d_fp_classify: Inlibc cat i_math Compile rm_try Setvar
 ?MAKE:	-pick add $@ %<
+?X:the short story is that C99 says use fpclassify.  But the story is confused
+?X:by systems "partially C99" (or fully "pre C99") which either user fpclassify
+?X:but with different return values, or they use fp_classify (with the expected)
+?X:return values, or they use some other spelling of *fp*class* (sometimes even
+?X:without the *fp* part), with yet another set(s) of return values ...
 ?S:d_fpclassify:
 ?S:	This variable conditionally defines the HAS_FPCLASSIFY symbol, which
 ?S:	indicates to the C program that the fpclassify() routine is available.
+?S:.
+?S:d_fp_classify:
+?S:	This variable conditionally defines the HAS_FP_CLASSIFY symbol, which
+?S:	indicates to the C program that the fp_classify() routine is available.
 ?S:.
 ?C:HAS_FPCLASSIFY:
 ?C:	This symbol, if defined, indicates that the fpclassify routine is
@@ -23,10 +30,52 @@
 ?C:           FP_NAN        NaN
 ?C:
 ?C:.
-?H:#$d_fpclassify HAS_FPCLASSIFY		/**/
+?C:HAS_FP_CLASSIFY:
+?C:	This symbol, if defined, indicates that the fp_classify routine is
+?C:	available to classify doubles. The values are defined in <math.h>
+?C:
+?C:           FP_NORMAL     Normalized
+?C:           FP_ZERO       Zero
+?C:           FP_INFINITE   Infinity
+?C:           FP_SUBNORMAL  Denormalized
+?C:           FP_NAN        NaN
+?C:
+?C:.
+?H:#$d_fpclassify	HAS_FPCLASSIFY		/**/
+?H:#$d_fp_classify	HAS_FP_CLASSIFY		/**/
 ?H:.
 ?LINT:set d_fpclassify
-: see if fpclassify exists
-set fpclassify d_fpclassify
+?LINT:set d_fp_classify
+: check for fpclassify
+?X:classified (Comment by jhi)
+?X:fpclassify	i_math
+?X:fp_classify	i_math
+?X:fpclass	i_math i_ieeefp i_fp
+?X:fp_class	i_math i_fp_class
+?X:		No i_fp_class yet. But the systems that have
+?X:		this (Tru64 and IRIX) both had <fp_class.h>
+?X:class	i_math
+echo "Checking to see if you have fpclassify..." >&4
+$cat >try.c <<EOCP
+#$i_math I_MATH
+#ifdef I_MATH
+#include <math.h>
+#endif
+int main() { return fpclassify(1.0) == FP_NORMAL ? 0 : 1; }
+EOCP
+set try
+if eval $compile; then
+	val="$define"
+	echo "You have fpclassify."
+else
+	val="$undef"
+	echo "You do not have fpclassify."
+fi
+$rm_try
+set d_fpclassify
+eval $setvar
+
+: see if fp_classify exists
+set fp_classify d_fp_classify
 eval $inlibc
 

@@ -14,19 +14,7 @@
 ?C:HAS_FP_CLASSL:
 ?C:	This symbol, if defined, indicates that the fp_classl routine is
 ?C:	available to classify long doubles.  Available for example in
-?C:	Digital UNIX.
-?C:	The returned values are defined in <math.h> and are:
-?C:
-?C:	FP_SNAN           Signaling NaN (Not-a-Number)
-?C:	FP_QNAN           Quiet NaN (Not-a-Number)
-?C:	FP_POS_INF        +infinity
-?C:	FP_NEG_INF        -infinity
-?C:	FP_POS_NORM       Positive normalized
-?C:	FP_NEG_NORM       Negative normalized
-?C:	FP_POS_DENORM     Positive denormalized
-?C:	FP_NEG_DENORM     Negative denormalized
-?C:	FP_POS_ZERO       +0.0 (positive zero)
-?C:	FP_NEG_ZERO       -0.0 (negative zero)
+?C:	Digital UNIX.  See for possible values HAS_FP_CLASS.
 ?C:.
 ?H:#$d_fp_classl HAS_FP_CLASSL		/**/
 ?H:.

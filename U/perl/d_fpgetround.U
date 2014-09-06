@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fpgetround: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fpgetround:
+?S:	This variable conditionally defines HAS_FPGETROUND if fpgetround()
+?S:	is available to get the floating point rounding mode.
+?S:.
+?C:HAS_FPGETROUND:
+?C:	This symbol, if defined, indicates that the fpgetround routine is
+?C:	available to get the floating point rounding mode.
+?C:.
+?H:#$d_fpgetround HAS_FPGETROUND		/**/
+?H:.
+?LINT:set d_fpgetround
+: see if fpgetround exists
+set fpgetround d_fpgetround
+eval $inlibc
+

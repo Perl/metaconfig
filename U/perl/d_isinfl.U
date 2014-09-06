@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_isinfl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_isinfl:
+?S:	This variable conditionally defines the HAS_ISINFL symbol, which
+?S:	indicates to the C program that the isinfl() routine is available.
+?S:.
+?C:HAS_ISINFL:
+?C:	This symbol, if defined, indicates that the isinfl routine is
+?C:	available to check whether a long double is an infinity.
+?C:.
+?H:#$d_isinfl HAS_ISINFL		/**/
+?H:.
+?LINT:set d_isinfl
+: see if isinfl exists
+set isinfl d_isinfl
+eval $inlibc
+

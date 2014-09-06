@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fegetround: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fegetround:
+?S:	This variable conditionally defines HAS_FEGETROUND if fegetround() is
+?S:	available to get the floating point rounding mode.
+?S:.
+?C:HAS_FEGETROUND:
+?C:	This symbol, if defined, indicates that the fegetround routine is
+?C:	available to return the macro corresponding to the current rounding
+?C:	mode.
+?C:.
+?H:#$d_fegetround HAS_FEGETROUND	/**/
+?H:.
+?LINT:set d_fegetround
+: see if fegetround exists
+set fegetround d_fegetround
+eval $inlibc
+

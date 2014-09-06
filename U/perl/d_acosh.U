@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_acosh: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_acosh:
+?S:	This variable conditionally defines the HAS_ACOSH symbol, which
+?S:	indicates to the C program that the acosh() routine is available.
+?S:.
+?C:HAS_ACOSH:
+?C:	This symbol, if defined, indicates that the acosh routine is
+?C:	available to do the inverse hyperbolic cosine function.
+?C:.
+?H:#$d_acosh HAS_ACOSH		/**/
+?H:.
+?LINT:set d_acosh
+: see if acosh exists
+set acosh d_acosh
+eval $inlibc
+

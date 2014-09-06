@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_isfinite: Inlibc
+?MAKE:d_isfinite: Inlibc cat i_math Compile rm_try Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_isfinite:
 ?S:	This variable conditionally defines the HAS_ISFINITE symbol, which
@@ -15,10 +15,27 @@
 ?C:	This symbol, if defined, indicates that the isfinite routine is
 ?C:	available to check whether a double is finite (non-infinity non-NaN).
 ?C:.
+?LINT:set d_isfinite
 ?H:#$d_isfinite HAS_ISFINITE		/**/
 ?H:.
-?LINT:set d_isfinite
-: see if isfinite exists
-set isfinite d_isfinite
-eval $inlibc
+: check for isfinite
+echo "Checking to see if you have isfinite..." >&4
+$cat >try.c <<EOCP
+#$i_math I_MATH
+#ifdef I_MATH
+#include <math.h>
+#endif
+int main() { return isfinite(0.0); }
+EOCP
+set try
+if eval $compile; then
+	val="$define"
+	echo "You have isfinite."
+else
+	val="$undef"
+	echo "You do not have isfinite."
+fi
+$rm_try
+set d_isfinite
+eval $setvar
 
