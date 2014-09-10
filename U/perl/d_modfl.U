@@ -8,7 +8,8 @@
 ?MAKE:d_modfl d_modflproto d_modfl_pow32_bug: Inlibc Compile Hasproto cat \
 	rm_try test sPRIfldbl d_longdbl osname gccversion ccflags run \
 	uselongdouble i_math \
-	d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl d_ldexpl
+	d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl d_ldexpl \
+	d_truncl
 ?MAKE:	-pick add $@ %<
 ?S:d_modfl:
 ?S:	This variable conditionally defines the HAS_MODFL symbol, which
@@ -130,10 +131,14 @@ if $test "$uselongdouble" = "$define"; then
 	message="$message sqrtl"
     fi
     if $test "$d_modfl" != "$define"; then
-	if $test "$d_aintl:$d_copysignl" = "$define:$define"; then
-	    echo "You have both aintl and copysignl, so I can emulate modfl."
+	if $test "$d_truncl:$d_copysignl" = "$define:$define"; then
+	    echo "You have both truncl and copysignl, so I can emulate modfl."
 	else
-	    message="$message modfl"
+	    if $test "$d_aintl:$d_copysignl" = "$define:$define"; then
+		echo "You have both aintl and copysignl, so I can emulate modfl."
+	    else
+		message="$message modfl"
+	    fi
 	fi
     fi
     if $test "$d_frexpl" != "$define"; then

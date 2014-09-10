@@ -1,0 +1,22 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_truncl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_truncl:
+?S:	This variable conditionally defines the HAS_TRUNCL symbol, which
+?S:	indicates to the C program that the truncl() routine is available
+?S:	to round long doubles towards zero. If copysignl is also present,
+?S:	we can emulate modfl.
+?S:.
+?C:HAS_TRUNCL :
+?C:	This symbol, if defined, indicates that the truncl routine is
+?C:	available. If copysignl is also present we can emulate modfl.
+?C:.
+?H:#$d_truncl HAS_TRUNCL		/**/
+?H:.
+?LINT:set d_truncl
+: see if truncl exists
+set truncl d_truncl
+eval $inlibc
+
