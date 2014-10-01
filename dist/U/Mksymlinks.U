@@ -1,0 +1,90 @@
+?RCS: $Id: Mksymlinks.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS: 
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?X: 
+?X: This unit allows the duplication of the source tree to the current
+?X:	directory via symbolic links.  This must be requested explicitly
+?X:	by them issuing a -Dmksymlinks on the command line.
+?X:	
+?MAKE:Mksymlinks: Mkdirp lns issymlink src rsrc pkgsrc
+?MAKE:	-pick add $@ %<
+?F:!UU
+?T: dir filename tmppwd filelist 
+?LINT:extern mksymlinks
+@if {test -f ../MANIFEST}
+: Duplicate the tree with symbolic links if -Dmksymlinks was supplied
+case "$mksymlinks" in
+$define|true|[yY]*)
+	echo " "
+	case "$src" in
+	''|'.')	echo "Cannot create symlinks in the original directory." >&4
+		exit 1
+		;;
+	*)	case "$lns:$issymlink" in
+		*"ln"*" -s:"*"test -"?)
+			echo "Creating the symbolic links..." >&4
+			echo "(First creating the subdirectories...)" >&4
+			cd ..
+			awk '{print $1}' $src/MANIFEST | grep / | sed 's:/[^/]*$::' | \
+				sort -u | while true
+			do
+				read dir
+				test -z "$dir" && break
+				./UU/mkdirp $dir 2>/dev/null
+				if test -d $dir; then
+					: ok
+				else
+					echo "Failed to create '$dir'.  Aborting." >&4
+					exit 1
+				fi
+			done
+			echo "(Now creating the symlinks...)" >&4
+			awk '{print $1}' $src/MANIFEST | while true; do
+				read filename
+				test -z "$filename" && break
+				if test -f $filename; then
+					if $issymlink $filename; then
+						rm -f $filename
+					fi
+				fi
+				if test -f $filename; then
+					echo "$filename already exists, not symlinking."
+				else
+?X: Note that the following works because "$pkgsrc" is absolute
+					ln -s $pkgsrc/$filename $filename
+				fi
+			done
+?X: Check that everything was correctly copied
+			echo "(Checking current directory...)" >&4
+			cd UU
+			awk '$1 !~ /PACK[A-Z]+/ {print $1}' "$rsrc/MANIFEST" | \
+				(split -l 50 2>/dev/null || split -50)
+			rm -f missing
+			tmppwd=`pwd`
+			for filelist in x??; do
+				(cd ..; ls `cat "$tmppwd/$filelist"` \
+					>/dev/null 2>>"$tmppwd/missing")
+			done
+			if test -s missing; then
+				echo "Failed duplication of source tree.  Aborting." >&4
+				exit 1
+			fi
+			;;
+		*)	echo "(I cannot figure out how to do symbolic links, ignoring!)" >&4
+			;;
+		esac
+		;;
+	esac
+	;;
+esac
+
+@end

@@ -1,0 +1,58 @@
+?RCS: $Id: ebcdic.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS: 
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS:	Original author Jarkko Hietaniemi <jhi@iki.fi>
+?RCS:	Merged into dist by Andy Dougherty  July 13, 1998
+?RCS:
+?MAKE:ebcdic: Compile Setvar cat rm run
+?MAKE:	-pick add $@ %<
+?S:ebcdic:
+?S:	This variable conditionally defines EBCDIC if this
+?S:	system uses EBCDIC encoding.  Among other things, this
+?S:	means that the character ranges are not contiguous.
+?S:	See trnl.U
+?S:.
+?C:EBCDIC:
+?C:     This symbol, if defined, indicates that this system uses
+?C:	EBCDIC encoding.
+?C:.
+?H:#$ebcdic	EBCDIC 		/**/
+?H:.
+?F:!try
+?LINT:set ebcdic
+: look whether system uses EBCDIC
+echo " "
+echo "Determining whether or not we are on an EBCDIC system..." >&4
+$cat >try.c <<'EOM'
+int main()
+{
+	if ('M'==0xd4) return 0;
+	return 1;
+}
+EOM
+val=$undef
+set try
+if eval $compile_ok; then
+	if $run ./try; then
+		echo "You seem to speak EBCDIC." >&4
+		val="$define"
+	else
+		echo "Nope, no EBCDIC, probably ASCII or some ISO Latin. Or UTF-8." >&4
+	fi
+else
+	echo "I'm unable to compile the test program." >&4
+	echo "I'll assume ASCII or some ISO Latin. Or UTF8." >&4
+fi
+$rm -f try try.*
+set ebcdic
+eval $setvar
+

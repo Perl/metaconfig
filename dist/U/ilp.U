@@ -1,0 +1,116 @@
+?RCS:
+?RCS: Copyright (c) 2012 Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:ilp d_ilp32 d_ilp64 d_lp64 d_can64: Assert Myread Setvar \
+	cat rm +cc +ccflags echo n c intsize longsize ptrsize
+?MAKE:	-pick add $@ %<
+?S:ilp:
+?S:	This variable contains the largest amount of bits that the CPU supports,
+?S:	from the compiler's point of view.  Typically 32 or 64.
+?S:.
+?S:d_ilp32:
+?S:	This variable conditionally defines the CPU_IS_ILP32.
+?S:.
+?S:d_ilp64:
+?S:	This variable conditionally defines the CPU_IS_ILP64.
+?S:.
+?S:d_lp64:
+?S:	This variable conditionally defines the CPU_IS_LP64.
+?S:.
+?S:d_can64:
+?S:	This variable conditionally defines CAN_HANDLE_64BITS.
+?S:.
+?C:CPU_ILP_MAXBITS:
+?C:	This symbol contains the largest amount of bits that the CPU natively
+?C:	supports from the compiler's point of view.  Typically 32 or 64.
+?C:.
+?C:CPU_IS_ILP32:
+?C:	When defined, this indicates that the integer, long and pointer variables
+?C:	hold 32-bit values.
+?C:.
+?C:CPU_IS_ILP64:
+?C:	When defined, this indicates that the integer, long and pointer variables
+?C:	hold 64-bit values.
+?C:.
+?C:CPU_IS_LP64:
+?C:	When defined, this indicates that the long and pointer variables hold
+?C:	64-bit values but integers are smaller (probably only 32-bit wide).
+?C:.
+?C:CAN_HANDLE_64BITS:
+?C:	When defined, this indicates that the compiler can handle 64-bit values
+?C:	despite the CPU having only 32-bit registers.  These are available using
+?C:	the "long long" C type.  It is only defined for ILP32 machines, since
+?C:	64-bit support is naturally available on ILP64 and LP64 machines.
+?C:.
+?H:#define CPU_ILP_MAXBITS $ilp
+?H:#$d_ilp32 CPU_IS_ILP32	/**/
+?H:#$d_ilp64 CPU_IS_ILP64	/**/
+?H:#$d_lp64 CPU_IS_LP64		/**/
+?H:#$d_can64 CAN_HANDLE_64BITS	/**/
+?H:.
+?LINT: set d_ilp32 d_ilp64 d_lp64 d_can64
+: check for architecture type
+echo " "
+$echo $n "Computing CPU architecture type...$c" >&4
+ilp=`expr $longsize \* 8`
+case "$ptrsize" in
+8)
+	val=$undef; set d_ilp32; eval $setvar
+	case "$intsize" in
+	8)	
+		echo " ILP64." >&4
+		val=$define; set d_ilp64; eval $setvar
+		val=$undef; set d_lp64; eval $setvar
+		;;
+	*)
+		echo " LP64." >&4
+		val=$define; set d_lp64; eval $setvar
+		val=$undef; set d_ilp64; eval $setvar
+		;;
+	esac
+	;;
+*)
+	echo " ILP${ilp}." >&4
+	case "$ilp" in
+	32) val=$define;;
+	*) val=$undef;;
+	esac
+	set d_ilp32; eval $setvar
+	val=$undef; set d_ilp64; eval $setvar
+	val=$undef; set d_lp64; eval $setvar
+	;;
+esac
+
+@if CAN_HANDLE_64BITS || d_can64
+: see whether compiler supports 64-bit emulation
+val=$undef
+case "$ilp" in
+64) val=$define;;
+*)
+	$cat >try.c <<EOCP
+#include "static_assert.h"
+long long foo;
+int main()
+{
+	STATIC_ASSERT(8 == sizeof(foo));
+	return 0;
+}
+EOCP
+	if $cc -c $ccflags try.c >/dev/null 2>&1; then
+		echo " "
+		echo "Your compiler also supports 64-bit emulation." >&4
+		val=$define
+	fi
+	$rm -f try.*
+	;;
+esac
+set d_can64
+eval $setvar
+
+@end

@@ -1,0 +1,349 @@
+?RCS: $Id: Cross.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS: 
+?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:
+?MAKE:run to from targetarch usecrosscompile: src awk cat grep test rm \
+	echo sed mkdir cp touch chmod
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usecrosscompile:
+?S:	This variable conditionally defines the USE_CROSS_COMPILE symbol,
+?S:	and indicates that our package has been cross-compiled.
+?S:.
+?S:run:
+?S:	This variable contains the command used by Configure
+?S:	to copy and execute a cross-compiled executable in the
+?S:	target host.  Useful and available only during the build.
+?S:	Empty string '' if not cross-compiling.
+?S:.
+?S:from:
+?S:	This variable contains the command used by Configure
+?S:	to copy files from the target host.  Useful and available
+?S:	only during the build.
+?S:	The string ':' if not cross-compiling.
+?S:.
+?S:to:
+?S:	This variable contains the command used by Configure
+?S:	to copy to from the target host.  Useful and available
+?S:	only during the build.
+?S:	The string ':' if not cross-compiling.
+?S:.
+?S:targetarch:
+?S:	If cross-compiling, this variable contains the target architecture.
+?S:	If not, this will be empty.
+?S:.
+?C:USE_CROSS_COMPILE:
+?C:	This symbol, if defined, indicates that the package is being
+?C:	cross-compiled.
+?C:.
+?C:CROSS_TARGET_ARCH:
+?C:	This symbol, if defined, indicates the target architecture
+?C:	the package has been cross-compiled to.
+?C:	Undefined if not a cross-compile.
+?C:.
+?H:?usecrosscompile:#ifndef USE_CROSS_COMPILE
+?H:?usecrosscompile:#$usecrosscompile	USE_CROSS_COMPILE	/**/
+?H:?usecrosscompile:#define CROSS_TARGET_ARCH	"$targetarch"	/**/
+?H:?usecrosscompile:#endif
+?H:.
+?T:croak pwd exe f q i j cwd
+?LINT:extern usecrosscompile
+?LINT:extern cc
+?LINT:extern usrinc
+?LINT:change usrinc
+?LINT:change ar
+?LINT:change nm
+?LINT:change ranlib
+?LINT:extern targethost
+?LINT:extern targetdir
+?LINT:change targetdir
+?LINT:extern targetuser
+?LINT:change targetuser
+?LINT:extern targetrun
+?LINT:extern targetfrom
+?LINT:extern targetto
+?LINT:extern targetmkdir
+?LINT:change targetrun
+?LINT:change targetfrom
+?LINT:change targetto
+?LINT:change targetmkdir
+?LINT:extern incpth
+?LINT:extern libpth
+?LINT:change incpth
+?LINT:change libpth
+?LINT:extern locincpth
+?LINT:extern loclibpth
+?LINT:change locincpth
+?LINT:change loclibpth
+: setup for possible cross-compilation
+run=''
+to=:
+from=:
+usecrosscompile='undef'
+targetarch=''
+case "$usecrosscompile" in
+$define|true|[yY]*)
+@if { test -d ../Cross }
+?X:
+?X: Cross-compilation is enabled when there is a 'Cross' directory found
+?X: at the root of the package.  This directory must contain the following
+?X:	entries for defining the cross-compilation process:
+?X:
+?X:	FIXME FIXME
+?X: WE MUST DISTINGUISH BETWEEN LOCAL cross-compiling AND REMOTE ONE
+?X: ACTUALLY, REMOTE COMPILATION SHOULD BE CONFIGURED INTERACTIVELY
+?X:	IT WILL COPY ALL THE FILES FROM THE MANIFEST DOWN TO THE REMOTE DIR...
+?X:	(and copy things like 'mkdep', etc...)
+?X:
+	$echo "Cross-compiling..."
+	croak=''
+	case "$cc" in
+	*-*-gcc)
+?X: A cross-compiling gcc, probably.
+	    targetarch=`$echo $cc|$sed 's/-gcc$//'`
+	    ar=$targetarch-ar
+?X: leave out ld, choosing it is more complex
+	    nm=$targetarch-nm
+	    ranlib=$targetarch-ranlib
+	    $echo 'extern int foo;' > try.c
+	    set X `$cc -v -E try.c 2>&1 | \
+			$awk '/^#include </,/^End of search /'|$grep '/include'`
+	    shift
+		if $test $# -gt 0; then
+	        incpth="$incpth $*"
+			incpth="`$echo $incpth|$sed 's/^ //'`"
+			echo "Guessing incpth '$incpth'." >&4
+			for i in $*; do
+				j="`$echo $i|$sed 's,/include$,/lib,'`"
+				if $test -d $j; then
+					libpth="$libpth $j"
+				fi
+			done
+			libpth="`$echo $libpth|$sed 's/^ //'`"
+			echo "Guessing libpth '$libpth'." >&4
+	    fi
+	    $rm -f try.c
+	    ;;
+	esac
+	case "$targetarch" in
+	'') echo "Targetarch not defined." >&4; croak=y ;;
+	*)  echo "Using targetarch $targetarch." >&4 ;;
+	esac
+	case "$incpth" in
+	'') echo "Incpth not defined." >&4; croak=y ;;
+	*)  echo "Using incpth '$incpth'." >&4 ;;
+	esac
+	case "$libpth" in
+	'') echo "Libpth not defined." >&4; croak=y ;;
+	*)  echo "Using libpth '$libpth'." >&4 ;;
+	esac
+	case "$usrinc" in
+	'')
+		for i in $incpth; do
+			if $test -f $i/errno.h -a -f $i/stdio.h -a -f $i/time.h; then
+				usrinc=$i
+				echo "Guessing usrinc $usrinc." >&4
+				break
+			fi
+	    done
+	    case "$usrinc" in
+	    '') echo "Usrinc not defined." >&4; croak=y ;;
+	    esac
+		;;
+	*)  echo "Using usrinc $usrinc." >&4 ;;
+	esac
+	case "$targethost" in
+	'') echo "Targethost not defined." >&4; croak=y ;;
+	*)  echo "Using targethost $targethost." >&4
+	esac
+	locincpth=' '
+	loclibpth=' '
+	case "$croak" in
+	y) echo "Cannot continue, aborting." >&4; exit 1 ;;
+	esac
+	case "$src" in
+	/*) run=$src/Cross/run
+	    targetmkdir=$src/Cross/mkdir
+	    to=$src/Cross/to
+	    from=$src/Cross/from
+	    ;;
+	*)  pwd=`$test -f ../Configure & cd ..; pwd`
+	    run=$pwd/Cross/run
+	    targetmkdir=$pwd/Cross/mkdir
+	    to=$pwd/Cross/to
+	    from=$pwd/Cross/from
+	    ;;
+	esac
+	case "$targetrun" in
+	'') targetrun=ssh ;;
+	esac
+	case "$targetto" in
+	'') targetto=scp ;;
+	esac
+	case "$targetfrom" in
+	'') targetfrom=scp ;;
+	esac
+	run=$run-$targetrun
+	to=$to-$targetto
+	from=$from-$targetfrom
+	case "$targetdir" in
+	'')
+		targetdir=/tmp
+		echo "Guessing targetdir $targetdir." >&4
+		;;
+	esac
+	case "$targetuser" in
+	'')
+		targetuser=root
+		echo "Guessing targetuser $targetuser." >&4
+		;;
+	esac
+	case "$targetfrom" in
+	scp) q=-q ;;
+	*)	q='' ;;
+	esac
+	case "$targetrun" in
+	ssh|rsh)
+		$cat >$run <<EOF
+#!/bin/sh
+case "\$1" in
+-cwd)
+  shift
+  cwd=\$1
+  shift
+  ;;
+esac
+case "\$cwd" in
+'') cwd=$targetdir ;;
+esac
+exe=\$1
+shift
+if $test ! -f \$exe.xok; then
+  $to \$exe
+  $touch \$exe.xok
+fi
+$targetrun -l $targetuser $targethost "cd \$cwd && ./\$exe \$@"
+EOF
+		;;
+	*)  echo "Unknown targetrun '$targetrun'" >&4
+	    exit 1
+	    ;;
+	esac
+	case "$targetmkdir" in
+	*/Cross/mkdir)
+		$cat >$targetmkdir <<EOF
+#!/bin/sh
+$targetrun -l $targetuser $targethost "mkdir -p \$@"
+EOF
+	    $chmod a+rx $targetmkdir
+	    ;;
+	*)  echo "Unknown targetmkdir '$targetmkdir'" >&4
+	    exit 1
+	    ;;
+	esac
+	case "$targetto" in
+	scp|rcp)
+	    $cat >$to <<EOF
+#!/bin/sh
+for f in \$@
+do
+  case "\$f" in
+  /*)
+    $targetmkdir \`dirname \$f\`
+    $targetto $q \$f $targetuser@$targethost:\$f            || exit 1
+    ;;
+  *)
+    $targetmkdir $targetdir/\`dirname \$f\`
+    $targetto $q \$f $targetuser@$targethost:$targetdir/\$f || exit 1
+    ;;
+  esac
+done
+exit 0
+EOF
+	    ;;
+	cp) $cat >$to <<EOF
+#!/bin/sh
+for f in \$@
+do
+  case "\$f" in
+  /*)
+    $mkdir -p $targetdir/\`dirname \$f\`
+    $cp \$f $targetdir/\$f || exit 1
+    ;;
+  *)
+    $targetmkdir $targetdir/\`dirname \$f\`
+    $cp \$f $targetdir/\$f || exit 1
+    ;;
+  esac
+done
+exit 0
+EOF
+	    ;;
+	*)  echo "Unknown targetto '$targetto'" >&4
+	    exit 1
+	    ;;
+	esac
+	case "$targetfrom" in
+	scp|rcp)
+	  $cat >$from <<EOF
+#!/bin/sh
+for f in \$@
+do
+  $rm -f \$f
+  $targetfrom $q $targetuser@$targethost:$targetdir/\$f . || exit 1
+done
+exit 0
+EOF
+	    ;;
+	cp) $cat >$from <<EOF
+#!/bin/sh
+for f in \$@
+do
+  $rm -f \$f
+  cp $targetdir/\$f . || exit 1
+done
+exit 0
+EOF
+	    ;;
+	*)  echo "Unknown targetfrom '$targetfrom'" >&4
+	    exit 1
+	    ;;
+	esac
+	if $test ! -f $run; then
+	    echo "Target 'run' script '$run' not found." >&4
+	else
+	    $chmod a+rx $run
+	fi
+	if $test ! -f $to; then
+	    echo "Target 'to' script '$to' not found." >&4
+	else
+	    $chmod a+rx $to
+	fi
+	if $test ! -f $from; then
+	    echo "Target 'from' script '$from' not found." >&4
+	else
+	    $chmod a+rx $from
+	fi
+	if $test ! -f $run -o ! -f $to -o ! -f $from; then
+	    exit 1
+	fi
+	$cat >&4 <<EOF
+Using '$run' for remote execution,
+and '$from' and '$to'
+for remote file transfer.
+EOF
+@else
+	echo "Cross-compilation is not supported for this package." >&4
+	exit 1
+@end
+	;;
+esac
+

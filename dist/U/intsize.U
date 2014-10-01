@@ -1,0 +1,89 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, 2012 Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:intsize longsize shortsize: Assert Myread cat rm +cc +ccflags echo n c
+?MAKE:	-pick add $@ %<
+?S:intsize:
+?S:	This variable contains the value of the INTSIZE symbol, which
+?S:	indicates to the C program how many bytes there are in an int.
+?S:.
+?S:longsize:
+?S:	This variable contains the value of the LONGSIZE symbol, which
+?S:	indicates to the C program how many bytes there are in a long.
+?S:.
+?S:shortsize:
+?S:	This variable contains the value of the SHORTSIZE symbol which
+?S:	indicates to the C program how many bytes there are in a short.
+?S:.
+?C:INTSIZE:
+?C:	This symbol contains the value of sizeof(int) so that the C
+?C:	preprocessor can make decisions based on it.
+?C:.
+?C:LONGSIZE:
+?C:	This symbol contains the value of sizeof(long) so that the C
+?C:	preprocessor can make decisions based on it.
+?C:.
+?C:SHORTSIZE:
+?C:	This symbol contains the value of sizeof(short) so that the C
+?C:	preprocessor can make decisions based on it.
+?C:.
+?H:#define INTSIZE $intsize
+?H:#define LONGSIZE $longsize
+?H:#define SHORTSIZE $shortsize
+?H:.
+?T:types t size var
+?LINT: set shortsize intsize longsize
+: check for lengths of integral types
+echo " "
+types=''
+@if SHORTSIZE || shortsize
+types="$types short"
+@end
+@if INTSIZE || intsize
+types="$types int"
+@end
+@if LONGSIZE || longsize
+types="$types long"
+@end
+for t in $types; do
+	$echo $n "Checking to see how big your ${t}s are...$c" >&4
+	for size in 2 4 8 16 error; do
+		$cat >try.c <<EOCP
+#include "static_assert.h"
+$t foo;
+int main()
+{
+	STATIC_ASSERT($size == sizeof(foo));
+	return 0;
+}
+EOCP
+		if $cc -c $ccflags try.c >/dev/null 2>&1; then break; fi
+	done
+	var=${t}size
+	case "$size" in
+	error)
+		echo " cannot compute it." >&4
+		case $t in
+		short) dflt=2;;
+		int) dflt=4;;
+		long) dflt=4;;
+		esac
+		rp="What is the size of the \"$t\" type (in bytes)?"
+		. ./myread
+		eval $var="$ans"
+		;;
+	*)
+		echo " $size bytes." >&4
+		eval $var=$size
+		;;
+	esac
+done
+$rm -f try.*
+

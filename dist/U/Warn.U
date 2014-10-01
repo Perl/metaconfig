@@ -1,0 +1,57 @@
+?RCS: $Id: Warn.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: Extract.U,v $
+?X: 
+?X: This unit produces a shell script which can be run in order to emit
+?X: an important warning to the user, which will be remembered and shown
+?X: at the end of the Configure run as well.
+?X:
+?X: A typical use would be:
+?X:
+?X:		./warn <<EOM
+?X:		Problem with your C compiler: can't turn debugging on.
+?X:		EOM
+?X:
+?X: or:
+?X:
+?X:		./warn "Problem with your C compiler: can't turn debugging on."
+?X:
+?X:	Which will both display to the user:
+?X:
+?X:		*** WARNING:
+?X:		*** Problem with your C compiler: can't turn debugging on.
+?X:		***
+?X:
+?MAKE:Warn: startsh eunicefix
+?MAKE:	-pick add $@ %<
+?F:./warn
+: script used to emit important warnings
+cat >warn <<EOS
+$startsh
+?X: Read the whole warning message from stdin into a temporary file
+?X: when no argument was supplied.
+if test \$# -gt 0; then
+	echo "\$@" >msg
+else
+	cat >msg
+fi
+?X: Emit the warning, prefixing all lines with '*** '
+echo "*** WARNING:" >&4
+sed -e 's/^/*** /' <msg >&4
+echo "*** " >&4
+?X: Save the warning in the logs, which will be shown again at the end
+cat msg >>config.msg
+echo " " >>config.msg
+rm -f msg
+EOS
+chmod +x warn
+$eunicefix warn
+

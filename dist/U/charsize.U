@@ -1,0 +1,64 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: charsize.U,v $
+?RCS: Revision 3.0.1.1  1994/10/29  16:07:13  ram
+?RCS: patch36: added ?F: line for metalint file checking
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:05:34  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:charsize: Assert Myread cat rm +cc +ccflags echo n c
+?MAKE:	-pick add $@ %<
+?S:charsize:
+?S:	This variable contains the value of the CHARSIZE symbol, which
+?S:	indicates to the C program how many bytes there are in a character.
+?S:.
+?C:CHARSIZE:
+?C:	This symbol contains the size of a char, so that the C preprocessor
+?C:	can make decisions based on it.
+?C:.
+?H:#define CHARSIZE $charsize
+?H:.
+?T:size s
+: check for length of character
+echo " "
+$echo $n "Checking to see how big your characters are...$c" >&4
+for size in 1 2 4 8 error; do
+	$cat >try.c <<EOCP
+#include "static_assert.h"
+char foo;
+int main()
+{
+	STATIC_ASSERT($size == sizeof(foo));
+	return 0;
+}
+EOCP
+	if $cc -c $ccflags try.c >/dev/null 2>&1; then break; fi
+done
+case "$size" in
+error)
+	echo " cannot compute it." >&4
+	dflt=1
+	rp="What is the size of a character (in bytes)?"
+	. ./myread
+	charsize="$ans"
+	;;
+*)
+	case "$size" in
+	1) s='';;
+	*) s='s';;
+	esac
+	echo " $size byte$s." >&4
+	charsize=$size
+	;;
+esac
+$rm -f try.*
+

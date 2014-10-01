@@ -1,0 +1,59 @@
+?RCS: $Id: trnl.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS: 
+?RCS: Copyright (c) 1998 Andy Dougherty
+?RCS:
+?RCS:	Original author Jarkko Hietaniemi <jhi@iki.fi>
+?RCS:	Merged into dist by Andy Dougherty  July 13, 1998
+?RCS:
+?MAKE:trnl: Nothing
+?MAKE:	-pick add $@ %<
+?S:trnl:
+?S:	This variable contains the value to be passed to the tr(1)
+?S:	command to transliterate a newline.  Typical values are
+?S:	'\012' and '\n'.  This is needed for EBCDIC systems where
+?S:	newline is not necessarily '\012'.
+?S:.
+?T: DJGPP
+: Find the appropriate value for a newline for tr
+echo " "
+?X: We can't use $tr since that would cause a circular dependency via Myread
+?X: dos djgpp uses '\015\012', but reportedly is happy with '\012' in the
+?X: tr command.  I don't know why it passes the '\n' test but later
+?X: refuses to work correctly with it.  --AD  6/14/98
+if test -n "$DJGPP"; then
+       trnl='\012'
+fi
+if test X"$trnl" = X; then
+	case "`echo foo | tr '\n' x 2>/dev/null`" in
+	foox) trnl='\n' ;;
+	esac
+fi
+if test X"$trnl" = X; then
+	case "`echo foo | tr '\012' x 2>/dev/null`" in
+	foox) trnl='\012' ;;
+	esac
+fi
+if test X"$trnl" = X; then
+       case "`echo foo | tr '\r\n' xy 2>/dev/null`" in
+       fooxy) trnl='\n\r' ;;
+       esac
+fi
+if test X"$trnl" = X; then
+	cat <<EOM >&2
+
+$me: Fatal Error: cannot figure out how to translate newlines with 'tr'.
+
+EOM
+	exit 1
+else
+	echo "We'll use '$trnl' to transliterate a newline."
+fi
+

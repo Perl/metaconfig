@@ -1,0 +1,81 @@
+?RCS: $Id: Init.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: Init.U,v $
+?RCS: Revision 3.0.1.1  1994/10/31  09:45:59  ram
+?RCS: patch44: removed Options from MAKE to prevent Init overrides
+?RCS: patch44: option processing now done after Myinit thanks to new Begin.U
+?RCS: patch44: moved "Beginning of configuration questions" to Begin.U
+?RCS: patch44: moved signal trapping instruction to Begin.U as well
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:05:02  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?X: 
+?X: This file initializes certain default variables used by Configure.  They
+?X: may be overridden or added to by definitions in Myinit.U.
+?X:
+?MAKE:Init eunicefix _exe: Null
+?MAKE:	-pick add $@ %<
+?MAKE:	-pick weed $@ ./Init
+?S:eunicefix:
+?S:	When running under Eunice this variable contains a command which will
+?S:	convert a shell script to the proper form of text file for it to be
+?S:	executable by the shell.  On other systems it is a no-op.
+?S:.
+?S:_exe (exe_ext):
+?S:	This variable defines the extension used for executable files.
+?S:	For unix it is empty.  Other possible values include '.exe'.
+?S:	DJGPP, Cygwin and OS/2 use '.exe'.  Stratus VOS uses '.pm'.
+?S:	On operating systems which do not require a specific extension
+?S:	for executable files, this variable is empty.
+?S:.
+?V:define undef smallmach:rmlist
+?X:
+?X: Throughout the units, one may make use of $define and $undef to reference
+?X: a defined symbol or an undefined one. There is no need to add them in
+?X: the dependency line since this unit makes them visible via ?V:, and
+?X: everyone inherits from those symbols since by convention Init.U is the
+?X: root dependency.
+?X:
+?T: DJGPP
+: Initialize wide constants
+define='define'
+undef='undef'
+smallmach='pdp11 i8086 z8000 i80286 iAPX286'
+rmlist=''
+
+: We must find out about Eunice early
+eunicefix=':'
+if test -f /etc/unixtovms; then
+	eunicefix=/etc/unixtovms
+fi
+if test -f /etc/unixtovms.exe; then
+	eunicefix=/etc/unixtovms.exe
+fi
+
+: Set executable suffix now -- needed before hints available
+if test -f "/libs/version.library"; then
+	: Amiga OS
+	 _exe=""
+elif test -f "/system/gnu_library/bin/ar.pm"; then
+	: Stratus VOS
+	_exe=".pm"
+elif test -n "$DJGPP"; then
+	: DOS DJGPP
+	 _exe=".exe"
+elif test -d c:/. ; then
+	: OS/2 or cygwin
+	_exe=".exe"
+else
+	: All other UNIX systems
+	_exe=""
+fi
+

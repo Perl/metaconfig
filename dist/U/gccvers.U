@@ -1,0 +1,117 @@
+?RCS: $Id: gccvers.U 13 2006-08-28 16:48:29Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: Copyright (c) 2000, Jarkko Hietaniemi
+?RCS: 
+?MAKE:gccversion gccosandvers: cat cpp rm +cc \
+	Myread Guess Options Oldconfig Loc osname osvers grep run ccname
+?MAKE:	-pick add $@ %<
+?S:gccversion:
+?S:	If GNU cc (gcc) is used, this variable holds '1' or '3' (for instance)
+?S:	to indicate whether the compiler is version 1 or 3.  This is used in
+?S:	setting some of the default cflags.  It is set to '' if not gcc.
+?S:.
+?S:gccosandvers:
+?S:	If GNU cc (gcc) is used, this variable the operating system and
+?S:	version used to compile the gcc.  It is set to '' if not gcc,
+?S:	or if nothing useful can be parsed as the os version.
+?S:.
+?T:gccshortvers incdir d
+?F:!try.c !try
+?LINT:extern locincpth ccflags ldflags
+?LINT:change locincpth ccname cpp
+: Check whether they have gcc in any guise.  
+echo " "
+echo "Checking for GNU cc in disguise and/or its version number..." >&4
+$cat >try.c <<EOM
+#include <stdio.h>
+int main() {
+#ifdef __GNUC__
+#ifdef __VERSION__
+	printf("%s\n", __VERSION__);
+#else
+	printf("%s\n", "1");
+#endif
+#endif
+	exit(0);
+}
+EOM
+if $cc -o try $ccflags $ldflags try.c >/dev/null 2>&1; then
+	gccversion=`$run ./try`
+	case "$gccversion" in
+	'') echo "You are not using GNU cc." ;;
+	*)  echo "You are using GNU cc $gccversion."
+	    ccname=gcc	
+	    ;;
+	esac
+else
+	echo " "
+	echo "*** WHOA THERE!!! ***" >&4
+	echo "    Your C compiler \"$cc\" doesn't seem to be working!" >&4
+?X: using -K will prevent aborting--maybe they're cross compiling?
+	case "$knowitall" in
+	'')
+	echo "    You'd better start hunting for one and let me know about it." >&4
+		exit 1
+		;;
+	esac
+fi
+$rm -f try try.*
+case "$gccversion" in
+1*) cpp=`./loc gcc-cpp $cpp $pth` ;;
+esac
+case "$gccversion" in
+'') gccosandvers='' ;;
+*) gccshortvers=`echo "$gccversion"|sed 's/ .*//'`
+   gccosandvers=`$cc -v 2>&1 | \
+	$grep '/specs$'|sed "s!.*/[^-/]*-[^-/]*-\([^-/]*\)/$gccshortvers/specs!\1!"`
+   gccshortvers=''
+   case "$gccosandvers" in
+   $osname) gccosandvers='' ;; # linux gccs seem to have no linux osvers, grr
+   $osname$osvers) ;; # looking good
+   $osname*) cat <<EOM >&4
+
+*** WHOA THERE!!! ***
+
+    Your gcc has not been compiled for the exact release of
+    your operating system ($gccosandvers versus $osname$osvers).
+
+    In general it is a good idea to keep gcc synchronized with
+    the operating system because otherwise serious problems
+    may ensue when trying to compile software, like Perl.
+
+    I'm trying to be optimistic here, though, and will continue.
+    If later during the configuration and build icky compilation
+    problems appear (headerfile conflicts being the most common
+    manifestation), I suggest reinstalling the gcc to match
+    your operating system release.
+
+EOM
+      ;;
+   *) gccosandvers='' ;; # failed to parse, better be silent
+   esac
+   ;;
+esac
+case "$ccname" in
+'') ccname="$cc" ;;
+esac
+
+: gcc 3.1 complains about adding -Idirectories that it already knows about,
+: so we will take those off from locincpth.
+case "$gccversion" in
+3*)
+    echo "main(){}">try.c
+    for incdir in `$cc -v -c try.c 2>&1 | \
+       sed '1,/^#include <\.\.\.>/d;/^End of search list/,$d;s/^ //'` ; do
+       locincpth=`echo $locincpth | sed s!$incdir!!`
+    done
+    $rm -f try try.*
+esac
+

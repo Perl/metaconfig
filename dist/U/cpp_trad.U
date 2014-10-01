@@ -1,0 +1,41 @@
+?RCS: $Id: cpp_trad.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: cpp_stuff.U,v $
+?MAKE:cpp_trad: cpp cat contains rm
+?MAKE:	-pick add $@ %<
+?S:cpp_trad:
+?S:	This variable contains the program to run to get traditional C
+?S:	preprocessor semantics and not ISO C semantics: we want something
+?S:	that knows as little about C as possible to use as a more general
+?S:	purpose preprocessor.
+?S:.
+?F:!foo.c !foo.cpp
+: how do we get traditional cpp semantics?
+echo " "
+echo "Checking to see how to get traditional cpp semantics..." >&4
+$cat >foo.c <<'EOF'
+#define A(x) x
+#define B(y) y
+A(a)B(b)
+EOF
+if $cpp foo.c >foo.cpp; $contains ab foo.cpp >/dev/null 2>&1; then
+	echo "Plain '$cpp' works just fine."
+	cpp_trad="$cpp"
+elif $cpp -traditional foo.c >foo.cpp; \
+	$contains ab foo.cpp >/dev/null 2>&1; then
+	echo "We'll use '$cpp -traditional' to get proper semantics."
+	cpp_trad="$cpp -traditional"
+else
+	echo "I don't know how to get traditional semantics with '$cpp'." >&4
+	cpp_trad="$cpp"
+fi
+$rm -f foo.c foo.cpp
+

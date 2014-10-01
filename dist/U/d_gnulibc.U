@@ -1,0 +1,98 @@
+?RCS: $Id: d_gnulibc.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1996,1998 Andy Dougherty
+?RCS: Copyright (c) 1996, Sven Verdoolaege
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:d_gnulibc gnulibc_version: Myread Oldconfig Setvar rm \
+	cat Compile run
+?MAKE:	-pick add $@ %<
+?S:d_gnulibc:
+?S:	Defined if we're dealing with the GNU C Library.
+?S:.
+?S:gnulibc_version:
+?S:	This variable contains the version number of the GNU C library.
+?S:	It is usually something like '2.2.5'.  It is a plain '' if this
+?S:	is not the GNU C library, or if the version is unknown.
+?S:.
+?C:HAS_GNULIBC ~ %<:
+?C:	This symbol, if defined, indicates to the C program that 
+?C:	the GNU C library is being used.  A better check is to use
+?C:	the __GLIBC__ and __GLIBC_MINOR__ symbols supplied with glibc.
+?C:.
+?H:?%<:#$d_gnulibc HAS_GNULIBC  	/**/
+?H:?%<:#if defined(HAS_GNULIBC) && !defined(_GNU_SOURCE)
+?H:?%<:#define _GNU_SOURCE
+?H:?%<:#endif
+?H:.
+?F:!glibc.ver !try.c !try
+?LINT: set d_gnulibc
+?LINT: usefile try.c
+?LINT: known _GNU_SOURCE
+?X:	gnulibc can be executed by calling __libc_main().
+?X:	Ulrich Drepper doesn't think any other libc does that,
+?X:	but we check if it says 'GNU C Library' to be sure.
+?X:
+?X: Alas, as of 3/1998 glibc 2.0.7 reportedly isn't going to
+?X: have __libc_main() anymore. :-(.  Fortunately, all released
+?X: versions of glibc 2.x.x _do_ have CPP variables.  For 2.0.6,
+?X: they are:
+?X: #define	__GLIBC__  2
+?X: #define__GLIBC_MINOR__ 0.
+?X: (The '6' isn't available :-(.
+?X: glibc2.1 will also have 
+?X:		extern const char * __gnu_get_libc_release(void);
+?X:		extern const char * __gnu_get_libc_version(void);
+?X: functions.   --thanks to Andreas Jaeger.   --AD  6/1998.
+?X: Although the exact format isn't documented, __gnu_get_libc_version()
+?X: returns a simple string '2.1.3' in glibc 2.1.3.
+?X:
+: determine whether we are using a GNU C library
+echo " "
+echo "Checking for GNU C Library..." >&4
+cat >try.c <<'EOCP'
+/* Find out version of GNU C library.  __GLIBC__ and __GLIBC_MINOR__
+   alone are insufficient to distinguish different versions, such as
+   2.0.6 and 2.0.7.  The function gnu_get_libc_version() appeared in
+   libc version 2.1.0.      A. Dougherty,  June 3, 2002.
+*/
+#include <stdio.h>
+int main(void)
+{
+#ifdef __GLIBC__
+#   ifdef __GLIBC_MINOR__
+#       if __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 1
+#           include <gnu/libc-version.h>
+	    printf("%s\n",  gnu_get_libc_version());
+#       else
+	    printf("%d.%d\n",  __GLIBC__, __GLIBC_MINOR__);
+#       endif
+#   else
+	printf("%d\n",  __GLIBC__);
+#   endif
+    return 0;
+#else
+    return 1;
+#endif
+}
+EOCP
+set try
+if eval $compile_ok && $run ./try > glibc.ver; then
+	val="$define"
+	gnulibc_version=`$cat glibc.ver`
+	echo "You are using the GNU C Library version $gnulibc_version"
+else
+	val="$undef"
+	gnulibc_version=''
+	echo "You are not using the GNU C Library"
+fi
+$rm -f try try.* glibc.ver
+set d_gnulibc
+eval $setvar
+

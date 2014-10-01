@@ -1,0 +1,242 @@
+?RCS: $Id: libs.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: libs.U,v $
+?RCS: Revision 3.0.1.6  1997/02/28  16:09:11  ram
+?RCS: patch61: replaced .a with $_a all over the place
+?RCS:
+?RCS: Revision 3.0.1.5  1995/07/25  14:12:05  ram
+?RCS: patch56: now knows about OS/2 platforms
+?RCS:
+?RCS: Revision 3.0.1.4  1994/10/29  16:24:22  ram
+?RCS: patch36: removed old broken thislib/thatlib processing (ADO)
+?RCS:
+?RCS: Revision 3.0.1.3  1994/06/20  07:05:44  ram
+?RCS: patch30: code cleanup with if/elif by ADO and RAM
+?RCS: patch30: undone patch23 for libswanted default setting
+?RCS:
+?RCS: Revision 3.0.1.2  1994/05/06  15:08:45  ram
+?RCS: patch23: now includes ordered default libswanted variable (ADO)
+?RCS: patch23: major cleanup for library lookups (ADO)
+?RCS:
+?RCS: Revision 3.0.1.1  1993/08/25  14:02:31  ram
+?RCS: patch6: added default for libs
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:09:03  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:libs libsfound libsfiles libsdirs libspath libscheck: \
+	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
+	+usesocks sed +cc +ccflags +ldflags rm
+?MAKE:	-pick add $@ %<
+?S:libs:
+?S:	This variable holds the additional libraries we want to use.
+?S:	It is up to the Makefile to deal with it.  The list can be empty.
+?S:.
+?S:libsfound:
+?S:	This variable holds the full pathnames of the libraries
+?S:	we found and accepted.
+?S:.
+?S:libsfiles:
+?S:	This variable holds the filenames aka basenames of the libraries
+?S:	we found and accepted.
+?S:.
+?S:libsdirs:
+?S:	This variable holds the directory names aka dirnames of the libraries
+?S:	we found and accepted, duplicates are removed.
+?S:.
+?S:libspath:
+?S:	This variable holds the directory names probed for libraries.
+?S:.
+?S:libscheck:
+?S:	This variable is intended to be set by hint files, if needed.
+?S:	It should contain shell code that will be eval'ed with $xxx holding
+?S:	some library file.  It may change $xxx if needed.
+?S:	For instance, on an Irix platform, you may make sure the right
+?S:	library file is used depending on the cc command line, so that the
+?S:	correct library is used depending on the selected ABI (for 32 and
+?S:	64-bit compilations).
+?S:	
+?S:	Here is an example of code that could be found in a hint file on Irix
+?S:	when the selected compiler was for 32-bit -- that code is put in the
+?S:	cc.cbu call-back unit to be invoked AFTER the C compiler and its
+?S:	flags have been chosen:
+?S:	
+?S:		libscheck='case "$xxx" in
+?S:		*.a) /bin/ar p $xxx `/bin/ar t $xxx | sed q` >$$.o;
+?S:			case "`/usr/bin/file $$.o`" in
+?S:			*N32*) rm -f $$.o ;;  
+?S:			*) rm -f $$.o; xxx=/no/n32$xxx ;;
+?S:			esac ;;
+?S:		*)	case "`/usr/bin/file $xxx`" in
+?S:			*N32*) ;;
+?S:			*) xxx=/no/n32$xxx ;;
+?S:			esac ;;
+?S:		esac'
+?S:.
+?D:libs=''
+?LINT:extern libswanted
+?LINT:change libswanted
+?INIT:: default library list
+?INIT:libswanted=''
+?X: This order is chosen so that libraries  -lndir, -ldir, -lucb, -lbsd,
+?X: -lBSD, -lPW, and -lx only get used if there are unresolved
+?X: routines at link time.  Usually, these are backwards compatability
+?X: libraries, and may not be as reliable as the standard c library.
+?X:
+?X: The -lsocket -linet -lnsl order has been reported to be necessary
+?X: for at least one SVR4 implementation.
+?X: -lc must proceed -lucb or -lbsd for most Solaris applications.
+?X: -lc_s proceeds -lc so we pick up the shared library version, if
+?X: it is available.
+?X:
+?X: The ordering of c, posix, and cposix is a guess and almost
+?X: certainly wrong on about half of all systems.
+?X:
+?X: Set proper libswanted in your private Myinit.U if needed.
+?X:
+?X:: default ordered library list
+?X:libswanted='net socket inet bind nsl nm sdbm gdbm ndbm dbm malloc dl'
+?X:libswanted="$libswanted dld sun m c_s c posix cposix ndir dir ucb"
+?X:libswanted="$libswanted bsd BSD PW x"
+?X:
+?INIT:: should be set by hint files if needed
+?INIT:libscheck=''
+?T:xxx yyy thislib thisdir libstyle linkmsg
+?F:lt.c lt
+: Looking for optional libraries
+echo " "
+echo "Checking for optional libraries..." >&4
+case "$libs" in
+' '|'') dflt='';;
+*) dflt="$libs";;
+esac
+case "$libswanted" in
+'') libswanted='c_s';;
+esac
+?X: libsocks has nasty naming scheme.
+?X: This does not work if somebody wants SOCKS 4. 
+case "$usesocks" in
+"$define") libswanted="$libswanted socks5 socks5_sh" ;;
+esac
+?X: Used later for link checks
+echo "extern char printf(); int main() { printf(); return 0; }" > lt.c
+libsfound=''
+libsfiles=''
+libsdirs=''
+libspath=''
+for thisdir in $libpth $xlibpth; do
+  test -d $thisdir && libspath="$libspath $thisdir"
+done
+for thislib in $libswanted; do
+	for thisdir in $libspath; do
+	    xxx=''
+	    if $test ! -f "$xxx" ; then
+			xxx=`ls $thisdir/lib$thislib.$so.[0-9]* 2>/dev/null | $sed -n '1p'`
+			$test -f "$xxx" && eval $libscheck
+			$test -f "$xxx" && libstyle=shared
+	    fi
+	    if test ! -f "$xxx"; then
+			xxx=$thisdir/lib$thislib.$so
+			$test -f "$xxx" && eval $libscheck
+			$test -f "$xxx" && libstyle=shared
+	    fi	
+	    if test ! -f "$xxx"; then
+			xxx=$thisdir/lib$thislib$_a
+	        $test -f "$xxx" && eval $libscheck
+			$test -f "$xxx" && libstyle=static
+	    fi
+	    if test ! -f "$xxx"; then
+			xxx=$thisdir/$thislib$_a
+	        $test -f "$xxx" && eval $libscheck
+			$test -f "$xxx" && libstyle=static
+	    fi
+	    if test ! -f "$xxx"; then
+			xxx=$thisdir/lib${thislib}_s$_a
+	        $test -f "$xxx" && eval $libscheck
+			$test -f "$xxx" && libstyle=static
+			$test -f "$xxx" && thislib=${thislib}_s
+	    fi
+	    if test ! -f "$xxx"; then
+			xxx=$thisdir/Slib$thislib$_a
+	        $test -f "$xxx" && eval $libscheck
+			$test -f "$xxx" && libstyle=static
+	    fi
+	    if $test -f "$xxx"; then
+?X:
+?X: It is not sufficient to find a .so on the disk.  We must make sure
+?X: that we can indeed supply the -lfoo line on the cc line to link against
+?X: that library.  On Linux for instance, a versionned .so will not be
+?X: implicitly linked against, whereas it will work fine on Solaris 2.6.
+?X:		--RAM, 10/10/2003
+?X:
+			if $cc -o lt $ccflags $ldflags lt.c -l$thislib >/dev/null 2>&1;
+			then
+				linkmsg=""
+			else
+				linkmsg=" but I can't link against it"
+			fi
+			case "$libstyle" in
+			shared) echo "Found -l$thislib (shared)$linkmsg." ;;
+			static) echo "Found -l$thislib$linkmsg." ;;
+			*)      echo "Found -l$thislib ($libstyle)$linkmsg." ;;
+			esac
+			case " $dflt " in
+			*"-l$thislib "*) ;;
+			*)
+				case "$linkmsg" in
+				'')
+					dflt="$dflt -l$thislib"
+					libsfound="$libsfound $xxx"
+					yyy=`basename $xxx`
+					libsfiles="$libsfiles $yyy"
+					yyy=`echo $xxx|$sed -e "s%/$yyy\\$%%"`
+					case " $libsdirs " in
+					*" $yyy "*) ;;
+					*) libsdirs="$libsdirs $yyy" ;;
+					esac
+				   ;;
+				esac
+				;;
+			esac
+			break
+	    fi	
+	done
+	if $test ! -f "$xxx"; then
+	    echo "No -l$thislib."
+	fi
+done
+set X $dflt
+shift
+dflt="$*"
+case "$libs" in
+'') dflt="$dflt";;
+*) dflt="$libs";;
+esac
+case "$dflt" in
+' '|'') dflt='none';;
+esac
+$rm -f lt.c lt
+
+$cat <<EOM
+
+In order to compile $package on your machine, a number of libraries
+are usually needed.  Include any other special libraries here as well.
+Say "none" for none.  The default list is almost always right.
+EOM
+
+echo " "
+rp="Which libraries to use?"
+. ./myread
+case "$ans" in
+none) libs=' ';;
+*) libs="$ans";;
+esac
+

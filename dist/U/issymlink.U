@@ -1,0 +1,85 @@
+?RCS: $Id: issymlink.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS: 
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: lns.U,v $
+?RCS: Revision 3.0.1.1  1994/06/20  07:05:52  ram
+?RCS: patch30: created by ADO
+?RCS:
+?MAKE:issymlink: lns test rm
+?MAKE:	-pick add $@ %<
+?S:issymlink:
+?S:	This variable holds the test command to test for a symbolic link
+?S:	(if they are supported).  Typical values include 'test -h' and
+?S:	'test -L'.
+?S:.
+?T:pth p
+?LINT:change PATH test
+: determine whether symbolic links are supported
+echo " "
+case "$lns" in
+*"ln"*" -s")
+	echo "Checking how to test for symbolic links..." >&4
+	$lns blurfl sym
+	if $test "X$issymlink" = X; then
+?X:
+?X: In some AIX 4 versions the (ksh) builtin test (-h) is broken.
+?X:
+		case "$newsh" in
+		'') sh     -c "PATH= test -h sym" >/dev/null 2>&1 ;;
+		*)  $newsh -c "PATH= test -h sym" >/dev/null 2>&1 ;;
+		esac
+		if test $? = 0; then
+			issymlink="test -h"
+		else
+			echo "Your builtin 'test -h' may be broken." >&4
+			case "$test" in
+			/*)	;;
+			*)	pth=`echo $PATH | sed -e "s/$p_/ /g"`
+				for p in $pth
+				do
+					if test -f "$p/$test"; then
+						test="$p/$test"
+						break
+					fi
+				done
+				;;
+			esac
+			case "$test" in
+			/*)
+				echo "Trying external '$test -h'." >&4
+				issymlink="$test -h"
+				if $test ! -h sym >/dev/null 2>&1; then
+					echo "External '$test -h' is broken, too." >&4
+					issymlink=''
+				fi
+				;;
+			*)	issymlink='' ;;
+			esac
+		fi		
+	fi
+	if $test "X$issymlink" = X; then
+		if $test -L sym 2>/dev/null; then
+			issymlink="$test -L"
+			echo "The builtin '$test -L' worked." >&4
+		fi
+	fi
+	if $test "X$issymlink" != X; then
+		echo "You can test for symbolic links with '$issymlink'." >&4
+	else
+		echo "I do not know how you can test for symbolic links." >&4
+	fi
+	$rm -f blurfl sym
+	;;
+*)	echo "No symbolic links, so not testing for their testing..." >&4
+	;;
+esac
+

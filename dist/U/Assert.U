@@ -1,0 +1,26 @@
+?RCS:
+?RCS: Copyright (c) 2012 Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:Assert: cat
+?MAKE:	-pick add $@ %<
+?F:./static_assert.h
+: static assertion checking include file
+?X:
+?X: C programs can include this file to perform STATIC_ASSERT() checks
+?X: which are done at compile-time and cause the compilation to fail when
+?X: the expression is false.
+?X:
+?X: It is sufficient to compile with: $cc -c $ccflags try.c
+?X: There is no need to link the file to spot the assertion failure.
+?X:
+$cat >static_assert.h <<'EOC'
+#define STATIC_ASSERT(expr)	\
+	do { switch (0) { case ((expr) ? 1 : 0): case 0: break; } } while(0)
+EOC
+

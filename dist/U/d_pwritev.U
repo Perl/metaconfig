@@ -1,0 +1,30 @@
+?RCS: $Id: d_pwritev.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: d_pwritev.U,v $
+?RCS:
+?MAKE:d_pwritev: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_pwritev:
+?S:	This variable conditionally defines the HAS_PWRITEV symbol, which
+?S:	indicates to the C program that the pwritev() routine is available.
+?S:.
+?C:HAS_PWRITEV :
+?C:	This symbol, if defined, indicates that the pwritev routine is
+?C:	available to perform vectored writes on a file descriptor at a
+?C: given offset.
+?C:.
+?H:#$d_pwritev HAS_PWRITEV		/**/
+?H:.
+?LINT:set d_pwritev
+: see if pwritev exists
+set pwritev d_pwritev
+eval $inlibc
+

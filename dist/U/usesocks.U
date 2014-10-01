@@ -1,0 +1,46 @@
+?RCS: $Id: usesocks.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS: 
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS:
+?MAKE:usesocks: Myread Oldconfig Setvar spackage package
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?S:usesocks:
+?S:	This variable conditionally defines the USE_SOCKS symbol,
+?S:	and indicates that Perl should be built to use SOCKS.
+?S:.
+?C:USE_SOCKS:
+?C:	This symbol, if defined, indicates that Perl should
+?C:	be built to use socks.
+?C:.
+?H:?%<:#$usesocks	USE_SOCKS		/**/
+?H:.
+?D:usesocks=''
+?LINT:set usesocks
+: check for requested SOCKS support
+case "$usesocks" in
+$define|true|[yY]*)	dflt='y';;
+*) dflt='n';;
+esac
+cat <<EOM
+
+$spackage can be built to use the SOCKS proxy protocol library.
+If this doesn't make any sense to you, just accept the default '$dflt'.
+EOM
+rp="Build $package for SOCKS?"
+. ./myread
+case "$ans" in
+y|Y)	val="$define" ;;     
+*)      val="$undef" ;;
+esac
+set usesocks
+eval $setvar
+

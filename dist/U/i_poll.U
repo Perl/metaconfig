@@ -1,0 +1,28 @@
+?RCS: $Id: i_poll.U 15 2006-08-30 18:21:51Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:i_poll: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_poll:
+?S:	This variable conditionally defines the I_POLL symbol, which
+?S:	indicates to the C program that it should include <poll.h>.
+?S:.
+?C:I_POLL:
+?C:	This symbol, if defined, indicates that the program may include
+?C:	<poll.h>.  If there is no <poll.h>, then you may check I_SYS_POLL
+?C:	instead to see whether there is a <sys/poll.h> to include.
+?C:.
+?H:#$i_poll I_POLL	/**/
+?H:.
+?LINT:set i_poll
+: see if there is a poll.h file
+set poll.h i_poll
+eval $inhdr
+

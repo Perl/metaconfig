@@ -1,0 +1,28 @@
+?RCS: $Id: d_msem_lck.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: d_msem_lck.U,v $
+?MAKE:d_msem_lck: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_msem_lck:
+?S:	This variable conditionally defines HAS_MSEM_LOCK if msem_lock() is
+?S:	available, thereby indicating kernel support for memory semaphores.
+?S:.
+?C:HAS_MSEM_LOCK:
+?C:	This symbol, if defined, indicates that memory semaphores are
+?C:	available to protect mmap()'ed regions.
+?C:.
+?H:#$d_msem_lck HAS_MSEM_LOCK		/**/
+?H:.
+?LINT:set d_msem_lck
+: see if msem_lock exists
+set msem_lock d_msem_lck
+eval $inlibc
+

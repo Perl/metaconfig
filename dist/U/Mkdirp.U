@@ -1,0 +1,51 @@
+?RCS: $Id: Mkdirp.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: $Log: Extract.U,v $
+?RCS: Revision 3.0.1.2  1997/02/28  14:58:52  ram
+?RCS: patch61: added support for src.U
+?RCS:
+?RCS: Revision 3.0.1.1  1994/10/29  15:51:46  ram
+?RCS: patch36: added ?F: line for metalint file checking
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:04:52  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?X: 
+?X: This unit produces a shell script which can launched to create a
+?X: directory path like "mkdir -p" would do.
+?X: 
+?MAKE:Mkdirp: eunicefix startsh
+?MAKE:	-pick add $@ %<
+?F:./mkdirp
+?T:name create file
+: script used to emulate mkdir -p
+cat >mkdirp <<EOS
+$startsh
+EOS
+cat >>mkdirp <<'EOS'
+name=$1;
+create="";
+while test $name; do
+	if test ! -d "$name"; then
+		create="$name $create"
+		name=`echo $name | sed -e "s|^[^/]*$||"`
+		name=`echo $name | sed -e "s|\(.*\)/.*|\1|"`
+	else
+		name=""
+	fi
+done
+for file in $create; do
+	mkdir $file
+done
+EOS
+chmod +x mkdirp
+$eunicefix mkdirp
+
