@@ -4,10 +4,12 @@ use strict;
 use warnings;
 
 use Getopt::Long qw(:config bundling nopermute passthrough);
+my $opt_l = 0;
 my $opt_w = 0;
 GetOptions (
-    "-w"	=> \$opt_w,
-    ) or die "usage: metagrep [-w] pattern\n";
+    "w|word!"	=> \$opt_w,
+    "l|list!"	=> \$opt_l,
+    ) or die "usage: metagrep [-w] [-l] pattern\n";
 
 use Cwd qw(getcwd abs_path);
 use File::Find;
@@ -21,13 +23,15 @@ my $mcpath = abs_path "/pro/3gl/CPAN/metaconfig" or die "cannot cd metaconfig\n"
 
 my $onmeta = $cwd =~ m{CPAN/meta[^/]+$} ? 1 : 0;
 
+my @dir = ($mcpath, "$mcpath/dist/U");
 my %dir; # I don't want a file for which any path component symlinks
 find (sub {
     -l and return;
     -d and $dir{$File::Find::name}++;
-    }, $mcpath);
+    }, @dir);
 
 print STDERR "<$pat>\n";
+my %seen;
 find (sub {
     -l and return;
     -f or  return;
@@ -36,8 +40,16 @@ find (sub {
     exists $dir{$File::Find::dir} or return;
     #print STDERR "$File::Find::dir - $_\n";
 
+    $File::Find::dir =~ m{^(?:$cwd/)?dist-3} and return;
+
     open my $f, "<$_" or die "$File::Find::name: $!\n";
     my $fnm = $File::Find::name;
     $fnm =~ s{^$cwd/}{};
-    print map { "$fnm:$_" } grep /$pat/, <$f>;
-    }, $mcpath);
+    for (grep /$pat/, <$f>) {
+	if ($opt_l) {
+	    $seen{$fnm}++ or print "$fnm\n";
+	    next;
+	    }
+	print "$fnm:$_";
+	}
+    }, @dir);
