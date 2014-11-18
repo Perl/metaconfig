@@ -144,6 +144,7 @@ $cat <<EOP >try.c
 #$i_float I_FLOAT
 #$i_stdlib I_STDLIB
 #define LONGDBLSIZE $longdblsize
+#define DOUBLESIZE $doublesize
 #ifdef I_FLOAT
 #include <float.h>
 #endif
@@ -154,7 +155,11 @@ $cat <<EOP >try.c
 static const long double d = -0.1L;
 int main() {
   unsigned const char* b = (unsigned const char*)(&d);
-#if LDBL_MANT_DIG == 113 && LONGDBLSIZE == 16
+#if DOUBLESIZE == LONGDBLSIZE
+  printf("0\n"); /* if it floats like double */
+  exit(0);
+#endif
+#if (LDBL_MANT_DIG == 113 || FLT128_MANT_DIG == 113) && LONGDBLSIZE == 16
   if (b[0] == 0x9A && b[1] == 0x99 && b[15] == 0xBF) {
     /* IEEE 754 128-bit little-endian */
     printf("1\n");
@@ -166,6 +171,8 @@ int main() {
     exit(0);
   }
 #endif
+/* For alignment 32-bit platforms have the 80 bits in 12 bytes,
+ * while 64-bits platforms have it in 16 bytes. */
 #if LDBL_MANT_DIG == 64 && (LONGDBLSIZE == 16 || LONGDBLSIZE == 12)
   if (b[0] == 0xCD && b[9] == 0xBF && b[10] == 0x00) {
     /* x86 80-bit little-endian, sizeof 12 (ILP32, Solaris x86)
@@ -180,8 +187,9 @@ int main() {
     exit(0);
   }
 #endif
-#if LDBL_MANT_DIG == 106 && LONGDBLSIZE == 16
-  /* software "double double", the 106 is 53+53 */
+#if (LDBL_MANT_DIG == 106 || LDBL_MANT_DIG == 107) && LONGDBLSIZE == 16
+  /* software "double double", the 106 is 53+53.
+   * but irix thinks it is 107. */
   if (b[0] == 0x9A && b[7] == 0x3C && b[8] == 0x9A && b[15] == 0xBF) {
     /* double double 128-bit little-endian,
      * 9a 99 99 99 99 99 59 3c 9a 99 99 99 99 99 b9 bf */
@@ -213,8 +221,10 @@ case "$longdblkind" in
 1) echo "You have IEEE 754 128-bit little endian long doubles." >&4 ;;
 2) echo "You have IEEE 754 128-bit big endian long doubles." >&4 ;;
 3) echo "You have x86 80-bit little endian long doubles." >& 4 ;;
+4) echo "You have x86 80-bit big endian long doubles." >& 4 ;;
+5) echo "You have 128-bit little-endian double-double long doubles." >& 4 ;;
+6) echo "You have 128-bit big-endian double-double long doubles." >& 4 ;;
 *) echo "Cannot figure out your long double." >&4 ;;
 esac
 $rm_try
-
 

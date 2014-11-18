@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_llround: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_llround:
+?S:	This variable conditionally defines the HAS_LLROUND symbol, which
+?S:	indicates to the C program that the llround() routine is available.
+?S:.
+?C:HAS_LLROUND:
+?C:	This symbol, if defined, indicates that the llround routine is
+?C:	available to return the nearest long long value.
+?C:.
+?H:#$d_llround HAS_LLROUND		/**/
+?H:.
+?LINT:set d_llround
+: see if llround exists
+set llround d_llround
+eval $inlibc
+

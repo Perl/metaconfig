@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_erf: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_erf:
+?S:	This variable conditionally defines the HAS_ERF symbol, which
+?S:	indicates to the C program that the erf() routine is available.
+?S:.
+?C:HAS_ERF:
+?C:	This symbol, if defined, indicates that the erf routine is
+?C:	available to do the error function.
+?C:.
+?H:#$d_erf HAS_ERF		/**/
+?H:.
+?LINT:set d_erf
+: see if erf exists
+set erf d_erf
+eval $inlibc
+

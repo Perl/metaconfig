@@ -10,7 +10,7 @@
 	nveformat nvfformat nvgformat: \
 	ivsize longsize intsize shortsize \
 	sPRId64 sPRIu64 sPRIo64 sPRIx64 sPRIXU64 \
-	uselongdouble d_longdbl d_PRIgldbl \
+	uselongdouble d_longdbl usequadmath d_PRIgldbl \
 	sPRIEUldbl sPRIFUldbl sPRIGUldbl sPRIeldbl sPRIfldbl sPRIgldbl \
 	test echo
 ?MAKE:	-pick add $@ %<
@@ -151,20 +151,29 @@ else
 	fi
 fi
 
-if $test X"$uselongdouble" = X"$define" -a X"$d_longdbl" = X"$define" -a X"$d_PRIgldbl" = X"$define"; then
-	nveformat="$sPRIeldbl"
-	nvfformat="$sPRIfldbl"
-	nvgformat="$sPRIgldbl"
-	nvEUformat="$sPRIEUldbl"
-	nvFUformat="$sPRIFUldbl"
-	nvGUformat="$sPRIGUldbl"
+if $test X"$usequadmath" = X"$define"; then
+    nveformat='"Qe"'
+    nvfformat='"Qf"'
+    nvgformat='"Qg"'
+    nvEUformat='"QE"'
+    nvFUformat='"QF"'
+    nvGUformat='"QG"'
 else
-	nveformat='"e"'
-	nvfformat='"f"'
-	nvgformat='"g"'
-	nvEUformat='"E"'
-	nvFUformat='"F"'
-	nvGUformat='"G"'
+	if $test X"$uselongdouble" = X"$define" -a X"$d_longdbl" = X"$define" -a X"$d_PRIgldbl" = X"$define"; then
+		nveformat="$sPRIeldbl"
+		nvfformat="$sPRIfldbl"
+		nvgformat="$sPRIgldbl"
+		nvEUformat="$sPRIEUldbl"
+		nvFUformat="$sPRIFUldbl"
+		nvGUformat="$sPRIGUldbl"
+	else
+		nveformat='"e"'
+		nvfformat='"f"'
+		nvgformat='"g"'
+		nvEUformat='"E"'
+		nvFUformat='"F"'
+		nvGUformat='"G"'
+	fi
 fi
 
 case "$ivdformat" in

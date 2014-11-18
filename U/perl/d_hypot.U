@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_hypot: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_hypot:
+?S:	This variable conditionally defines the HAS_HYPOT symbol, which
+?S:	indicates to the C program that the hypot() routine is available.
+?S:.
+?C:HAS_HYPOT:
+?C:	This symbol, if defined, indicates that the hypot routine is
+?C:	available to do the hypotenuse function.
+?C:.
+?H:#$d_hypot HAS_HYPOT		/**/
+?H:.
+?LINT:set d_hypot
+: see if hypot exists
+set hypot d_hypot
+eval $inlibc
+

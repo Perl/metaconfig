@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_exp2: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_exp2:
+?S:	This variable conditionally defines the HAS_EXP2 symbol, which
+?S:	indicates to the C program that the exp2() routine is available.
+?S:.
+?C:HAS_EXP2:
+?C:	This symbol, if defined, indicates that the exp2 routine is
+?C:	available to do the 2**x function.
+?C:.
+?H:#$d_exp2 HAS_EXP2		/**/
+?H:.
+?LINT:set d_exp2
+: see if exp2 exists
+set exp2 d_exp2
+eval $inlibc
+

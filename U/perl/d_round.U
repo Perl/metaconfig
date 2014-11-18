@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_round: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_round:
+?S:	This variable conditionally defines the HAS_ROUND symbol, which
+?S:	indicates to the C program that the round() routine is available.
+?S:.
+?C:HAS_ROUND:
+?C:	This symbol, if defined, indicates that the round routine is
+?C:	available to round to nearest integer, away from zero.
+?C:.
+?H:#$d_round HAS_ROUND		/**/
+?H:.
+?LINT:set d_round
+: see if round exists
+set round d_round
+eval $inlibc
+

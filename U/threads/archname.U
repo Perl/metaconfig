@@ -21,7 +21,7 @@
 ?MAKE:archname myarchname useversionedarchname: sed Loc Myread Oldconfig \
 	osname test rm usethreads usemultiplicity use64bitint use64bitall \
 	archname64 uselongdouble longdblsize doublesize targetarch Setvar \
-	api_versionstring
+	api_versionstring usequadmath
 ?MAKE:	-pick add $@ %<
 ?S:archname:
 ?S:	This variable is a short name to characterize the current
@@ -101,16 +101,16 @@ y|Y)	useversionedarchname="$define" ;;
 esac
 case "$useversionedarchname" in
 $define)
-        case "$archname" in
-        *-$api_versionstring)
-                echo "...and architecture name already has -$api_versionstring" >&4
-                ;;
-        *)
-                archname="$archname-$api_versionstring"
-                echo "...setting architecture name to $archname." >&4
-                ;;
-        esac
-        ;;
+	case "$archname" in
+	*-$api_versionstring)
+		echo "...and architecture name already has -$api_versionstring" >&4
+		;;
+	*)
+		archname="$archname-$api_versionstring"
+		echo "...setting architecture name to $archname." >&4
+		;;
+	esac
+	;;
 esac
 
 @if usethreads
@@ -118,12 +118,12 @@ case "$usethreads" in
 $define)
 	echo "Threads selected." >&4
 	case "$archname" in
-        *-thread*) echo "...and architecture name already has -thread." >&4
-                ;;
-        *)      archname="$archname-thread"
-                echo "...setting architecture name to $archname." >&4
-                ;;
-        esac
+	*-thread*) echo "...and architecture name already has -thread." >&4
+		;;
+	*)      archname="$archname-thread"
+		echo "...setting architecture name to $archname." >&4
+		;;
+	esac
 	;;
 esac
 @end
@@ -132,12 +132,12 @@ case "$usemultiplicity" in
 $define)
 	echo "Multiplicity selected." >&4
 	case "$archname" in
-        *-multi*) echo "...and architecture name already has -multi." >&4
-                ;;
-        *)      archname="$archname-multi"
-                echo "...setting architecture name to $archname." >&4
-                ;;
-        esac
+	*-multi*) echo "...and architecture name already has -multi." >&4
+		;;
+	*)      archname="$archname-multi"
+		echo "...setting architecture name to $archname." >&4
+		;;
+	esac
 	;;
 esac
 @end
@@ -156,12 +156,12 @@ case "$use64bitint$use64bitall" in
 		"$define") echo "Maximal 64 bitness selected." >&4 ;;
 		esac
 		case "$archname" in
-	        *-$archname64*) echo "...and architecture name already has $archname64." >&4
-	                ;;
-	        *)      archname="$archname-$archname64"
-	                echo "...setting architecture name to $archname." >&4
-	                ;;
-	        esac
+		*-$archname64*) echo "...and architecture name already has $archname64." >&4
+			;;
+		*)      archname="$archname-$archname64"
+			echo "...setting architecture name to $archname." >&4
+			;;
+		esac
 		;;
 	esac
 esac
@@ -176,12 +176,26 @@ $define)
 		;;
 	*)
 		case "$archname" in
-	        *-ld*) echo "...and architecture name already has -ld." >&4
-	                ;;
-	        *)      archname="$archname-ld"
-	                echo "...setting architecture name to $archname." >&4
-        	        ;;
-	        esac
+		*-ld*) echo "...and architecture name already has -ld." >&4
+			;;
+		*)      archname="$archname-ld"
+			echo "...setting architecture name to $archname." >&4
+			;;
+		esac
+		;;
+	esac
+	;;
+esac
+@end
+@if usequadmath
+case "$usequadmath" in
+$define)
+	echo "quadmath selected." >&4
+	case "$archname" in
+	*-ld*) echo "...and architecture name already has -quadmath." >&4
+		;;
+	*)      archname="$archname-quadmath"
+		echo "...setting architecture name to $archname." >&4
 		;;
 	esac
 	;;

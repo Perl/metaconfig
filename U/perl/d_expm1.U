@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_expm1: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_expm1:
+?S:	This variable conditionally defines the HAS_EXPM1 symbol, which
+?S:	indicates to the C program that the expm1() routine is available.
+?S:.
+?C:HAS_EXPM1:
+?C:	This symbol, if defined, indicates that the expm1 routine is
+?C:	available to do the exp(x) - 1 when x is near 1 function.
+?C:.
+?H:#$d_expm1 HAS_EXPM1		/**/
+?H:.
+?LINT:set d_expm1
+: see if expm1 exists
+set expm1 d_expm1
+eval $inlibc
+

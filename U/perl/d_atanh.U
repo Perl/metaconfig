@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_atanh: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_atanh:
+?S:	This variable conditionally defines the HAS_ATANH symbol, which
+?S:	indicates to the C program that the atanh() routine is available.
+?S:.
+?C:HAS_ATANH:
+?C:	This symbol, if defined, indicates that the atanh routine is
+?C:	available to do the inverse hyperbolic tangent function.
+?C:.
+?H:#$d_atanh HAS_ATANH		/**/
+?H:.
+?LINT:set d_atanh
+: see if atanh exists
+set atanh d_atanh
+eval $inlibc
+

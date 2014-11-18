@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_trunc: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_trunc:
+?S:	This variable conditionally defines the HAS_TRUNC symbol, which
+?S:	indicates to the C program that the trunc() routine is available
+?S:	to round doubles towards zero.
+?S:.
+?C:HAS_TRUNC:
+?C:	This symbol, if defined, indicates that the trunc routine is
+?C:	available to round doubles towards zero.
+?C:.
+?H:#$d_trunc HAS_TRUNC		/**/
+?H:.
+?LINT:set d_trunc
+: see if trunc exists
+set trunc d_trunc
+eval $inlibc
+

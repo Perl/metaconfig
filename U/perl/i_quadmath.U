@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_quadmath: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_quadmath:
+?S:	This variable conditionally defines the I_QUADMATH symbol, and indicates
+?S:	whether a C program should include <quadmath.h>.
+?S:.
+?C:I_QUADMATH:
+?C:	This symbol, if defined, indicates that <quadmath.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_quadmath	I_QUADMATH		/**/
+?H:.
+?LINT:set i_quadmath
+: see if this is a quadmath.h system
+set quadmath.h i_quadmath
+eval $inhdr
+

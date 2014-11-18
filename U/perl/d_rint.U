@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_rint: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_rint:
+?S:	This variable conditionally defines the HAS_RINT symbol, which
+?S:	indicates to the C program that the rint() routine is available.
+?S:.
+?C:HAS_RINT:
+?C:	This symbol, if defined, indicates that the rint routine is
+?C:	available to return the nearest integral value to x as double
+?C:	using the current rounding mode.
+?C:.
+?H:#$d_rint HAS_RINT		/**/
+?H:.
+?LINT:set d_rint
+: see if rint exists
+set rint d_rint
+eval $inlibc
+

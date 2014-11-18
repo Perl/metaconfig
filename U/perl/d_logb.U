@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_logb: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_logb:
+?S:	This variable conditionally defines the HAS_LOGB symbol, which
+?S:	indicates to the C program that the logb() routine is available.
+?S:.
+?C:HAS_LOGB:
+?C:	This symbol, if defined, indicates that the logb routine is
+?C:	available to do the logb function.
+?C:.
+?H:#$d_logb HAS_LOGB		/**/
+?H:.
+?LINT:set d_logb
+: see if logb exists
+set logb d_logb
+eval $inlibc
+

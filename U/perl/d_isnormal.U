@@ -1,0 +1,37 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_isnormal: cat i_math Compile Setvar rm_try
+?MAKE:	-pick add $@ %<
+?S:d_isnormal:
+?S:	This variable conditionally defines the HAS_ISNORMAL symbol, which
+?S:	indicates to the C program that the isnormal() routine is available.
+?S:.
+?C:HAS_ISNORMAL:
+?C:	This symbol, if defined, indicates that the isnormal routine is
+?C:	available to check whether a double is normal (non-zero normalized).
+?C:.
+?H:#$d_isnormal HAS_ISNORMAL		/**/
+?H:.
+?LINT:set d_isnormal
+: check for isnormal
+echo "Checking to see if you have isnormal..." >&4
+$cat >try.c <<EOCP
+#$i_math I_MATH
+#ifdef I_MATH
+#include <math.h>
+#endif
+int main() { return isnormal(0.0); }
+EOCP
+set try
+if eval $compile; then
+	val="$define"
+	echo "You have isnormal."
+else
+	val="$undef"
+	echo "You do not have isnormal."
+fi
+$rm_try
+set d_isnormal
+eval $setvar
+

@@ -1,0 +1,24 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usequadmath: Setvar
+?MAKE:	-pick add $@ %<
+?S:usequadmath:
+?S:	This variable conditionally defines the USE_QUADMATH symbol,
+?S:	and indicates that the quadmath library __float128 long doubles
+?S:	should be used when available.
+?S:.
+?C:USE_QUADMATH:
+?C:	This symbol, if defined, indicates that the quadmath library should
+?C:	be used when available.
+?C:.
+?H:?%<:#ifndef USE_QUADMATH
+?H:?%<:#$usequadmath	USE_QUADMATH		/**/
+?H:?%<:#endif
+?H:.
+: Check if quadmath is requested
+case "$usequadmath" in
+"$define"|true|[yY]*) usequadmath="$define" ;;
+*)                    usequadmath="$undef"  ;;
+esac
+

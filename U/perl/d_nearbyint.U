@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_nearbyint: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_nearbyint:
+?S:	This variable conditionally defines the HAS_NEARBYINT symbol, which
+?S:	indicates to the C program that the nearbyint() routine is available.
+?S:.
+?C:HAS_NEARBYINT:
+?C:	This symbol, if defined, indicates that the nearbyint routine is
+?C:	available to return the integral value closest to (according to
+?C:	the current rounding mode) to x.
+?C:.
+?H:#$d_nearbyint HAS_NEARBYINT		/**/
+?H:.
+?LINT:set d_nearbyint
+: see if nearbyint exists
+set nearbyint d_nearbyint
+eval $inlibc
+

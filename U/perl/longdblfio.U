@@ -8,10 +8,22 @@
 ?MAKE:d_PRIfldbl sPRIfldbl d_PRIgldbl d_PRIFUldbl sPRIGUldbl d_PRIEUldbl \
 	sPRIgldbl d_PRIeldbl sPRIeldbl sPRIFUldbl d_PRIGUldbl sPRIEUldbl \
 	d_SCNfldbl \
-	sSCNfldbl: \
-	d_longdbl longdblsize doublesize test cat rm_try \
-	Setvar Compile run
+	sSCNfldbl doublekind: \
+	d_longdbl longdblsize doublesize uselongdouble test echo cat rm_try \
+	Setvar Compile run i_stdlib osname gccversion ccflags
 ?MAKE:	-pick add $@ %<
+?S:doublekind:
+?S:	This variable, if defined, encodes the type of a double:
+?S:	 1 = IEEE 754 32-bit big little endian,
+?S:	 2 = IEEE 754 32-bit big big endian,
+?S:	 3 = IEEE 754 64-bit big little endian,
+?S:	 4 = IEEE 754 64-bit big big endian,
+?S:	 5 = IEEE 754 128-bit big little endian,
+?S:	 6 = IEEE 754 128-bit big big endian,
+?S:	 7 = IEEE 754 64-bit big mixed endian le-be,
+?S:	 8 = IEEE 754 64-bit big mixed endian be-le,
+?S:	-1 = unknown format.
+?S:.
 ?S:d_PRIfldbl:
 ?S:	This variable conditionally defines the PERL_PRIfldbl symbol, which
 ?S:	indicates that stdio has a symbol to print long doubles.
@@ -116,8 +128,97 @@
 ?H:#$d_PRIEUldbl PERL_PRIEldbl	$sPRIEUldbl	/**/
 ?H:#$d_SCNfldbl PERL_SCNfldbl	$sSCNfldbl	/**/
 ?H:.
-?T:yyy
+?T:yyy message saveccflags
 ?F:!try
+?LINT:change ccflags
+?LINT:change uselongdouble
+: Check what kind of doubles your system has
+$echo "Checking the kind of doubles you have..." >&4
+$cat >try.c <<EOP
+#$i_stdlib I_STDLIB
+#define DOUBLESIZE $doublesize
+#ifdef I_STDLIB
+#include <stdlib.h>
+#endif
+#include <stdio.h>
+static const double d = -0.1;
+int main() {
+  unsigned const char* b = (unsigned const char*)(&d);
+#if DOUBLESIZE == 4
+  if (b[0] == 0xCD && b[3] == 0xBD) {
+    /* IEEE 754 32-bit little-endian */
+    printf("1\n");
+    exit(0);
+  }
+  if (b[0] == 0xBD && b[3] == 0xCD) {
+    /* IEEE 754 32-bit big-endian */
+    printf("2\n");
+    exit(0);
+  }
+#endif
+#if DOUBLESIZE == 8
+  if (b[0] == 0x9A && b[7] == 0xBF) {
+    /* IEEE 754 64-bit little-endian */
+    printf("3\n");
+    exit(0);
+  }
+  if (b[0] == 0xBF && b[7] == 0x9A) {
+    /* IEEE 754 64-bit big-endian */
+    printf("4\n");
+    exit(0);
+  }
+  if (b[0] == 0x99 && b[3] == 0xBF && b[4] == 0x9A && b[7] == 0x99) {
+   /* ARM mixed endian: two little-endian 32-bit floats, in big endian order:
+    * 4 5 6 7 0 1 2 3 (MSB = 7, LSB = 0)
+    * 99 99 b9 bf 9a 99 99 99 */
+    printf("7\n");
+    exit(0);
+  }
+  if (b[0] == 0x99 && b[3] == 0x9A && b[4] == 0xBF && b[7] == 0x99) {
+   /* The opposite of case 7, mixed endian: two big-endian 32-bit floats,
+    * in little endian order: 3 2 1 0 7 6 5 4 (MSB = 7, LSB = 0)
+    * 99 99 99 9a bf b9 99 99 */
+    printf("8\n");
+    exit(0);
+  }
+#endif
+#if DOUBLESIZE == 16
+  if (b[0] == 0x9A && b[15] == 0xBF) {
+    /* IEEE 754 128-bit little-endian */
+    printf("5\n");
+    exit(0);
+  }
+  if (b[0] == 0xBF && b[15] == 0x9A) {
+    /* IEEE 754 128-bit big-endian */
+    printf("6\n");
+    exit(0);
+  }
+#endif
+  /* Rumoredly some old ARM processors have 'mixed endian' doubles,
+   * two 32-bit little endians stored in big-endian order. */
+  /* Then there are old mainframe/miniframe formats like VAX, IBM, and CRAY.
+   * Whether those environments can still build Perl is debatable. */
+  printf("-1\n"); /* unknown */
+  exit(0);
+}
+EOP
+set try
+if eval $compile; then
+    doublekind=`$run ./try`
+else
+    doublekind=-1
+fi
+case "$doublekind" in
+1) echo "You have IEEE 754 32-bit little endian doubles." >&4 ;;
+2) echo "You have IEEE 754 32-bit big endian doubles." >&4 ;;
+3) echo "You have IEEE 754 64-bit little endian doubles." >&4 ;;
+4) echo "You have IEEE 754 64-bit big endian doubles." >&4 ;;
+5) echo "You have IEEE 754 128-bit little endian doubles." >&4 ;;
+6) echo "You have IEEE 754 128-bit big endian doubles." >&4 ;;
+*) echo "Cannot figure out your double.  You VAX, or something?" >&4 ;;
+esac
+$rm_try
+
 : Check print/scan long double stuff
 echo " "
 
@@ -233,4 +334,36 @@ case "$sPRIfldbl" in
 	d_SCNfldbl="$define";
 	;;
 esac
+
+: Before committing on uselongdouble, see whether that looks sane.
+if $test "$uselongdouble" = "$define"; then
+    message=""
+    echo " "
+    echo "Checking if your long double math functions work right..." >&4
+    $cat > try.c <<EOF
+#include <math.h>
+#include <stdio.h>
+int main() {
+  printf("%"$sPRIgldbl"\n", sqrtl(logl(expl(cosl(sinl(0.0L))))+powl(2.0L, 3.0L)));
+}
+EOF
+    case "$osname:$gccversion" in
+    aix:)	saveccflags="$ccflags"
+		ccflags="$ccflags -qlongdouble" ;; # to avoid core dump
+    esac
+    set try
+    if eval $compile_ok; then
+      yyy=`$run ./try`
+    fi
+    case "$yyy" in
+    3) echo "Your long double math functions are working correctly." >&4 ;;
+    *) echo "Your long double math functions are broken, not using long doubles." >&4
+       uselongdouble=$undef
+       ;;
+    esac
+    $rm_try
+    case "$osname:$gccversion" in
+    aix:)	ccflags="$saveccflags" ;; # restore
+    esac
+fi
 

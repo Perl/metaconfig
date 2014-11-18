@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_lgamma_r: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_lgamma_r:
+?S:	This variable conditionally defines the HAS_LGAMMA_R symbol, which
+?S:	indicates to the C program that the lgamma_r() routine is available.
+?S:.
+?C:HAS_LGAMMA_R:
+?C:	This symbol, if defined, indicates that the lgamma_r routine is
+?C:	available to do the log gamma function without using the global
+?C:	signgam variable.
+?C:.
+?H:#$d_lgamma_r HAS_LGAMMA_R		/**/
+?H:.
+?LINT:set d_lgamma_r
+: see if lgamma_r exists
+set lgamma_r d_lgamma_r
+eval $inlibc
+

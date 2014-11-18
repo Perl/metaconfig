@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_remainder: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_remainder:
+?S:	This variable conditionally defines the HAS_REMAINDER symbol, which
+?S:	indicates to the C program that the remainder() routine is available.
+?S:.
+?C:HAS_REMAINDER:
+?C:	This symbol, if defined, indicates that the remainder routine is
+?C:	available to return the floating-point remainder.
+?C:.
+?H:#$d_remainder HAS_REMAINDER		/**/
+?H:.
+?LINT:set d_remainder
+: see if remainder exists
+set remainder d_remainder
+eval $inlibc
+

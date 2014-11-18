@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_lrint: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_lrint:
+?S:	This variable conditionally defines the HAS_LRINT symbol, which
+?S:	indicates to the C program that the lrint() routine is available.
+?S:.
+?C:HAS_LRINT:
+?C:	This symbol, if defined, indicates that the lrint routine is
+?C:	available to return the closest integral value according to
+?C:	the current rounding mode.
+?C:.
+?H:#$d_lrint HAS_LRINT		/**/
+?H:.
+?LINT:set d_lrint
+: see if lrint exists
+set lrint d_lrint
+eval $inlibc
+

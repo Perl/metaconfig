@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:i_fp: Inhdr Hasfield
+?MAKE:i_fp: Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:i_fp:
 ?S:	This variable conditionally defines the I_FP symbol, and indicates

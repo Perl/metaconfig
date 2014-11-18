@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_log2: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_log2:
+?S:	This variable conditionally defines the HAS_LOG2 symbol, which
+?S:	indicates to the C program that the log2() routine is available.
+?S:.
+?C:HAS_LOG2:
+?C:	This symbol, if defined, indicates that the log2 routine is
+?C:	available to do the log2 function.
+?C:.
+?H:#$d_log2 HAS_LOG2		/**/
+?H:.
+?LINT:set d_log2
+: see if log2 exists
+set log2 d_log2
+eval $inlibc
+

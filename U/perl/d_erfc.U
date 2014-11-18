@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_erfc: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_erfc:
+?S:	This variable conditionally defines the HAS_ERFC symbol, which
+?S:	indicates to the C program that the erfc() routine is available.
+?S:.
+?C:HAS_ERFC:
+?C:	This symbol, if defined, indicates that the erfc routine is
+?C:	available to do the complementary error function.
+?C:.
+?H:#$d_erfc HAS_ERFC		/**/
+?H:.
+?LINT:set d_erfc
+: see if erfc exists
+set erfc d_erfc
+eval $inlibc
+

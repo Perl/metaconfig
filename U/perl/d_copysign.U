@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2014 Jarkko Hietaniemi & H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_copysign: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_copysign:
+?S:	This variable conditionally defines the HAS_COPYSIGN symbol, which
+?S:	indicates to the C program that the copysign() routine is available.
+?S:.
+?C:HAS_COPYSIGN:
+?C:	This symbol, if defined, indicates that the copysign routine is
+?C:	available to do the copysign function.
+?C:.
+?H:#$d_copysign HAS_COPYSIGN		/**/
+?H:.
+?LINT:set d_copysign
+: see if copysign exists
+set copysign d_copysign
+eval $inlibc
+

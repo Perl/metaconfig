@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fmin: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fmin:
+?S:	This variable conditionally defines the HAS_FMIN symbol, which
+?S:	indicates to the C program that the fmin() routine is available.
+?S:.
+?C:HAS_FMIN:
+?C:	This symbol, if defined, indicates that the fmin routine is
+?C:	available to do the minimum function.
+?C:.
+?H:#$d_fmin HAS_FMIN		/**/
+?H:.
+?LINT:set d_fmin
+: see if fmin exists
+set fmin d_fmin
+eval $inlibc
+

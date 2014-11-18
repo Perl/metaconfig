@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_tgamma: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_tgamma:
+?S:	This variable conditionally defines the HAS_TGAMMA symbol, which
+?S:	indicates to the C program that the tgamma() routine is available
+?S:	for the gamma function. See also d_lgamma.
+?S:.
+?C:HAS_TGAMMA:
+?C:	This symbol, if defined, indicates that the tgamma routine is
+?C:	available to do the gamma function. See also HAS_LGAMMA.
+?C:.
+?H:#$d_tgamma HAS_TGAMMA		/**/
+?H:.
+?LINT:set d_tgamma
+: see if tgamma exists
+set tgamma d_tgamma
+eval $inlibc
+

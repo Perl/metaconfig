@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fdim: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fdim:
+?S:	This variable conditionally defines the HAS_FDIM symbol, which
+?S:	indicates to the C program that the fdim() routine is available.
+?S:.
+?C:HAS_FDIM:
+?C:	This symbol, if defined, indicates that the fdim routine is
+?C:	available to do the positive difference function.
+?C:.
+?H:#$d_fdim HAS_FDIM		/**/
+?H:.
+?LINT:set d_fdim
+: see if fdim exists
+set fdim d_fdim
+eval $inlibc
+

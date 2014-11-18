@@ -1,0 +1,20 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_nan: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_nan:
+?S:	This variable conditionally defines the HAS_NAN symbol, which
+?S:	indicates to the C program that the nan() routine is available.
+?S:.
+?C:HAS_NAN:
+?C:	This symbol, if defined, indicates that the nan routine is
+?C:	available to generate NaN.
+?C:.
+?H:#$d_nan HAS_NAN		/**/
+?H:.
+?LINT:set d_nan
+: see if nan exists
+set nan d_nan
+eval $inlibc
+
