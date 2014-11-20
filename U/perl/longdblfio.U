@@ -120,6 +120,37 @@
 ?C:	This symbol, if defined, contains the string used by stdio to
 ?C:	format long doubles (format 'f') for input.
 ?C:.
+?C:DOUBLEKIND:
+?C:	DOUBLEKIND will be one of
+?C:	DOUBLE_IS_IEEE_754_32_BIT_LITTLE_ENDIAN
+?C:	DOUBLE_IS_IEEE_754_32_BIT_BIG_ENDIAN
+?C:	DOUBLE_IS_IEEE_754_64_BIT_LITTLE_ENDIAN
+?C:	DOUBLE_IS_IEEE_754_64_BIT_BIG_ENDIAN
+?C:	DOUBLE_IS_IEEE_754_128_BIT_LITTLE_ENDIAN
+?C:	DOUBLE_IS_IEEE_754_128_BIT_BIG_ENDIAN
+?C:	DOUBLE_IS_IEEE_754_64_BIT_MIXED_ENDIAN_LE_BE
+?C:	DOUBLE_IS_IEEE_754_64_BIT_MIXED_ENDIAN_BE_LE
+?C:	DOUBLE_IS_UNKNOWN_FORMAT
+?C:.
+?LINT:known DOUBLE_IS_IEEE_754_32_BIT_LITTLE_ENDIAN
+?LINT:known DOUBLE_IS_IEEE_754_32_BIT_BIG_ENDIAN
+?LINT:known DOUBLE_IS_IEEE_754_64_BIT_LITTLE_ENDIAN
+?LINT:known DOUBLE_IS_IEEE_754_64_BIT_BIG_ENDIAN
+?LINT:known DOUBLE_IS_IEEE_754_128_BIT_LITTLE_ENDIAN
+?LINT:known DOUBLE_IS_IEEE_754_128_BIT_BIG_ENDIAN
+?LINT:known DOUBLE_IS_IEEE_754_64_BIT_MIXED_ENDIAN_LE_BE
+?LINT:known DOUBLE_IS_IEEE_754_64_BIT_MIXED_ENDIAN_BE_LE
+?LINT:known DOUBLE_IS_UNKNOWN_FORMAT
+?H:#define DOUBLEKIND $doublekind		/**/
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_32_BIT_LITTLE_ENDIAN	1
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_32_BIT_BIG_ENDIAN	2
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_64_BIT_LITTLE_ENDIAN	3
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_64_BIT_BIG_ENDIAN	4
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_128_BIT_LITTLE_ENDIAN	5
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_128_BIT_BIG_ENDIAN	6
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_64_BIT_MIXED_ENDIAN_LE_BE	7
+?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_64_BIT_MIXED_ENDIAN_BE_LE	8
+?H:?DOUBLEKIND:#define DOUBLE_IS_UNKNOWN_FORMAT		-1
 ?H:#$d_PRIfldbl PERL_PRIfldbl	$sPRIfldbl	/**/
 ?H:#$d_PRIgldbl PERL_PRIgldbl	$sPRIgldbl	/**/
 ?H:#$d_PRIeldbl PERL_PRIeldbl	$sPRIeldbl	/**/
@@ -241,7 +272,7 @@ EOCP
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"f"'; sPRIgldbl='"g"'; sPRIeldbl='"e"';
-                	sPRIFUldbl='"F"'; sPRIGUldbl='"G"'; sPRIEUldbl='"E"';
+			sPRIFUldbl='"F"'; sPRIGUldbl='"G"'; sPRIEUldbl='"E"';
 			echo "We will use %f."
 			;;
 		esac
@@ -263,7 +294,7 @@ EOCP
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"Lf"'; sPRIgldbl='"Lg"'; sPRIeldbl='"Le"';
-                	sPRIFUldbl='"LF"'; sPRIGUldbl='"LG"'; sPRIEUldbl='"LE"';
+			sPRIFUldbl='"LF"'; sPRIGUldbl='"LG"'; sPRIEUldbl='"LE"';
 			echo "We will use %Lf."
 			;;
 		esac
@@ -285,7 +316,7 @@ EOCP
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"llf"'; sPRIgldbl='"llg"'; sPRIeldbl='"lle"';
-                	sPRIFUldbl='"llF"'; sPRIGUldbl='"llG"'; sPRIEUldbl='"llE"';
+			sPRIFUldbl='"llF"'; sPRIGUldbl='"llG"'; sPRIEUldbl='"llE"';
 			echo "We will use %llf."
 			;;
 		esac
@@ -307,7 +338,7 @@ EOCP
 		case "$yyy" in
 		123.456)
 			sPRIfldbl='"lf"'; sPRIgldbl='"lg"'; sPRIeldbl='"le"';
-                	sPRIFUldbl='"lF"'; sPRIGUldbl='"lG"'; sPRIEUldbl='"lE"';
+			sPRIFUldbl='"lF"'; sPRIGUldbl='"lG"'; sPRIEUldbl='"lE"';
 			echo "We will use %lf."
 			;;
 		esac

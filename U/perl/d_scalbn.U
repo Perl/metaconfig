@@ -9,7 +9,8 @@
 ?S:.
 ?C:HAS_SCALBN:
 ?C:	This symbol, if defined, indicates that the scalbn routine is
-?C:	available to multiply floating-point number by integral power of radix.
+?C:	available to multiply floating-point number by integral power
+?C:	of radix.
 ?C:.
 ?H:#$d_scalbn HAS_SCALBN		/**/
 ?H:.

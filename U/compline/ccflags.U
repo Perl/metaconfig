@@ -232,8 +232,15 @@ default|recommended)
 	# as that way the compiler can do the right implementation dependant
 	# thing. (NWC)
 	case "$gccversion" in
-	?*)	set stack-protector -fstack-protector
+	?*)	set stack-protector-strong -fstack-protector-strong
 		eval $checkccflag
+		case "$dflt" in
+		*-fstack-protector-strong*) ;; # It got added.
+		*) # Try the plain/older -fstack-protector.
+		   set stack-protector -fstack-protector
+		   eval $checkccflag
+		   ;;
+		esac
 		;;
 	esac
 	;;
@@ -384,6 +391,12 @@ case "$ldflags" in
 esac
 # See note above about -fstack-protector
 case "$ccflags" in
+*-fstack-protector-strong*)
+	case "$dflt" in
+	*-fstack-protector-strong*) ;; # Don't add it again
+	*) dflt="$dflt -fstack-protector-strong" ;;
+	esac
+	;;
 *-fstack-protector*)
 	case "$dflt" in
 	*-fstack-protector*) ;; # Don't add it again

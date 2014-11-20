@@ -304,6 +304,12 @@ EOM
 	esac
 
 	case "$ldflags" in
+	    *-fstack-protector-strong*)
+		case "$dflt" in
+		    *-fstack-protector-strong*) ;; # Don't add it again
+		    *) dflt="$dflt -fstack-protector-strong" ;;
+		esac
+		;;
 	    *-fstack-protector*)
 		case "$dflt" in
 		    *-fstack-protector*) ;; # Don't add it again

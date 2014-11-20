@@ -19,6 +19,8 @@
 ?C:HAS_PRCTL:
 ?C:	This symbol, if defined, indicates that the prctl routine is
 ?C:	available to set process title.
+?C:	Note that there are at least two prctl variants: Linux and Irix.
+?C:	While they are somewhat similar, they are incompatible.
 ?C:.
 ?C:HAS_PRCTL_SET_NAME:
 ?C:	This symbol, if defined, indicates that the prctl routine is

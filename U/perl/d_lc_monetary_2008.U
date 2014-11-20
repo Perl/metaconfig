@@ -1,0 +1,40 @@
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_lc_monetary_2008: cat Compile rm_try d_locconv
+?MAKE:	-pick add $@ %<
+?S:d_lc_monetary_2008:
+?S:	This variable conditionally defines HAS_LC_MONETARY_2008 if libc
+?S:	has the international currency locale rules from POSIX
+?S:	1003.1-2008.
+?S:.
+?C:HAS_LC_MONETARY_2008:
+?C:	This symbol, if defined, indicates that the localeconv routine is
+?C:	available and has the additional members added in POSIX 1003.1-2008.
+?C:.
+?H:#$d_lc_monetary_2008 HAS_LC_MONETARY_2008		/**/
+?H:.
+: see if libc has the POSIX.1-2008 currency locale rules
+case "$d_locconv:$d_lc_monetary_2008" in
+$define:)
+	$cat >try.c <<EOCP
+#include <locale.h>
+int main() {
+	struct lconv *lc = localeconv();
+	char int_p_cs_precedes = lc->int_p_cs_precedes;
+	return 0;
+}
+EOCP
+	set try
+	if eval $compile; then
+		d_lc_monetary_2008="$define"
+	else
+		d_lc_monetary_2008="$undef"
+	fi;
+	$rm_try
+	;;
+esac
+

@@ -159,21 +159,21 @@ if $test X"$usequadmath" = X"$define"; then
     nvFUformat='"QF"'
     nvGUformat='"QG"'
 else
-	if $test X"$uselongdouble" = X"$define" -a X"$d_longdbl" = X"$define" -a X"$d_PRIgldbl" = X"$define"; then
-		nveformat="$sPRIeldbl"
-		nvfformat="$sPRIfldbl"
-		nvgformat="$sPRIgldbl"
-		nvEUformat="$sPRIEUldbl"
-		nvFUformat="$sPRIFUldbl"
-		nvGUformat="$sPRIGUldbl"
-	else
-		nveformat='"e"'
-		nvfformat='"f"'
-		nvgformat='"g"'
-		nvEUformat='"E"'
-		nvFUformat='"F"'
-		nvGUformat='"G"'
-	fi
+    if $test X"$uselongdouble" = X"$define" -a X"$d_longdbl" = X"$define" -a X"$d_PRIgldbl" = X"$define"; then
+	nveformat="$sPRIeldbl"
+	nvfformat="$sPRIfldbl"
+	nvgformat="$sPRIgldbl"
+	nvEUformat="$sPRIEUldbl"
+	nvFUformat="$sPRIFUldbl"
+	nvGUformat="$sPRIGUldbl"
+    else
+	nveformat='"e"'
+	nvfformat='"f"'
+	nvgformat='"g"'
+	nvEUformat='"E"'
+	nvFUformat='"F"'
+	nvGUformat='"G"'
+    fi
 fi
 
 case "$ivdformat" in

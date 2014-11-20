@@ -9,7 +9,7 @@
 ?S:.
 ?C:HAS_LLRINT:
 ?C:	This symbol, if defined, indicates that the llrint routine is
-?C:	available to to return the closest long long value according to
+?C:	available to return the closest long long value according to
 ?C:	the current rounding mode.
 ?C:.
 ?H:#$d_llrint HAS_LLRINT		/**/
