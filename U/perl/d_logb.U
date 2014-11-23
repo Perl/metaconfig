@@ -5,7 +5,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_logb:
 ?S:	This variable conditionally defines the HAS_LOGB symbol, which
-?S:	indicates to the C program that the logb() routine is available.
+?S:	indicates to the C program that the logb() routine is available
+?S:	to extract the exponent of x.
 ?S:.
 ?C:HAS_LOGB:
 ?C:	This symbol, if defined, indicates that the logb routine is

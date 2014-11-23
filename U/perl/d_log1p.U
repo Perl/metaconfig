@@ -5,7 +5,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_log1p:
 ?S:	This variable conditionally defines the HAS_LOG1P symbol, which
-?S:	indicates to the C program that the log1p() routine is available.
+?S:	indicates to the C program that the logp1() routine is available
+?S:	to compute log(1 + x) for values of x close to zero.
 ?S:.
 ?C:HAS_LOG1P:
 ?C:	This symbol, if defined, indicates that the log1p routine is

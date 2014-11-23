@@ -5,7 +5,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_ilogb:
 ?S:	This variable conditionally defines the HAS_ILOGB symbol, which
-?S:	indicates to the C program that the ilogb() routine is available.
+?S:	indicates to the C program that the ilogb() routine is available
+?S:	for extracting the exponent of double x as a signed integer.
 ?S:.
 ?C:HAS_ILOGB:
 ?C:	This symbol, if defined, indicates that the ilogb routine is

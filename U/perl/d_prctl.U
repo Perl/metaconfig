@@ -10,6 +10,8 @@
 ?S:d_prctl:
 ?S:	This variable conditionally defines the HAS_PRCTL symbol, which
 ?S:	indicates to the C program that the prctl() routine is available.
+?S:	Note that there are at least two prctl variants: Linux and Irix.
+?S:	While they are somewhat similar, they are incompatible.
 ?S:.
 ?S:d_prctl_set_name:
 ?S:	This variable conditionally defines the HAS_PRCTL_SET_NAME symbol,

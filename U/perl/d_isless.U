@@ -9,7 +9,7 @@
 ?S:.
 ?C:HAS_ISLESS:
 ?C:	This symbol, if defined, indicates that the isless routine is
-?C:	available to do the error function.
+?C:	available to do the isless function.
 ?C:.
 ?H:#$d_isless HAS_ISLESS		/**/
 ?H:.

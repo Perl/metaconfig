@@ -5,7 +5,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_lround:
 ?S:	This variable conditionally defines the HAS_LROUND symbol, which
-?S:	indicates to the C program that the lround() routine is available.
+?S:	indicates to the C program that the lround() routine is available
+?S:	to return the integral value nearest to x.
 ?S:.
 ?C:HAS_LROUND:
 ?C:	This symbol, if defined, indicates that the lround routine is

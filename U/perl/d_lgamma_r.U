@@ -5,7 +5,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_lgamma_r:
 ?S:	This variable conditionally defines the HAS_LGAMMA_R symbol, which
-?S:	indicates to the C program that the lgamma_r() routine is available.
+?S:	indicates to the C program that the lgamma_r() routine is available
+?S:	for the log gamma function, without using the global signgam variable.
 ?S:.
 ?C:HAS_LGAMMA_R:
 ?C:	This symbol, if defined, indicates that the lgamma_r routine is

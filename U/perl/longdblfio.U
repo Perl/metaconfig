@@ -225,8 +225,6 @@ int main() {
     exit(0);
   }
 #endif
-  /* Rumoredly some old ARM processors have 'mixed endian' doubles,
-   * two 32-bit little endians stored in big-endian order. */
   /* Then there are old mainframe/miniframe formats like VAX, IBM, and CRAY.
    * Whether those environments can still build Perl is debatable. */
   printf("-1\n"); /* unknown */

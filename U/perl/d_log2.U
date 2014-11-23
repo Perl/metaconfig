@@ -5,7 +5,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_log2:
 ?S:	This variable conditionally defines the HAS_LOG2 symbol, which
-?S:	indicates to the C program that the log2() routine is available.
+?S:	indicates to the C program that the log2() routine is available
+?S:	to compute log base two.
 ?S:.
 ?C:HAS_LOG2:
 ?C:	This symbol, if defined, indicates that the log2 routine is

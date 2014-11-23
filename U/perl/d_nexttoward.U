@@ -4,8 +4,9 @@
 ?MAKE:d_nexttoward: Inlibc
 ?MAKE:	-pick add $@ %<
 ?S:d_nexttoward:
-?S:	This variable conditionally defines the HAS_NEXTTOWARD symbol, which
-?S:	indicates to the C program that the nexttoward() routine is available.
+?S:	This variable conditionally defines HAS_NEXTTOWARD if nexttoward()
+?S:	is available to return the next machine representable long double from
+?S:	x in direction y.
 ?S:.
 ?C:HAS_NEXTTOWARD:
 ?C:	This symbol, if defined, indicates that the nexttoward routine is

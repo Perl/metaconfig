@@ -4,12 +4,13 @@
 ?MAKE:d_nextafter: Inlibc
 ?MAKE:	-pick add $@ %<
 ?S:d_nextafter:
-?S:	This variable conditionally defines the HAS_NEXTAFTER symbol, which
-?S:	indicates to the C program that the nextafter() routine is available.
+?S:	This variable conditionally defines HAS_NEXTAFTER if nextafter()
+?S:	is available to return the next machine representable double from
+?S:	x in direction y.
 ?S:.
 ?C:HAS_NEXTAFTER:
 ?C:	This symbol, if defined, indicates that the nextafter routine is
-?C:	available to return the next machine representable long double from
+?C:	available to return the next machine representable double from
 ?C:	x in direction y.
 ?C:.
 ?H:#$d_nextafter HAS_NEXTAFTER		/**/

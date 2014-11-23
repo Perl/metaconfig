@@ -9,7 +9,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_ilogbl:
 ?S:	This variable conditionally defines the HAS_ILOGBL symbol, which
-?S:	indicates to the C program that the ilogbl() routine is available.
+?S:	indicates to the C program that the ilogbl() routine is available
+?S:	for extracting the exponent of long double x as a signed integer.
 ?S:	If scalbnl is also present we can emulate frexpl.
 ?S:.
 ?C:HAS_ILOGBL:

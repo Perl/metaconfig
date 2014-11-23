@@ -4,8 +4,8 @@
 ?MAKE:i_quadmath: Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:i_quadmath:
-?S:	This variable conditionally defines the I_QUADMATH symbol, and indicates
-?S:	whether a C program should include <quadmath.h>.
+?S:	This variable conditionally defines I_QUADMATH, which indicates
+?S:	to the C program that it should include <quadmath.h>.
 ?S:.
 ?C:I_QUADMATH:
 ?C:	This symbol, if defined, indicates that <quadmath.h> exists and

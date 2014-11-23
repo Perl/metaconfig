@@ -15,7 +15,7 @@
 ?MAKE:d_cbrt: Inlibc
 ?MAKE:	-pick add $@ %<
 ?S:d_cbrt:
-?S:	This variable conditionally defines the CBRT symbol, which
+?S:	This variable conditionally defines the HAS_CBRT symbol, which
 ?S:	indicates to the C program that the cbrt() (cube root) function
 ?S:	is available.
 ?S:.

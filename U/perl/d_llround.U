@@ -5,7 +5,8 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_llround:
 ?S:	This variable conditionally defines the HAS_LLROUND symbol, which
-?S:	indicates to the C program that the llround() routine is available.
+?S:	indicates to the C program that the llround() routine is available
+?S:	to return the long long value nearest to x.
 ?S:.
 ?C:HAS_LLROUND:
 ?C:	This symbol, if defined, indicates that the llround routine is

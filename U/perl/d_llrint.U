@@ -5,7 +5,9 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_llrint:
 ?S:	This variable conditionally defines the HAS_LLRINT symbol, which
-?S:	indicates to the C program that the llrint() routine is available.
+?S:	indicates to the C program that the llrint() routine is available
+?S:	to return the long long value closest to (according to the current
+?S:	rounding mode) to x.
 ?S:.
 ?C:HAS_LLRINT:
 ?C:	This symbol, if defined, indicates that the llrint routine is
