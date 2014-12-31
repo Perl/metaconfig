@@ -128,7 +128,7 @@ int main (int argc, char *argv[])
 EOCP
 	set try
 	if eval $compile; then
-	    eval `$run ./try`
+	    eval `$run ./try 2>/dev/null`
 	else
 	    echo "Cannot determine sGMTIME_max and sGMTIME_min." >&4
 	    fi
@@ -209,7 +209,7 @@ int main (int argc, char *argv[])
 EOCP
 	set try
 	if eval $compile; then
-	    eval `$run ./try`
+	    eval `$run ./try 2>/dev/null`
 	else
 	    echo "Cannot determine sLOCALTIME_max and sLOCALTIME_min." >&4
 	    fi

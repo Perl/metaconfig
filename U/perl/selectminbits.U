@@ -105,7 +105,7 @@ int main() {
 EOCP
 		set try
 		if eval $compile_ok; then
-			selectminbits=`$run ./try`
+			selectminbits=`$run ./try 2>/dev/null`
 			case "$selectminbits" in
 			'')	cat >&4 <<EOM
 Cannot figure out on how many bits at a time your select() operates.
