@@ -1,0 +1,23 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_llrintl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_llrintl:
+?S:	This variable conditionally defines the HAS_LLRINTL symbol, which
+?S:	indicates to the C program that the llrintl() routine is available
+?S:	to return the long long value closest to (according to the current
+?S:	rounding mode) to x.
+?S:.
+?C:HAS_LLRINTL:
+?C:	This symbol, if defined, indicates that the llrintl routine is
+?C:	available to return the closest long long value of the long double
+?C:	argument according to the current rounding mode.
+?C:.
+?H:#$d_llrintl HAS_LLRINTL		/**/
+?H:.
+?LINT:set d_llrintl
+: see if llrintl exists
+set llrintl d_llrintl
+eval $inlibc
+

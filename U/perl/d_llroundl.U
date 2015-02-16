@@ -1,0 +1,22 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_llroundl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_llroundl:
+?S:	This variable conditionally defines the HAS_LLROUNDL symbol, which
+?S:	indicates to the C program that the llroundl() routine is available
+?S:	to return the long long value nearest to x away from zero.
+?S:.
+?C:HAS_LLROUNDL:
+?C:	This symbol, if defined, indicates that the llroundl routine is
+?C:	available to return the nearest long long value away from zero of
+?C:	the long double argument value.
+?C:.
+?H:#$d_llroundl HAS_LLROUNDL		/**/
+?H:.
+?LINT:set d_llroundl
+: see if llroundl exists
+set llroundl d_llroundl
+eval $inlibc
+

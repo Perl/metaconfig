@@ -1,0 +1,22 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_lroundl: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_lroundl:
+?S:	This variable conditionally defines the HAS_LROUNDL symbol, which
+?S:	indicates to the C program that the lroundl() routine is available
+?S:	to return the integral value nearest to x away from zero.
+?S:.
+?C:HAS_LROUNDL:
+?C:	This symbol, if defined, indicates that the lroundl routine is
+?C:	available to return the nearest integral value away from zero of
+?C:	the long double argument value.
+?C:.
+?H:#$d_lroundl HAS_LROUNDL		/**/
+?H:.
+?LINT:set d_lroundl
+: see if lroundl exists
+set lroundl d_lroundl
+eval $inlibc
+
