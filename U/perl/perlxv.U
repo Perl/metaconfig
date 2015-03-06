@@ -79,7 +79,8 @@
 ?S:	This variable is the size of an U64 in bytes.
 ?S:.
 ?S:nvsize:
-?S:	This variable is the size of an NV in bytes.
+?S:	This variable is the size of a Perl NV in bytes.
+?S:	Note that some floating point formats have unused bytes.
 ?S:.
 ?S:d_nv_preserves_uv:
 ?S:	This variable indicates whether a variable of type nvtype
@@ -163,6 +164,11 @@
 ?C:.
 ?C:NVSIZE:
 ?C:	This symbol contains the sizeof(NV).
+?C:	Note that some floating point formats have unused bytes.
+?C:	The most notable example is the x86* 80-bit extended precision
+?C:	which comes in byte sizes of 12 and 16 (for 32 and 64 bit
+?C:	platforms, respectively), but which only uses 10 bytes.
+?C:	Perl compiled with -Duselongdouble on x86* is like this.
 ?C:.
 ?C:NV_PRESERVES_UV:
 ?C:	This symbol, if defined, indicates that a variable of type NVTYPE

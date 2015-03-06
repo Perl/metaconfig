@@ -21,7 +21,8 @@
 ?S:longdblsize:
 ?S:	This variable contains the value of the LONG_DOUBLESIZE symbol, which
 ?S:	indicates to the C program how many bytes there are in a long double,
-?S:	if this system supports long doubles.
+?S:	if this system supports long doubles.  Note that this is
+?S:	sizeof(long double), which may include unused bytes.
 ?S:.
 ?S:longdblkind:
 ?S:	This variable, if defined, encodes the type of a long double:
@@ -37,7 +38,8 @@
 ?C:LONG_DOUBLESIZE:
 ?C:	This symbol contains the size of a long double, so that the
 ?C:	C preprocessor can make decisions based on it.  It is only
-?C:	defined if the system supports long doubles.
+?C:	defined if the system supports long doubles.  Note that this
+?C:	is sizeof(long double), which may include unused bytes.
 ?C:.
 ?C:HAS_LDEXPL:
 ?C:	This symbol, if defined, indicates that the ldexpl routine is
