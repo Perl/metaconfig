@@ -368,6 +368,12 @@ esac
 
 : run the defines and the undefines, if any, but leave the file out there...
 touch optdef.sh
+?X: -q is POSIX
+grep -q '\\' optdef.sh
+if test $? = 0; then
+    echo "Configure does not support \\ in -D arguments"
+    exit 1
+fi
 . ./optdef.sh
 : create the posthint manipulation script and leave the file out there...
 ?X: this file will be perused by Oldconfig.U
