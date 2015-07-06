@@ -11,19 +11,19 @@
 ?MAKE:	-pick add $@ %<
 ?S:longdblinfbytes:
 ?S:	This variable contains comma-separated list of hexadecimal bytes
-?S:	for the double precision infinity.
+?S:	for the long double precision infinity.
 ?S:.
 ?S:longdblnanbytes:
 ?S:	This variable contains comma-separated list of hexadecimal bytes
-?S:	for the double precision not-a-number.
+?S:	for the long double precision not-a-number.
 ?S:.
 ?S:doubleinfbytes:
 ?S:	This variable contains comma-separated list of hexadecimal bytes
-?S:	for the long double precision infinity.
+?S:	for the double precision infinity.
 ?S:.
 ?S:doublenanbytes:
 ?S:	This variable contains comma-separated list of hexadecimal bytes
-?S:	for the long double precision not-a-number.
+?S:	for the double precision not-a-number.
 ?S:.
 ?C:DOUBLEINFBYTES:
 ?C:	This symbol, if defined, is a comma-separated list of
