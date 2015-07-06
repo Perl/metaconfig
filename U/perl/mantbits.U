@@ -8,7 +8,7 @@
 ?MAKE:longdblmantbits doublemantbits nvmantbits: Inlibc cat Compile run \
 	rm_try Setvar echo i_float i_sunmath usequadmath \
 	d_longdbl longdblkind nvsize doublesize longdblsize
-?MAKE:  -pick add $@ %<
+?MAKE:	-pick add $@ %<
 ?S:doublemantbits:
 ?S:	This symbol, if defined, tells how many mantissa bits
 ?S:	there are in double precision floating point format.

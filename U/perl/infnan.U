@@ -8,7 +8,7 @@
 ?MAKE:longdblinfbytes longdblnanbytes doubleinfbytes doublenanbytes: Inlibc \
 	cat i_math Compile run rm_try Setvar echo d_longdbl \
 	doublekind doublesize longdblkind longdblsize
-?MAKE:  -pick add $@ %<
+?MAKE:	-pick add $@ %<
 ?S:longdblinfbytes:
 ?S:	This variable contains comma-separated list of hexadecimal bytes
 ?S:	for the double precision infinity.
