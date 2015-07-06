@@ -5,8 +5,9 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:longdblmantbits doublemantbits: Inlibc cat Compile run rm_try Setvar \
-	echo i_float i_sunmath d_longdbl longdblkind
+?MAKE:longdblmantbits doublemantbits nvmantbits: Inlibc cat Compile run \
+	rm_try Setvar echo i_float i_sunmath usequadmath \
+	d_longdbl longdblkind nvsize doublesize longdblsize
 ?MAKE:  -pick add $@ %<
 ?S:doublemantbits:
 ?S:	This symbol, if defined, tells how many mantissa bits
@@ -23,6 +24,10 @@
 ?S:	The common x86-style 80-bit long double does not have
 ?S:	an implicit bit.
 ?S:.
+?S:nvmantbits:
+?S:	This variable tells how many bits the mantissa of a Perl NV has,
+?S:	not including the possible implicit bit.
+?S:.
 ?C:DOUBLEMANTBITS:
 ?C:	This symbol, if defined, tells how many mantissa bits
 ?C:	there are in double precision floating point format.
@@ -38,8 +43,14 @@
 ?C:	The common x86-style 80-bit long double does not have
 ?C:	an implicit bit.
 ?C:.
+?C:NVMANTBITS:
+?C:	This symbol, if defined, tells how many mantissa bits
+?C:	(not including implicit bit) there are in a Perl NV.
+?C:	This depends on which floating point type was chosen.
+?C:.
 ?H:#define DOUBLEMANTBITS  $doublemantbits
 ?H:#define LONGDBLMANTBITS $longdblmantbits
+?H:#define NVMANTBITS      $nvmantbits
 ?H:.
 ?F:!try
 : Check the length of the double mantissa
@@ -116,4 +127,20 @@ else
     longdblmantbits="$undef"
 fi
 $rm_try
+
+: Check the length of the NV mantissa
+$echo "Checking how many mantissa bits your NVs have..." >&4
+if test "X$usequadmath" = "X$define"; then
+  nvmantbits=112 # 128-1-15
+else
+  if test "X$nvsize" = "X$doublesize"; then
+    nvmantbits="$doublemantbits"
+  else
+     if test "X$nvsize" = "X$longdblsize"; then
+       nvmantbits="$longdblmantbits"
+     else
+       nvmantbits="$undef"
+     fi
+  fi
+fi
 
