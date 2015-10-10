@@ -45,12 +45,15 @@
 ?F:signal.c signal_cmd signal.lst signal signal.awk
 ?T: xx xxx xxxfiles
 ?LINT:use rm run _o _exe
+?LINT:extern sig_num_init
 : Trace out the files included by signal.h, then look for SIGxxx names.
 ?X: Remove SIGARRAYSIZE used by HPUX.
 ?X: Remove SIGSTKSIZE used by Linux.
 ?X: Remove SIGSTKSZ used by POSIX.
 ?X: Remove SIGTYP void lines used by OS2.
 ?X: Some cpps, like os390, do not give the file name anywhere
+case "$sig_num_init" in
+'')
 if [ "X$fieldn" = X ]; then
 	: Just make some guesses.  We check them later.
 	xxx="$sysroot/usr/include/signal.h $sysroot/usr/include/sys/signal.h"
@@ -277,4 +280,6 @@ $rm -f signal.c signal$_exe signal$_o signal.nsg signal.ls1
 EOS
 chmod a+x signal_cmd
 $eunicefix signal_cmd
+;;
+esac
 

@@ -116,6 +116,8 @@
 ?X:	The list is sorted on signal number, with duplicates moved to
 ?X:	the end..
 : generate list of signal names
+case "$sig_num_init" in
+'')
 echo " "
 case "$sig_name_init" in
 '') doinit=yes ;;
@@ -158,4 +160,6 @@ echo $sig_name | $awk \
 }'
 sig_size=`echo $sig_name | awk '{print NF}'`
 $rm -f signal signal.c signal.awk signal.lst signal_cmd
+;;
+esac
 

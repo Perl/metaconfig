@@ -30,7 +30,8 @@
 echo " "
 procselfexe=''
 val="$undef"
-case "$d_readlink" in
+case "$d_procselfexe" in
+'') case "$d_readlink" in
     "$define")
 	: NetBSD first as /proc/self is a symlink to /proc/curproc, and it feels
 	: more tidy to avoid an extra level of symlink
@@ -50,8 +51,10 @@ case "$d_readlink" in
 	    fi
 	done
 	;;
+    esac
+    $rm -f reflect
+    set d_procselfexe
+    eval $setvar
+;;
 esac
-$rm -f reflect
-set d_procselfexe
-eval $setvar
 

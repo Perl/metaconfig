@@ -34,8 +34,8 @@
 ?T:up low
 : see whether [:lower:] and [:upper:] are supported character classes
 echo " "
-case "`echo AbyZ | $tr '[:lower:]' '[:upper:]' 2>/dev/null`" in
-ABYZ)
+case "`echo AbyZ | $tr '[:lower:]' '[:upper:]' 2>/dev/null`"-"`echo AbyZ | $tr '[:upper:]' '[:lower:]' 2>/dev/null`" in
+ABYZ-abyz)
 	echo "Good, your tr supports [:lower:] and [:upper:] to convert case." >&4
 	up='[:upper:]'
 	low='[:lower:]'

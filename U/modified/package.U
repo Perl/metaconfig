@@ -45,8 +45,8 @@ last=`echo $package | sed -e 's/^.\(.*\)/\1/'`
 ?X: include Tr in our dependency or that would create a cycle. Therefore,
 ?X: we have to somehow duplicate the work done in Tr. That's life.
 ?X:
-case "`echo AbyZ | tr '[:lower:]' '[:upper:]' 2>/dev/null`" in
-ABYZ) spackage=`echo $first | tr '[:lower:]' '[:upper:]'`$last;;
+case "`echo AbyZ | tr '[:lower:]' '[:upper:]' 2>/dev/null`"-"`echo AbyZ | tr '[:upper:]' '[:lower:]' 2>/dev/null`" in
+ABYZ-abyz) spackage=`echo $first | tr '[:lower:]' '[:upper:]'`$last;;
 *) spackage=`echo $first | tr '[a-z]' '[A-Z]'`$last;;
 esac
 @end
