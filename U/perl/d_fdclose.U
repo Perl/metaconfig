@@ -1,0 +1,21 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_fdclose: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fdclose:
+?S:	This variable conditionally defines the HAS_FDCLOSE symbol, which
+?S:	indicates to the C program that the fdclose() routine is available.
+?S:.
+?C:HAS_FDCLOSE:
+?C:	This symbol, if defined, indicates that the fdclose routine is
+?C:	available to free a FILE structure without closing the underlying
+?C:	file descriptor.  This function appeared in FreeBSD 10.2.
+?C:.
+?H:#$d_fdclose HAS_FDCLOSE		/**/
+?H:.
+?LINT:set d_fdclose
+: see if fdclose exists
+set fdclose d_fdclose
+eval $inlibc
+
