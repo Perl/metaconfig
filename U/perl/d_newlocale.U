@@ -1,0 +1,52 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_newlocale d_freelocale d_uselocale: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_newlocale:
+?S:	This variable conditionally defines the HAS_NEWLOCALE symbol, which
+?S:	indicates to the C program that the newlocale() routine is available
+?S:	to return a new locale object or modify an existing locale object.
+?S:.
+?S:d_freelocale:
+?S:	This variable conditionally defines the HAS_FREELOCALE symbol, which
+?S:	indicates to the C program that the freelocale() routine is available
+?S:	to deallocates the resources associated with a locale object.
+?S:.
+?S:d_uselocale:
+?S:	This variable conditionally defines the HAS_USELOCALE symbol, which
+?S:	indicates to the C program that the uselocale() routine is available
+?S:	to set the current locale for the calling thread.
+?S:.
+?C:HAS_NEWLOCALE:
+?C:	This symbol, if defined, indicates that the newlocale routine is
+?C:	available to return a new locale object or modify an existing
+?C:	locale object.
+?C:.
+?C:HAS_FREELOCALE:
+?C:	This symbol, if defined, indicates that the freelocale routine is
+?C:	available to deallocates the resources associated with a locale object.
+?C:.
+?C:HAS_USELOCALE:
+?C:	This symbol, if defined, indicates that the uselocale routine is
+?C:	available to set the current locale for the calling thread.
+?C:.
+?H:#$d_newlocale	HAS_NEWLOCALE	/**/
+?H:#$d_freelocale	HAS_FREELOCALE	/**/
+?H:#$d_uselocale	HAS_USELOCALE	/**/
+?H:.
+?LINT:set d_newlocale
+?LINT:set d_freelocale
+?LINT:set d_uselocale
+: see if newlocale exists
+set newlocale d_newlocale
+eval $inlibc
+
+: see if freelocale exists
+set freelocale d_freelocale
+eval $inlibc
+
+: see if uselocale exists
+set uselocale d_uselocale
+eval $inlibc
+
