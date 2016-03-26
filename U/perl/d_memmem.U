@@ -1,0 +1,23 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_memmem: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_memmem:
+?S:	This variable conditionally defines the HAS_MEMMEM symbol, which
+?S:	indicates to the C program that the memmem() routine is available
+?S:	to return a pointer to the start of the first occurance of a
+?S:	substring in a memory area (or NULL if not found).
+?S:.
+?C:HAS_MEMMEM:
+?C:	This symbol, if defined, indicates that the memmem routine is
+?C:	available to return a pointer to the start of the first occurance
+?C:	of a substring in a memory area (or NULL if not found).
+?C:.
+?H:#$d_memmem HAS_MEMMEM		/**/
+?H:.
+?LINT:set d_memmem
+: see if memmem exists
+set memmem d_memmem
+eval $inlibc
+
