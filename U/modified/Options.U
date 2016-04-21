@@ -370,7 +370,7 @@ esac
 touch optdef.sh
 ?X: -q is POSIX
 ?X: It does not work in SysV (solaris) or old BSD greps.
-grep '\\' optdef.sh
+grep '\\' optdef.sh >/dev/null 2>&1
 if test $? = 0; then
     echo "Configure does not support \\ in -D arguments"
     exit 1

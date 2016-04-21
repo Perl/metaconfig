@@ -69,13 +69,6 @@
 ?H:#$d_siginfo_si_band	HAS_SIGINFO_SI_BAND	/**/
 ?H:#$d_siginfo_si_value	HAS_SIGINFO_SI_VALUE	/**/
 ?H:.
-?LINT:set d_siginfo_si_errno
-?LINT:set d_siginfo_si_pid
-?LINT:set d_siginfo_si_uid
-?LINT:set d_siginfo_si_addr
-?LINT:set d_siginfo_si_status
-?LINT:set d_siginfo_si_band
-?LINT:set d_siginfo_si_value
 : see what siginfo fields we have
 case "$d_sigaction" in
 "$define")
