@@ -1,0 +1,112 @@
+?RCS: Copyright (c) 2016 Dagfinn Ilmari Mannsåker & H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_siginfo_si_errno d_siginfo_si_pid d_siginfo_si_uid d_siginfo_si_addr d_siginfo_si_status d_siginfo_si_band d_siginfo_si_value: d_sigaction pidtype uidtype hasfield_t
+?MAKE:	-pick add $@ %<
+?S:d_siginfo_si_errno:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_ERRNO symbol,
+?S:	which indicates that the siginfo_t struct has the si_errno member.
+?S:.
+?S:d_siginfo_si_pid:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_PID symbol,
+?S:	which indicates that the siginfo_t struct has the si_pid member.
+?S:.
+?S:d_siginfo_si_uid:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_UID symbol,
+?S:	which indicates that the siginfo_t struct has the si_uid member.
+?S:.
+?S:d_siginfo_si_addr:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_ADDR symbol,
+?S:	which indicates that the siginfo_t struct has the si_addr member.
+?S:.
+?S:d_siginfo_si_status:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_STATUS symbol,
+?S:	which indicates that the siginfo_t struct has the si_status member.
+?S:.
+?S:d_siginfo_si_band:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_BAND symbol,
+?S:	which indicates that the siginfo_t struct has the si_band member.
+?S:.
+?S:d_siginfo_si_value:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_VALUE symbol,
+?S:	which indicates that the siginfo_t struct has the si_value member.
+?S:.
+?C:HAS_SIGINFO_SI_ERRNO:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_errno member
+?C:.
+?C:HAS_SIGINFO_SI_PID:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_pid member
+?C:.
+?C:HAS_SIGINFO_SI_UID:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_uid member
+?C:.
+?C:HAS_SIGINFO_SI_ADDR:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_addr member
+?C:.
+?C:HAS_SIGINFO_SI_STATUS:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_status member
+?C:.
+?C:HAS_SIGINFO_SI_BAND:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_band member
+?C:.
+?C:HAS_SIGINFO_SI_VALUE:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_value member
+?C:.
+?H:#$d_siginfo_si_errno	HAS_SIGINFO_SI_ERRNO	/**/
+?H:#$d_siginfo_si_pid	HAS_SIGINFO_SI_PID	/**/
+?H:#$d_siginfo_si_uid	HAS_SIGINFO_SI_UID	/**/
+?H:#$d_siginfo_si_addr	HAS_SIGINFO_SI_ADDR	/**/
+?H:#$d_siginfo_si_status	HAS_SIGINFO_SI_STATUS	/**/
+?H:#$d_siginfo_si_band	HAS_SIGINFO_SI_BAND	/**/
+?H:#$d_siginfo_si_value	HAS_SIGINFO_SI_VALUE	/**/
+?H:.
+?LINT:set d_siginfo_si_errno
+?LINT:set d_siginfo_si_pid
+?LINT:set d_siginfo_si_uid
+?LINT:set d_siginfo_si_addr
+?LINT:set d_siginfo_si_status
+?LINT:set d_siginfo_si_band
+?LINT:set d_siginfo_si_value
+: see what siginfo fields we have
+case "$d_sigaction" in
+"$define")
+	echo "Checking if your siginfo_t has si_errno field...">&4
+	set d_siginfo_si_errno siginfo_t int si_errno $d_sigaction signal.h
+	eval $hasfield_t;
+
+	echo "Checking if your siginfo_t has si_pid field...">&4
+	set d_siginfo_si_pid siginfo_t $pidtype si_pid $d_sigaction signal.h
+	eval $hasfield_t;
+
+	echo "Checking if your siginfo_t has si_uid field...">&4
+	set d_siginfo_si_uid siginfo_t $uidtype si_uid $d_sigaction signal.h
+	eval $hasfield_t;
+
+	echo "Checking if your siginfo_t has si_addr field...">&4
+	set d_siginfo_si_addr siginfo_t "void *" si_addr $d_sigaction signal.h
+	eval $hasfield_t;
+
+	echo "Checking if your siginfo_t has si_status field...">&4
+	set d_siginfo_si_status siginfo_t int si_status $d_sigaction signal.h
+	eval $hasfield_t;
+
+	echo "Checking if your siginfo_t has si_band field...">&4
+	set d_siginfo_si_band siginfo_t long si_band $d_sigaction signal.h
+	eval $hasfield_t;
+
+	echo "Checking if your siginfo_t has si_value field...">&4
+	set d_siginfo_si_value siginfo_t "union sigval" si_value $d_sigaction signal.h
+	eval $hasfield_t;
+
+	;;
+esac
+

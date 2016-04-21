@@ -1,0 +1,40 @@
+?RCS: Copyright (c) 2016 Dagfinn Ilmari Mannsåker & H.Merijn Brand
+?RCS: 
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?X:
+?X: This unit produces a variable that is intended to be eval'ed in
+?X: order to define/undefine a symbol. A consistency check is made
+?X: regarding any previous value and a warning is issued if there
+?X: is any discrepancy.
+?X:
+?X: To use it, say:
+?X:	set d_siginfo_si_errno siginfo_t int si_errno $d_sigaction signal.h
+?X:	eval $hasfield_t;
+?X:
+?MAKE:hasfield_t: test Compile rm_try Setvar
+?MAKE:	-pick add $@ %<
+?S:hasfield_t:
+?S:	Internal macro for Configure
+?S:.
+?T:varname struct type field
+: Define hasfield_t macro for Configure internal use
+hasfield_t='varname=$1; struct=$2; type=$3; field=$4; shift; shift; shift; shift;
+while $test $# -ge 2; do
+    case "$1" in
+	$define) echo "#include <$2>";;
+    esac ;
+    shift 2;
+done > try.c;
+echo "int main () { $struct foo; $type bar = foo.$field; }" >> try.c;
+set try;
+if eval $compile; then
+	val="$define";
+else
+	val="$undef";
+fi;
+set $varname;
+eval $setvar;
+$rm_try'
+
