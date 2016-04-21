@@ -700,7 +700,7 @@ fi
 	hint=previous
 	;;
 esac
-test "$override" && . ./optdef.sh
+. ./optdef.sh
 
 : Restore computed paths
 for file in $loclist $trylist; do
