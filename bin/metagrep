@@ -40,6 +40,8 @@ find (sub {
     exists $dir{$File::Find::dir} or return;
     #print STDERR "$File::Find::dir - $_\n";
 
+    $seen{$File::Find::name}++ and return;
+
     $File::Find::dir =~ m{^(?:$cwd/)?dist-3} and return;
 
     open my $f, "<$_" or die "$File::Find::name: $!\n";
@@ -47,8 +49,8 @@ find (sub {
     $fnm =~ s{^$cwd/}{};
     for (grep /$pat/, <$f>) {
 	if ($opt_l) {
-	    $seen{$fnm}++ or print "$fnm\n";
-	    next;
+	    print "$fnm\n";
+	    return;
 	    }
 	print "$fnm:$_";
 	}
