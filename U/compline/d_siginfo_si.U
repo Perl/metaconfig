@@ -3,7 +3,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_siginfo_si_errno d_siginfo_si_pid d_siginfo_si_uid d_siginfo_si_addr d_siginfo_si_status d_siginfo_si_band d_siginfo_si_value: d_sigaction pidtype uidtype hasfield_t
+?MAKE:d_siginfo_si_errno d_siginfo_si_pid d_siginfo_si_uid d_siginfo_si_addr d_siginfo_si_status d_siginfo_si_band d_siginfo_si_value: d_sigaction pidtype uidtype Hasfield_t
 ?MAKE:	-pick add $@ %<
 ?S:d_siginfo_si_errno:
 ?S:	This variable conditionally defines the HAS_SIGINFO_SI_ERRNO symbol,

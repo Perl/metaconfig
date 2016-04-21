@@ -1,5 +1,5 @@
 ?RCS: Copyright (c) 2016 Dagfinn Ilmari Mannsåker & H.Merijn Brand
-?RCS: 
+?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
@@ -13,11 +13,13 @@
 ?X:	set d_siginfo_si_errno siginfo_t int si_errno $d_sigaction signal.h
 ?X:	eval $hasfield_t;
 ?X:
-?MAKE:hasfield_t: test Compile rm_try Setvar
+?MAKE:Hasfield_t: test Compile rm_try Setvar
 ?MAKE:	-pick add $@ %<
+?LINT:define hasfield_t
 ?S:hasfield_t:
 ?S:	Internal macro for Configure
 ?S:.
+?V:hasfield_t:
 ?T:varname struct type field
 : Define hasfield_t macro for Configure internal use
 hasfield_t='varname=$1; struct=$2; type=$3; field=$4; shift; shift; shift; shift;
