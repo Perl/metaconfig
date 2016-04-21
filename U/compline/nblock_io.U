@@ -23,7 +23,7 @@
 ?X:
 ?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm_try Compile run \
 	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar \
-	startsh i_unistd i_string i_fcntl i_stdlib d_fork d_pipe
+	startsh i_unistd i_string i_fcntl i_stdlib d_fork d_pipe d_alarm
 ?MAKE:	-pick add $@ %<
 ?S:o_nonblock:
 ?S:	This variable bears the symbol value to be used during open() or fcntl()
@@ -138,8 +138,8 @@ echo " "
 echo "Let's see what value errno gets from read() on a $o_nonblock file..." >&4
 case "$eagain" in
 '')
-	case "$d_fork:$d_pipe" in
-	define:define)
+	case "$d_fork:$d_pipe:$d_alarm" in
+	define:define:define)
 	$cat head.c > try.c
 	$cat >>try.c <<EOCP
 #include <errno.h>
