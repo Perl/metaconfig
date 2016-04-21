@@ -18,8 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:23  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:alignbytes: Myread Compile cat rm_try multiarch run \
-	d_longdbl uselongdouble test
+?MAKE:alignbytes: Myread Compile cat rm_try multiarch run test nvtype
 ?MAKE:	-pick add $@ %<
 ?S:alignbytes:
 ?S:	This variable holds the number of bytes required to align a
@@ -41,20 +40,11 @@
 echo " "
 case "$alignbytes" in
     '') echo "Checking alignment constraints..." >&4
-	if $test "X$uselongdouble" = Xdefine -a "X$d_longdbl" = Xdefine; then
-	    $cat >try.c <<'EOCP'
-typedef long double NV;
-EOCP
-	else
-	    $cat >try.c <<'EOCP'
-typedef double NV;
-EOCP
-	fi
-	$cat >>try.c <<'EOCP'
+	$cat >try.c <<EOCP
 #include <stdio.h>
 struct foobar {
     char foo;
-    NV bar;
+    $nvtype bar;
 } try_algn;
 int main()
 {
