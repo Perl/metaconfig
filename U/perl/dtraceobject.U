@@ -1,0 +1,39 @@
+?RCS: Copyright (c) 2016 Tony Cook
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:dtraceobject: usedtrace dtrace cc ccflags rm optimize Compile cat
+?MAKE:	-pick add $@ $@
+?S:dtraceobject:
+?S:	Whether we need to build an object file with the dtrace tool.
+?S:.
+: Probe whether dtrace builds an object, as newer Illumos requires an input
+: object file that uses at least one of the probes defined in the .d file
+case "$usedtrace" in
+$define)
+    case "$dtraceobject" in
+    $define|true|[yY]*)
+        dtraceobject=$define
+        ;;
+    ' '|'')
+        $dtrace -h -s ../perldtrace.d -o perldtrace.h
+        $cat >try.c <<EOM
+#include "perldtrace.h"
+int main(void) {
+    PERL_LOADED_FILE("dummy");
+    return 0;
+}
+EOM
+        dtraceobject=$undef
+        if $cc -c -o try.o $optimize $ccflags try.c \
+                    && $dtrace -G -s ../perldtrace.d try.o >/dev/null 2>&1; then
+                dtraceobject=$define
+            echo "Your dtrace builds an object file"
+        fi
+        $rm -f try.c try.o perldtrace.o
+        ;;
+    *) dtraceobject=$undef ;;
+    esac
+esac
+
