@@ -14,14 +14,14 @@
 ?MAKE:	-pick add $@ %<
 ?S:doublekind:
 ?S:	This variable, if defined, encodes the type of a double:
-?S:	 1 = IEEE 754 32-bit big little endian,
-?S:	 2 = IEEE 754 32-bit big big endian,
-?S:	 3 = IEEE 754 64-bit big little endian,
-?S:	 4 = IEEE 754 64-bit big big endian,
-?S:	 5 = IEEE 754 128-bit big little endian,
-?S:	 6 = IEEE 754 128-bit big big endian,
-?S:	 7 = IEEE 754 64-bit big mixed endian le-be,
-?S:	 8 = IEEE 754 64-bit big mixed endian be-le,
+?S:	 1 = IEEE 754 32-bit little endian,
+?S:	 2 = IEEE 754 32-bit big endian,
+?S:	 3 = IEEE 754 64-bit little endian,
+?S:	 4 = IEEE 754 64-bit big endian,
+?S:	 5 = IEEE 754 128-bit little endian,
+?S:	 6 = IEEE 754 128-bit big endian,
+?S:	 7 = IEEE 754 64-bit mixed endian le-be,
+?S:	 8 = IEEE 754 64-bit mixed endian be-le,
 ?S:	-1 = unknown format.
 ?S:.
 ?S:d_PRIfldbl:
