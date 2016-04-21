@@ -5,9 +5,8 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_modfl d_modflproto d_modfl_pow32_bug: Inlibc Compile Hasproto cat \
-	rm_try test sPRIfldbl d_longdbl osname gccversion ccflags run \
-	uselongdouble i_math \
+?MAKE:d_modfl d_modflproto: Inlibc Compile Hasproto cat \
+	test ccflags uselongdouble i_math \
 	d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl d_ldexpl \
 	d_truncl
 ?MAKE:	-pick add $@ %<
@@ -21,13 +20,6 @@
 ?S:	to the program to supply one.  C99 says it should be
 ?S:		long double modfl(long double, long double *);
 ?S:.
-?S:d_modfl_pow32_bug:
-?S:	This variable conditionally defines the HAS_MODFL_POW32_BUG symbol,
-?S:	which indicates that modfl() is broken for long doubles >= pow(2, 32).
-?S:	For example from 4294967303.150000 one would get 4294967302.000000
-?S:	and 1.150000.  The bug has been seen in certain versions of glibc,
-?S:	release 2.2.2 is known to be okay.
-?S:.
 ?C:HAS_MODFL:
 ?C:	This symbol, if defined, indicates that the modfl routine is
 ?C:	available to split a long double x into a fractional part f and
@@ -38,19 +30,11 @@
 ?C:	a prototype for the modfl() function.  Otherwise, it is up
 ?C:	to the program to supply one.
 ?C:.
-?C:HAS_MODFL_POW32_BUG:
-?C:	This symbol, if defined, indicates that the modfl routine is
-?C:	broken for long doubles >= pow(2, 32).
-?C:	For example from 4294967303.150000 one would get 4294967302.000000
-?C:	and 1.150000.  The bug has been seen in certain versions of glibc,
-?C:	release 2.2.2 is known to be okay.
-?C:.
 ?H:#$d_modfl HAS_MODFL		/**/
 ?H:#$d_modflproto HAS_MODFL_PROTO		/**/
-?H:#$d_modfl_pow32_bug HAS_MODFL_POW32_BUG		/**/
 ?H:.
-?T:foo saveccflags message
-?F:!try
+?T:message
+?LINT:set d_modfl
 ?LINT:set d_modflproto
 ?LINT:change ccflags
 : see if modfl exists
@@ -61,69 +45,6 @@ eval $inlibc
 echo " "
 set d_modflproto modfl $i_math math.h
 eval $hasproto
-
-d_modfl_pow32_bug="$undef"
-
-case "$d_longdbl$d_modfl" in
-$define$define)
-	$cat <<EOM
-Checking to see whether your modfl() is okay for large values...
-EOM
-$cat >try.c <<EOCP
-#include <math.h>
-#include <stdio.h>
-EOCP
-if $test "X$d_modflproto" != "X$define"; then
-	$cat >>try.c <<EOCP
-/* Sigh. many current glibcs provide the function, but do not prototype it. */
-long double modfl (long double, long double *);
-EOCP
-fi
-$cat >>try.c <<EOCP
-int main() {
-    long double nv = 4294967303.15;
-    long double v, w;
-    v = modfl(nv, &w);
-#ifdef __GLIBC__
-    printf("glibc");
-#endif
-    printf(" %"$sPRIfldbl" %"$sPRIfldbl" %"$sPRIfldbl"\n", nv, v, w);
-    return 0;
-}
-EOCP
-	case "$osname:$gccversion" in
-	aix:)	saveccflags="$ccflags"
-		ccflags="$ccflags -qlongdouble" ;; # to avoid core dump
-	esac
-	set try
-	if eval $compile; then
-		foo=`$run ./try`
-		case "$foo" in
-		*" 4294967303.150000 1.150000 4294967302.000000")
-			echo >&4 "Your modfl() is broken for large values."
-			d_modfl_pow32_bug="$define"
-			case "$foo" in
-			glibc)	echo >&4 "You should upgrade your glibc to at least 2.2.2 to get a fixed modfl()."
-			;;
-			esac
-			;;
-		*" 4294967303.150000 0.150000 4294967303.000000")
-			echo >&4 "Your modfl() seems okay for large values."
-			;;
-		*)	echo >&4 "I don't understand your modfl() at all."
-			d_modfl="$undef"
-			;;
-		esac
-		$rm_try
-	else
-		echo "I cannot figure out whether your modfl() is okay, assuming it isn't."
-		d_modfl="$undef"
-	fi
-	case "$osname:$gccversion" in
-	aix:)	ccflags="$saveccflags" ;; # restore
-	esac
-	;;
-esac
 
 if $test "$uselongdouble" = "$define"; then
     message=""
