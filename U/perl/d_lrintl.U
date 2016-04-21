@@ -6,13 +6,13 @@
 ?S:d_lrintl:
 ?S:	This variable conditionally defines the HAS_LRINTL symbol, which
 ?S:	indicates to the C program that the lrintl() routine is available
-?S:	to return the integral value closest to (according to the current
-?S:	rounding mode) to x.
+?S:	to return the integral value closest to a long double (according
+?S:	to the current rounding mode).
 ?S:.
 ?C:HAS_LRINTL:
 ?C:	This symbol, if defined, indicates that the lrintl routine is
-?C:	available to return the closest integral value of the long double
-?C:	argument according to the current rounding mode.
+?C:	available to return the integral value closest to a long double
+?C:	(according to the current rounding mode).
 ?C:.
 ?H:#$d_lrintl HAS_LRINTL		/**/
 ?H:.

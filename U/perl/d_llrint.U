@@ -6,13 +6,13 @@
 ?S:d_llrint:
 ?S:	This variable conditionally defines the HAS_LLRINT symbol, which
 ?S:	indicates to the C program that the llrint() routine is available
-?S:	to return the long long value closest to (according to the current
-?S:	rounding mode) to x.
+?S:	to return the long long value closest to a double (according
+?S:	to the current rounding mode).
 ?S:.
 ?C:HAS_LLRINT:
 ?C:	This symbol, if defined, indicates that the llrint routine is
-?C:	available to return the closest long long value according to
-?C:	the current rounding mode.
+?C:	available to return the long long value closest to a double
+?C:	(according to the current rounding mode).
 ?C:.
 ?H:#$d_llrint HAS_LLRINT		/**/
 ?H:.
