@@ -1,0 +1,68 @@
+#! /usr/bin/env perl
+
+use v5.16;
+use warnings;
+
+# Take a unified diff (perhaps from "git diff" or similar) on stdin, and
+# delete hunks where (a) every "ins" line in the hunk also appears in a
+# "del" line somewhere in the diff, and (b) every "del" line in the hunk
+# also appears in an "ins" line somewhere in the diff.
+
+die "Usage: diff ... | nontrivdiff\n" if @ARGV;
+
+sub break_before (&@) {
+    my $predicate = shift;
+    my (@curr, @groups);
+    for (@_) {
+        push @groups, [splice @curr]
+            if @curr && $predicate->($_);
+        push @curr, $_;
+    }
+    push @groups, \@curr if @curr;
+    return @groups;
+}
+
+my @all_lines = <>;
+
+my @head;
+push @head, shift @all_lines
+    while @all_lines && $all_lines[0] =~ /^diff |^index |^--- |^\+\+\+ /;
+
+die "Can't handle multi-file diffs\n"
+    if grep /^--- |^\+\+\+ /, @all_lines;
+
+my (%ins, %del);
+for (@all_lines) {
+    next if /^\@\@ |^ /;
+    my ($c, $line) = /([-+])(.*)/s or die "can't parse: $_";
+    $line =~ s/[ \t]+/ /g;
+    my $h = $c eq '-' ? \%del : \%ins;
+    $h->{$line}++;
+}
+
+my @out;
+for my $hunk (break_before { /^\@\@ / } @all_lines) {
+    push @out, @$hunk if any_changes_missing($hunk);
+}
+
+print @head, @out if @out;
+
+sub any_changes_missing {
+    my ($hunk) = @_;
+
+    my %lins = %ins;
+    my %ldel = %del;
+
+    for (@$hunk) {
+        next if /^\@\@ |^ /;
+        my ($c, $line) = /([-+])(.*)/s or die "can't parse: $_";
+        $line =~ s/[ \t]+/ /g;
+        my $h = $c eq '-' ? \%lins : \%ldel;
+        return 1 if !$h->{$line};
+        $h->{$line}--;
+    }
+
+    %ins = %lins;
+    %del = %ldel;
+    return 0;
+}
