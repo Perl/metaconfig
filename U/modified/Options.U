@@ -46,7 +46,7 @@
 ?MAKE:Options: startsh
 ?MAKE:	-pick wipe $@ %<
 ?V:reuseval alldone error realsilent silent extractsh fastread \
-	override knowitall: config_sh
+	knowitall: config_sh
 ?T:arg argn symbol config_arg0 config_args config_argc xxx yyy zzz uuu
 ?T:args_exp args_sep arg_exp ccflags
 ?F:!Configure
@@ -156,7 +156,6 @@ alldone=''
 error=''
 silent=''
 extractsh=''
-override=''
 knowitall=''
 rm -f optdef.sh posthint.sh
 cat >optdef.sh <<EOS
