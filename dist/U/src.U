@@ -1,12 +1,12 @@
-?RCS: $Id: src.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1996, Cygnus Support
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: Original Author: Tom Tromey <tromey@cygnus.com>
@@ -47,7 +47,7 @@ case "$src" in
 esac
 ?X:
 ?X: Now check whether we have found the right source tree (i.e. the one for the
-?X: package we're abount to configure). The original unit from Tom Tromey forced
+?X: package we're about to configure). The original unit from Tom Tromey forced
 ?X: the user to pick a unique file from his distribution, and we were merely
 ?X: checking the existence of that file. I prefer to rely on Configure (which
 ?X: we know *is* present since this unit is part of it!) and look for the
