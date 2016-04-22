@@ -70,9 +70,6 @@ foreach my $u (sort keys %m) {
     $opt_l and say "    $m{$u}{$_}{dir}/$u" for qw( g d m );
 
     extdiff ($u, sort split // => $opt_d);
-
-    $opt_d eq "dg" and system "diff", "-w", "$d->{dir}/$u", "$g->{dir}/$u";
-    $opt_d eq "gm" and system "diff", "-w", "$g->{dir}/$u", "$m->{dir}/$u";
     }
 
 sub extdiff {
