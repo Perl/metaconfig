@@ -23,7 +23,6 @@
 ?S:.
 ?T: DJGPP
 : Find the appropriate value for a newline for tr
-echo " "
 ?X: We can't use $tr since that would cause a circular dependency via Myread
 ?X: dos djgpp uses '\015\012', but reportedly is happy with '\012' in the
 ?X: tr command.  I don't know why it passes the '\n' test but later
@@ -53,7 +52,5 @@ $me: Fatal Error: cannot figure out how to translate newlines with 'tr'.
 
 EOM
 	exit 1
-else
-	echo "We'll use '$trnl' to transliterate a newline."
 fi
 
