@@ -1,16 +1,16 @@
-?RCS: $Id: sysman.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: sysman.U,v $
 ?RCS: Revision 3.0.1.2  1994/06/20  07:08:43  ram
-?RCS: patch30: now explicitly states that /usr/man/man1 is the default
+?RCS: patch30: now explicitely states that /usr/man/man1 is the default
 ?RCS: patch30: added /usr/local/man/man1 to the search list
 ?RCS:
 ?RCS: Revision 3.0.1.1  1993/09/13  16:13:50  ram
