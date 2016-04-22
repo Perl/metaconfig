@@ -3,7 +3,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_siginfo_si_errno d_siginfo_si_pid d_siginfo_si_uid d_siginfo_si_addr d_siginfo_si_status d_siginfo_si_band d_siginfo_si_value: d_sigaction pidtype uidtype Hasfield_t
+?MAKE:d_siginfo_si_errno d_siginfo_si_pid d_siginfo_si_uid d_siginfo_si_addr d_siginfo_si_status d_siginfo_si_band d_siginfo_si_value d_siginfo_si_fd: d_sigaction pidtype uidtype Hasfield_t
 ?MAKE:	-pick add $@ %<
 ?S:d_siginfo_si_errno:
 ?S:	This variable conditionally defines the HAS_SIGINFO_SI_ERRNO symbol,
@@ -33,6 +33,10 @@
 ?S:	This variable conditionally defines the HAS_SIGINFO_SI_VALUE symbol,
 ?S:	which indicates that the siginfo_t struct has the si_value member.
 ?S:.
+?S:d_siginfo_si_fd:
+?S:	This variable conditionally defines the HAS_SIGINFO_SI_FD symbol,
+?S:	which indicates that the siginfo_t struct has the si_fd member.
+?S:.
 ?C:HAS_SIGINFO_SI_ERRNO:
 ?C:	This symbol, if defined, indicates that siginfo_t has the
 ?C:	si_errno member
@@ -61,6 +65,10 @@
 ?C:	This symbol, if defined, indicates that siginfo_t has the
 ?C:	si_value member
 ?C:.
+?C:HAS_SIGINFO_SI_FD:
+?C:	This symbol, if defined, indicates that siginfo_t has the
+?C:	si_fd member
+?C:.
 ?H:#$d_siginfo_si_errno	HAS_SIGINFO_SI_ERRNO	/**/
 ?H:#$d_siginfo_si_pid	HAS_SIGINFO_SI_PID	/**/
 ?H:#$d_siginfo_si_uid	HAS_SIGINFO_SI_UID	/**/
@@ -68,6 +76,7 @@
 ?H:#$d_siginfo_si_status	HAS_SIGINFO_SI_STATUS	/**/
 ?H:#$d_siginfo_si_band	HAS_SIGINFO_SI_BAND	/**/
 ?H:#$d_siginfo_si_value	HAS_SIGINFO_SI_VALUE	/**/
+?H:#$d_siginfo_si_fd	HAS_SIGINFO_SI_FD	/**/
 ?H:.
 : see what siginfo fields we have
 case "$d_sigaction" in
@@ -100,6 +109,10 @@ case "$d_sigaction" in
 	set d_siginfo_si_value siginfo_t "union sigval" si_value $d_sigaction signal.h
 	eval $hasfield_t;
 
+	echo "Checking if your siginfo_t has si_fd field...">&4
+	set d_siginfo_si_fd siginfo_t int si_fd $d_sigaction signal.h
+	eval $hasfield_t;
+
 	;;
 *)
 	d_siginfo_si_errno="$undef"
@@ -109,6 +122,7 @@ case "$d_sigaction" in
 	d_siginfo_si_status="$undef"
 	d_siginfo_si_band="$undef"
 	d_siginfo_si_value="$undef"
+	d_siginfo_si_fd="$undef"
 	;;
 esac
 
