@@ -26,12 +26,15 @@
 ?S:.
 ?S:longdblkind:
 ?S:	This variable, if defined, encodes the type of a long double:
-?S:	0 = double, 1 = IEEE 754 128-bit little endian,
-?S:	2 = IEEE 754 128-bit big endian, 3 = x86 80-bit little endian,
-?S:	4 = x86 80-bit big endian, 5 = double-double 128-bit little endian,
-?S:	6 = double-double 128-bit big endian,
-?S:	7 = 128-bit mixed double-double (64-bit LEs in BE),
-?S:	8 = 128-bit mixed double-double (64-bit BEs in LE),
+?S:	 0 = double,
+?S:	 1 = IEEE 754 128-bit little endian,
+?S:	 2 = IEEE 754 128-bit big endian,
+?S:	 3 = x86 80-bit little endian,
+?S:	 4 = x86 80-bit big endian,
+?S:	 5 = double-double 128-bit little endian,
+?S:	 6 = double-double 128-bit big endian,
+?S:	 7 = 128-bit mixed double-double (64-bit LEs in BE),
+?S:	 8 = 128-bit mixed double-double (64-bit BEs in LE),
 ?S:	-1 = unknown format.
 ?S:.
 ?C:HAS_LONG_DOUBLE:
