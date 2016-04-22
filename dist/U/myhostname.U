@@ -1,11 +1,11 @@
-?RCS: $Id: myhostname.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: myhostname.U,v $
@@ -13,7 +13,7 @@
 ?RCS: patch61: improved hostname lookup by using ypmatch when NIS is used
 ?RCS:
 ?RCS: Revision 3.0.1.2  1994/10/29  16:25:43  ram
-?RCS: patch36: call ./xenix explicitly instead of relying on PATH
+?RCS: patch36: call ./xenix explicitely instead of relying on PATH
 ?RCS: patch36: now uses new Tr unit to convert to/from lowercase
 ?RCS:
 ?RCS: Revision 3.0.1.1  1994/06/20  07:06:20  ram

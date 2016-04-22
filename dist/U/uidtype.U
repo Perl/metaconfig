@@ -1,11 +1,11 @@
-?RCS: $Id: uidtype.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: uidtype.U,v $
@@ -16,8 +16,8 @@
 ?RCS: patch30: comment for uidtype referred to the obsoleted symbol
 ?RCS:
 ?RCS: Revision 3.0.1.1  1994/05/13  15:28:27  ram
-?RCS: patch27: made conformant to its gidtype.U companion
-?RCS: patch27: question now explicitly mentions getuid()
+?RCS: patch27: made conform to its gidtype.U companion
+?RCS: patch27: question now explicitely mentions getuid()
 ?RCS:
 ?RCS: Revision 3.0  1993/08/18  12:09:56  ram
 ?RCS: Baseline for dist 3.0 netwide release.

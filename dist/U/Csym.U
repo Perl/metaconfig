@@ -1,11 +1,11 @@
-?RCS: $Id: Csym.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Csym.U,v $
@@ -14,7 +14,7 @@
 ?RCS: patch56: added quotes for OS/2 support
 ?RCS:
 ?RCS: Revision 3.0.1.3  1995/05/12  12:00:33  ram
-?RCS: patch54: fixed C test program to bypasss gcc builtin type checks (ADO)
+?RCS: patch54: fixed C test program to bypass gcc builtin type checks (ADO)
 ?RCS:
 ?RCS: Revision 3.0.1.2  1994/10/31  09:34:13  ram
 ?RCS: patch44: added Options to the MAKE line since it's no longer in Init.U

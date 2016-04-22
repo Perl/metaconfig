@@ -1,11 +1,11 @@
-?RCS: $Id: ccflags.U 17 2006-11-04 12:13:28Z rmanfredi $
+?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: ccflags.U,v $
@@ -21,7 +21,7 @@
 ?RCS: patch54: now checks for cc/ccflags/ldflags coherency
 ?RCS:
 ?RCS: Revision 3.0.1.6  1994/10/29  16:07:02  ram
-?RCS: patch36: gcc versionning no longer relies on the C compiler's name
+?RCS: patch36: gcc versioning no longer relies on the C compiler's name
 ?RCS: patch36: simplified check for gcc version checking (ADO)
 ?RCS:
 ?RCS: Revision 3.0.1.5  1994/08/29  16:06:35  ram
@@ -33,7 +33,7 @@
 ?RCS: patch23: magically added cc flags now only done the first time
 ?RCS:
 ?RCS: Revision 3.0.1.3  1993/09/13  15:58:29  ram
-?RCS: patch10: explicitly mention -DDEBUG just in case they need it (WAD)
+?RCS: patch10: explicitely mention -DDEBUG just in case they need it (WAD)
 ?RCS: patch10: removed all the "tans" variable usage (WAD)
 ?RCS:
 ?RCS: Revision 3.0.1.2  1993/08/27  14:39:38  ram

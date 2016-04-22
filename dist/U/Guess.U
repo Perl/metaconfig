@@ -1,11 +1,11 @@
-?RCS: $Id: Guess.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS: 
-?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
-?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Guess.U,v $
@@ -14,7 +14,7 @@
 ?RCS:
 ?RCS: Revision 3.0.1.4  1994/10/29  15:53:55  ram
 ?RCS: patch36: added ?F: line for metalint file checking
-?RCS: patch36: call ./xenix explicitly instead of relying on PATH
+?RCS: patch36: call ./xenix explicitely instead of relying on PATH
 ?RCS:
 ?RCS: Revision 3.0.1.3  1993/12/15  08:14:35  ram
 ?RCS: patch15: variable d_bsd was not always set properly
