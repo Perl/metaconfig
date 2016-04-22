@@ -1,7 +1,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_newlocale d_freelocale d_uselocale d_duplocale i_xlocale: Inlibc Inhdr
+?MAKE:d_newlocale d_freelocale d_uselocale d_duplocale d_querylocale i_xlocale: Inlibc Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:d_newlocale:
 ?S:	This variable conditionally defines the HAS_NEWLOCALE symbol, which
@@ -22,6 +22,11 @@
 ?S:	This variable conditionally defines the HAS_DUPLOCALE symbol, which
 ?S:	indicates to the C program that the duplocale() routine is available
 ?S:	to duplicate a locale object.
+?S:.
+?S:d_querylocale:
+?S:	This variable conditionally defines the HAS_QUERYLOCALE symbol, which
+?S:	indicates to the C program that the querylocale() routine is available
+?S:	to return the name of the locale for a category mask.
 ?S:.
 ?S:i_xlocale:
 ?S:	This symbol, if defined, indicates to the C program that it should
@@ -44,6 +49,10 @@
 ?C:	This symbol, if defined, indicates that the duplocale routine is
 ?C:	available to duplicate a locale object.
 ?C:.
+?C:HAS_QUERYLOCALE:
+?C:	This symbol, if defined, indicates that the querylocale routine is
+?C:	available to return the name of the locale for a category mask.
+?C:.
 ?C:I_XLOCALE:
 ?C:	This symbol, if defined, indicates to the C program that it should
 ?C:	include <xlocale.h> to get uselocale() and its friends.
@@ -52,6 +61,7 @@
 ?H:#$d_freelocale	HAS_FREELOCALE	/**/
 ?H:#$d_uselocale	HAS_USELOCALE	/**/
 ?H:#$d_duplocale	HAS_DUPLOCALE	/**/
+?H:#$d_querylocale	HAS_QUERYLOCALE	/**/
 ?H:#$i_xlocale	I_XLOCALE               /**/
 ?H:.
 ?LINT:set i_xlocale
@@ -59,6 +69,7 @@
 ?LINT:set d_freelocale
 ?LINT:set d_uselocale
 ?LINT:set d_duplocale
+?LINT:set d_querylocale
 : see if this is an xlocale.h system
 set xlocale.h i_xlocale
 eval $inhdr
@@ -77,5 +88,9 @@ eval $inlibc
 
 : see if duplocale exists
 set duplocale d_duplocale
+eval $inlibc
+
+: see if querylocale exists
+set querylocale d_querylocale
 eval $inlibc
 
