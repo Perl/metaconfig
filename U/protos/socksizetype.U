@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:socksizetype: \
-	Protochk Oldconfig Myread cat d_socket d_socklen_t sizetype \
+	Protochk Oldconfig Myread cat d_socket d_socklen_t \
 	usesocks i_socks i_systypes extern_C
 ?MAKE:	-pick add $@ %<
 ?S:socksizetype:
@@ -33,7 +33,7 @@ EOM
 	case "$d_socklen_t" in
 	"$define") yyy="$yyy socklen_t"
 	esac
-	yyy="$yyy $sizetype int long unsigned"
+	yyy="$yyy size_t int long unsigned"
 	for xxx in $yyy; do
 		case "$socksizetype" in
 		'')	try="$extern_C int accept(int, struct sockaddr *, $xxx *);"

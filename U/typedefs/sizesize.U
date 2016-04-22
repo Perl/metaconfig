@@ -7,25 +7,20 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:sizesize: Myread Typedef sizetype Compile run i_stdlib
+?MAKE:sizesize: Myread Typedef Compile run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:sizesize:
-?S:	This variable contains the size of a sizetype in bytes.
+?S:	This variable contains the size of a size_t in bytes.
 ?S:.
 ?C:Size_t_size:
-?C:	This symbol holds the size of a Size_t in bytes.
+?C:	This symbol holds the size of a size_t in bytes.
 ?C:.
 ?H:#define Size_t_size $sizesize		/**/
 ?H:.
-?T:yyy zzz
+?T:yyy
 ?F:!try
 : Check size of size
-echo " "
-case "$sizetype" in
-*_t) zzz="$sizetype"	;;
-*)   zzz="filesize"	;;
-esac
-echo "Checking the size of $zzz..." >&4
+echo "Checking the size of size_t..." >&4
 cat > try.c <<EOCP
 #include <sys/types.h>
 #include <stdio.h>
@@ -34,7 +29,8 @@ cat > try.c <<EOCP
 #include <stdlib.h>
 #endif
 int main() {
-    printf("%d\n", (int)sizeof($sizetype));
+    if (sizeof(size_t) == sizeof(ssize_t))
+        printf("%d\n", (int)sizeof(size_t));
     exit(0);
 }
 EOCP
@@ -46,7 +42,7 @@ if eval $compile_ok; then
 		echo "(I can't execute the test program--guessing $sizesize.)" >&4
 		;;
 	*)	sizesize=$yyy
-		echo "Your $zzz size is $sizesize bytes."
+		echo "Your size_t size is $sizesize bytes, and ssize_t is the same size."
 		;;
 	esac
 else

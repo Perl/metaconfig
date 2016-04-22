@@ -12,7 +12,7 @@
 ?MAKE:netdb_host_type netdb_hlen_type netdb_name_type netdb_net_type: \
 	Protochk Oldconfig Myread cat \
 	d_gethbyaddr d_gethbyname d_getnbyaddr \
-	i_niin i_netdb i_unistd d_socket sizetype extern_C
+	i_niin i_netdb i_unistd d_socket extern_C
 ?MAKE:	-pick add $@ %<
 ?S:netdb_host_type:
 ?S:	This variable holds the type used for the 1st argument to
@@ -94,7 +94,7 @@ EOM
 			. ./myread
 			netdb_host_type=$ans
 			rp='What is the type for the 2nd argument to gethostbyaddr?'
-			dflt="$sizetype"
+			dflt="size_t"
 			. ./myread
 			netdb_hlen_type=$ans
 			;;
@@ -102,7 +102,7 @@ EOM
 		;;
 	*)	: no gethostbyaddr, so pick harmless defaults
 		netdb_host_type='char *'
-		netdb_hlen_type="$sizetype"
+		netdb_hlen_type="size_t"
 		;;
 	esac
 	# Remove the "const" if needed. -- but then we'll have a
