@@ -1,7 +1,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_newlocale d_freelocale d_uselocale: Inlibc
+?MAKE:d_newlocale d_freelocale d_uselocale d_duplocale i_xlocale: Inlibc Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:d_newlocale:
 ?S:	This variable conditionally defines the HAS_NEWLOCALE symbol, which
@@ -18,6 +18,15 @@
 ?S:	indicates to the C program that the uselocale() routine is available
 ?S:	to set the current locale for the calling thread.
 ?S:.
+?S:d_duplocale:
+?S:	This variable conditionally defines the HAS_DUPLOCALE symbol, which
+?S:	indicates to the C program that the duplocale() routine is available
+?S:	to duplicate a locale object.
+?S:.
+?S:i_xlocale:
+?S:	This symbol, if defined, indicates to the C program that it should
+?S:	include <xlocale.h> to get uselocale() and its friends
+?S:.
 ?C:HAS_NEWLOCALE:
 ?C:	This symbol, if defined, indicates that the newlocale routine is
 ?C:	available to return a new locale object or modify an existing
@@ -31,13 +40,29 @@
 ?C:	This symbol, if defined, indicates that the uselocale routine is
 ?C:	available to set the current locale for the calling thread.
 ?C:.
+?C:HAS_DUPLOCALE:
+?C:	This symbol, if defined, indicates that the duplocale routine is
+?C:	available to duplicate a locale object.
+?C:.
+?C:I_XLOCALE:
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <xlocale.h> to get uselocale() and its friends.
+?C:.
 ?H:#$d_newlocale	HAS_NEWLOCALE	/**/
 ?H:#$d_freelocale	HAS_FREELOCALE	/**/
 ?H:#$d_uselocale	HAS_USELOCALE	/**/
+?H:#$d_duplocale	HAS_DUPLOCALE	/**/
+?H:#$i_xlocale	I_XLOCALE               /**/
 ?H:.
+?LINT:set i_xlocale
 ?LINT:set d_newlocale
 ?LINT:set d_freelocale
 ?LINT:set d_uselocale
+?LINT:set d_duplocale
+: see if this is an xlocale.h system
+set xlocale.h i_xlocale
+eval $inhdr
+
 : see if newlocale exists
 set newlocale d_newlocale
 eval $inlibc
@@ -48,5 +73,9 @@ eval $inlibc
 
 : see if uselocale exists
 set uselocale d_uselocale
+eval $inlibc
+
+: see if duplocale exists
+set duplocale d_duplocale
 eval $inlibc
 
