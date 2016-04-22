@@ -6,15 +6,18 @@ use warnings;
 use Getopt::Long qw(:config bundling nopermute passthrough);
 my $opt_l = 0;
 my $opt_w = 0;
+my $opt_F = 0;
 GetOptions (
     "w|word!"	=> \$opt_w,
     "l|list!"	=> \$opt_l,
-    ) or die "usage: metagrep [-w] [-l] pattern\n";
+    "F|fixed!"	=> \$opt_F,
+    ) or die "usage: metagrep [-w] [-l] [-F] pattern\n";
 
 use Cwd qw(getcwd abs_path);
 use File::Find;
 
 my $pat = shift or die "usage: metagrep pattern\n";
+$opt_F and $pat = quotemeta $pat;
 $opt_w and $pat = "\\b$pat\\b";
 $pat = qr/$pat/i;
 
