@@ -264,14 +264,14 @@ $echo $n ".$c"
 ?X:
 $grep fprintf libc.tmp > libc.ptf
 ?X:
-?X: In order to ehance readability and save some space, we define
+?X: In order to enhance readability and save some space, we define
 ?X:	some variables that will be "eval"ed.
 ?X:
 xscan='eval "<libc.ptf $com >libc.list"; $echo $n ".$c" >&4'
 xrun='eval "<libc.tmp $com >libc.list"; echo "done." >&4'
 ?X: BSD-like output, I and W types added for Linux
 ?X: Some versions of Linux include a leading __IO in the symbol name.
-?X: HPUX10 reportedly has trailing spaces, though I'm suprised it has
+?X: HPUX10 reportedly has trailing spaces, though I'm surprised it has
 ?X: BSD-like output.  (AD).
 xxx='[ADTSIW]'
 if com="$sed -n -e 's/__IO//' -e 's/^.* $xxx  *_[_.]*//p' -e 's/^.* $xxx  *//p'";\

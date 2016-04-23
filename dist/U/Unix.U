@@ -14,7 +14,7 @@
 ?RCS: patch61: created
 ?RCS:
 ?X:
-?X: The purpose of this unit is to define things that are common accross all
+?X: The purpose of this unit is to define things that are common across all
 ?X: known UNIX platforms. If Configure is ported/used on a non-UNIX
 ?X: environment, then some of the following variables can be redefined in hint
 ?X: files.

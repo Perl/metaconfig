@@ -21,12 +21,12 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:48  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X:
+?X: 
 ?X: This unit ends up producing the config.sh script, which contains all the
 ?X: definitions figured out by Configure.  The add.Config_sh command knows
 ?X: which variables need to be remembered.  It also adds the EOT (ends the
 ?X: here document redirection with variable substitution).
-?X:
+?X: 
 ?MAKE:Config_sh: cf_time cf_by test spitshell startsh myuname Myread \
 	End Obsol_sh Loc +d_portable package src cat sed
 ?MAKE:	-pick add.Config_sh $@ %<

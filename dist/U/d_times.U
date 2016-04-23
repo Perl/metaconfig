@@ -27,7 +27,7 @@
 ?MAKE:	-pick add $@ %<
 ?S:d_times:
 ?S:	This variable conditionally defines the HAS_TIMES symbol, which indicates
-?S:	that the times() routine exists.  The times() routine is normaly
+?S:	that the times() routine exists.  The times() routine is normally
 ?S:	provided on UNIX systems. You may have to include <sys/times.h>.
 ?S:.
 ?S:clocktype:

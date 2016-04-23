@@ -26,10 +26,10 @@
 ?Y:TOP
 ?S:perlpath:
 ?S:	This variable contains the eventual value of the PERLPATH symbol,
-?S:	which contains the absolute location of the perl interpeter.
+?S:	which contains the absolute location of the perl interpreter.
 ?S:.
 ?C:PERLPATH:
-?C:	This symbol contains the absolute location of the perl interpeter.
+?C:	This symbol contains the absolute location of the perl interpreter.
 ?C:.
 ?H:#define PERLPATH "$perlpath"		/**/
 ?H:.

@@ -37,7 +37,7 @@ echo " "
 case "$d_sbrk" in
 "$define")
 	echo "Let's see if your sbrk() is smart enough to release core..." >&4
-	$cat > sbrk.c <<'EOC'
+	$cat > sbrk.c <<EOC
 #define INC 256		/* Small enough to be less than a page size */
 
 int main()

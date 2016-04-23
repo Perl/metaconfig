@@ -28,8 +28,8 @@
 ?S:.
 : determine whether symbolic links are supported
 echo " "
+$rm -f blurfl sym
 $touch blurfl
-$rm -f sym
 if $ln -s blurfl sym > /dev/null 2>&1 && $test -f sym; then
 	echo "Symbolic links are supported." >&4
 	lns="$ln -s"

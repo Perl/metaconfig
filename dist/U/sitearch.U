@@ -51,7 +51,7 @@
 ?T:xxx
 : determine where site specific architecture-dependent libraries go.
 xxx=`echo $sitelib/$archname | sed 's!^$prefix!!'`
-: xxx is usuually lib/site_perl/archname.
+: xxx is usually lib/site_perl/archname.
 set sitearch sitearch none
 eval $prefixit
 case "$sitearch" in

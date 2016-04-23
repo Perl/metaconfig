@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0.1.1  1994/10/29  16:12:51  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_Gconvert: cat cc ccflags ldflags libs Inlibc rm _o
+?MAKE:d_Gconvert: cat cc ccflags ldflags libs rm _o
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
 ?S:	This variable holds what Gconvert is defined as to convert

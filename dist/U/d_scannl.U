@@ -19,7 +19,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?X:
-?X:	Does the scanf routine read "\n" corretly ? This is was not
+?X:	Does the scanf routine read "\n" correctly ? This is was not
 ?X:	the case on AIX...
 ?X:
 ?MAKE:d_scannl: cat +cc +ccflags rm Setvar
@@ -41,7 +41,7 @@
 : does scanf handle "\n" correctly ?
 echo " "
 val="$define"
-?X: I really want to say "\n" instead of '\n', becasue I am refering
+?X: I really want to say "\n" instead of '\n', because I am referring
 ?X:	to the string given as argument to scanf().
 echo 'Let'"'"'s see if scanf() handles "\\n" correctly...' >&4
 $cat >try.c <<'EOCP'

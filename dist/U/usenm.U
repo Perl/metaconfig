@@ -40,7 +40,7 @@
 ?S:	Maybe Linux should just always set usenm=false.
 ?S:.
 : see if nm is to be used to determine whether a symbol is defined or not
-?X: If there is enough enquiries, it might be worth to wait for the nm
+?X: If there is enough inquiries, it might be worth to wait for the nm
 ?X: extraction. Otherwise, the C compilations might be a better deal.
 ?X:
 ?X: Don't bother if we're using GNU libc -- skimo

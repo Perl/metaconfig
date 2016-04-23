@@ -83,6 +83,7 @@
 ?LINT:extern loclibpth
 ?LINT:change locincpth
 ?LINT:change loclibpth
+?LINT:extern TMPDIR
 : setup for possible cross-compilation
 run=''
 to=:
@@ -196,7 +197,7 @@ $define|true|[yY]*)
 	from=$from-$targetfrom
 	case "$targetdir" in
 	'')
-		targetdir=/tmp
+		targetdir="${TMPDIR:-/tmp}"
 		echo "Guessing targetdir $targetdir." >&4
 		;;
 	esac

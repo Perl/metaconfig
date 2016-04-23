@@ -38,8 +38,9 @@ case "$abortsig" in
 	for signal in SIGIOT SIGILL SIGABRT; do
 		case "$abortsig" in
 		'') $cat >abort.c <<EOP
+/* FIXME: Missing #include <stdlib.h>*/
 #include <signal.h>
-caught() { exit(0); }
+caught() { exit(0); }	/* FIXME: Use _exit() or _Exit() in signal handler  */
 int main()
 {
 #ifdef $signal

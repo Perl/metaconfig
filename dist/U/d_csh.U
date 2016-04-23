@@ -35,7 +35,7 @@
 ?C:	This symbol, if defined, contains the full pathname of csh.
 ?C:.
 ?X: Previously, I just did $d_csh CSH "$full_csh", but that caused
-?X: problems on VMS where the config.sh extraction program changes
+?X: problems on VMS where the config.sh extraction program changes 
 ?X: $undef to a real cpp undef, and they then had  #undef CSH ""
 ?X: which the compiler didn't like.  It's easy to work around this,
 ?X: so I did.  --AD  3/1998.

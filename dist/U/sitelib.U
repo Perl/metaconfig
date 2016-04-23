@@ -54,7 +54,7 @@ set sitelib sitelib
 eval $prefixit
 case "$sitelib" in
 '')
-?X: remove any trailing -3.0 or other version indification
+?X: remove any trailing -3.0 or other version indentification
 	prog=`echo $package | $sed 's/-*[0-9.]*$//'`
 	dflt="$privlib/site_$prog" ;;
 *)	dflt="$sitelib" ;;
