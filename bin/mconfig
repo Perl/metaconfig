@@ -245,7 +245,7 @@ sub units_path {
 	print "Locating in $MC/$dir...\n" if $main'opt_v;
 	@contents = readdir DIR;			# Slurp the whole thing
 	closedir DIR;						# And close dir, ready for recursion
-	foreach (@contents) {
+	foreach (sort @contents) {
 		next if $_ eq '.' || $_ eq '..';
 		if (/\.U$/) {					# A unit, definitely
 			($unit_name) = /^(.*)\.U$/;
