@@ -1,12 +1,12 @@
-?RCS: $Id: Finish.U,v 3.0.1.6 1995/02/15 14:09:30 ram Exp $
+?RCS: $Id$
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic License; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: $Log: Finish.U,v $
 ?RCS: Revision 3.0.1.6  1995/02/15  14:09:30  ram
@@ -43,8 +43,8 @@
 : Finish up by extracting the .SH files
 case "$alldone" in
 exit)
-	$rm -rf UU
-	echo "Extraction done."
+?X: They supplied the -E switch
+	echo "Stopping at your request, leaving temporary files around."
 	exit 0
 	;;
 cont)
@@ -124,11 +124,10 @@ the policy defaults.
 
 EOM
 fi
-if $test -f config.msg; then
+if $test -f UU/config.msg; then
     echo "Hmm.  I also noted the following information while running:"
     echo " "
-    $cat config.msg >&4
-    $rm -f config.msg
+    $cat UU/config.msg >&4
 fi
 ?X:
 ?X: kit*isdone files are left over by shell archives built using the makedist
