@@ -13,7 +13,7 @@
 ?RCS: patch61: improved hostname lookup by using ypmatch when NIS is used
 ?RCS:
 ?RCS: Revision 3.0.1.2  1994/10/29  16:25:43  ram
-?RCS: patch36: call ./xenix explicitely instead of relying on PATH
+?RCS: patch36: call ./xenix explicitly instead of relying on PATH
 ?RCS: patch36: now uses new Tr unit to convert to/from lowercase
 ?RCS:
 ?RCS: Revision 3.0.1.1  1994/06/20  07:06:20  ram

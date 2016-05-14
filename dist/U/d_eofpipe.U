@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS: $Log: d_eofpipe.U,v $
 ?RCS: Revision 3.0.1.1  1994/10/29  16:12:40  ram
-?RCS: patch36: call ./bsd explicitely instead of relying on PATH
+?RCS: patch36: call ./bsd explicitly instead of relying on PATH
 ?RCS:
 ?RCS: Revision 3.0  1993/08/18  12:05:57  ram
 ?RCS: Baseline for dist 3.0 netwide release.

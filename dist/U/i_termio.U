@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS: $Log: i_termio.U,v $
 ?RCS: Revision 3.0.1.4  1994/10/29  16:20:54  ram
-?RCS: patch36: call ./usg and ./Cppsym explicitely instead of relying on PATH
+?RCS: patch36: call ./usg and ./Cppsym explicitly instead of relying on PATH
 ?RCS:
 ?RCS: Revision 3.0.1.3  1994/08/29  16:26:38  ram
 ?RCS: patch32: don't include all three I_* symbols in config.h

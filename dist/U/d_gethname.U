@@ -10,7 +10,7 @@
 ?RCS:
 ?RCS: $Log: d_gethname.U,v $
 ?RCS: Revision 3.0.1.1  1994/10/29  16:13:00  ram
-?RCS: patch36: call ./xenix explicitely instead of relying on PATH
+?RCS: patch36: call ./xenix explicitly instead of relying on PATH
 ?RCS:
 ?RCS: Revision 3.0  1993/08/18  12:06:11  ram
 ?RCS: Baseline for dist 3.0 netwide release.
