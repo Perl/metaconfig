@@ -3,11 +3,15 @@
 use 5.18.2;
 use warnings;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 sub usage {
     my $err = shift and select STDERR;
-    say "usage: $0 [--list] [--diff]";
+    say "usage: $0 [--list] [--diff[=gd|dp|gp]]";
+    say "  diff (size) between git / dist / perl";
+    say "  where git  (g) is the version from the git repo of meta/dist";
+    say "  where dist (d) is the unmodified installed version from dist";
+    say "  where perl (p) is the *modified* version for use with perl";
     exit $err;
     } # usage
 
@@ -28,9 +32,9 @@ $pat = qr{$pat};
 
 my %m;
 
-foreach my $u ( [ "d", "dist/U"          ],
-		[ "m", "U"               ],
-		[ "g", "dist-git/mcon/U" ],
+foreach my $u ( [ "g", "dist-git/mcon/U" ],
+		[ "d", "dist/U"          ],
+		[ "p", "U"               ],
 		) {
     my ($t, $dir) = @$u;
     find (sub {
@@ -48,26 +52,38 @@ foreach my $u ( [ "d", "dist/U"          ],
 	}, $dir);
     }
 
+foreach my $u (keys %m) {
+    my $g = $m{$u}{g};
+    my $d = $m{$u}{d};
+    my $p = $m{$u}{p};
+
+    $m{$u}{gd} = $g && $d ? length diff (\$g->{unit}, \$d->{unit}) : 0;
+    $m{$u}{dp} = $d && $p ? length diff (\$d->{unit}, \$p->{unit}) : 0;
+    $m{$u}{gp} = $g && $p ? length diff (\$g->{unit}, \$p->{unit}) : 0;
+    }
+
 $opt_d //= "";
 
 say "  #     Git             Dist              Perl    Diff Unit";
 say "=== ========= ====== ========= ====== ========= ====== ======================";
 my $i = 1;
-foreach my $u (sort keys %m) {
+foreach my $u (sort { $m{$b}{gd} <=> $m{$a}{gd} || $m{$b}{dp} <=> $m{$a}{dp} } keys %m) {
     my $d = $m{$u}{d} or next;
-    my $m = $m{$u}{m} or next;
+    my $p = $m{$u}{p} or next;
     my $g = $m{$u}{g} or next;
 
-    my $gd = length diff (\$g->{unit}, \$d->{unit});
-    my $dm = length diff (\$d->{unit}, \$m->{unit});
-    my $gm = length diff (\$g->{unit}, \$m->{unit});
+    my $gd = $m{$u}{gd};
+    my $dp = $m{$u}{dp};
+    my $gp = $m{$u}{gp};
+
+    #$gd == 0 || $gd > 1000 and next;
 
     printf "%3d %5d/%3d %6d %5d/%3d %6d %5d/%3d %6d %s\n", $i++,
 	$g->{size}, $g->{lines}, $gd,
-	$d->{size}, $d->{lines}, $dm,
-	$m->{size}, $m->{lines}, $gm,
+	$d->{size}, $d->{lines}, $dp,
+	$p->{size}, $p->{lines}, $gp,
 	$u;
-    $opt_l and say "    $m{$u}{$_}{dir}/$u" for qw( g d m );
+    $opt_l and say "    $_ $m{$u}{$_}{dir}/$u" for qw( g d p );
 
     extdiff ($u, sort split // => $opt_d);
     }
@@ -79,9 +95,9 @@ sub extdiff {
     my $t = $m{$u}{$to}   or return;
 
     my %tag = (
-	d => "dst",
 	g => "git",
-	m => "mod",
+	d => "dst",
+	p => "prl",
 	);
     my $F = $tag{$from};
     my $T = $tag{$to};
