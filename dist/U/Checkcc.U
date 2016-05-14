@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -9,11 +9,11 @@
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: Copyright (c) 2000, Jarkko Hietaniemi
-?RCS: 
-?X: 
+?RCS:
+?X:
 ?X: This unit produces a bit of shell code that must be dotted in order
 ?X: to make quick check on whether the current C compiler is working.
-?X:	
+?X:
 ?MAKE:Checkcc ccname ccversion: Myread Warn startsh cat contains test
 ?MAKE:	-pick add $@ %<
 ?S:ccname:

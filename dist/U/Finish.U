@@ -1,13 +1,13 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
-?RCS: 
+?RCS:
 ?RCS: $Log: Finish.U,v $
 ?RCS: Revision 3.0.1.6  1995/02/15  14:09:30  ram
 ?RCS: patch51: now clearer about how to edit config.sh at the prompt (WED)
@@ -30,11 +30,11 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:55  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This unit is the very last one in the Configure script.  It runs all the
 ?X: SH files, which among other things produce config.h and (usually) Makefile.
 ?X: It offers to do a make depend if the Makefile contains that target.
-?X: 
+?X:
 ?MAKE:Finish: Chk_MANI Extract Myread Oldsym Magic_h cat rm contains \
 	test package make
 ?MAKE:	-pick add $@ %<

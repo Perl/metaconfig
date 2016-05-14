@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -22,7 +22,7 @@
 ?MAKE:lns: ln rm touch test
 ?MAKE:	-pick add $@ %<
 ?S:lns:
-?S:	This variable holds the name of the command to make 
+?S:	This variable holds the name of the command to make
 ?S:	symbolic links (if they are supported).  It can be used
 ?S:	in the Makefile. It is either 'ln -s' or 'ln'
 ?S:.

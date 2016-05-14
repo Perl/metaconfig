@@ -1,24 +1,24 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
-?RCS: 
+?RCS:
 ?RCS: Copyright (c) 2000, Jarkko Hietaniemi
-?RCS: 
-?X: 
+?RCS:
+?X:
 ?X: This unit allows the duplication of the source tree to the current
 ?X:	directory via symbolic links.  This must be requested explicitly
 ?X:	by them issuing a -Dmksymlinks on the command line.
-?X:	
+?X:
 ?MAKE:Mksymlinks: Mkdirp lns issymlink src rsrc pkgsrc
 ?MAKE:	-pick add $@ %<
 ?F:!UU
-?T: dir filename tmppwd filelist 
+?T: dir filename tmppwd filelist
 ?LINT:extern mksymlinks
 @if {test -f ../MANIFEST}
 : Duplicate the tree with symbolic links if -Dmksymlinks was supplied

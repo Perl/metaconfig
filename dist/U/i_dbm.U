@@ -1,7 +1,7 @@
 ?RCS: $Id: i_dbm.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -44,7 +44,7 @@
 ?T:d_dbmclose
 ?LINT:set i_dbm i_rpcsvcdbm
 : see if dbm.h is available
-?X: We might just have the header, not the library.  
+?X: We might just have the header, not the library.
 ?X: We look for dbmclose() rather than dbminit() because
 ?X: some versions of SCO Unix have -ldbm, but are missing dbmclose(). -- ADO
 ?X: Some System V systems have <rpcsvc/dbm.h> instead of <dbm.h>.

@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -25,8 +25,8 @@
 	+cc +optimize +ccflags +ldflags +libs _o
 ?MAKE:	-pick add $@ %<
 ?S:ssizetype:
-?S:	This variable defines ssizetype to be something like ssize_t, 
-?S:	long or int.  It is used by functions that return a count 
+?S:	This variable defines ssizetype to be something like ssize_t,
+?S:	long or int.  It is used by functions that return a count
 ?S:	of bytes or an error condition.  It must be a signed type.
 ?S:	We will pick a type such that sizeof(SSize_t) == sizeof(Size_t).
 ?S:.

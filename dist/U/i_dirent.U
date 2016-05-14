@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -87,7 +87,7 @@ fi
 set i_dirent
 eval $setvar
 
-?X: Use struct dirent or struct direct?   If we're using dirent.h, 
+?X: Use struct dirent or struct direct?   If we're using dirent.h,
 ?X: it's probably struct dirent, but apparently not always.
 ?X: Assume $xinc still contains the name of the header file we're using.
 @if direntrytype || Direntry_t

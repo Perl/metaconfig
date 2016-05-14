@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -40,11 +40,11 @@
 ?S:	This variable holds the name of the directory in which the user wants
 ?S:	to put architecture-dependent public library files for $package.
 ?S:	It is most often a local directory such as /usr/local/lib.
-?S:	Programs using this variable must be prepared to deal 
+?S:	Programs using this variable must be prepared to deal
 ?S:	with filename expansion.
 ?S:.
 ?S:archlibexp:
-?S:	This variable is the same as the archlib variable, but is 
+?S:	This variable is the same as the archlib variable, but is
 ?S:	filename expanded at configuration time, for convenient use.
 ?S:.
 ?S:installarchlib:

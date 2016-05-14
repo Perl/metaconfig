@@ -1,7 +1,7 @@
 ?RCS: $Id: Myread.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -31,15 +31,15 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:08  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This unit produces a bit of shell code that must be dotted in in order
 ?X: to do a read.  It allows for shell escapes, default assignment and
 ?X: parameter evaluation.
-?X:	
+?X:
 ?X: To use this unit, $rp and $dflt must hold the question and the
 ?X: default answer. The question will be printed by the script itself.
 ?X:	Neither $rp nor $dflt is altered by the script.
-?X: 
+?X:
 ?X: The myread script will stick to the question if no default is proposed
 ?X: and the user answer is empty, which prevents mistakes. However, at the
 ?X: end of Configure, there is an exception to this rule (Finish.U) where we

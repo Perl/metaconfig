@@ -2,7 +2,7 @@
 ?RCS:
 ?RCS: Copyright (c) 1996, Andy Dougherty
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -20,11 +20,11 @@
 ?S:	This variable contains the string to be included in Makefile.SH
 ?S:	so that MAKE is set if needed, and not if not needed.
 ?S:	Possible values are:
-?S:	
+?S:
 ?S:	make_set_make='#'		# If your make program handles this for you,
-?S:	
+?S:
 ?S:	make_set_make="MAKE=$make"	# if it doesn't.
-?S:	
+?S:
 ?S:	This uses a comment character so that we can distinguish a
 ?S:	'set' value (from a previous config.sh or Configure -D option)
 ?S:	from an uncomputed value.

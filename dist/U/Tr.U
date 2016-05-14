@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0.1.1  1994/10/29  15:58:35  ram
 ?RCS: patch36: created
 ?RCS:
-?X: 
+?X:
 ?X: This unit produces a bit of shell code that must be dotted in in order
 ?X: to do a character translation. It catches translations to uppercase or
 ?X: to lowercase, and then invokes the real tr to perform the job.

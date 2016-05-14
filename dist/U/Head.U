@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -42,10 +42,10 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:58  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This is the very first unit in the Configure script.  It is mostly just
 ?X: things to keep people from getting into a tizzy right off the bat.
-?X: 
+?X:
 ?MAKE:Head:
 ?MAKE:	-pick wipe $@ %<
 ?V:PATH p_ _exe me newsh

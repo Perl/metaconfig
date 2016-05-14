@@ -1,13 +1,13 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
-?RCS: 
+?RCS:
 ?RCS: $Log: Cppsym.U,v $
 ?RCS: Revision 3.0.1.5  1995/05/12  11:59:11  ram
 ?RCS: patch54: split awk command onto two lines for older awks (ADO)
@@ -30,14 +30,14 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:50  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This unit produces a shell script called Cppsym, which can be used to
 ?X: determine whether any in a list of symbols is defined by the C compilation
 ?X: chain (C preprocessor symbols plus C compiler native ones).
 ?X: It can determine the status of any symbol, though the symbols in $al
 ?X: are more easily determined.  If you want to add to $al you can do
 ?X: it in Myinit.U.
-?X: 
+?X:
 ?MAKE:Cppsym ccsymbols cppsymbols cppccsymbols: run \
 	eunicefix Guess awk cat tr sed sort rm startsh osname \
 	+cc gccversion test comm uniq echo Options trnl \

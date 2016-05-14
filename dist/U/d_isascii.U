@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -24,7 +24,7 @@
 ?S:	which indicates to the C program that isascii() is available.
 ?S:.
 ?C:HAS_ISASCII:
-?C:	This manifest constant lets the C program know that isascii 
+?C:	This manifest constant lets the C program know that isascii
 ?C:	is available.
 ?C:.
 ?H:#$d_isascii HAS_ISASCII		/**/

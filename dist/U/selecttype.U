@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -26,13 +26,13 @@
 ?S:selecttype:
 ?S:	This variable holds the type used for the 2nd, 3rd, and 4th
 ?S:	arguments to select.  Usually, this is 'fd_set *', if HAS_FD_SET
-?S:	is defined, and 'int *' otherwise.  This is only useful if you 
+?S:	is defined, and 'int *' otherwise.  This is only useful if you
 ?S:	have select(), naturally.
 ?S:.
 ?C:Select_fd_set_t:
 ?C:	This symbol holds the type used for the 2nd, 3rd, and 4th
 ?C:	arguments to select.  Usually, this is 'fd_set *', if HAS_FD_SET
-?C:	is defined, and 'int *' otherwise.  This is only useful if you 
+?C:	is defined, and 'int *' otherwise.  This is only useful if you
 ?C:	have select(), of course.
 ?C:.
 ?H:#define Select_fd_set_t 	$selecttype	/**/

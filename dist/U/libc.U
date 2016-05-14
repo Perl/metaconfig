@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -117,7 +117,7 @@ esac
 ?X:
 ?X: Some systems (e.g. DG/UX) use "environmental" links, which make the test
 ?X: -f fail. Ditto for symbolic links. So in order to reliably check the
-?X: existence of a file, we use test -r. It will still fail with DG/UX links 
+?X: existence of a file, we use test -r. It will still fail with DG/UX links
 ?X: though, but at least it will detect symbolic links. At some strategic
 ?X: points, we make use of (test -h), using a sub-shell in case builtin test
 ?X: does not implement the -h check for symbolic links. This makes it

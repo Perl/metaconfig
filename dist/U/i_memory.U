@@ -1,7 +1,7 @@
 ?RCS: $Id: i_memory.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -36,7 +36,7 @@
 ?LINT:set i_memory
 ?X:
 ?X:	Unfortunately, the definitions of memory functions sometimes
-?X:	conflict with those in <string.h>.  We'll assume that if 
+?X:	conflict with those in <string.h>.  We'll assume that if
 ?X:	<string.h> contains memcpy, then we don't need memory.h
 ?X:
 : see if memory.h is available.

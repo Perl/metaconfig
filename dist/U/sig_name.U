@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -37,22 +37,22 @@
 ?S:.
 ?S:sig_name_init:
 ?S:	This variable holds the signal names, enclosed in double quotes and
-?S:	separated by commas, suitable for use in the SIG_NAME definition 
-?S:	below.  A "ZERO" is prepended to the list, and the list is 
+?S:	separated by commas, suitable for use in the SIG_NAME definition
+?S:	below.  A "ZERO" is prepended to the list, and the list is
 ?S:	terminated with a plain 0.  The leading SIG in signal names
 ?S:	is removed. See sig_num.
 ?S:.
 ?S:sig_num:
 ?S:	This variable holds the signal numbers, space separated. A ZERO is
-?S:	prepended to the list (corresponding to the fake SIGZERO), and 
-?S:	the list is terminated with a 0.  Those numbers correspond to 
+?S:	prepended to the list (corresponding to the fake SIGZERO), and
+?S:	the list is terminated with a 0.  Those numbers correspond to
 ?S:	the value of the signal listed in the same place within the
 ?S:	sig_name list.
 ?S:.
 ?S:sig_num_init:
 ?S:	This variable holds the signal numbers, enclosed in double quotes and
-?S:	separated by commas, suitable for use in the SIG_NUM definition 
-?S:	below.  A "ZERO" is prepended to the list, and the list is 
+?S:	separated by commas, suitable for use in the SIG_NUM definition
+?S:	below.  A "ZERO" is prepended to the list, and the list is
 ?S:	terminated with a plain 0.
 ?S:.
 ?S:sig_count (sig_name.U):
@@ -84,10 +84,10 @@
 ?C:	The signals in the list are separated with commas, and the indices
 ?C:	within that list and the SIG_NAME list match, so it's easy to compute
 ?C:	the signal name from a number or vice versa at the price of a small
-?C:	dynamic linear lookup. 
+?C:	dynamic linear lookup.
 ?C:	Duplicates are allowed, but are moved to the end of the list.
 ?C:	The signal number corresponding to sig_name[i] is sig_number[i].
-?C:	if (i < NSIG) then sig_number[i] == i.  
+?C:	if (i < NSIG) then sig_number[i] == i.
 ?C:	The last element is 0, corresponding to the 0 at the end of
 ?C:	the sig_name list.
 ?C:.

@@ -2,7 +2,7 @@
 ?RCS:
 ?RCS: Copyright (c) 1996, Andy Dougherty
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -20,7 +20,7 @@
 ?S:	If the user has specified 'portability', then Makefile.SH
 ?S:	sees $byacc='byacc' whether or not the user actually has
 ?S:	byacc.  This variable allows us to determine in a makefile
-?S:	if we really have byacc.  
+?S:	if we really have byacc.
 ?S:.
 ?LINT:set d_byacc
 : Check if we really have byacc

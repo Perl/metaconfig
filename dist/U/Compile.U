@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -36,9 +36,9 @@
 ?S:		echo 'int main() { exit(0); }' > try.c
 ?S:		set try
 ?S:		if eval $compile; then
-?S:			echo "success"   # and do whatever . . . 
+?S:			echo "success"   # and do whatever . . .
 ?S:		else
-?S:			echo "failure"   # and do whatever . . . 
+?S:			echo "failure"   # and do whatever . . .
 ?S:		fi
 ?S:	To add extra flags cc flags (e.g. -DWHATEVER) just put them
 ?S:	in $*, e.g.
@@ -48,7 +48,7 @@
 ?S:	This shell variable is used internally by Configure to provide
 ?S:	a convenient shorthand for the typical compile command that you
 ?S:	expect to work ok.  It is the same as $compile, except we
-?S:	deliberately let the user see any error messages. 
+?S:	deliberately let the user see any error messages.
 ?S:.
 : define a shorthand compile call
 compile='

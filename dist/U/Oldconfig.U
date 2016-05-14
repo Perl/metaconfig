@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -202,7 +202,7 @@ if $test "X$has_uname" != X; then
 ?X:  $3 and $4 are version/subversion
 ?X:  $5 is always "pc", but that might not be unique to DJGPP.
 ?X: (e.g. Solaris_x86 has $5 = i86pc, which doesn't actually conflict,
-?X: but it's close enought that I can easily imagine other vendors also 
+?X: but it's close enought that I can easily imagine other vendors also
 ?X: using variants of pc* in $5.)
 ?X:  The "DJGPP" environment variable is always set when djgpp is active.
 	pc*)
@@ -215,7 +215,7 @@ if $test "X$has_uname" != X; then
 	case "$1" in
 	aix) osname=aix
 ?X: aix 4.1 uname -a output looks like
-?X:		AIX  foo  1 4 000123456789   
+?X:		AIX  foo  1 4 000123456789
 ?X: where $4 is the major release number and $3 is the (minor) version.
 ?X: More detail on the version is available with the oslevel command.
 ?X: in 3.2.x, it output a string (see case statements below).  In 4.1,

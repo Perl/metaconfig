@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -18,16 +18,16 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:19  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This unit produces a bit of shell code that must be dotted in in order
 ?X: to warn the user in case a change into a variable is noticed.
-?X:	
+?X:
 ?X: To use this unit, $was must hold the old value that has changed. Upon
 ?X: exit, the two variables $td and $tu are set to the correct value for
 ?X: respectively defining or undefining a variable. For instance, if $vas was
 ?X: $undef, but now $var is $define, after calling . whoa, you should use
 ?X: eval "$var=\$tu" to finally set $var to the correct value. See unit Inlibc.
-?X: 
+?X:
 ?MAKE:Whoa: Myread startsh hint
 ?MAKE:	-pick add $@ %<
 ?F:./whoa

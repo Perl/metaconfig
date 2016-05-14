@@ -2,7 +2,7 @@
 ?RCS:
 ?RCS: Copyright (c) 1996, Andy Dougherty
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -16,9 +16,9 @@
 ?X:
 ?X:	This was originally specific to perl5.  Since perl5 has man pages that
 ?X:	go in both man1/ and man3/ directories, we need both man1dir
-?X:	and man3dir.  This unit is basically dist's mansrc.U with 
+?X:	and man3dir.  This unit is basically dist's mansrc.U with
 ?X:	man3 used instead of man everywhere.
-?X:	I then added various tests because perl5 has *lots* of man3 
+?X:	I then added various tests because perl5 has *lots* of man3
 ?X:	pages with long file names. -- ADO
 ?X:
 ?MAKE:man3dir man3direxp man3ext installman3dir: afs cat nroff Loc Oldconfig \

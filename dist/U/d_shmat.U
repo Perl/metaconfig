@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -33,7 +33,7 @@
 ?S:	It can be 'void *' or 'char *'.
 ?S:.
 ?S:d_shmatprototype:
-?S:	This variable conditionally defines the HAS_SHMAT_PROTOTYPE 
+?S:	This variable conditionally defines the HAS_SHMAT_PROTOTYPE
 ?S:	symbol, which indicates that sys/shm.h has a prototype for
 ?S:	shmat.
 ?S:.

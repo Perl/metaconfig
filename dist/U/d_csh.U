@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -35,7 +35,7 @@
 ?C:	This symbol, if defined, contains the full pathname of csh.
 ?C:.
 ?X: Previously, I just did $d_csh CSH "$full_csh", but that caused
-?X: problems on VMS where the config.sh extraction program changes 
+?X: problems on VMS where the config.sh extraction program changes
 ?X: $undef to a real cpp undef, and they then had  #undef CSH ""
 ?X: which the compiler didn't like.  It's easy to work around this,
 ?X: so I did.  --AD  3/1998.

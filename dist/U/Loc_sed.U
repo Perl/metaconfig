@@ -2,7 +2,7 @@
 ?RCS:
 ?RCS: Copyright (c) 1996, Andy Dougherty
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -22,7 +22,7 @@
 ?X:	Yes, I know about the C symbol PORTABLE, but I think sed
 ?X:	is unlikely to move, and I'm too lazy to add all the
 ?X:	#ifdef PORTABLE sections to the perl source.
-?X:	
+?X:
 ?C:LOC_SED:
 ?C:	This symbol holds the complete pathname to the sed program.
 ?C:.

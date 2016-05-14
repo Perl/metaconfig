@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -25,7 +25,7 @@
 ?MAKE:uidtype: Myread Typedef Findhdr
 ?MAKE:	-pick add $@ %<
 ?S:uidtype:
-?S:	This variable defines Uid_t to be something like uid_t, int, 
+?S:	This variable defines Uid_t to be something like uid_t, int,
 ?S:	ushort, or whatever type is used to declare user ids in the kernel.
 ?S:.
 ?C:Uid_t (UIDTYPE):

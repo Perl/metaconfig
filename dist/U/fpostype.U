@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -18,7 +18,7 @@
 ?MAKE:fpostype: Myread Typedef
 ?MAKE:	-pick add $@ %<
 ?S:fpostype:
-?S:	This variable defines Fpos_t to be something like fpost_t, long, 
+?S:	This variable defines Fpos_t to be something like fpost_t, long,
 ?S:	uint, or whatever type is used to declare file positions in libc.
 ?S:.
 ?C:Fpos_t:

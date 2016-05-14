@@ -1,7 +1,7 @@
 ?RCS: $Id: AAAAA.U 1 2006-08-24 12:32:52Z rmanfredi $
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic Licence,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -25,12 +25,12 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:44  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: The purpose of this file is to supply the head of the Makefile created
 ?X: by metaconfig.  For this reason it must be first in alphabetical order.
 ?X: The leading '+' in front of the unit name is a hint for metalint, since
 ?X: the use of that special unit name as a "made" unit is legitimate here.
-?X: 
+?X:
 ?MAKE:+All: Finish
 ?X:
 ?X: Throughout the units, the following initials are used to identify comments:

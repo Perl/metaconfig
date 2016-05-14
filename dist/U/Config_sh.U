@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -21,12 +21,12 @@
 ?RCS: Revision 3.0  1993/08/18  12:04:48  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?X: 
+?X:
 ?X: This unit ends up producing the config.sh script, which contains all the
 ?X: definitions figured out by Configure.  The add.Config_sh command knows
 ?X: which variables need to be remembered.  It also adds the EOT (ends the
 ?X: here document redirection with variable substitution).
-?X: 
+?X:
 ?MAKE:Config_sh: cf_time cf_by test spitshell startsh myuname Myread \
 	End Obsol_sh Loc +d_portable package src cat sed
 ?MAKE:	-pick add.Config_sh $@ %<

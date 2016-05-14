@@ -1,7 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
-?RCS: 
+?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
@@ -24,18 +24,18 @@
 ?S:	definition of the sys_errnolist array, if the C library
 ?S:	doesn't provide it already.  Otherwise, its value is empty.
 ?S:	The following lines should be included in your Makefile.SH:
-?S:	
+?S:
 ?S:		case "$errnolist" in
 ?S:		'') ;;
 ?S:		*)
 ?S:			$spitshell >>Makefile <<!GROK!THIS!
 ?S:		$errnolist_c: $errnolist_SH $errnolist_a
 ?S:			sh ./$errnolist_SH
-?S:	
+?S:
 ?S:		!GROK!THIS!
 ?S:			;;
 ?S:		esac
-?S:	
+?S:
 ?S:	You may define the 'errnolist' variable in your Myinit.U if you
 ?S:	wish to override its default value "errnolist".
 ?S:.
