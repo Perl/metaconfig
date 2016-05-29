@@ -32,10 +32,14 @@
 : Find the path to the source tree
 case "$src" in
 '') case "$0" in
-    */*)
-		src=`echo $0 | sed -e 's%/[^/][^/]*$%%'`
-		;;
-    *)	src='.';;
+    */*) src=`echo $0 | sed -e 's%/[^/][^/]*$%%'`
+         case "$src" in
+	 /*)	;;
+	 .)	;;
+         *)	src=`cd ../$src && pwd` ;;
+	 esac
+         ;;
+    *)   src='.';;
     esac;;
 esac
 case "$src" in

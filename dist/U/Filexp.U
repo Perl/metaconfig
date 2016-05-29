@@ -31,11 +31,15 @@
 cat >filexp <<EOSS
 $startsh
 : expand filename
+?X:
+?X: The case entries below escape the ~ as some shells have shown expansion
+?X: of the ~ during here-doc processing.
+?X:
 case "\$1" in
- ~/*|~)
+ \~/*|\~)
 	echo \$1 | $sed "s|~|\${HOME-\$LOGDIR}|"
 	;;
- ~*)
+ \~*)
 	if $test -f /bin/csh; then
 		/bin/csh -f -c "glob \$1"
 		failed=\$?
