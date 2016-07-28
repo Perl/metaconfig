@@ -1,7 +1,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:usequadmath: Setvar
+?MAKE:usequadmath: Setvar cat uselongdouble
 ?MAKE:	-pick add $@ %<
 ?S:usequadmath:
 ?S:	This variable conditionally defines the USE_QUADMATH symbol,
@@ -20,5 +20,19 @@
 case "$usequadmath" in
 "$define"|true|[yY]*) usequadmath="$define" ;;
 *)                    usequadmath="$undef"  ;;
+esac
+
+: Fail if both uselongdouble and usequadmath are requested
+case "$usequadmath:$uselongdouble" in
+define:define)
+	$cat <<EOM >&4
+
+*** You requested the use of the quadmath library and use
+*** of long doubles.
+***
+*** Please select one or the other.
+EOM
+	exit 1
+	;;
 esac
 

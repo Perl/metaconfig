@@ -33,8 +33,9 @@
 ?S:	 4 = x86 80-bit big endian,
 ?S:	 5 = double-double 128-bit little endian,
 ?S:	 6 = double-double 128-bit big endian,
-?S:	 7 = 128-bit mixed double-double (64-bit LEs in BE),
-?S:	 8 = 128-bit mixed double-double (64-bit BEs in LE),
+?S:	 7 = 128-bit mixed-endian double-double (64-bit LEs in BE),
+?S:	 8 = 128-bit mixed-endian double-double (64-bit BEs in LE),
+?S:	 9 = 128-bit PDP-style mixed-endian long doubles,
 ?S:	-1 = unknown format.
 ?S:.
 ?C:HAS_LONG_DOUBLE:
@@ -63,6 +64,7 @@
 ?C:	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_BE
 ?C:	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LE_BE
 ?C:	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_LE
+?C:	LONG_DOUBLE_IS_VAX_H_FLOAT
 ?C:	LONG_DOUBLE_IS_UNKNOWN_FORMAT
 ?C:	It is only defined if the system supports long doubles.
 ?C:.
@@ -80,6 +82,7 @@
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_BE	6
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LE_BE	7
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_LE	8
+?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_VAX_H_FLOAT			9
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_UNKNOWN_FORMAT			-1
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LITTLE_ENDIAN	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LE_LE /* back-compat */
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BIG_ENDIAN	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_BE /* back-compat */
@@ -94,6 +97,7 @@
 ?LINT:known LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_BE
 ?LINT:known LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LE_BE
 ?LINT:known LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_LE
+?LINT:known LONG_DOUBLE_IS_VAX_H_FLOAT
 ?LINT:set d_longdbl
 ?LINT:set d_ldexpl
 : check for long doubles
@@ -248,6 +252,16 @@ int main() {
     exit(0);
   }
 #endif
+/* We are largely making this up because it may well be
+ * that the VAX format H was never made available to C,
+ * only to Fortran. */
+#if LONGDBLSIZE == 16 && defined(__vax__)
+  if (b[0] == 0xFD && b[15] == 0x99) {
+    /* VAX format H, PDP-11 mixed endian. */
+    printf("9\n");
+    exit(0);
+  }
+#endif
   printf("-1\n"); /* unknown */
   exit(0);
 }
@@ -269,8 +283,9 @@ case "$longdblkind" in
 4) echo "You have x86 80-bit big endian long doubles." >& 4 ;;
 5) echo "You have 128-bit fully little-endian double-double long doubles (64-bit LEs in LE)." >& 4 ;;
 6) echo "You have 128-bit fully big-endian double-double long doubles (64-bit BEs in BE)." >& 4 ;;
-7) echo "You have 128-bit mixed double-double long doubles (64-bit LEs in BE)." >& 4 ;;
-8) echo "You have 128-bit mixed double-double long doubles (64-bit BEs in LE)." >& 4 ;;
+7) echo "You have 128-bit mixed-endian double-double long doubles (64-bit LEs in BE)." >& 4 ;;
+8) echo "You have 128-bit mixed-endian double-double long doubles (64-bit BEs in LE)." >& 4 ;;
+9) echo "You have 128-bit PDP-style mixed-endian long doubles." >& 4 ;;
 *) echo "Cannot figure out your long double." >&4 ;;
 esac
 $rm_try
