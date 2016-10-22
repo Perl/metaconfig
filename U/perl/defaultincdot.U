@@ -1,0 +1,41 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2016 H.Merijn Brand & Todd Rinaldo
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:default_inc_excludes_dot: Myread cat
+?MAKE:	-pick add $@ %<
+?S:default_inc_excludes_dot:
+?S:	When defined, remove the legacy '.' from @INC
+?S:.
+?C:DEFAULT_INC_EXCLUDES_DOT:
+?C:	This symbol, if defined, removes the legacy default behavior of
+?C:	including '.' at the end of @INC.
+?C:.
+?H:#$default_inc_excludes_dot DEFAULT_INC_EXCLUDES_DOT	/**/
+?H:.
+?D:default_inc_excludes_dot=''
+: Include . in @INC
+$cat <<EOM
+
+Historically Perl has provided a final fallback of the current working
+directory '.' when searching for a library. This, however, can lead to
+problems when a Perl program which loads optional modules is called from
+a shared directory. This can lead to executing unexpected code.
+
+EOM
+
+case "$default_inc_excludes_dot" in
+    $define|true|[yY]*) dflt="n" ;;
+    *)                  dflt='y' ;;
+esac
+
+rp='Provide '.' in @INC by default? '
+. ./myread
+case "$ans" in
+    [nN]*|define) default_inc_excludes_dot="$define" ;;
+    *)            default_inc_excludes_dot="$undef"  ;;
+esac
+
