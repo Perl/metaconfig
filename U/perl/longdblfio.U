@@ -25,6 +25,9 @@
 ?S:	 9 = VAX 32bit little endian F float format
 ?S:	10 = VAX 64bit little endian D float format
 ?S:	11 = VAX 64bit little endian G float format
+?S:	12 = IBM 32bit format
+?S:	13 = IBM 64bit format
+?S:	14 = Cray 64bit format
 ?S:	-1 = unknown format.
 ?S:.
 ?S:d_PRIfldbl:
@@ -136,6 +139,9 @@
 ?C:	DOUBLE_IS_VAX_F_FLOAT
 ?C:	DOUBLE_IS_VAX_D_FLOAT
 ?C:	DOUBLE_IS_VAX_G_FLOAT
+?C:	DOUBLE_IS_IBM_SINGLE_32_BIT
+?C:	DOUBLE_IS_IBM_DOUBLE_64_BIT
+?C:	DOUBLE_IS_CRAY_SINGLE_64_BIT
 ?C:	DOUBLE_IS_UNKNOWN_FORMAT
 ?C:.
 ?LINT:known DOUBLE_IS_IEEE_754_32_BIT_LITTLE_ENDIAN
@@ -149,6 +155,9 @@
 ?LINT:known DOUBLE_IS_VAX_F_FLOAT
 ?LINT:known DOUBLE_IS_VAX_D_FLOAT
 ?LINT:known DOUBLE_IS_VAX_G_FLOAT
+?LINT:known DOUBLE_IS_IBM_SINGLE_32_BIT
+?LINT:known DOUBLE_IS_IBM_DOUBLE_64_BIT
+?LINT:known DOUBLE_IS_CRAY_SINGLE_64_BIT
 ?LINT:known DOUBLE_IS_UNKNOWN_FORMAT
 ?H:#define DOUBLEKIND $doublekind		/**/
 ?H:?DOUBLEKIND:#define DOUBLE_IS_IEEE_754_32_BIT_LITTLE_ENDIAN	1
@@ -162,6 +171,9 @@
 ?H:?DOUBLEKIND:#define DOUBLE_IS_VAX_F_FLOAT	9
 ?H:?DOUBLEKIND:#define DOUBLE_IS_VAX_D_FLOAT	10
 ?H:?DOUBLEKIND:#define DOUBLE_IS_VAX_G_FLOAT	11
+?H:?DOUBLEKIND:#define DOUBLE_IS_IBM_SINGLE_32_BIT	12
+?H:?DOUBLEKIND:#define DOUBLE_IS_IBM_DOUBLE_64_BIT	13
+?H:?DOUBLEKIND:#define DOUBLE_IS_CRAY_SINGLE_64_BIT	14
 ?H:?DOUBLEKIND:#define DOUBLE_IS_UNKNOWN_FORMAT		-1
 ?H:#$d_PRIfldbl PERL_PRIfldbl	$sPRIfldbl	/**/
 ?H:#$d_PRIgldbl PERL_PRIgldbl	$sPRIgldbl	/**/
@@ -203,6 +215,11 @@ int main() {
     printf("9\n");
     exit(0);
   }
+  if (b[0] == 0xC0 && b[3] == 0x9A) {
+    /* IBM single 32-bit */
+    printf("12\n");
+    exit(0);
+  }
 #endif
 #if DOUBLESIZE == 8
   if (b[0] == 0x9A && b[7] == 0xBF) {
@@ -237,6 +254,16 @@ int main() {
   if (b[0] == 0xD9 && b[7] == 0x99) {
    /* VAX format G, 64-bit PDP-style mixed endian. */
     printf("11\n");
+    exit(0);
+  }
+  if (b[0] == 0xC0 && b[7] == 0x9A) {
+    /* IBM double 64-bit */
+    printf("13\n");
+    exit(0);
+  }
+  if (b[0] == 0xBF && b[7] == 0xCD) {
+    /* CRAY single 64-bit */
+    printf("14\n");
     exit(0);
   }
 #endif
@@ -276,7 +303,10 @@ case "$doublekind" in
 9) echo "You have VAX format F 32-bit PDP-style mixed endian doubles." >&4 ;;
 10) echo "You have VAX format D 64-bit PDP-style mixed endian doubles." >&4 ;;
 11) echo "You have VAX format G 64-bit PDP-style mixed endian doubles." >&4 ;;
-*) echo "Cannot figure out your double.  You CRAY, or something?" >&4 ;;
+12) echo "You have IBM short 32-bit doubles." >&4 ;;
+13) echo "You have IBM long 64-bit doubles." >&4 ;;
+14) echo "You have Cray single 64-bit doubles." >&4 ;;
+*) echo "Cannot figure out your double.  You Cyber, or something?" >&4 ;;
 esac
 $rm_try
 
