@@ -71,6 +71,11 @@ $cat >try.c <<EOP
  * 0x7f, 0xf4, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
  * (respectively) as opposed to the more usual
  * 0x7f, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+ *
+ * Pre-IEEE-754 floating point format do not even have inf/nan support
+ * at all.  They might have a "max" value (DBL_MAX), which may be deadly
+ * to even mention, causing immediate SIGFPE or equivalent: this is
+ * the case with VAX floating point, for example.
  */
 static void bytes(unsigned char *p, unsigned int n) {
   int i;
@@ -150,6 +155,10 @@ else
        doubleinfbytes='0x00, 0x00, 0x00, 0x00, 0x7f, 0xf0, 0x00, 0x00'
        doublenanbytes='0x00, 0x00, 0x00, 0x00, 0x7f, 0xf8, 0x00, 0x00'
        ;;
+    9|10|11|12|13|14) # VAX/Cray/IBM floating point formats, no inf/nan.
+       doubleinfbytes=$undef
+       doublenanbytes=$undef
+       ;;
     *) # No idea.
        doubleinfbytes=$undef
        doublenanbytes=$undef
@@ -212,11 +221,28 @@ else
        longdblinfbytes='0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00'
        longdblnanbytes='0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7f, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00'
        ;;
+    9|10|11|12|13|14) # VAX/Cray/IBM floating point formats, no inf/nan.
+       longdblinfbytes=$undef
+       longdblnanbytes=$undef
+       ;;
     *) # No idea.
        longdblinfbytes=$undef
        longdblnanbytes=$undef
        ;;
     esac
 fi
+# In case the program crashed the values are empty, turn them undef.
+case "$doubleinfbytes" in
+'') doubleinfbytes=$undef ;;
+esac
+case "$doublenanbytes" in
+'') doublenanbytes=$undef ;;
+esac
+case "$longdblinfbytes" in
+'') longdblinfbytes=$undef ;;
+esac
+case "$longdblnanbytes" in
+'') longdblnanbytes=$undef ;;
+esac
 $rm_try
 

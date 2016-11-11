@@ -7,7 +7,10 @@
 ?RCS:
 ?RCS: $Log: d_longdbl.U,v $
 ?RCS:
-?MAKE:d_longdbl longdblsize d_ldexpl longdblkind: Compile Setvar Myread \
+?MAKE:d_longdbl longdblsize d_ldexpl longdblkind \
+	d_long_double_style_ieee d_long_double_style_ieee_doubledouble \
+	d_long_double_style_ieee_extended d_long_double_style_ieee_std \
+	d_long_double_style_vax: Compile Setvar Myread \
 	Inlibc run echo cat rm_try test doublesize i_stdlib i_float
 ?MAKE:	-pick add $@ %<
 ?S:d_longdbl:
@@ -37,6 +40,30 @@
 ?S:	 8 = 128-bit mixed-endian double-double (64-bit BEs in LE),
 ?S:	 9 = 128-bit PDP-style mixed-endian long doubles,
 ?S:	-1 = unknown format.
+?S:.
+?S:d_long_double_style_ieee:
+?S:	This variable conditionally defines LONG_DOUBLE_STYLE_IEEE
+?S:	if the long double is any of the IEEE 754 style long doubles:
+?S:	LONG_DOUBLE_STYLE_IEEE_STD, LONG_DOUBLE_STYLE_IEEE_EXTENDED,
+?S:	LONG_DOUBLE_STYLE_IEEE_DOUBLEDOUBLE.
+?S:.
+?S:d_long_double_style_ieee_doubledouble:
+?S:	This variable conditionally defines LONG_DOUBLE_STYLE_IEEE_DOUBLEDOUBLE
+?S:	if the long double is the 128-bit IEEE 754 double-double.
+?S:.
+?S:d_long_double_style_ieee_extended:
+?S:	This variable conditionally defines LONG_DOUBLE_STYLE_IEEE_EXTENDED
+?S:	if the long double is the 80-bit IEEE 754 extended precision.
+?S:	Note that despite the 'extended' this is less than the 'std',
+?S:	since thisis an extension of the double precision.
+?S:.
+?S:d_long_double_style_ieee_std:
+?S:	This variable conditionally defines LONG_DOUBLE_STYLE_IEEE_STD
+?S:	if the long double is the 128-bit IEEE 754.
+?S:.
+?S:d_long_double_style_vax:
+?S:	This variable conditionally defines LONG_DOUBLE_STYLE_VAX
+?S:	if the long double is the 128-bit VAX format H.
 ?S:.
 ?C:HAS_LONG_DOUBLE:
 ?C:	This symbol will be defined if the C compiler supports long
@@ -68,6 +95,30 @@
 ?C:	LONG_DOUBLE_IS_UNKNOWN_FORMAT
 ?C:	It is only defined if the system supports long doubles.
 ?C:.
+?C:LONG_DOUBLE_STYLE_IEEE:
+?C:	This symbol, if defined, indicates that the long double
+?C:	is any of the IEEE 754 style long doubles:
+?C:	LONG_DOUBLE_STYLE_IEEE_STD, LONG_DOUBLE_STYLE_IEEE_EXTENDED,
+?C:	LONG_DOUBLE_STYLE_IEEE_DOUBLEDOUBLE.
+?C:.
+?C:LONG_DOUBLE_STYLE_IEEE_DOUBLEDOUBLE:
+?C:	This symbol, if defined, indicates that the long double is
+?C:	the 128-bit double-double.
+?C:.
+?C:LONG_DOUBLE_STYLE_IEEE_EXTENDED:
+?C:	This symbol, if defined, indicates that the long double is
+?C:	the 80-bit IEEE 754. Note that despite the 'extended' this
+?C:	is less than the 'std', since this is an extension of
+?C:	the double precision.
+?C:.
+?C:LONG_DOUBLE_STYLE_IEEE_STD:
+?C:	This symbol, if defined, indicates that the long double is
+?C:	the 128-bit IEEE 754.
+?C:.
+?C:LONG_DOUBLE_STYLE_VAX:
+?C:	This symbol, if defined, indicates that the long double is
+?C:	the 128-bit VAX format H.
+?C:.
 ?H:#$d_ldexpl  HAS_LDEXPL		/**/
 ?H:#$d_longdbl HAS_LONG_DOUBLE		/**/
 ?H:?LONG_DOUBLESIZE:#ifdef HAS_LONG_DOUBLE
@@ -86,6 +137,11 @@
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_UNKNOWN_FORMAT			-1
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LITTLE_ENDIAN	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_LE_LE /* back-compat */
 ?H:?LONG_DOUBLESIZE:#define LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BIG_ENDIAN	LONG_DOUBLE_IS_DOUBLEDOUBLE_128_BIT_BE_BE /* back-compat */
+?H:?LONG_DOUBLESIZE:#$d_long_double_style_ieee LONG_DOUBLE_STYLE_IEEE
+?H:?LONG_DOUBLESIZE:#$d_long_double_style_ieee_doubledouble LONG_DOUBLE_STYLE_IEEE_DOUBLEDOUBLE
+?H:?LONG_DOUBLESIZE:#$d_long_double_style_ieee_extended LONG_DOUBLE_STYLE_IEEE_EXTENDED
+?H:?LONG_DOUBLESIZE:#$d_long_double_style_ieee_std LONG_DOUBLE_STYLE_IEEE_STD
+?H:?LONG_DOUBLESIZE:#$d_long_double_style_vax LONG_DOUBLE_STYLE_VAX
 ?H:?LONG_DOUBLESIZE:#endif
 ?H:.
 ?F:!try
@@ -285,8 +341,28 @@ case "$longdblkind" in
 6) echo "You have 128-bit fully big-endian double-double long doubles (64-bit BEs in BE)." >& 4 ;;
 7) echo "You have 128-bit mixed-endian double-double long doubles (64-bit LEs in BE)." >& 4 ;;
 8) echo "You have 128-bit mixed-endian double-double long doubles (64-bit BEs in LE)." >& 4 ;;
-9) echo "You have 128-bit PDP-style mixed-endian long doubles." >& 4 ;;
+9) echo "You have 128-bit PDP-style mixed-endian long doubles (VAX format H)." >& 4 ;;
 *) echo "Cannot figure out your long double." >&4 ;;
+esac
+d_long_double_style_ieee=$undef
+d_long_double_style_ieee_std=$undef
+d_long_double_style_ieee_extended=$undef
+d_long_double_style_ieee_doubledouble=$undef
+d_long_double_style_vax=$undef
+case "$longdblkind" in
+1|2|3|4|5|6|7|8) d_long_double_style_ieee=$define ;;
+esac
+case "$longdblkind" in
+1|2) d_long_double_style_ieee_std=$define ;;
+esac
+case "$longdblkind" in
+3|4) d_long_double_style_ieee_extended=$define ;;
+esac
+case "$longdblkind" in
+5|6|7|8) d_long_double_style_ieee_doubledouble=$define ;;
+esac
+case "$longdblkind" in
+9) d_long_double_style_vax=$define ;;
 esac
 $rm_try
 

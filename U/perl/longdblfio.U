@@ -7,7 +7,9 @@
 ?RCS:
 ?MAKE:d_PRIfldbl sPRIfldbl d_PRIgldbl d_PRIFUldbl sPRIGUldbl d_PRIEUldbl \
 	sPRIgldbl d_PRIeldbl sPRIeldbl sPRIFUldbl d_PRIGUldbl sPRIEUldbl \
-	d_SCNfldbl \
+	d_SCNfldbl  d_double_style_vax d_double_style_ieee \
+	d_double_style_ibm d_double_style_cray d_double_has_subnormals \
+	d_double_has_inf d_double_has_nan d_double_has_negative_zero \
 	sSCNfldbl doublekind: \
 	d_longdbl longdblsize doublesize uselongdouble test echo cat rm_try \
 	Setvar Compile run i_stdlib osname gccversion ccflags
@@ -97,6 +99,38 @@
 ?S:sSCNfldbl:
 ?S:	This variable, if defined, contains the string used by stdio to
 ?S:	format long doubles (format 'f') for input.
+?S:.
+?S:d_double_has_inf:
+?S:	This variable conditionally defines the symbol DOUBLE_HAS_INF
+?S:	which indicates that the double type has an infinity.
+?S:.
+?S:d_double_has_nan:
+?S:	This variable conditionally defines the symbol DOUBLE_HAS_INF
+?S:	which indicates that the double type has a not-a-number.
+?S:.
+?S:d_double_has_negative_zero:
+?S:	This variable conditionally defines the symbol DOUBLE_HAS_NEGATIVE_ZERO
+?S:	which indicates that the double type has a negative zero.
+?S:.
+?S:d_double_has_subnormals:
+?S:	This variable conditionally defines the symbol DOUBLE_HAS_SUBNORMALS
+?S:	which indicates that the double type has subnormals (denormals).
+?S:.
+?S:d_double_style_cray:
+?S:	This variable conditionally defines the symbol DOUBLE_STYLE_CRAY
+?S:	which indicates that the double is the 64-bit CRAY mainframe format.
+?S:.
+?S:d_double_style_ibm:
+?S:	This variable conditionally defines the symbol DOUBLE_STYLE_IBM,
+?S:	which indicates that the double is the 64-bit IBM mainframe format.
+?S:.
+?S:d_double_style_ieee:
+?S:	This variable conditionally defines the symbol DOUBLE_STYLE_IEEE,
+?S:	which indicates that the double is the 64-bit IEEE 754.
+?S:.
+?S:d_double_style_vax:
+?S:	This variable conditionally defines the symbol DOUBLE_STYLE_VAX,
+?S:	which indicates that the double is the 64-bit VAX format D or G.
 ?S:.
 ?C:PERL_PRIfldbl:
 ?C:	This symbol, if defined, contains the string used by stdio to
@@ -307,6 +341,30 @@ case "$doublekind" in
 13) echo "You have IBM long 64-bit doubles." >&4 ;;
 14) echo "You have Cray single 64-bit doubles." >&4 ;;
 *) echo "Cannot figure out your double.  You Cyber, or something?" >&4 ;;
+esac
+d_double_style_ieee=$undef
+d_double_style_vax=$undef
+d_double_style_ibm=$undef
+d_double_style_cray=$undef
+case "$doublekind" in
+1|2|3|4|5|6|7|8) d_double_style_ieee=$define ;;
+9|10|11) d_double_style_vax=$define ;;
+12|13) d_double_style_ibm=$define ;;
+14) d_double_style_cray=$define ;;
+esac
+case "$d_double_style_ieee" in
+$define)
+    d_double_has_inf=$define
+    d_double_has_nan=$define
+    d_double_has_negative_zero=$define
+    d_double_has_subnormals=$define
+    ;;
+*)
+    d_double_has_inf=$undef
+    d_double_has_nan=$undef
+    d_double_has_negative_zero=$undef
+    d_double_has_subnormals=$undef
+    ;;
 esac
 $rm_try
 
