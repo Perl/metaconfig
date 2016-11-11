@@ -178,6 +178,38 @@
 ?C:	DOUBLE_IS_CRAY_SINGLE_64_BIT
 ?C:	DOUBLE_IS_UNKNOWN_FORMAT
 ?C:.
+?C:DOUBLE_HAS_INF:
+?C:	This symbol, if defined, indicates that the double has
+?C:	the infinity.
+?C:.
+?C:DOUBLE_HAS_NAN:
+?C:	This symbol, if defined, indicates that the double has
+?C:	the not-a-number.
+?C:.
+?C:DOUBLE_HAS_NEGATIVE_ZERO:
+?C:	This symbol, if defined, indicates that the double has
+?C:	the negative_zero.
+?C:.
+?C:DOUBLE_HAS_SUBNORMALS:
+?C:	This symbol, if defined, indicates that the double has
+?C:	the subnormals (denormals).
+?C:.
+?C:DOUBLE_STYLE_CRAY:
+?C:	This symbol, if defined, indicates that the double is
+?C:	the 64-bit CRAY mainframe format.
+?C:.
+?C:DOUBLE_STYLE_IBM:
+?C:	This symbol, if defined, indicates that the double is
+?C:	the 64-bit IBM mainframe format.
+?C:.
+?C:DOUBLE_STYLE_IEEE:
+?C:	This symbol, if defined, indicates that the double is
+?C:	the 64-bit IEEE 754.
+?C:.
+?C:DOUBLE_STYLE_VAX:
+?C:	This symbol, if defined, indicates that the double is
+?C:	the 64-bit VAX format D or G.
+?C:.
 ?LINT:known DOUBLE_IS_IEEE_754_32_BIT_LITTLE_ENDIAN
 ?LINT:known DOUBLE_IS_IEEE_754_32_BIT_BIG_ENDIAN
 ?LINT:known DOUBLE_IS_IEEE_754_64_BIT_LITTLE_ENDIAN
@@ -216,6 +248,14 @@
 ?H:#$d_PRIGUldbl PERL_PRIGldbl	$sPRIGUldbl	/**/
 ?H:#$d_PRIEUldbl PERL_PRIEldbl	$sPRIEUldbl	/**/
 ?H:#$d_SCNfldbl PERL_SCNfldbl	$sSCNfldbl	/**/
+?H:#$d_double_has_inf DOUBLE_HAS_INF
+?H:#$d_double_has_nan DOUBLE_HAS_NAN
+?H:#$d_double_has_negative_zero DOUBLE_HAS_NEGATIVE_ZERO
+?H:#$d_double_has_subnormals DOUBLE_HAS_SUBNORMALS
+?H:#$d_double_style_cray DOUBLE_STYLE_CRAY
+?H:#$d_double_style_ibm DOUBLE_STYLE_IBM
+?H:#$d_double_style_ieee DOUBLE_STYLE_IEEE
+?H:#$d_double_style_vax DOUBLE_STYLE_VAX
 ?H:.
 ?T:yyy message saveccflags
 ?F:!try
