@@ -16,7 +16,6 @@
 ?C:.
 ?H:#$default_inc_excludes_dot DEFAULT_INC_EXCLUDES_DOT	/**/
 ?H:.
-?D:default_inc_excludes_dot=''
 : Include . in @INC
 $cat <<EOM
 
@@ -27,15 +26,21 @@ a shared directory. This can lead to executing unexpected code.
 
 EOM
 
+# When changing to exclude by default:
+#case "$default_inc_excludes_dot" in
+#    $undef|false|[nN]*) dflt="n" ;;
+#    *)                  dflt="y" ;;
+#esac
+# For now:
 case "$default_inc_excludes_dot" in
-    $define|true|[yY]*) dflt="n" ;;
-    *)                  dflt='y' ;;
+    $define|true|[yY]*) dflt="y" ;;
+    *)                  dflt="n" ;;
 esac
 
-rp='Provide '.' in @INC by default? '
+rp='Exclude '.' from @INC by default? '
 . ./myread
 case "$ans" in
-    [nN]*|define) default_inc_excludes_dot="$define" ;;
-    *)            default_inc_excludes_dot="$undef"  ;;
+    [nN]|undef) default_inc_excludes_dot="$undef"  ;;
+    *)          default_inc_excludes_dot="$define" ;;
 esac
 
