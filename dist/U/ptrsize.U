@@ -8,7 +8,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
-?MAKE:ptrsize: cat rm Myread +cc +ccflags
+?MAKE:ptrsize: cat rm_try Myread +cc +ccflags
 ?MAKE:	-pick add $@ %<
 ?S:ptrsize:
 ?S:	This variable contains the value of the PTRSIZE symbol, which
@@ -47,5 +47,5 @@ esac
 rp="What is the size of a pointer (in bytes)?"
 . ./myread
 ptrsize="$ans"
-$rm -f try.c try
+$rm_try
 

@@ -10,7 +10,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
-?MAKE:d_gnulibc gnulibc_version: Myread Oldconfig Setvar rm \
+?MAKE:d_gnulibc gnulibc_version: Myread Oldconfig Setvar rm_try \
 	cat Compile run
 ?MAKE:	-pick add $@ %<
 ?S:d_gnulibc:
@@ -92,7 +92,7 @@ else
 	gnulibc_version=''
 	echo "You are not using the GNU C Library"
 fi
-$rm -f try try.* glibc.ver
+$rm_try glibc.ver
 set d_gnulibc
 eval $setvar
 

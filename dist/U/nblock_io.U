@@ -21,7 +21,7 @@
 ?X: Simplify here document for shells that can't handle them well.
 ?X: (Problem reported on FreeBSD; it's unclear if this helps.)  --AD
 ?X:
-?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm +cc +ccflags +ldflags \
+?MAKE:o_nonblock eagain rd_nodata d_eofnblk: cat rm_try +cc +ccflags +ldflags \
 	d_open3 h_sysfile h_fcntl signal_t hint Oldconfig Setvar startsh Warn
 ?MAKE:	-pick add $@ %<
 ?S:o_nonblock:
@@ -121,7 +121,7 @@ EOCP
 	;;
 *) echo "Using $hint value $o_nonblock.";;
 esac
-$rm -f try try.* .out core
+$rm_try
 
 echo " "
 echo "Let's see what value errno gets from read() on a $o_nonblock file..." >&4
@@ -250,5 +250,5 @@ EOCP
 	esac
 	;;
 esac
-$rm -f try try.* .out core head.c mtry
+$rm_try head.c mtry
 

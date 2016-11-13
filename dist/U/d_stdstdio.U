@@ -27,7 +27,7 @@
 ?RCS:
 ?MAKE:d_stdstdio d_stdiobase stdio_ptr stdio_cnt stdio_base \
 	stdio_bufsiz d_stdio_cnt_lval d_stdio_ptr_lval stdio_filbuf: cat \
-	+cc +ccflags contains +ldflags +libs rm \
+	+cc +ccflags contains +ldflags +libs rm_try \
 	Setvar Findhdr Oldconfig
 ?MAKE:	-pick add $@ %<
 ?S:d_stdstdio:
@@ -218,7 +218,7 @@ if $cc $ccflags $ldflags -o try try.c $libs >/dev/null 2>&1; then
 else
 	echo "Your stdio doesn't appear very std."
 fi
-$rm -f try.c try
+$rm_try
 set d_stdstdio
 eval $setvar
 
@@ -274,7 +274,7 @@ EOP
 		else
 			echo "Hmm.  $filbuf doesn't seem to work."
 		fi
-		$rm -f try.c try
+		$rm_try
 	done
 	case "$xxx" in
 	notok)	echo "I can't figure out how to access _filbuf"
@@ -316,7 +316,7 @@ EOP
 	else
 		echo "However, it seems to be lacking the _base field."
 	fi
-	$rm -f try.c try
+	$rm_try
 	;;
 esac
 set d_stdiobase

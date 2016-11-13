@@ -29,7 +29,7 @@
 ?X: This unit looks whether there is a dirent system or not
 ?X:
 ?MAKE:i_dirent d_dirnamlen direntrytype: test contains Setvar \
-	Myread Findhdr cppstdin cppflags cppminus rm
+	Myread Findhdr cppstdin cppflags cppminus rm_try
 ?MAKE:	-pick add $@ %<
 ?S:i_dirent:
 ?S:	This variable conditionally defines I_DIRENT, which indicates
@@ -124,7 +124,7 @@ else
 	. ./myread
 	direntrytype="$ans"
 fi
-$rm -f try.c
+$rm_try
 
 @end
 
@@ -141,6 +141,6 @@ else
 fi
 set d_dirnamlen
 eval $setvar
-$rm -f try.c
+$rm_try
 
 @end

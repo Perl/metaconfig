@@ -47,7 +47,7 @@
 ?RCS:
 ?MAKE:ccflags ldflags lkflags cppflags optimize locincpth: test cat \
 	Myread Guess Options Oldconfig gccversion mips_type +usrinc \
-	package contains rm +cc cppstdin cppminus cpprun cpplast libpth \
+	package contains rm rm_try +cc cppstdin cppminus cpprun cpplast libpth \
 	loclibpth hint
 ?MAKE:	-pick add $@ %<
 ?S:ccflags:
@@ -416,5 +416,5 @@ y)
 	;;
 n) echo "OK, that should do.";;
 esac
-$rm -f try try.* core
+$rm_try
 

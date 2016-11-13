@@ -23,7 +23,7 @@
 ?X:
 ?X:	Can the compiler cast large floats to 32-bit integers?
 ?X:
-?MAKE:d_casti32: cat +cc +ccflags rm intsize Setvar test signal_t
+?MAKE:d_casti32: cat +cc +ccflags rm_try intsize Setvar test signal_t
 ?MAKE:	-pick add $@ %<
 ?S:d_casti32:
 ?S:	This variable conditionally defines CASTI32, which indicates
@@ -83,5 +83,5 @@ case "$yyy" in
 esac
 set d_casti32
 eval $setvar
-$rm -f try try.*
+$rm_try
 

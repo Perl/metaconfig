@@ -21,7 +21,7 @@
 ?RCS: Revision 3.0.1.1  1994/10/29  16:12:51  ram
 ?RCS: patch36: created by ADO
 ?RCS:
-?MAKE:d_Gconvert: cat cc ccflags ldflags libs rm _o
+?MAKE:d_Gconvert: cat cc ccflags ldflags libs rm_try _o
 ?MAKE:	-pick add $@ %<
 ?S:d_Gconvert:
 ?S:	This variable holds what Gconvert is defined as to convert
@@ -124,7 +124,7 @@ esac
 
 for xxx_convert in $xxx_list; do
 	echo "Trying $xxx_convert"
-	$rm -f try try$_o
+	$rm_try
 	if $cc $ccflags -DTRY_$xxx_convert $ldflags -o try \
 		try.c $libs > /dev/null 2>&1 ; then
 		echo "$xxx_convert" found. >&4

@@ -20,7 +20,7 @@
 ?RCS: Revision 3.0.1.1  1994/06/20  07:02:05  ram
 ?RCS: patch30: created by ADO
 ?RCS:
-?MAKE:i_neterrno: Inhdr +cc +ccflags rm Setvar
+?MAKE:i_neterrno: Inhdr +cc +ccflags rm_try Setvar
 ?MAKE:	-pick add $@ %<
 ?S:i_neterrno:
 ?S:	This variable conditionally defines the I_NET_ERRNO symbol, which
@@ -57,7 +57,7 @@ EOM
 		echo "We won't be including <net/errno.h>." >&4
 		val="$undef"
 	fi
-	$rm -f try.* try
+	$rm_try
 	;;
 esac
 set i_neterrno

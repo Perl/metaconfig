@@ -17,7 +17,7 @@
 ?X: program, we also try to find which header should be included. Eventually,
 ?X: we look for <sys/select.h> if I_SYSSELECT is used, to get struct timeval.
 ?X:
-?MAKE:i_time i_systime i_systimek timeincl: cat cc ccflags contains rm \
+?MAKE:i_time i_systime i_systimek timeincl: cat cc ccflags contains rm_try \
 	echo n c +i_sysselct Findhdr
 ?MAKE:	-pick add $@ %<
 ?S:i_time:
@@ -167,5 +167,5 @@ case "$flags" in
 	esac
 esac
 @end
-$rm -f try.c try
+$rm_try
 

@@ -20,7 +20,7 @@
 ?RCS: Revision 3.0.1.1  1994/08/29  16:21:50  ram
 ?RCS: patch32: created by ADO
 ?RCS:
-?MAKE:i_db db_hashtype db_prefixtype: Inhdr +cc +ccflags rm contains cat \
+?MAKE:i_db db_hashtype db_prefixtype: Inhdr +cc +ccflags rm_try contains cat \
 		d_const
 ?MAKE:	-pick add $@ %<
 ?S:i_db:
@@ -94,7 +94,7 @@ EOCP
 		echo "I can't seem to compile the test program." >&4
 		db_hashtype=int
 	fi
-	$rm -f try.*
+	$rm_try
 	echo "Your version of Berkeley DB uses $db_hashtype for hash."
 	;;
 *)	db_hashtype=int
@@ -136,7 +136,7 @@ EOCP
 		echo "I can't seem to compile the test program." >&4
 		db_prefixtype='int'
 	fi
-	$rm -f try.*
+	$rm_try
 	echo "Your version of Berkeley DB uses $db_prefixtype for prefix."
 	;;
 *)	db_prefixtype='int'

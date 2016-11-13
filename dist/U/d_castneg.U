@@ -23,7 +23,7 @@
 ?X:
 ?X:	Can the compiler cast negative / odd floats to unsigned values.
 ?X:
-?MAKE:d_castneg castflags: cat +cc +ccflags rm Setvar signal_t
+?MAKE:d_castneg castflags: cat +cc +ccflags rm_try Setvar signal_t
 ?MAKE:	-pick add $@ %<
 ?S:d_castneg:
 ?S:	This variable conditionally defines CASTNEG, which indicates
@@ -139,5 +139,5 @@ case "$castflags" in
 esac
 set d_castneg
 eval $setvar
-$rm -f try.*
+$rm_try
 

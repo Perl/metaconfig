@@ -8,7 +8,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
-?MAKE:intsize longsize shortsize: Assert Myread cat rm +cc +ccflags echo n c
+?MAKE:intsize longsize shortsize: Assert Myread cat rm_try +cc +ccflags echo n c
 ?MAKE:	-pick add $@ %<
 ?S:intsize:
 ?S:	This variable contains the value of the INTSIZE symbol, which
@@ -85,5 +85,5 @@ EOCP
 		;;
 	esac
 done
-$rm -f try.*
+$rm_try
 

@@ -15,7 +15,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:34  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:charsize: Assert Myread cat rm +cc +ccflags echo n c
+?MAKE:charsize: Assert Myread cat rm_try +cc +ccflags echo n c
 ?MAKE:	-pick add $@ %<
 ?S:charsize:
 ?S:	This variable contains the value of the CHARSIZE symbol, which
@@ -60,5 +60,5 @@ error)
 	charsize=$size
 	;;
 esac
-$rm -f try.*
+$rm_try
 
