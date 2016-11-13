@@ -47,16 +47,19 @@ cf_time=`LC_ALL=C; LANGUAGE=C; export LC_ALL; export LANGUAGE; $date 2>&1`
 ?X:   cf_by=`( (logname) 2>/dev/null || whoami) 2>&1`
 ?X: Switch to emergency mode... -- RAM, 19/04/94
 ?X:
-?X: Parens needed to avoid error message if the program does not exist.
+?X: Parentheses needed to avoid error message if the program does not exist.
 ?X: Uses case instead of $test so it can be put before $test is defined.
 ?X: Don't redirect to a file because on Ultrix (under script?) logname
 ?X: outputs a blank line first.  This method will apparently work.
-cf_by=`(logname) 2>/dev/null`
 case "$cf_by" in
 "")
-	cf_by=`(whoami) 2>/dev/null`
+	cf_by=`(logname) 2>/dev/null`
 	case "$cf_by" in
-	"") cf_by=unknown ;;
+	"")
+		cf_by=`(whoami) 2>/dev/null`
+		case "$cf_by" in
+		"") cf_by=unknown ;;
+		esac ;;
 	esac ;;
 esac
 

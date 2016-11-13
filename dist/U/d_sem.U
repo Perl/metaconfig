@@ -12,7 +12,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:03  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_sem: test d_semctl d_semget d_semop Setvar Findhdr
+?MAKE:d_sem: test d_semctl d_semget d_semop Setvar Findhdr osname
 ?MAKE:	-pick add $@ %<
 ?S:d_sem:
 ?S:	This variable conditionally defines the HAS_SEM symbol, which
@@ -31,6 +31,23 @@ h_sem=true
 echo " "
 case "$d_semctl$d_semget$d_semop" in
 *"$undef"*) h_sem=false;;
+esac
+case "$osname" in
+freebsd)
+    case "`ipcs 2>&1`" in
+    "SVID messages"*"not configured"*)
+	echo "Your $osname does not have the sem*(2) configured." >&4
+        h_sem=false
+	val="$undef"
+	set semctl d_semctl
+	eval $setvar
+	set semget d_semget
+	eval $setvar
+	set semop d_semop
+	eval $setvar
+	;;
+    esac
+    ;;
 esac
 : we could also check for sys/ipc.h ...
 if $h_sem && $test `./findhdr sys/sem.h`; then

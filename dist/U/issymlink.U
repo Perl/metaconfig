@@ -23,6 +23,7 @@
 ?S:.
 ?T:pth p
 ?LINT:change PATH test
+?LINT:extern newsh
 : determine whether symbolic links are supported
 echo " "
 case "$lns" in
@@ -64,7 +65,7 @@ case "$lns" in
 				;;
 			*)	issymlink='' ;;
 			esac
-		fi		
+		fi
 	fi
 	if $test "X$issymlink" = X; then
 		if $test -L sym 2>/dev/null; then
