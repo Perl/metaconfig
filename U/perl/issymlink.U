@@ -1,12 +1,12 @@
-?RCS: $Id: lns.U,v 3.0.1.1 1994/06/20 07:05:52 ram Exp $
+?RCS: $Id$
 ?RCS:
-?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
 ?RCS: You may reuse parts of this distribution only within the terms of
 ?RCS: that same Artistic License; a copy of which may be found at the root
-?RCS: of the source tree for dist 3.0.
+?RCS: of the source tree for dist 4.0.
 ?RCS:
 ?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
 ?RCS:
@@ -22,10 +22,8 @@
 ?S:	'test -L'.
 ?S:.
 ?T:pth p
-?LINT:change PATH
-?LINT:change test
+?LINT:change PATH test
 ?LINT:extern newsh
-?LINT:extern _exe
 : determine whether symbolic links are supported
 echo " "
 case "$lns" in
@@ -85,5 +83,4 @@ case "$lns" in
 *)	echo "No symbolic links, so not testing for their testing..." >&4
 	;;
 esac
-echo " "
 
