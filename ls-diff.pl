@@ -32,6 +32,7 @@ GetOptions (
 my $pat = shift // ".";
 $pat = qr{$pat};
 
+my %exempt = map {( s/[\s\n].*\z//rs => 1 )} <DATA>;
 my %m;
 
 foreach my $u ( [ "g", "dist-git/mcon/U" ],
@@ -43,6 +44,8 @@ foreach my $u ( [ "g", "dist-git/mcon/U" ],
 	-l $_   and return;
 	m/\.U$/ or  return;
 	m{$pat} or  return;
+
+	$exempt{$_} and return;
 
 	my $u = do { local (@ARGV, $/) = $_; <> };
 	$m{$_}{$t} = {
@@ -128,3 +131,6 @@ sub extdiff {
 	}
     close $fh;
     } # extdiff
+
+__END__
+package.U	Will never be equal due to conflicting needs
