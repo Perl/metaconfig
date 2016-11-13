@@ -3,11 +3,11 @@
 use 5.18.2;
 use warnings;
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 sub usage {
     my $err = shift and select STDERR;
-    say "usage: $0 [--list] [--diff[=gd|dp|gp]]";
+    say "usage: $0 [--list] [--diff[=gd|dp|gp]] [--pat=pattern]";
     say "  diff (size) between git / dist / perl";
     say "  where git  (g) is the version from the git repo of meta/dist";
     say "  where dist (d) is the unmodified installed version from dist";
@@ -25,6 +25,8 @@ GetOptions (
     "l|list!"	=> \my $opt_l,
     "d|diff=s"	=> \my $opt_d,
     "c|copy"	=> \my $opt_c,
+
+    "p|pat=s"	=> \my $opt_p,
     ) or usage (1);
 
 my $pat = shift // ".";
@@ -77,6 +79,12 @@ foreach my $u (sort { $m{$b}{gd} <=> $m{$a}{gd} || $m{$b}{dp} <=> $m{$a}{dp} } k
     my $gp = $m{$u}{gp};
 
     #$gd == 0 || $gd > 1000 and next;
+
+    if ($opt_p) {
+	$d->{unit} =~ $opt_p ||
+	$p->{unit} =~ $opt_p ||
+	$g->{unit} =~ $opt_p or next;
+	}
 
     printf "%3d %5d/%3d %6d %5d/%3d %6d %5d/%3d %6d %s\n", $i++,
 	$g->{size}, $g->{lines}, $gd,
