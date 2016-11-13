@@ -86,11 +86,13 @@ foreach my $u (sort { $m{$b}{gd} <=> $m{$a}{gd} || $m{$b}{dp} <=> $m{$a}{dp} } k
 	$g->{unit} =~ $opt_p or next;
 	}
 
+    my $su = $u;
+    $gd || $dp || $gp or $su .= "\t** NO CHANGES LEFT **";
     printf "%3d %5d/%3d %6d %5d/%3d %6d %5d/%3d %6d %s\n", $i++,
 	$g->{size}, $g->{lines}, $gd,
 	$d->{size}, $d->{lines}, $dp,
 	$p->{size}, $p->{lines}, $gp,
-	$u;
+	$su;
     $opt_l and say "    $_ $m{$u}{$_}{dir}/$u" for qw( g d p );
 
     extdiff ($u, sort split // => $opt_d);
