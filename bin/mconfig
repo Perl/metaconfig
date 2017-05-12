@@ -1297,7 +1297,7 @@ sub process_command {
 			warn "\t    $msg\n";
 		}
 	}
-	die "Can't open $file.\n" unless open(UNIT, $file);
+	die "Can't open UNIT (name: $name, target: $target) $file.\n" unless open(UNIT, $file);
 	print "\t$cmd $file\n" if $opt_v;
 	&init_interp;						# Initializes the interpreter
 
@@ -1435,7 +1435,7 @@ sub process_command {
 			open(PREPEND, ">.prepend") ||
 				die "Can't create .MT/.prepend.\n";
 			open(TARGET, $Unit{$target}) ||
-				die "Can't open $Unit{$target}.\n";
+				die "Can't open Unit $Unit{$target}.\n";
 			while (<TARGET>) {
 				print PREPEND unless &skipped;
 			}
