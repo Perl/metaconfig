@@ -65,7 +65,7 @@ main(int argc, char **argv) {
 	return 4;
     }
 
-    buffer = malloc(size);
+    buffer = (char *)malloc(size);
     if (!buffer) {
 	perror("malloc");
 	return 5;

@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:longdblinfbytes longdblnanbytes doubleinfbytes doublenanbytes: Inlibc \
-	cat i_math Compile run rm_try Setvar echo d_longdbl \
+	cat i_math i_string Compile run rm_try Setvar echo d_longdbl \
 	doublekind doublesize longdblkind longdblsize
 ?MAKE:	-pick add $@ %<
 ?S:longdblinfbytes:
@@ -58,8 +58,12 @@ $cat >try.c <<EOP
 #define LONG_DOUBLEKIND $longdblkind
 #endif
 #$i_math I_MATH
+#$i_string I_STRING
 #ifdef I_MATH
 #include <math.h>
+#endif
+#ifdef I_STRING
+#  include <string.h>
 #endif
 #include <stdio.h>
 /* Note that whether the sign bit is on or off
@@ -77,7 +81,8 @@ $cat >try.c <<EOP
  * to even mention, causing immediate SIGFPE or equivalent: this is
  * the case with VAX floating point, for example.
  */
-static void bytes(unsigned char *p, unsigned int n) {
+static void bytes(void *v, unsigned int n) {
+  unsigned char *p = (unsigned char *)v;
   int i;
   for (i = 0; i < n; i++) {
     printf("0x%02x%s", p[i], i < n - 1 ? ", " : "\n");

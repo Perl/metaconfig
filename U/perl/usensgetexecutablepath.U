@@ -49,7 +49,7 @@ main(int argc, char **argv) {
 	return 2;
     }
 
-    buffer = malloc(size);
+    buffer = (char *)malloc(size);
     if (!buffer) {
 	perror("malloc");
 	return 3;
