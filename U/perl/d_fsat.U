@@ -1,0 +1,65 @@
+?RCS: Copyright (c) 2017 H.Merijn Brand (original change by Tony Cook)
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_openat d_unlinkat d_renameat d_linkat d_fchmodat: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fchmodat:
+?S:	This variable conditionally defines the HAS_FCHMODAT symbol, which
+?S:	indicates the POSIX fchmodat() function is available.
+?S:.
+?S:d_linkat:
+?S:	This variable conditionally defines the HAS_LINKAT symbol, which
+?S:	indicates the POSIX linkat() function is available.
+?S:.
+?S:d_openat:
+?S:	This variable conditionally defines the HAS_OPENAT symbol, which
+?S:	indicates the POSIX openat() function is available.
+?S:.
+?S:d_renameat:
+?S:	This variable conditionally defines the HAS_RENAMEAT symbol, which
+?S:	indicates the POSIX renameat() function is available.
+?S:.
+?S:d_unlinkat:
+?S:	This variable conditionally defines the HAS_UNLINKAT symbol, which
+?S:	indicates the POSIX unlinkat() function isavailable.
+?S:.
+?C:HAS_FCHMODAT:
+?C:	This symbol is defined if the fchmodat() routine is available.
+?C:.
+?C:HAS_LINKAT:
+?C:	This symbol is defined if the linkat() routine is available.
+?C:.
+?C:HAS_OPENAT:
+?C:	This symbol is defined if the openat() routine is available.
+?C:.
+?C:HAS_RENAMEAT:
+?C:	This symbol is defined if the renameat() routine is available.
+?C:.
+?C:HAS_UNLINKAT:
+?C:	This symbol is defined if the unlinkat() routine is available.
+?C:.
+?H:#$d_fchmodat	HAS_FCHMODAT	/**/
+?H:#$d_linkat	HAS_LINKAT	/**/
+?H:#$d_openat	HAS_OPENAT	/**/
+?H:#$d_renameat	HAS_RENAMEAT	/**/
+?H:#$d_unlinkat	HAS_UNLINKAT	/**/
+?H:.
+?LINT:set d_openat d_unlinkat d_renameat d_linkat d_fchmodat
+: check for openat, unlinkat, renameat, linkat, fchmodat
+set openat d_openat
+eval $inlibc
+
+set unlinkat d_unlinkat
+eval $inlibc
+
+set renameat d_renameat
+eval $inlibc
+
+set linkat d_linkat
+eval $inlibc
+
+set fchmodat d_fchmodat
+eval $inlibc
+
