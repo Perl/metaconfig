@@ -8,7 +8,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:need_va_copy: rm_try cat Compile i_stdarg i_stdlib run
+?MAKE:need_va_copy: rm_try cat Compile run
 ?MAKE:	-pick add $@ %<
 ?S:need_va_copy:
 ?S:	This symbol, if defined, indicates that the system stores
@@ -34,15 +34,10 @@
 ?F:!try
 : see if we need va_copy
 echo " "
-case "$i_stdarg" in
-"$define")
-	$cat >try.c <<EOCP
+$cat >try.c <<EOCP
 #include <stdarg.h>
 #include <stdio.h>
-#$i_stdlib I_STDLIB
-#ifdef I_STDLIB
 #include <stdlib.h>
-#endif
 #include <signal.h>
 
 int
@@ -74,26 +69,21 @@ main(int ac, char **av)
   exit(0);
 }
 EOCP
-	set try
-	if eval $compile && $run ./try 2>&1 >/dev/null; then
-		case "`$run ./try`" in
-		"that's all right, then")
-			okay=yes
-			;;
-		esac
-	fi
-	case "$okay" in
-	yes)	echo "It seems that you don't need va_copy()." >&4
-		need_va_copy="$undef"
-		;;
-	*)	echo "It seems that va_copy() or similar will be needed." >&4
-		need_va_copy="$define"
+set try
+if eval $compile && $run ./try 2>&1 >/dev/null; then
+	case "`$run ./try`" in
+	"that's all right, then")
+		okay=yes
 		;;
 	esac
-	$rm_try
-	;;
-*)	echo "You don't have <stdarg.h>, not checking for va_copy()." >&4
+fi
+case "$okay" in
+yes)	echo "It seems that you don't need va_copy()." >&4
 	need_va_copy="$undef"
 	;;
+*)	echo "It seems that va_copy() or similar will be needed." >&4
+	need_va_copy="$define"
+	;;
 esac
+$rm_try
 
