@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 chdir "/pro/3gl/CPAN/perl";
 system "chown merijn Configure config_h.SH";

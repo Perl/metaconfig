@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 use 5.18.2;
 use warnings;

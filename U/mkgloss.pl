@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 # (c)'11 H.Merijn Brand [ 26 Aug 2011 ]
 

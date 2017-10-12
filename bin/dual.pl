@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 # dual.pl patch-file
 #

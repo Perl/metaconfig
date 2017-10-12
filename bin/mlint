@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 BEGIN { $ENV{LC_ALL} = "C"; }
 chdir "/pro/3gl/CPAN/perl";

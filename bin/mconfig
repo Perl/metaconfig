@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 use sort "stable";
 BEGIN { $ENV{LC_ALL} = "C"; }
@@ -93,7 +93,7 @@ if ($opt_k) {
 } else {
 	`rm -rf .MT 2>&1`;
 }
-system "/pro/bin/perl", "Porting/config_h.pl";
+system "/usr/bin/perl", "Porting/config_h.pl";
 print "Done.\n" unless $opt_s;
 
 # General initializations

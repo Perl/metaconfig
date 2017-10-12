@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 # This script reorders config_h.SH after metaconfig
 # Changing metaconfig is too complicated
