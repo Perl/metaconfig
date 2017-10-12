@@ -2,14 +2,12 @@
 
 use sort "stable";
 BEGIN { $ENV{LC_ALL} = "C"; }
-chdir "/pro/3gl/CPAN/perl";
-{   my @Cc = qw( Configure config_h.SH );
-    system "chown merijn @Cc";
-    chmod 0775, @Cc;
-    #-d "merijn" or mkdir "merijn";
-    #system "cp -f Configure config_h.SH Porting/Glossary Porting/config.sh merijn/";
-    system "ls", "-l", @Cc;
-    }
+
+use FindBin;
+
+$p5_metaconfig_base = "$FindBin::Bin/../";
+chdir "$p5_metaconfig_base/perl" ||
+    die "perl/ directory missing in $p5_metaconfig_base\n";
 
 # $Id: mconfig.SH 22 2008-05-28 08:01:59Z rmanfredi $
 #
@@ -46,7 +44,7 @@ chdir "/pro/3gl/CPAN/perl";
 
 # Perload ON
 
-$MC = '/pro/3gl/CPAN/lib/dist';
+$MC = "$p5_metaconfig_base/dist";
 $version = '3.5';
 $patchlevel = '0';
 $grep = '/usr/bin/grep';

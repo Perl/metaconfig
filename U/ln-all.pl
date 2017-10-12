@@ -10,8 +10,9 @@ use strict;
 use warnings;
 
 use File::Copy;
+use FindBin;
 
-my $meta = "/pro/3gl/CPAN/metaconfig";
+my $meta = "$FindBin::Bin/../";
 my $perl = "/pro/3gl/CPAN/perl-current";
 # the files that metaconfig might (probably will) overwrite:
 my @safe = qw( Configure config_h.SH );
@@ -26,7 +27,7 @@ for (@safe) {
     copy "$perl/$_", $_;
     }
 
-@ARGV = ("/pro/3gl/CPAN/bin/mconfig -v -m -O 2>&1 |");
+@ARGV = ("$FindBin::Bin/mconfig -v -m -O 2>&1 |");
 while (<>) {
     s{^\s+$perl/U}{} or next;
     chomp;

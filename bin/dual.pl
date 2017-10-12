@@ -11,10 +11,13 @@ use warnings;
 
 use Cwd;
 use File::Find;
+use FindBin;
 
 my $pdir = getcwd;
-$< == 203 && -d "/pro/3gl/CPAN" and chdir "/pro/3gl/CPAN/perl";
--d "Porting" or die "You're not in the perl5 root folder\n";
+
+$p5_metaconfig_base = "$FindBin::Bin/../";
+chdir "$p5_metaconfig_base/perl" ||
+    die "perl/ directory missing in $p5_metaconfig_base\n";
 
 use vars qw(%Modules %Maintainers);
 require "Porting/Maintainers.pl";
