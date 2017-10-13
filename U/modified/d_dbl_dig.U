@@ -14,7 +14,7 @@
 ?RCS: Revision 3.0.1.1  1994/08/29  16:07:28  ram
 ?RCS: patch32: created by ADO
 ?RCS:
-?MAKE:d_dbl_dig: Myread contains cat rm Setvar i_float \
+?MAKE:d_dbl_dig: Myread contains cat rm Setvar \
 	cppstdin cppflags cppminus
 ?MAKE:	-pick add $@ %<
 ?S:d_dbl_dig:
@@ -35,11 +35,8 @@
 : See if number of significant digits in a double precision number is known
 echo " "
 $cat >dbl_dig.c <<EOM
-#$i_float I_FLOAT
 #include <limits.h>
-#ifdef I_FLOAT
 #include <float.h>
-#endif
 #ifdef DBL_DIG
 printf("Contains DBL_DIG");
 #endif
