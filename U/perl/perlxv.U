@@ -216,7 +216,7 @@
 ?H:#define	NVSIZE		$nvsize		/**/
 ?H:#$d_nv_preserves_uv	NV_PRESERVES_UV
 ?H:#define	NV_PRESERVES_UV_BITS	$nv_preserves_uv_bits
-?H:#define	NV_OVERFLOWS_INTEGERS_AT	$nv_overflows_integers_at
+?H:#define	NV_OVERFLOWS_INTEGERS_AT	($nv_overflows_integers_at)
 ?H:#$d_nv_zero_is_allbits_zero	NV_ZERO_IS_ALLBITS_ZERO
 ?H:?%<:#if UVSIZE == 8
 ?H:?%<:#   ifdef BYTEORDER
