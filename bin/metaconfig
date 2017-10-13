@@ -3,10 +3,10 @@
 use FindBin;
 
 $p5_metaconfig_base = "$FindBin::Bin/../";
-chdir "$p5_metaconfig_base/perl" ||
+chdir "$p5_metaconfig_base/perl" or
     die "perl/ directory missing in $p5_metaconfig_base\n";
 
--w 'Configure' && -w 'config_h.SH' ||
+-w 'Configure' && -w 'config_h.SH' or
     die "both Configure and config_h.SH must be writable\n";
 
 #
