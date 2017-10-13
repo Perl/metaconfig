@@ -12,14 +12,15 @@ sufficient).
 
 You have presumably obtained the metaconfig from the repository e.g.
 
-  $ git clone git://perl5.git.perl.org/metaconfig.git metaconfig
-
-or some other way to obtain this file, like a complete compressed archive
-from the previous pumpkin.
+  $ git clone github.com:perl5-metaconfig/metaconfig metaconfig
 
 Normally this directory and perl directory are next to each other
 so ../perl will get you to perl and ../perl/../metaconfig will get you
-back here.
+back here. The current setup will require a symbolic link to the folder
+where Configure is generated in:
+
+  $ cd metaconfig
+  $ ln -s ../perl perl
 
 Contents of this directory:
 
@@ -31,15 +32,16 @@ Contents of this directory:
 		a git clone of "dist". Optionally present. See (a) below.
 		This is where dist/meta resides as of 2016-04-01
     dist:
-		a symlink to the lib you actually use. For Merijn that is
-		metaconfig/dist -> ../lib/dist
+		The folder where the original units from dist are in.
+		These may differ from dist-git, as upstream also moves
+		on and develops.
 
 (a) You need to have dist installed so that you have metalint and metaconfig
     in your $PATH. As dist/meta binaries are now included in the git checkout,
     you do NOT need to install dist/meta itself.
 
-    If you also want to play with or compare to the original meta/dit, you can
-    checkout that too.
+    If you also want to play with or compare to the original meta/dist, you
+    can checkout that too.
 
     The dist version used for perl is dist-3.5-20 in this directory, which is
     a slightly modified version of the original, which you can get at GITHUB
@@ -60,9 +62,6 @@ Contents of this directory:
     After make install, remove lib/U/d_debugging.U in your target lib, as perl
     uses its own way to set/define debugging (see INSTALL)
 
-    the dist-3.5-20 installation as used by Merijn is available on his CPAN as
-    perl-meta-3.5-20.tgz
-
     dist's 'Configure' is similar to perl's but perhaps not quite as polished.
 
     There are some perl specific "dist units" in the 'U' directory.
@@ -71,32 +70,27 @@ Contents of this directory:
     We have not yet arranged for metaconfig to use perl's versions of the
     'units' by default so you need some housekeeping in the perl directory...
 
+    Then add metaconfig/bin to your $PATH or create aliases like
+
+    $ export MC5=/your/path/to/metaconfig
+    $ alias ml="perl $MC5/bin/mlint -O"
+    $ alias mc="perl $MC5/bin/mconfig -m -O"
+
+    examples in the rest of this README will just refer to mlint and mconfig
+    as if they appear in your $PATH
+
 (aa)
 
-    If you plan to make changes to mconfig or mlint locally (and you probably
+    If you plan to make changes to mconfig or mlint locally (and you might
     want to, as both are written for perl4), consider installing mconfig and
     mlint from the cmon subdirectory into your $PATH too. These are the
-    non-autoloading versions and can easily be changed. Here is what I added
-    at the beginning of mconfig:
+    non-autoloading versions and can easily be changed. As these are used by
+    all team members, please communicate changes on github first.
 
-    --8<---
-    BEGIN { $ENV{LC_ALL} = "C"; }
-    chdir "/pro/3gl/CPAN/perl";
-    {   my @Cc = qw( Configure config_h.SH );
-	system "chown merijn @Cc";
-	chmod 0775, @Cc;
-	#-d "merijn" or mkdir "merijn";
-	#system "cp -f Configure config_h.SH Porting/Glossary Porting/config.sh merijn/";
-	system "ls", "-l", @Cc;
-	}
-    -->8---
-
-    I also added the first two lines of that patch to mlint
-
-(b) You need to be in a/the Perl directory, i.e. either something from
-    //depot/perl/... or one of its branches
-    (e.g. Nick I-S is usually in //depot/perlio/...)
-    and you need:
+(b) You need to be in a/the Perl directory, which you created the symbolic
+    link for in preparation. In this working directory, you need symbolic
+    links too, which are already known to perl itself to ignore. Assuming
+    you have metaconfig and perl side by side on the same level:
      1) have a symlink to ../metaconfig/U called U
      2) have a symlink to ../metaconfig/.package called .package
      3) have a symlink to MANIFEST called MANIFEST.new
@@ -107,19 +101,12 @@ Contents of this directory:
     the best appropriate subdir of U.  See U/README for a description of
     the various subdirectories.)
 
-(d) Run metalint (or mlint) to see nits: as opposed to lint, the gripings
-    of metalint are usually serious :-) and need fixing
+(d) Run "mlint -O" to see nits: as opposed to lint, the gripings of mlint
+    are usually serious and need fixing
 
-    Exceptions are lots of
+    Without -O, exceptions are lots of
       Your private U/modified/issymlink.U overrides the public one.
     due to the perl special units
-
-    an alias to something like
-    $ metalint      |& grep -v -e '^    Your private U/'
-    will make the process silence up on that (of course you can add an
-    option to mlint to disable that warning (which is already disabled
-    by the undocumented and forgotten -s option, but that also suppresses
-    other warnings)
 
     and
 
@@ -131,6 +118,8 @@ Contents of this directory:
 
 (e) chmod +w Configure config_h.SH
 
+    mlint and mconfig will probly die when these are read-only
+
 (f) mconfig -m -O to regenerate Configure and config_h.SH
 
     Make *sure* your mconfig is the correct one in your $PATH, as the mono-web
@@ -140,49 +129,78 @@ Contents of this directory:
 (g) metaconfig does not deal with depends in config_h.SH, so some
     reorganization is needed.
 
-    perl Porting/config_h.SH
+    $ cd perl
+    $ perl Porting/config_h.SH
 
     will fix the ordering
     
-(h) The messy not-yet-automated part is that the knowledge of the new symbol
+(h) The messy semi-automated part is that the knowledge of the new symbol
     needs to be propagated to non-Configure lands like Win32, WinCE, Netware,
     VMS, VOS, EPOC, ...  see previous Configure changes to see which are these
     heathen lands.  Files to take care of are
     {win32,wince,NetWare}/config_[hH]*, (Win32, WinCE, NetWare),
-    configure.com (VMS), VOS/config* (since 5.9 VOS uses Configure, though),
-    epoc/config.sh (EPOC).  Depending on the kind of patch djgpp/config*
-    might also need adjusting (for example when adding/changing the list
-    of extensions)
+    configure.com (VMS), epoc/config.sh (EPOC).  Depending on the kind of
+    patch djgpp/config* might also need adjusting (for example when
+    adding/changing the list of extensions)
+
+    Most can be checked and updated by a tool Nicholas provided:
+
+    $ cd perl
+    $ perl Porting/Porting/checkcfgvar.pl
+
+    and if it shows differences,
+
+    $ perl Porting/checkcfgvar.pl --regen --default=define
+
+    (of course "define" can also be "undef" based on the changes you made
 
     For Win32 the process is semi-automated - if you have a Win32
     machine to run dmake on ...
 
-(i) Edit U/mkglossary (right near the top) to point to where you keep
+(i) Check if U/mkglossary (right near the top) points to where you keep
     dist's standard metaconfig units as well as your perl-specific ones.
 
-(j) Run U/mksample to freshen the Porting/config* and Porting/Glossary.
-    Adjust the various compile-time options (e.g. 64bit, threads) as
-    you see fit.
-    You can skip this phase, it's not essential, just good housekeeping.
+(j) Run the perl build chain
 
-(k) Run the perl build chain
-
-    make veryclean
-    sh ./Configure -des -Dusedevel
+    $ cd perl
+    $ make veryclean
+    $ ./Configure -Duse64bitall -Dusethreads -Dusedevel -des
 
     The dependency for uconfig.h isn't carved in stone, so you might
     need to regenerate it
 
-    perl regen/uconfig_h.pl
+    $ perl regen/uconfig_h.pl
 
-    Then make and make test or make test_harness (with TEST_JOBS=5)
+    Then make and make test or make test_harness
 
-    make all test_harness
+    $ make -j12
+    $ env TEST_JOBS=13 make test_harness
 
     Before you start committing, make sure that the other developers
     are happy and run
 
-    make test_porting
+    $ make test_porting
+
+    again
+
+(k) Run U/mksample to freshen the Porting/config* and Porting/Glossary.
+    Adjust the various compile-time options (e.g. 64bit, threads) as
+    you see fit.
+    You can skip this phase, it's not essential, just good housekeeping.
+
+    Most of this only works if you have run the core-tests with the new
+    generated files
+
+    You should at least check
+
+    $ perl U/mkgloss.pl | diff Porting/Glossary -
+
+    This will show two warnings that you can ignore:
+
+    U/mkglossary: couldn't find libdb_needs_pthread
+    U/mkglossary: couldn't find libdirs
+
+    all other things need a review
 
 -- the next steps are in the metaconfig folder again
 
@@ -192,5 +210,3 @@ Contents of this directory:
 
 (n) When all patches are applied, tested and committed, and you are happy,
     git push
-
-    Merijn prefers to do steps (l) through (n) in git-gui
