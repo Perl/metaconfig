@@ -212,3 +212,7 @@ Contents of this directory:
 
 (n) When all patches are applied, tested and committed, and you are happy,
     git push
+
+(o) Documentation on 'dist' may be found at these locations:
+    https://github.com/rmanfredi/dist/blob/master/mcon/man/mconfig.SH
+    https://manpages.debian.org/stretch/dist/metaconfig.1.en.html
