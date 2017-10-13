@@ -93,7 +93,7 @@ Contents of this directory:
     non-autoloading versions and can easily be changed. As these are used by
     all team members, please communicate changes on github first.
 
-(b) You need to be in a/the Perl directory, which you created the symbolic
+(b) You need to be in the 'perl' checkout directory, which you created the symbolic
     link for in preparation. In this working directory, you need symbolic
     links too, which are already known to perl itself to ignore. Assuming
     you have metaconfig and perl side by side on the same level:
