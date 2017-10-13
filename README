@@ -118,7 +118,7 @@ Contents of this directory:
 
 (e) chmod +w Configure config_h.SH
 
-    mlint and mconfig will probly die when these are read-only
+    mlint and mconfig will probably die when these are read-only
 
 (f) mconfig -m -O to regenerate Configure and config_h.SH
 
@@ -146,7 +146,7 @@ Contents of this directory:
     Most can be checked and updated by a tool Nicholas provided:
 
     $ cd perl
-    $ perl Porting/Porting/checkcfgvar.pl
+    $ perl Porting/checkcfgvar.pl
 
     and if it shows differences,
 
