@@ -5,10 +5,12 @@ use warnings;
 
 use File::Basename;
 
-# WARNING:  This is site-specific.  Change to the location
-# where you have installed dist-3.0PL70.
-my @std_units = glob ("/pro/3gl/CPAN/lib/dist/U/*.U");
-my $PWD       =       "/pro/3gl/CPAN/perl";
+use FindBin;
+
+my $p5_metaconfig_base = "$FindBin::Bin/../";
+
+my @std_units = glob ("$p5_metaconfig_base/U/*.U");
+my $PWD       =       "$p5_metaconfig_base/perl";
 
 -d "U" and chdir "U";
 my @perl_units = glob ("$PWD/U/*/*.U");

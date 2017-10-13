@@ -2,6 +2,9 @@
 	eval 'exec perl -S $0 "$@"'
 		if $runnning_under_some_shell;
 
+use FindBin;
+$p5_metaconfig_base = "$FindBin::Bin/../";
+
 # $Id: jmake.SH 20 2008-01-04 23:14:00Z rmanfredi $
 #
 #  Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
@@ -49,7 +52,7 @@
 # Baseline for dist 3.0 netwide release.
 #
 
-$dir = '/pro/3gl/CPAN/lib/dist/files';
+$dir = "$p5_metaconfig_base/dist/files";
 $cpp = '/usr/bin/cpp';
 $version = '3.5';
 $patchlevel = '0';

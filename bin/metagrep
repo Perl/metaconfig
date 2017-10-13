@@ -1,4 +1,4 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 use strict;
 use warnings;
@@ -13,8 +13,9 @@ GetOptions (
     "F|fixed!"	=> \$opt_F,
     ) or die "usage: metagrep [-w] [-l] [-F] pattern\n";
 
-use Cwd qw(getcwd abs_path);
+use Cwd qw(getcwd);
 use File::Find;
+use FindBin;
 
 my $pat = shift or die "usage: metagrep pattern\n";
 $opt_F and $pat = quotemeta $pat;
@@ -22,8 +23,7 @@ $opt_w and $pat = "\\b$pat\\b";
 $pat = qr/$pat/i;
 
 my $cwd    = getcwd;
-my $mcpath = abs_path "/pro/3gl/CPAN/metaconfig" or die "cannot cd metaconfig\n";
-
+my $mcpath = "$FindBin::Bin/../";
 my $onmeta = $cwd =~ m{CPAN/meta[^/]+$} ? 1 : 0;
 
 my @dir = ($mcpath, "$mcpath/dist/U");

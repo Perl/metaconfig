@@ -1,7 +1,12 @@
-#!/pro/bin/perl
+#!/usr/bin/perl
 
 BEGIN { $ENV{LC_ALL} = "C"; }
-chdir "/pro/3gl/CPAN/perl";
+
+use FindBin;
+
+$p5_metaconfig_base = "$FindBin::Bin/../";
+chdir "$p5_metaconfig_base/perl" ||
+    die "perl/ directory missing in $p5_metaconfig_base\n";
 
 # $Id: mlint.SH 22 2008-05-28 08:01:59Z rmanfredi $
 #
@@ -31,7 +36,7 @@ chdir "/pro/3gl/CPAN/perl";
 
 # Perload ON
 
-$MC = '/pro/3gl/CPAN/lib/dist';
+$MC = "$p5_metaconfig_base/dist";
 $version = '3.5';
 $patchlevel = '0';
 $grep = '/usr/bin/grep';
