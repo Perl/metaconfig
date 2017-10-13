@@ -3,6 +3,7 @@
 BEGIN { $ENV{LC_ALL} = "C"; }
 
 use FindBin;
+use Getopt::Std;
 
 $p5_metaconfig_base = "$FindBin::Bin/../";
 chdir "$p5_metaconfig_base/perl" ||
@@ -44,8 +45,7 @@ $version = '3.5';
 $patchlevel = '0';
 $grep = '/usr/bin/grep';
 &profile;						# Read ~/.dist_profile
-require 'getopts.pl';
-&usage unless &Getopts("hklVL:oOs");
+&usage unless getopts("hklVL:oOs");
 
 if ($opt_V) {
 	print STDERR "metalint $version PL$patchlevel\n";
