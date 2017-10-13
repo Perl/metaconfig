@@ -7,7 +7,7 @@ use File::Basename;
 
 use FindBin;
 
-$p5_metaconfig_base = "$FindBin::Bin/../";
+my $p5_metaconfig_base = "$FindBin::Bin/../";
 
 my @std_units = glob ("$p5_metaconfig_base/U/*.U");
 my $PWD       =       "$p5_metaconfig_base/perl";

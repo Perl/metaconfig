@@ -15,7 +15,7 @@ use FindBin;
 
 my $pdir = getcwd;
 
-$p5_metaconfig_base = "$FindBin::Bin/../";
+my $p5_metaconfig_base = "$FindBin::Bin/../";
 chdir "$p5_metaconfig_base/perl" ||
     die "perl/ directory missing in $p5_metaconfig_base\n";
 
