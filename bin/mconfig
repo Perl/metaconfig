@@ -9,6 +9,9 @@ $p5_metaconfig_base = "$FindBin::Bin/../";
 chdir "$p5_metaconfig_base/perl" ||
     die "perl/ directory missing in $p5_metaconfig_base\n";
 
+-w 'Configure' && -w 'config_h.SH' ||
+    die "both Configure and config_h.SH must be writable\n";
+
 # $Id: mconfig.SH 22 2008-05-28 08:01:59Z rmanfredi $
 #
 #  Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
@@ -91,7 +94,7 @@ if ($opt_k) {
 } else {
 	`rm -rf .MT 2>&1`;
 }
-system "/usr/bin/perl", "Porting/config_h.pl";
+system $^X, "Porting/config_h.pl";
 print "Done.\n" unless $opt_s;
 
 # General initializations
