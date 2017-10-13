@@ -17,7 +17,7 @@ my @perl_units = glob ("$PWD/U/*/*.U");
 push (@perl_units, @std_units);
 
 # Get the list of config.sh symbols.  Be sure this is up to date!
-# (I run the U/mksample script first to be sure.)
+# (I run the Porting/mksample script first to be sure.)
 open my $wanted, "< $PWD/Porting/config.sh" or die "$0: open $PWD/Wanted: $!\n";
 my @WANTED = map  { $_->[0] }
 	     sort { $a->[1] cmp $b->[1] }

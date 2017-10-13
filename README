@@ -183,13 +183,15 @@ Contents of this directory:
 
     again
 
-(k) Run U/mksample to freshen the Porting/config* and Porting/Glossary.
+(k) Run Porting/mksample to freshen the Porting/config*.
     Adjust the various compile-time options (e.g. 64bit, threads) as
     you see fit.
     You can skip this phase, it's not essential, just good housekeeping.
 
     Most of this only works if you have run the core-tests with the new
     generated files
+
+(kk) Run U/mkgloss.pl to freshen Porting/Glossary
 
     You should at least check
 

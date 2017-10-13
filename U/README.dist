@@ -53,8 +53,12 @@ Instructions:
 8.  Edit U/mkglossary and/or U/mkgloss.pl to point to your dist-3.0pl70
     location.  (See comments at the top.)
 
-9.  Run the U/mksample script to update the contents of the Porting/
+9.  Run the Porting/mksample script to update the contents of the Porting/
     subdirectory, or run all parts by hand. (see README)
+
+    NB: this script used to be U/mksample replaced by Porting/mksample;
+    see Porting/pumpkin.pod instead for current documentation on its
+    use.
 
 10. Let me know about any changes, corrections, or enhancements.
 
