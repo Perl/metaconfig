@@ -7,7 +7,7 @@ our $VERSION = "0.03";
 
 sub usage {
     my $err = shift and select STDERR;
-    say "usage: $0 [--list] [--diff[=gd|dp|gp]] [--pat=pattern]";
+    say "usage: $0 [--list] [--diff[=gd|dp|gp]] [--diff-flags=--whatever] [--pat=pattern]";
     say "  diff (size) between git / dist / perl";
     say "  where git  (g) is the version from the git repo of meta/dist";
     say "  where dist (d) is the unmodified installed version from dist";
@@ -24,10 +24,13 @@ GetOptions (
 
     "l|list!"	=> \my $opt_l,
     "d|diff=s"	=> \my $opt_d,
+    "D|diff-flags=s"	=> \my $opt_D,
     "c|copy"	=> \my $opt_c,
 
     "p|pat=s"	=> \my $opt_p,
     ) or usage (1);
+
+$opt_D //= "-w";
 
 my $pat = shift // ".";
 $pat = qr{$pat};
@@ -123,7 +126,7 @@ sub extdiff {
 	system "cp", "-fp", $tf, $ff;
 	}
 
-    open my $fh, "-|", "diff -w $ff $tf";
+    open my $fh, "-|", "diff $opt_D $ff $tf";
     while (<$fh>) {
 	s/^</$F </;
 	s/^>/$T >/;
