@@ -6,13 +6,13 @@
 ?S:d_memrchr:
 ?S:	This variable conditionally defines the HAS_MEMRCHR symbol, which
 ?S:	indicates to the C program that the memrchr() routine is available
-?S:	to return a pointer to the start of the last occurrence of a
-?S:	substring in a memory area (or NULL if not found).
+?S:	to return a pointer to the last occurrence of a byte in a memory
+?S:	area (or NULL if not found).
 ?S:.
 ?C:HAS_MEMRCHR:
 ?C:	This symbol, if defined, indicates that the memrchr routine is
-?C:	available to return a pointer to the start of the last occurrence
-?C:	of a substring in a memory area (or NULL if not found).
+?C:	available to return a pointer to the last occurrence of a byte in
+?C:	a memory area (or NULL if not found).
 ?C:.
 ?H:#$d_memrchr HAS_MEMRCHR		/**/
 ?H:.
