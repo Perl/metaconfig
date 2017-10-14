@@ -4,6 +4,7 @@ use sort "stable";
 BEGIN { $ENV{LC_ALL} = "C"; }
 
 use FindBin;
+use Getopt::Std;
 
 $p5_metaconfig_base = "$FindBin::Bin/../";
 chdir "$p5_metaconfig_base/perl" or
@@ -56,8 +57,7 @@ $patchlevel = '0';
 $grep = '/usr/bin/grep';
 chop($date = `date`);
 &profile;						# Read ~/.dist_profile
-require 'getopts.pl';
-&usage unless &Getopts("dhkmoOstvwGMVL:");
+&usage unless getopts("dhkmoOstvwGMVL:");
 
 $MC = $opt_L if $opt_L;			# May override public library path
 $MC = &tilda_expand($MC);		# ~name expansion
