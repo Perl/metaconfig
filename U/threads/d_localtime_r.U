@@ -9,7 +9,7 @@
 ?RCS:
 ?MAKE:d_localtime_r d_localtime_r_needs_tzset localtime_r_proto: Inlibc \
 	cat run Protochk Hasproto i_systypes usethreads i_time i_systime \
-	rm_try Compile extern_C i_stdlib i_unistd i_string i_malloc
+	rm_try Compile extern_C i_stdlib i_unistd i_malloc
 ?MAKE:	-pick add $@ %<
 ?S:d_localtime_r:
 ?S:	This variable conditionally defines the HAS_LOCALTIME_R symbol,
@@ -113,7 +113,6 @@ REENTRANT_PROTO*)
 #$i_unistd	I_UNISTD
 #$i_time	I_TIME
 #$i_stdlib	I_STDLIB
-#$i_string	I_STRING
 #$i_malloc	I_MALLOC
 #ifdef I_SYS_TYPES
 #  include <sys/types.h>
@@ -127,11 +126,7 @@ REENTRANT_PROTO*)
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
-#ifdef I_STRING
-#  include <string.h>
-#else
-#  include <strings.h>
-#endif
+#include <string.h>
 #ifdef I_MALLOC
 #  include <malloc.h>
 #endif

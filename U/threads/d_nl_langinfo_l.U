@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_thread_safe_nl_langinfo_l: Compile cat rm_try Oldconfig \
-	i_pthread i_stdlib i_string i_langinfo i_locale		\
+	i_pthread i_stdlib i_langinfo i_locale		\
 	usethreads run
 ?MAKE:	-pick add $@ %<
 ?S:d_thread_safe_nl_langinfo_l:
@@ -45,10 +45,7 @@ $cat >try.c <<EOCP
 #ifdef I_STDLIB
 #  include <stdlib.h>
 #endif
-#$i_string I_STRING
-#ifdef I_STRING
-#  include <string.h>
-#endif
+#include <string.h>
 #$i_langinfo I_LANGINFO
 #ifdef I_LANGINFO
 #  include <langinfo.h>

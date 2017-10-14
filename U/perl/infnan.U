@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:longdblinfbytes longdblnanbytes doubleinfbytes doublenanbytes: Inlibc \
-	cat i_string Compile run rm_try Setvar echo d_longdbl \
+	cat Compile run rm_try Setvar echo d_longdbl \
 	doublekind doublesize longdblkind longdblsize
 ?MAKE:	-pick add $@ %<
 ?S:longdblinfbytes:
@@ -57,11 +57,8 @@ $cat >try.c <<EOP
 #define LONG_DOUBLESIZE $longdblsize
 #define LONG_DOUBLEKIND $longdblkind
 #endif
-#$i_string I_STRING
 #include <math.h>
-#ifdef I_STRING
-#  include <string.h>
-#endif
+#include <string.h>
 #include <stdio.h>
 /* Note that whether the sign bit is on or off
  * for NaN depends on the CPU/FPU, and possibly
