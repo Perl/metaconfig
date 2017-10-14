@@ -136,7 +136,7 @@ Contents of this directory:
     reorganization is needed.
 
     $ cd perl
-    $ perl Porting/config_h.SH
+    $ perl Porting/config_h.pl
 
     will fix the ordering
     
