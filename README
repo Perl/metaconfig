@@ -14,10 +14,16 @@ You have presumably obtained the metaconfig from the repository e.g.
 
   $ git clone github.com:perl5-metaconfig/metaconfig metaconfig
 
-Normally this directory and perl directory are next to each other
-so ../perl will get you to perl and ../perl/../metaconfig will get you
-back here. The current setup will require a symbolic link to the folder
-where Configure is generated in:
+When working with metaconfig you will generally have two git checkouts
+next to each other:  (1) this metaconfig checkout; and (2) a checkout of
+the Perl 5 source code in which you will generate a new Configure
+script. In this README, we will refer to these directories as the
+'metaconfig' directory and the 'perl' directory.
+
+Since these two directories are normally next to each other, so ../perl
+will get you to perl and ../perl/../metaconfig will get you back here.
+You should establish a symbolic link to the checkout in which Configure
+is generated such as this:
 
   $ cd metaconfig
   $ ln -s ../perl perl
@@ -87,7 +93,7 @@ Contents of this directory:
     non-autoloading versions and can easily be changed. As these are used by
     all team members, please communicate changes on github first.
 
-(b) You need to be in a/the Perl directory, which you created the symbolic
+(b) You need to be in the 'perl' checkout directory, which you created the symbolic
     link for in preparation. In this working directory, you need symbolic
     links too, which are already known to perl itself to ignore. Assuming
     you have metaconfig and perl side by side on the same level:
