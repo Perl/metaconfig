@@ -12,6 +12,9 @@ chdir "$p5_metaconfig_base/perl" or
 -w 'Configure' && -w 'config_h.SH' or
     die "both Configure and config_h.SH must be writable\n";
 
+-l '.package' && -l 'U' or
+    die ".package and U should be symlinks as per README\n";
+
 # $Id: mconfig.SH 22 2008-05-28 08:01:59Z rmanfredi $
 #
 #  Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi

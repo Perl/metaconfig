@@ -8,6 +8,9 @@ $p5_metaconfig_base = "$FindBin::Bin/../";
 chdir "$p5_metaconfig_base/perl" ||
     die "perl/ directory missing in $p5_metaconfig_base\n";
 
+-l '.package' && -l 'U' or
+    die ".package and U should be symlinks as per README\n";
+
 # $Id: mlint.SH 22 2008-05-28 08:01:59Z rmanfredi $
 #
 #  Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
