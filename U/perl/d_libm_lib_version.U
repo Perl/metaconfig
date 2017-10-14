@@ -3,7 +3,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_libm_lib_version: Compile cat run rm_try i_math
+?MAKE:d_libm_lib_version: Compile cat run rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_libm_lib_version:
 ?S:	This variable conditionally defines the LIBM_LIB_VERSION symbol,
@@ -20,11 +20,9 @@
 ?F:!try
 : check to see if math.h defines _LIB_VERSION
 d_libm_lib_version="$undef"
-case $i_math in
-    $define)
-	echo " "
-	echo "Checking to see if your libm supports _LIB_VERSION..." >&4
-	$cat >try.c <<EOCP
+echo " "
+echo "Checking to see if your libm supports _LIB_VERSION..." >&4
+$cat >try.c <<EOCP
 #include <unistd.h>
 #include <math.h>
 int main (int argc, char *argv[])
@@ -33,16 +31,13 @@ int main (int argc, char *argv[])
     return (0);
     } /* main */
 EOCP
-	set try
-	if eval $compile; then
-	    foo=`$run ./try`
-	    echo "Yes, it does ($foo)" >&4
-	    d_libm_lib_version="$define"
-	else
-	    echo "No, it does not (probably harmless)" >&4
-	    fi
-	$rm_try
-	;;
-
-    esac
+set try
+if eval $compile; then
+    foo=`$run ./try`
+    echo "Yes, it does ($foo)" >&4
+    d_libm_lib_version="$define"
+else
+    echo "No, it does not (probably harmless)" >&4
+    fi
+$rm_try
 

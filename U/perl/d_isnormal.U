@@ -1,7 +1,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_isnormal: cat i_math Compile Setvar rm_try
+?MAKE:d_isnormal: cat Compile Setvar rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_isnormal:
 ?S:	This variable conditionally defines the HAS_ISNORMAL symbol, which
@@ -17,10 +17,7 @@
 : check for isnormal
 echo "Checking to see if you have isnormal..." >&4
 $cat >try.c <<EOCP
-#$i_math I_MATH
-#ifdef I_MATH
 #include <math.h>
-#endif
 int main() { return isnormal(0.0); }
 EOCP
 set try

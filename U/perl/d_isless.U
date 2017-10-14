@@ -1,7 +1,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_isless: cat i_math Compile rm_try Setvar
+?MAKE:d_isless: cat Compile rm_try Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_isless:
 ?S:	This variable conditionally defines the HAS_ISLESS symbol, which
@@ -17,10 +17,7 @@
 : check for isless
 echo "Checking to see if you have isless..." >&4
 $cat >try.c <<EOCP
-#$i_math I_MATH
-#ifdef I_MATH
 #include <math.h>
-#endif
 int main() { return isless(0.0); }
 EOCP
 set try
