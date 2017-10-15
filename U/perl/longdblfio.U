@@ -105,7 +105,7 @@
 ?S:	which indicates that the double type has an infinity.
 ?S:.
 ?S:d_double_has_nan:
-?S:	This variable conditionally defines the symbol DOUBLE_HAS_INF
+?S:	This variable conditionally defines the symbol DOUBLE_HAS_NAN
 ?S:	which indicates that the double type has a not-a-number.
 ?S:.
 ?S:d_double_has_negative_zero:
