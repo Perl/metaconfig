@@ -1,9 +1,8 @@
 U/all
-perl
+/perl
 dist-git
 dist-svn
 dist-3.5-20
 dist-3.5-20.txz
 .*.swp
 .#*
-perl
