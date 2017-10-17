@@ -1,0 +1,157 @@
+?RCS: Copyright (c) 2017, Lukas Mai
+?RCS:
+?RCS: You may distribute this file under the terms of either
+?RCS:     a) the "Artistic License" which comes with Perl, or
+?RCS:     b) the "Artistic License" which comes with dist, or
+?RCS:     c) the GNU General Public License as published by the Free
+?RCS:     Software Foundation; either version 1, or (at your option) any
+?RCS:     later version (see the file "Copying" that comes with the
+?RCS:     Perl distribution).
+?RCS: Which one to use is your choice.
+?RCS: See the U/README file.
+?MAKE:d_builtin_add_overflow d_builtin_sub_overflow d_builtin_mul_overflow : Compile Setvar cat run rm_try
+?MAKE:	-pick add $@ %<
+?S:d_builtin_add_overflow:
+?S:	This variable conditionally defines HAS_BUILTIN_ADD_OVERFLOW, which
+?S:	indicates that the compiler supports __builtin_add_overflow(x,y,&z)
+?S:	for safely adding x and y into z while checking for overflow.
+?S:.
+?S:d_builtin_sub_overflow:
+?S:	This variable conditionally defines HAS_BUILTIN_SUB_OVERFLOW, which
+?S:	indicates that the compiler supports __builtin_sub_overflow(x,y,&z)
+?S:	for safely subtracting y from x into z while checking for overflow.
+?S:.
+?S:d_builtin_mul_overflow:
+?S:	This variable conditionally defines HAS_BUILTIN_MUL_OVERFLOW, which
+?S:	indicates that the compiler supports __builtin_mul_overflow(x,y,&z)
+?S:	for safely multiplying x and y into z while checking for overflow.
+?S:.
+?C:HAS_BUILTIN_ADD_OVERFLOW:
+?C:	This symbol, if defined, indicates that the compiler supports
+?C:	__builtin_add_overflow for adding integers with overflow checks.
+?C:.
+?C:HAS_BUILTIN_SUB_OVERFLOW:
+?C:	This symbol, if defined, indicates that the compiler supports
+?C:	__builtin_sub_overflow for subtracting integers with overflow checks.
+?C:.
+?C:HAS_BUILTIN_MUL_OVERFLOW:
+?C:	This symbol, if defined, indicates that the compiler supports
+?C:	__builtin_mul_overflow for multiplying integers with overflow checks.
+?C:.
+?H:#$d_builtin_add_overflow HAS_BUILTIN_ADD_OVERFLOW	/**/
+?H:#$d_builtin_sub_overflow HAS_BUILTIN_SUB_OVERFLOW	/**/
+?H:#$d_builtin_mul_overflow HAS_BUILTIN_MUL_OVERFLOW	/**/
+?H:.
+?F:!try
+?LINT:set d_builtin_add_overflow d_builtin_sub_overflow d_builtin_mul_overflow
+: Look for GCC-style __builtin_add_overflow
+case "$d_builtin_add_overflow" in
+'')
+    echo " "
+    echo "Checking whether your compiler can handle __builtin_add_overflow ..." >&4
+    $cat >try.c <<'EOCP'
+int main(void) {
+    const unsigned int uint_max = ~0u;
+    int target_int = 0;
+    if (__builtin_add_overflow(1, 2, &target_int) || target_int != 3) {
+        return 1;
+    }
+    if (!__builtin_add_overflow((int)(uint_max >> 1), 1, &target_int)) {
+        return 1;
+    }
+    if (!__builtin_add_overflow(uint_max, -1, &target_int)) {
+        return 1;
+    }
+    return 0;
+}
+EOCP
+    set try
+    if eval $compile && $run ./try; then
+        echo "Your C compiler supports __builtin_add_overflow."
+        val="$define"
+    else
+        echo "Your C compiler doesn't seem to understand __builtin_add_overflow."
+        val="$undef"
+    fi
+    ;;
+*) val="$d_builtin_add_overflow" ;;
+esac
+
+set d_builtin_add_overflow
+eval $setvar
+$rm_try
+
+: Look for GCC-style __builtin_sub_overflow
+case "$d_builtin_sub_overflow" in
+'')
+    echo " "
+    echo "Checking whether your compiler can handle __builtin_sub_overflow ..." >&4
+    $cat >try.c <<'EOCP'
+int main(void) {
+    const unsigned int uint_max = ~0u;
+    int target_int = 0;
+    if (__builtin_sub_overflow(1, -2, &target_int) || target_int != 3) {
+        return 1;
+    }
+    if (!__builtin_sub_overflow(-(int)(uint_max >> 1), 2, &target_int)) {
+        return 1;
+    }
+    if (!__builtin_sub_overflow(uint_max, 1, &target_int)) {
+        return 1;
+    }
+    return 0;
+}
+EOCP
+    set try
+    if eval $compile && $run ./try; then
+        echo "Your C compiler supports __builtin_sub_overflow."
+        val="$define"
+    else
+        echo "Your C compiler doesn't seem to understand __builtin_sub_overflow."
+        val="$undef"
+    fi
+    ;;
+*) val="$d_builtin_sub_overflow" ;;
+esac
+
+set d_builtin_sub_overflow
+eval $setvar
+$rm_try
+
+: Look for GCC-style __builtin_mul_overflow
+case "$d_builtin_mul_overflow" in
+'')
+    echo " "
+    echo "Checking whether your compiler can handle __builtin_mul_overflow ..." >&4
+    $cat >try.c <<'EOCP'
+int main(void) {
+    const unsigned int uint_max = ~0u;
+    int target_int = 0;
+    if (__builtin_mul_overflow(2, 3, &target_int) || target_int != 6) {
+        return 1;
+    }
+    if (!__builtin_mul_overflow((int)(uint_max >> 1), 2, &target_int)) {
+        return 1;
+    }
+    if (!__builtin_mul_overflow(uint_max, 1, &target_int)) {
+        return 1;
+    }
+    return 0;
+}
+EOCP
+    set try
+    if eval $compile && $run ./try; then
+        echo "Your C compiler supports __builtin_mul_overflow."
+        val="$define"
+    else
+        echo "Your C compiler doesn't seem to understand __builtin_mul_overflow."
+        val="$undef"
+    fi
+    ;;
+*) val="$d_builtin_mul_overflow" ;;
+esac
+
+set d_builtin_mul_overflow
+eval $setvar
+$rm_try
+
