@@ -99,7 +99,7 @@ modified/
 nullified/
     These are null units that replace units in the standard
     distribution.  Typically they are there because some part of the
-    perl source accidentally uses a symbol that metaconfig means we
+    perl source accidentally uses a symbol that metaconfig thinks means we
     want the corresponding unit.
 
 perl/
