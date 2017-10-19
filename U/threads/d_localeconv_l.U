@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_localeconv_l: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_localeconv_l:
+?S:	This variable conditionally defines the HAS_LOCALECONV_L symbol, which
+?S:	indicates to the C program that the localeconv_l() routine is available.
+?S:.
+?C:HAS_LOCALECONV_L:
+?C:	This symbol, if defined, indicates that the localeconv_l routine is
+?C:	available to query certain information about a locale.
+?C:.
+?H:#$d_localeconv_l HAS_LOCALECONV_L		/**/
+?H:.
+?LINT:set d_localeconv_l
+: see if localeconv_l exists
+set localeconv_l d_localeconv_l
+eval $inlibc
+
