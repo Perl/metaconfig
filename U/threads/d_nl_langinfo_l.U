@@ -67,7 +67,7 @@ thread_start(void * arg)
 {
     nl_langinfo(RADIXCHAR);
 }
-    
+
 int main() {
 	char * main_buffer;
 	char save_main_buffer[1000];
@@ -108,7 +108,7 @@ case "$usethreads" in
 		    echo "and it is thread-safe (just as I'd hoped)." >&4
 		    d_thread_safe_nl_langinfo_l="$define"
 		    echo "$d_thread_safe_nl_langinfo_l" >&4
-		else 
+		else
 		    echo "but it isn't thread-safe, so we won't use it." >&4
 		fi
 	else
