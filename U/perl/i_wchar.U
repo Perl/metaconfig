@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2017, Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:i_wchar: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_wchar:
+?S:     This variable conditionally defines the I_WCHAR symbol,
+?S:     that indicates whether a C program may include <wchar.h>.
+?S:.
+?C:I_WCHAR:
+?C:     This symbol, if defined, indicates to the C program that <wchar.h>
+?C:     is available for inclusion
+?C:.
+?H:#$i_wchar   I_WCHAR	/**/
+?H:.
+?LINT:set i_wchar
+: see if whar.h is present
+set wchar.h i_wchar
+eval $inhdr
+
