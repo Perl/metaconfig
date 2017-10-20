@@ -5,6 +5,7 @@ BEGIN { $ENV{LC_ALL} = "C"; }
 
 use FindBin;
 use Getopt::Std;
+use Data::Dump qw(dd pp);
 
 $p5_metaconfig_base = "$FindBin::Bin/../";
 chdir "$p5_metaconfig_base/perl" or
@@ -1113,6 +1114,7 @@ $file,                               $old,                  $new
 # Build the private makefile we use to compute the transitive closure of the
 # previously determined dependencies.
 sub build_makefile {
+    print "XXX0: entering \&build_makefile\n";
 	print "Computing optimal dependency graph...\n" unless $opt_s;
 	chdir('.MT') || die "Can't chdir to .MT\n";
 	local($wanted);			# Wanted shell symbols
@@ -1123,6 +1125,7 @@ sub build_makefile {
 	# Free memory by removing useless data structures
 	undef $dependencies;
 	undef $saved_dependencies;
+    print "XXX1: leaving \&build_makefile\n";
 }
 
 # First pass: build a private makefile from the extracted dependency, changing
@@ -1166,6 +1169,9 @@ sub build_private {
 	}
 	print MAKEFILE $dependencies;
 	close MAKEFILE;
+    print "AAA: leaving \&build_private\n";
+    system(qq|cp -v 'Makefile' /tmp/first.Makefile|) and die "Unable to copy first Makefile: $!";
+    # Note: Everything appears okay up to this point on FreeBSD
 }
 
 # Ordering for symbols. Give higher priority to d_* ones and lower to i_* ones.
@@ -1191,7 +1197,8 @@ sub symbols {
 # have to load, filling in the %symwanted and %condwanted structures.
 sub compute_loadable {
 	print "    Determining loadable units...\n" unless $opt_s;
-	open(MAKE, "make -n |") || die "Can't run make";
+    open(MAKE, "make -n |") || die "Can't run make";
+    #open(MAKE, "-|", "make -n") || die "Can't run make";
 	while (<MAKE>) {
 		s|^\s+||;				# Some make print tabs before command
 		if (/^pick/) {
@@ -1208,6 +1215,9 @@ sub compute_loadable {
 		}
 	}
 	close MAKE;
+    print "BBB: leaving \&compute_loadable and dumping \%symwanted\n";
+    dd(\%symwanted);
+    # perllibs is not found in %symwanted on FreeBSD, though it is on Linux
 }
 
 # Now that we know all the desirable symbols, we have to rebuild
@@ -1235,6 +1245,8 @@ sub update_makefile {
 	}
 	print MAKEFILE $saved_dependencies;
 	close MAKEFILE;
+    print "CCC: leaving \&update_makefile\n";
+    system(qq|cp -v 'Makefile' /tmp/second.Makefile|) and die "Unable to copy second Makefile: $!";
 }
 
 # Solve dependencies by saving the 'pick' command in @cmdwanted
@@ -1242,10 +1254,14 @@ sub solve_dependencies {
 	local(%unitseen);			# Record already picked units (avoid duplicates)
 	print "Determining the correct order for the units...\n" unless $opt_s;
 	chdir('.MT') || die "Can't chdir to .MT: $!.\n";
-	open(MAKE, "make -n |") || die "Can't run make";
+    open(MAKE, "make -n |") || die "Can't run make";
+    #open(MAKE, "-|", "make -n") || die "Can't run make";
 	while (<MAKE>) {
 		s|^\s+||;				# Some make print tabs before command
 		print "\t$_" if $opt_v;
+# On FreeBSD-10.3, we're failing to get these 2 lines:
+#    pick add perllibs End
+#    pick add End End
 		if (/^pick/) {
 			($pick,$cmd,$symbol,$unit) = split(' ');
 			push(@cmdwanted,"$cmd $symbol $unit")
@@ -1259,7 +1275,14 @@ sub solve_dependencies {
 	}
 	chdir($WD) || die "Can't chdir to $WD: $!.\n";
 	close MAKE;
+#    # Although second.Makefile looks okay, we're getting an error message:
+#	`All' not remade because of errors.
+#   Syntax error: EOF in backquote substitution
+#   Syntax error: Error in command substitution
+    print "DDD: End of solve_dependencies and dumping \@cmdwanted\n";
+    dd(\@cmdwanted);
 }
+
 
 # Create the Configure script
 sub create_configure {
