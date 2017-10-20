@@ -21,7 +21,7 @@
 ?H:#$i_wchar   I_WCHAR	/**/
 ?H:.
 ?LINT:set i_wchar
-: see if whar.h is present
+: see if wchar.h is present
 set wchar.h i_wchar
 eval $inhdr
 
