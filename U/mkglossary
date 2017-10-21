@@ -9,13 +9,21 @@ use FindBin;
 
 my $p5_metaconfig_base = abs_path "$FindBin::Bin/../";
 
+chdir "$p5_metaconfig_base/perl" or
+    die "Cannot use $p5_metaconfig_base/perl to find config.sh\n";
+my @config = sort { -M $a <=> -M $b }
+	     grep { -s }
+	     qw( config.sh uconfig.sh Porting/config.sh );
+@config or die "Build (and test) perl before generating the Glossary\n";
+# Get the list of config.sh symbols.  Be sure this is up to date!
+# (I run the Porting/mksample script first to be sure.)
+$config[0] eq "config.sh" or warn "Using $config[0] instead of config.sh - Did you build?\n";
+my $wanted = abs_path $config[0];
+
 chdir "$p5_metaconfig_base/U" or
     die "Cannot use $p5_metaconfig_base/U to find the units\n";
 my @perl_units = map { abs_path $_ } (sort glob "*/*.U"), sort glob "../dist/U/*.U";
 
-# Get the list of config.sh symbols.  Be sure this is up to date!
-# (I run the Porting/mksample script first to be sure.)
-my $wanted = abs_path "$p5_metaconfig_base/perl/Porting/config.sh";
 open my $wfh, "<", $wanted or die "$0: open $wanted: $!\n";
 my @WANTED = map  { $_->[0] }
 	     sort { $a->[1] cmp $b->[1] }
