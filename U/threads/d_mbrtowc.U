@@ -1,0 +1,26 @@
+?RCS: Copyright (c) 2017, Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_mbrtowc: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mbrtowc:
+?S:	This variable conditionally defines the HAS_MBRTOWC symbol if the
+?S:	mbrtowc() routine is available to be used to convert a multi-byte
+?S:     character into a wide character.
+?S:.
+?C:HAS_MBRTOWC:
+?C:	This symbol, if defined, indicates that the mbrtowc routine is
+?C:	available to convert a multi-byte character into a wide character.
+?C:.
+?H:#$d_mbrtowc HAS_MBRTOWC	/**/
+?H:.
+?LINT: set d_mbrtowc
+: see if mbrtowc exists
+set mbrtowc d_mbrtowc
+eval $inlibc
+

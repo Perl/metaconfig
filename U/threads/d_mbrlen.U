@@ -1,0 +1,26 @@
+?RCS: Copyright (c) 2017, Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_mbrlen: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_mbrlen:
+?S:	This variable conditionally defines the HAS_MBRLEN symbol if the
+?S:	mbrlen() routine is available to be used to get the length of
+?S:	multi-byte character strings.
+?S:.
+?C:HAS_MBRLEN:
+?C:	This symbol, if defined, indicates that the mbrlen routine is
+?C:	available to get the length of multi-byte character strings.
+?C:.
+?H:#$d_mbrlen HAS_MBRLEN	/**/
+?H:.
+?LINT: set d_mbrlen
+: see if mbrlen exists
+set mbrlen d_mbrlen
+eval $inlibc
+
