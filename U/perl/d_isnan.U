@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_isnan: Inlibc cat i_math Compile rm_try Setvar
+?MAKE:d_isnan: Inlibc cat Compile rm_try Setvar
 ?MAKE:	-pick add $@ %<
 ?S:d_isnan:
 ?S:	This variable conditionally defines the HAS_ISNAN symbol, which
@@ -21,10 +21,7 @@
 : check for isnan
 echo "Checking to see if you have isnan..." >&4
 $cat >try.c <<EOCP
-#$i_math I_MATH
-#ifdef I_MATH
 #include <math.h>
-#endif
 int main() { return isnan(0.0); }
 EOCP
 set try

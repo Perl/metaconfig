@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:sGMTIME_max sGMTIME_min sLOCALTIME_max sLOCALTIME_min: cat rm_try \
-	Setvar Compile run i_values
+	Setvar Compile run
 ?MAKE:	-pick add $@ %<
 ?S:sGMTIME_max:
 ?S:	This variable defines the maximum value of the time_t offset that
@@ -50,14 +50,8 @@
 ?D:sLOCALTIME_max=0
 ?D:sLOCALTIME_min=0
 ?F:!try
-?T:yyy
 : Check the max offset that gmtime and localtime accept
 echo "Checking max offsets that gmtime () accepts"
-
-case $i_values in
-    define) yyy="#include <values.h>" ;;
-    *)      yyy="" ;;
-    esac
 
 case "$sGMTIME_min/$sGMTIME_max" in
     0/0|/)
@@ -65,7 +59,6 @@ case "$sGMTIME_min/$sGMTIME_max" in
 #include <sys/types.h>
 #include <stdio.h>
 #include <time.h>
-$yyy
 
 int i;
 struct tm *tmp;
@@ -144,7 +137,6 @@ case "$sLOCALTIME_min/$sLOCALTIME_max" in
 #include <sys/types.h>
 #include <stdio.h>
 #include <time.h>
-$yyy
 
 int i;
 struct tm *tmp;

@@ -11,7 +11,7 @@
 	d_long_double_style_ieee d_long_double_style_ieee_doubledouble \
 	d_long_double_style_ieee_extended d_long_double_style_ieee_std \
 	d_long_double_style_vax: Compile Setvar Myread \
-	Inlibc run echo cat rm_try test doublesize i_stdlib i_float
+	Inlibc run echo cat rm_try test doublesize i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:d_longdbl:
 ?S:	This variable conditionally defines HAS_LONG_DOUBLE if
@@ -219,13 +219,10 @@ $echo "Checking the kind of long doubles you have..." >&4
 case "$d_longdbl" in
 define)
 $cat <<EOP >try.c
-#$i_float I_FLOAT
 #$i_stdlib I_STDLIB
 #define LONGDBLSIZE $longdblsize
 #define DOUBLESIZE $doublesize
-#ifdef I_FLOAT
 #include <float.h>
-#endif
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif

@@ -3,7 +3,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_sprintf_returns_strlen: Compile cat rm_try run i_stdlib i_string i_math echo
+?MAKE:d_sprintf_returns_strlen: Compile cat rm_try run i_stdlib i_string echo
 ?MAKE:	-pick add $@ %<
 ?S:d_sprintf_returns_strlen:
 ?S:	This variable defines whether sprintf returns the length of the string
@@ -35,10 +35,7 @@ $cat <<EOP >try.c
 #else
 #  include <strings.h>
 #endif
-#$i_math I_MATH
-#ifdef I_MATH
 #include <math.h>
-#endif
 
 char buffer[256];
 

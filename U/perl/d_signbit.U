@@ -3,7 +3,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_signbit: nvtype Compile Setvar cat run rm_try echo n c i_math i_sunmath
+?MAKE:d_signbit: nvtype Compile Setvar cat run rm_try echo n c i_sunmath
 ?MAKE:	-pick add $@ %<
 ?S:d_signbit:
 ?S:	This variable conditionally defines the HAS_SIGNBIT symbol, which
@@ -25,11 +25,8 @@
 : see if signbit exists
 $echo $n "Checking to see if you have signbit() available to work on $nvtype... $c" >&4
 $cat >try.c <<EOCP
-#$i_math I_MATH
 #$i_sunmath I_SUNMATH
-#ifdef I_MATH
-#  include <math.h>
-#endif
+#include <math.h>
 #ifdef I_SUNMATH  /* Solaris special math library */
 #  include <sunmath.h>
 #endif

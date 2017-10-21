@@ -34,7 +34,6 @@
 ?H:?%<:#define volatile
 ?H:?%<:#endif
 ?H:.
-?W:%<:volatile
 ?LINT:set d_volatile
 ?LINT:known volatile
 : check for volatile keyword

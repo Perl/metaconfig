@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_modfl d_modflproto: Inlibc Compile Hasproto cat \
-	test ccflags uselongdouble i_math \
+	test ccflags uselongdouble \
 	d_sqrtl d_aintl d_copysignl d_ilogbl d_scalbnl d_frexpl d_ldexpl \
 	d_truncl
 ?MAKE:	-pick add $@ %<
@@ -43,7 +43,7 @@ eval $inlibc
 
 : see if prototype for modfl is available
 echo " "
-set d_modflproto modfl $i_math math.h
+set d_modflproto modfl define math.h
 eval $hasproto
 
 if $test "$uselongdouble" = "$define"; then

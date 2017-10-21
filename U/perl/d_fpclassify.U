@@ -3,7 +3,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_fpclassify d_fp_classify: Inlibc cat i_math Compile rm_try Setvar
+?MAKE:d_fpclassify d_fp_classify: Inlibc cat Compile rm_try Setvar
 ?MAKE:	-pick add $@ %<
 ?X:the short story is that C99 says use fpclassify.  But the story is confused
 ?X:by systems "partially C99" (or fully "pre C99") which either user fpclassify
@@ -57,10 +57,7 @@
 ?X:class	i_math
 echo "Checking to see if you have fpclassify..." >&4
 $cat >try.c <<EOCP
-#$i_math I_MATH
-#ifdef I_MATH
 #include <math.h>
-#endif
 int main() { return fpclassify(1.0) == FP_NORMAL ? 0 : 1; }
 EOCP
 set try

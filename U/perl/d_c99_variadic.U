@@ -6,7 +6,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_c99_variadic_macros: Compile Setvar cat rm_try run i_stdarg i_stdlib
+?MAKE:d_c99_variadic_macros: Compile Setvar cat rm_try run
 ?MAKE:	-pick add $@ %<
 ?S:d_c99_variadic_macros:
 ?S:	This variable conditionally defines the HAS_C99_VARIADIC_MACROS
@@ -20,10 +20,8 @@
 ?H:.
 ?F:!try
 : see if the Compiler supports C99 variadic macros
-case "$i_stdarg$i_stdlib" in
-    "$define$define")
-    echo "You have <stdarg.h> and <stdlib.h>, so checking for C99 variadic macros." >&4
-    $cat >try.c <<EOCP
+echo "Checking for C99 variadic macros." >&4
+$cat >try.c <<EOCP
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -36,27 +34,21 @@ int main() {
   return 0;
 }
 EOCP
-    set try
-    if eval $compile && $run ./try 2>&1 >/dev/null; then
-	case "`$run ./try`" in
-	    "123 456 789")
-	    echo "You have C99 variadic macros." >&4
-	    d_c99_variadic_macros="$define"
-	    ;;
-	    *)
-	    echo "You don't have functional C99 variadic macros." >&4
-	    d_c99_variadic_macros="$undef"
-	    ;;
-	esac
-    else
-	echo "I couldn't compile and run the test program, so I assume that you don't have functional C99 variadic macros." >&4
+set try
+if eval $compile && $run ./try 2>&1 >/dev/null; then
+    case "`$run ./try`" in
+	"123 456 789")
+	echo "You have C99 variadic macros." >&4
+	d_c99_variadic_macros="$define"
+	;;
+	*)
+	echo "You don't have functional C99 variadic macros." >&4
 	d_c99_variadic_macros="$undef"
-    fi
-    $rm_try
-    ;;
-    *)
-    echo "You don't have <stdarg.h> and <stdlib.h>, so not checking for C99 variadic macros." >&4
+	;;
+    esac
+else
+    echo "I couldn't compile and run the test program, so I assume that you don't have functional C99 variadic macros." >&4
     d_c99_variadic_macros="$undef"
-    ;;
-esac
+fi
+$rm_try
 
