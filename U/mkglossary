@@ -3,26 +3,25 @@
 use strict;
 use warnings;
 
+use Cwd "abs_path";
 use File::Basename;
-
 use FindBin;
 
-my $p5_metaconfig_base = "$FindBin::Bin/../";
+my $p5_metaconfig_base = abs_path "$FindBin::Bin/../";
 
-my @std_units = glob ("$p5_metaconfig_base/U/*.U");
-my $PWD       =       "$p5_metaconfig_base/perl";
-
--d "U" and chdir "U";
-my @perl_units = glob ("$PWD/U/*/*.U");
-push (@perl_units, @std_units);
+chdir "$p5_metaconfig_base/U" or
+    die "Cannot use $p5_metaconfig_base/U to find the units\n";
+my @perl_units = map { abs_path $_ } (sort glob "*/*.U"), sort glob "../dist/U/*.U";
 
 # Get the list of config.sh symbols.  Be sure this is up to date!
 # (I run the Porting/mksample script first to be sure.)
-open my $wanted, "< $PWD/Porting/config.sh" or die "$0: open $PWD/Wanted: $!\n";
+my $wanted = abs_path "$p5_metaconfig_base/perl/Porting/config.sh";
+open my $wfh, "<", $wanted or die "$0: open $wanted: $!\n";
 my @WANTED = map  { $_->[0] }
 	     sort { $a->[1] cmp $b->[1] }
-	     map  { [ $_, lc $_ ] } <$wanted>;
-close $wanted;
+	     map  { [ $_, lc $_ ] }
+	     <$wfh>;
+close $wfh;
 
 print <<'EOM';
 
@@ -39,7 +38,7 @@ EOM
 
 my ($Loc, %expl, %file, %predef);
 foreach my $file (@perl_units) {
-    open my $fh, "< $file" or die "$0: open $file: $!";
+    open my $fh, "<", $file or die "$0: open $file: $!";
     my $base = basename ($file);
     $Loc = $file, next if $base eq "Loc.U" and not defined $Loc;
     my @var;
@@ -66,7 +65,7 @@ foreach my $file (@perl_units) {
 
 defined $Loc or die "$0: Couldn't locate Loc.U: $!";
 
-open my $fh, "< $Loc" or die "$0: open $Loc: $!";
+open my $fh, "<", $Loc or die "$0: open $Loc: $!";
 while (<$fh>) {
     m/^\?(\w+):\1$/ and ($expl{$1}, $file{$1}) = (1, "Loc.U");
     }
