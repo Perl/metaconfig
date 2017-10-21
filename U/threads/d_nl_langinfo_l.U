@@ -116,6 +116,9 @@ case "$usethreads" in
 	fi
 	;;
     *) echo "Since threads aren't selected, we won't bother looking for nl_langinfo_l()" >&4
-    esac
+esac
+if test X"$d_thread_safe_nl_langinfo_l" = X; then
+	d_thread_safe_nl_langinfo_l="$undef"
+fi
 $rm_try
 
