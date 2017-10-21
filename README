@@ -140,7 +140,7 @@ Contents of this directory:
     string HAS_STRTOLD_L at the end of the comment.  This can be removed once
     the code base has actual uses of the unit.
 
-(f) mconfig -m -O to regenerate Configure and config_h.SH
+(f) mconfig -m -O   # regenerate Configure and config_h.SH
 
     Make *sure* your mconfig is the correct one in your $PATH, as the mono-web
     package will install /usr/bin/mconfig which will do something completely
