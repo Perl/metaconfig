@@ -165,14 +165,18 @@ Contents of this directory:
 
     Most can be checked and updated by a tool Nicholas provided:
 
-    $ cd perl
-    $ perl Porting/checkcfgvar.pl
+      $ cd perl
+      $ perl Porting/checkcfgvar.pl
 
-    and if it shows differences,
+    and if it shows differences, use one of:
 
-    $ perl Porting/checkcfgvar.pl --regen --default=define
+      $ perl Porting/checkcfgvar.pl --regen --default=undef
+      $ perl Porting/checkcfgvar.pl --regen --default=define
 
-    (of course "define" can also be "undef" based on the changes you made
+    based on the changes you made.  For safety, probes should probably be
+    'undef', whereas some other things unconditionally should default to
+    'define'.  For example, 'default_inc_excludes_dot' should be 'define'
+    except in very limited circumstances, because it closes a security hole.
 
     For Win32 the process is semi-automated.  You have to have a Win32
     machine to run dmake on to complete the process, but that can be done
