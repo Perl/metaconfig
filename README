@@ -156,12 +156,12 @@ Contents of this directory:
 
 (h) The messy semi-automated part is that the knowledge of the new symbol
     needs to be propagated to non-Configure lands like Win32, WinCE, Netware,
-    VMS, VOS, EPOC, ...  see previous Configure changes to see which are these
+    VMS, VOS, ...  see previous Configure changes to see which are these
     heathen lands.  Files to take care of are
     {win32,wince,NetWare}/config_[hH]*, (Win32, WinCE, NetWare),
-    configure.com (VMS), epoc/config.sh (EPOC).  Depending on the kind of
-    patch djgpp/config* might also need adjusting (for example when
-    adding/changing the list of extensions)
+    configure.com (VMS).  Depending on the kind of patch djgpp/config* might
+    also need adjusting (for example when adding/changing the list of
+    extensions)
 
     Most can be checked and updated by a tool Nicholas provided:
 
