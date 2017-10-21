@@ -174,8 +174,9 @@ Contents of this directory:
 
     (of course "define" can also be "undef" based on the changes you made
 
-    For Win32 the process is semi-automated -- if you have a Win32
-    machine to run dmake on
+    For Win32 the process is semi-automated.  You have to have a Win32
+    machine to run dmake on to complete the process, but that can be done
+    later by someone with such access.
 
     For VMS, ('configure.com'), it may be best to add the units as 'undef' and
     let the VMS experts deal with them later.  However, you can set them to
