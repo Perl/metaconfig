@@ -177,10 +177,22 @@ Contents of this directory:
     For Win32 the process is semi-automated -- if you have a Win32
     machine to run dmake on
 
-    For vms, ('configure.com'), you likely will have to hand-edit in the
-    changes, using a similar unit as a starting point.  There likely will be at
-    least 2 groups of changes.  Rerun the tool until you've fixed everything it
-    finds.
+    For VMS, ('configure.com'), it may be best to add the units as 'undef' and
+    let the VMS experts deal with them later.  However, you can set them to
+    'define' if they are non-tricky (such as being basic functions having
+    standard signatures across architectures), and are in the oldest release of
+    VMS that perl can be compiled on, which is 7.3-2.  Appendix A of "HP C
+    Run-Time Library Reference Manual for OpenVMS Systems" gives you that
+    information.  As of October 2017, the latest version online is available
+    at: http://h41379.www4.hpe.com/doc/84final/5763/5763profile.html
+
+    In configure.com, if there is an existing probe that is essentially the
+    same (except for the names) as the one you're adding, you can copy, paste,
+    and adjust to create a new one, but note that it's easy to run afoul of the
+    quoting rules in configure.com.  New probed-for units likely will require
+    at least 2 groups of changes.
+
+    Rerun checkcfgvar.pl until you've fixed everything it finds.
 
 (i) Check if U/mkglossary (right near the top) points to where you keep
     dist's standard metaconfig units as well as your perl-specific ones.
