@@ -22,7 +22,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:07:35  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:d_syserrlst d_sysernlst: contains Csym Findhdr
+?MAKE:d_syserrlst d_sysernlst: Csym Findhdr
 ?MAKE:	-pick add $@ %<
 ?S:d_syserrlst:
 ?S:	This variable conditionally defines HAS_SYS_ERRLIST if sys_errlist[] is
@@ -46,7 +46,7 @@
 ?H:#$d_sysernlst HAS_SYS_ERRNOLIST	/**/
 ?H:.
 ?D:d_sysernlst=''
-?T:xxx val
+?T:val
 : see if sys_errlist[] exists
 echo " "
 if test "X$d_syserrlst" = X; then
