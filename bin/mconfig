@@ -57,8 +57,10 @@ $patchlevel = '0';
 $grep = '/usr/bin/grep';
 chop($date = `date`);
 &profile;						# Read ~/.dist_profile
-&usage unless getopts("dhkmoOstvwGMVL:");
+&usage unless getopts("dhkmoOstvwGMVL:X:");
 
+my %excluded_symbol;
+read_exclusions($opt_X) if defined $opt_X;
 $MC = $opt_L if $opt_L;			# May override public library path
 $MC = &tilda_expand($MC);		# ~name expansion
 chop($WD = `pwd`);				# Working directory
@@ -154,6 +156,7 @@ Usage: metaconfig [-dhkmostvwGMV] [-L dir]
   -L : specify main units repository.
   -M : activate production of confmagic.h.
   -V : print version number and exits.
+  -X FILE : read symbol exclusions from FILE
 EOH
 	exit 1;
 }
@@ -524,6 +527,9 @@ sub p_wanted {
 		$cmaster{$_} = undef;					# Asks for look-up in C files
 		$cwanted{$_} = "$active" if $active;	# Shell symbols to activate
 	}
+
+	delete @cmaster{keys %excluded_symbol};
+	delete @cwanted{keys %excluded_symbol};
 }
 
 # Process the ?INIT: lines
@@ -805,6 +811,25 @@ sub q {
 	local($_) = @_;
 	s/^://gm;
 	$_;
+}
+
+sub read_exclusions {
+	my ($filename) = @_;
+	print "Reading exclusions from $filename...\n" unless $opt_s;
+	open(EXCLUSIONS, "< $filename\0") || die "Can't read $filename: $!\n";
+	local $_;
+	while (<EXCLUSIONS>) {
+		if (/^\s*#|^\s*$/) {
+			# comment or blank line, ignore
+		}
+		elsif (/^\s*(\w+)\s*$/) {
+			$excluded_symbol{$1} = 1;
+		}
+		else {
+			die "$filename:$.: unrecognised line\n";
+		}
+	}
+	close(EXCLUSIONS) || die "Can't close $filename: $!\n";
 }
 
 # Build a wanted file from the files held in @SHlist and @clist arrays
