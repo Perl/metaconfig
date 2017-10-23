@@ -1,9 +1,0 @@
-?RCS: d_strchr.U
-?RCS:
-?MAKE:d_strchr: Nothing
-?S:d_strchr:
-?S:	This variable is unconditionally defined
-?S:.
-: stub, never used
-d_strchr=nothing
-
