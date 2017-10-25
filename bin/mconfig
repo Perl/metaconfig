@@ -155,7 +155,7 @@ Usage: metaconfig [-dhkmostvwGMV] [-L dir]
   -G : also provide a GNU configure-like front end.
   -L : specify main units repository.
   -M : activate production of confmagic.h.
-  -V : print version number and exits.
+  -V : print version number and exit.
   -X FILE : read symbol exclusions from FILE
 EOH
 	exit 1;
