@@ -139,7 +139,7 @@ sub init_except {
 	$Except{'_exe'}++;
 }
 
-# Print out metaconfig's usage and exits
+# Print out metaconfig's usage and exit
 sub usage {
 	print STDERR <<'EOH';
 Usage: metaconfig [-dhkmostvwGMV] [-L dir]
