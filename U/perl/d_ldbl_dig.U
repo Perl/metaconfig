@@ -8,7 +8,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_ldbl_dig: Myread contains cat rm Setvar i_limits i_float \
+?MAKE:d_ldbl_dig: Myread contains cat rm Setvar \
 	cppstdin cppflags cppminus
 ?MAKE:	-pick add $@ %<
 ?S:d_ldbl_dig:
@@ -29,14 +29,8 @@
 : See if number of significant digits in a double precision number is known
 echo " "
 $cat >ldbl_dig.c <<EOM
-#$i_limits I_LIMITS
-#$i_float I_FLOAT
-#ifdef I_LIMITS
 #include <limits.h>
-#endif
-#ifdef I_FLOAT
 #include <float.h>
-#endif
 #ifdef LDBL_DIG
 printf("Contains LDBL_DIG");
 #endif

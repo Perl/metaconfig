@@ -45,9 +45,13 @@ Contents of this directory:
 		These may differ from dist-git, as upstream also moves
 		on and develops.
 
-(a) You need to have dist installed so that you have metalint and metaconfig
-    in your $PATH. As dist/meta binaries are now included in the git checkout,
-    you do NOT need to install dist/meta itself.
+(a) In order to assemble Configure from its units, you need mlint/metaline and
+    mconfig/metaconfig from the "dist" package installed and available in your
+    $PATH. You can either use the version that comes with your OS (Debian ships
+    it) or the versions that are included in this checkout: just add the full
+    name of this folder/bin to your $PATH. If you are not planning to analyse
+    differences of the current state with upstream dist, you can skip the rest
+    op step (a) now.
 
     If you also want to play with or compare to the original meta/dist, you
     can checkout that too.
@@ -84,7 +88,7 @@ Contents of this directory:
 
     $ export MC5=/your/path/to/metaconfig
     $ alias ml="perl $MC5/bin/mlint -O"
-    $ alias mc="perl $MC5/bin/mconfig -m -O"
+    $ alias mc="perl $MC5/bin/mconfig -m -O -X .metaconf-exclusions.txt"
 
     examples in the rest of this README will just refer to mlint and mconfig
     as if they appear in your $PATH
@@ -140,7 +144,8 @@ Contents of this directory:
     string HAS_STRTOLD_L at the end of the comment.  This can be removed once
     the code base has actual uses of the unit.
 
-(f) mconfig -m -O   # regenerate Configure and config_h.SH
+(f) "mconfig -m -O -X .metaconf-exclusions.txt" to regenerate Configure and
+    config_h.SH
 
     Make *sure* your mconfig is the correct one in your $PATH, as the mono-web
     package will install /usr/bin/mconfig which will do something completely
@@ -214,12 +219,11 @@ Contents of this directory:
     $ make -j12
     $ env TEST_JOBS=13 make test_harness
 
-    Before you start committing, make sure that the other developers
-    are happy and run
+    Before you start committing, make sure that
 
     $ make test_porting
 
-    again
+    still passes
 
 (k) Optionally, run Porting/mksample to freshen the Porting/config*.
     Adjust the various compile-time options (e.g. 64bit, threads) as

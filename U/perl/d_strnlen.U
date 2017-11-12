@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2017 Dagfinn Ilmari Mannsåker
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_strnlen: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_strnlen:
+?S:	This variable conditionally defines the HAS_STRNLEN symbol, which
+?S:	indicates to the C program that the strnlen () routine is available.
+?S:.
+?C:HAS_STRNLEN:
+?C:	This symbol, if defined, indicates that the strnlen () routine is
+?C:	available to check the length of a string up to a maximum.
+?C:.
+?H:#$d_strnlen HAS_STRNLEN		/**/
+?H:.
+?LINT:set d_strnlen
+: see if strnlen exists
+set strnlen d_strnlen
+eval $inlibc
+

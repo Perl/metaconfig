@@ -15,7 +15,7 @@ Line	Description
 	The second part of the list (after the middle ':') is the unit
 	dependency.  It should list all the needed special units, as
 	well as all the symbols used by the shell implementation. If
-	a symbol is nedded but its configuration value is not critical,
+	a symbol is needed but its configuration value is not critical,
 	it can be preceded by a '+', in which case it is called a
 	conditional dependency: its corresponding unit will be loaded
 	if, and only if, that symbol is otherwise really wanted;

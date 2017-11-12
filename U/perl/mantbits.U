@@ -6,7 +6,7 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:longdblmantbits doublemantbits nvmantbits: Inlibc cat Compile run \
-	rm_try Setvar echo i_float i_sunmath usequadmath \
+	rm_try Setvar echo i_sunmath usequadmath \
 	d_longdbl longdblkind nvsize doublesize longdblsize
 ?MAKE:	-pick add $@ %<
 ?S:doublemantbits:
@@ -56,11 +56,8 @@
 : Check the length of the double mantissa
 $echo "Checking how many mantissa bits your doubles have..." >&4
 $cat >try.c <<EOP
-#$i_float I_FLOAT
 #$i_sunmath I_SUNMATH
-#ifdef I_FLOAT
-# include <float.h>
-#endif
+#include <float.h>
 #ifdef I_SUNMATH
 # include <sunmath.h>
 #endif
@@ -86,11 +83,8 @@ $rm_try
 : Check the length of the longdouble mantissa
 $echo "Checking how many mantissa bits your long doubles have..." >&4
 $cat >try.c <<EOP
-#$i_float I_FLOAT
 #$i_sunmath I_SUNMATH
-#ifdef I_FLOAT
-# include <float.h>
-#endif
+#include <float.h>
 #ifdef I_SUNMATH
 # include <sunmath.h>
 #endif

@@ -19,6 +19,7 @@
 ?C:.
 ?H:#$d_statfs4 HAS_STATFS4		/**/
 ?H:.
+?F: !try.h
 ?LINT:set d_statfs4
 : Check for statfs4
 case "$d_statfs" in
@@ -60,7 +61,7 @@ EOCP
 	$define) echo "Yes, it can."  ;;
 	$undef)  echo "No, it can't." ;;
 	esac
-	$rm_try
+	$rm_try try.h
 	;;
 *)	val="$undef"
 	;;
