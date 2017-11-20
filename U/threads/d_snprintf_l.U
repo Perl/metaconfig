@@ -1,0 +1,48 @@
+?RCS: Copyright (c) 2006-2007, H.Merijn Brand
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_snprintf_l d_vsnprintf_l : Inlibc d_snprintf d_vsnprintf
+?MAKE:	-pick add $@ %<
+?S:d_snprintf_l:
+?S:	This variable conditionally defines the HAS_SNPRINTF_L symbol, which
+?S:	indicates to the C program that the snprintf_l () library function
+?S:	is available.
+?S:.
+?S:d_vsnprintf_l:
+?S:	This variable conditionally defines the HAS_VSNPRINTF_L symbol, which
+?S:	indicates to the C program that the vsnprintf_l () library function
+?S:	is available.
+?S:.
+?C:HAS_SNPRINTF_L:
+?C:	This symbol, if defined, indicates that the snprintf_l () library
+?C:	function is available for use.
+?C:.
+?C:HAS_VSNPRINTF_L:
+?C:	This symbol, if defined, indicates that the vsnprintf_l () library
+?C:	function is available for use.
+?C:.
+?H:#$d_snprintf_l HAS_SNPRINTF_L	/**/
+?H:#$d_vsnprintf_l HAS_VSNPRINTF_L	/**/
+?H:.
+: see if snprintf_l exists
+set snprintf_l d_snprintf_l
+eval $inlibc
+
+: see if vsnprintf_l exists
+set vsnprintf_l d_vsnprintf_l
+eval $inlibc
+
+case "$d_snprintf-$d_vsnprintf-$d_snprintf_l-$d_vsnprintf_l" in
+"$define-$define-$define-$define")
+    ;;
+*) echo "(These require the basic snprintf and vsnprintf to also be available, which they aren't"
+	d_snprintf_l="$undef"
+	d_vsnprintf_l="$undef"
+    ;;
+esac
+
