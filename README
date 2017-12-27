@@ -45,6 +45,8 @@ Contents of this directory:
 		These may differ from dist-git, as upstream also moves
 		on and develops.
 
+Development workflow:
+
 (a) In order to assemble Configure from its units, you need mlint/metaline and
     mconfig/metaconfig from the "dist" package installed and available in your
     $PATH. You can either use the version that comes with your OS (Debian ships
@@ -255,6 +257,19 @@ Contents of this directory:
 (n) When all patches are applied, tested and committed, and you are happy,
     git push
 
-(o) Documentation on 'dist' may be found at these locations:
-    https://github.com/rmanfredi/dist/blob/master/mcon/man/mconfig.SH
-    https://manpages.debian.org/stretch/dist/metaconfig.1.en.html
+References:
+
+Documentation on 'dist' may be found at these locations:
+https://github.com/rmanfredi/dist/blob/master/mcon/man/mconfig.SH
+https://manpages.debian.org/stretch/dist/metaconfig.1.en.html
+
+Git tags:
+
+Tags are maintained in this git repository mapping the version of the
+units that were used for the Configure in a given release of perl,
+named simply after the version of perl in question (for example, at
+the time of writing the current stable release is 5.26.1). This provides
+a stable reference for downstreams wishing to import the metaconfig units
+into their own packaging. Therefore, at minimum tags for each stable
+release should be made (adding tags for development releases being an
+optional extra).
