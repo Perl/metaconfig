@@ -1,0 +1,26 @@
+?RCS: Copyright (c) 2017, Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_wcrtomb: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_wcrtomb:
+?S:	This variable conditionally defines the HAS_WCRTOMB symbol if the
+?S:	wcrtomb() routine is available to be used to convert a wide character
+?S:     into a multi-byte character.
+?S:.
+?C:HAS_WCRTOMB:
+?C:	This symbol, if defined, indicates that the wcrtomb routine is
+?C:	available to convert a wide character into a multi-byte character.
+?C:.
+?H:#$d_wcrtomb HAS_WCRTOMB	/**/
+?H:.
+?LINT: set d_wcrtomb
+: see if wcrtomb exists
+set wcrtomb d_wcrtomb
+eval $inlibc
+
