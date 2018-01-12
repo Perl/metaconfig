@@ -11,7 +11,7 @@
 ?S:d_wcrtomb:
 ?S:	This variable conditionally defines the HAS_WCRTOMB symbol if the
 ?S:	wcrtomb() routine is available to be used to convert a wide character
-?S:     into a multi-byte character.
+?S:	into a multi-byte character.
 ?S:.
 ?C:HAS_WCRTOMB:
 ?C:	This symbol, if defined, indicates that the wcrtomb routine is
