@@ -56,12 +56,12 @@
 ?S:	terminated with a plain 0.
 ?S:.
 ?S:sig_count (sig_name.U):
-?S: 	This variable holds a number larger than the largest valid
-?S: 	signal number.  This is usually the same as the NSIG macro.
+?S:	This variable holds a number larger than the largest valid
+?S:	signal number.  This is usually the same as the NSIG macro.
 ?S:.
 ?S:sig_size:
-?S: 	This variable contains the number of elements of the sig_name
-?S: 	and sig_num arrays.
+?S:	This variable contains the number of elements of the sig_name
+?S:	and sig_num arrays.
 ?S:.
 ?C:SIG_NAME:
 ?C:	This symbol contains a list of signal names in order of

@@ -11,11 +11,11 @@
 ?MAKE:d_socklen_t: Inhdr cat rm_try Setvar Compile d_socket sizetype
 ?MAKE:	-pick add $@ %<
 ?S:d_socklen_t:
-?S:     This symbol will be defined if the C compiler supports socklen_t.
+?S:	This symbol will be defined if the C compiler supports socklen_t.
 ?S:.
 ?C:HAS_SOCKLEN_T:
-?C:     This symbol will defined if the C compiler supports socklen_t.
-?C:     Usually the <sys/socket.h> needs to be included.
+?C:	This symbol will defined if the C compiler supports socklen_t.
+?C:	Usually the <sys/socket.h> needs to be included.
 ?C:.
 ?H:#$d_socklen_t     HAS_SOCKLEN_T               /**/
 ?H:.

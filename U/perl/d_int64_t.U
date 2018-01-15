@@ -11,11 +11,11 @@
 ?MAKE:d_int64_t: Inhdr cat rm_try Setvar Compile i_inttypes
 ?MAKE:	-pick add $@ %<
 ?S:d_int64_t:
-?S:     This symbol will be defined if the C compiler supports int64_t.
+?S:	This symbol will be defined if the C compiler supports int64_t.
 ?S:.
 ?C:HAS_INT64_T:
-?C:     This symbol will defined if the C compiler supports int64_t.
-?C:     Usually the <inttypes.h> needs to be included, but sometimes
+?C:	This symbol will defined if the C compiler supports int64_t.
+?C:	Usually the <inttypes.h> needs to be included, but sometimes
 ?C:	<sys/types.h> is enough.
 ?C:.
 ?H:#$d_int64_t     HAS_INT64_T               /**/

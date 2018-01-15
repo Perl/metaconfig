@@ -57,14 +57,14 @@
 ?S:.
 ?S:freetype:
 ?S:	This variable contains the return type of free().  It is usually
-?S: void, but occasionally int.
+?S:	void, but occasionally int.
 ?S:.
 ?S:malloctype:
 ?S:	This variable contains the kind of ptr returned by malloc and realloc.
 ?S:.
 ?C:Free_t:
 ?C:	This variable contains the return type of free().  It is usually
-?C: void, but occasionally int.
+?C:	void, but occasionally int.
 ?C:.
 ?C:Malloc_t (MALLOCPTRTYPE):
 ?C:	This symbol is the type of pointer returned by malloc and realloc.

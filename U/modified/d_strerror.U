@@ -40,7 +40,7 @@
 ?C:HAS_SYS_ERRNOLIST (SYSERRNOLIST):
 ?C:	This symbol, if defined, indicates that the sys_errnolist array is
 ?C:	available to translate an errno code into its symbolic name (e.g.
-?C: ENOENT). The extern int sys_nerrno gives the size of that table.
+?C:	ENOENT). The extern int sys_nerrno gives the size of that table.
 ?C:.
 ?H:#$d_syserrlst HAS_SYS_ERRLIST	/**/
 ?H:#$d_sysernlst HAS_SYS_ERRNOLIST	/**/

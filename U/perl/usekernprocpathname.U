@@ -8,7 +8,7 @@
 ?C:USE_KERN_PROC_PATHNAME:
 ?C:	This symbol, if defined, indicates that we can use sysctl with
 ?C:	KERN_PROC_PATHNAME to get a full path for the executable, and hence
-?C: 	convert $^X to an absolute path.
+?C:	convert $^X to an absolute path.
 ?C:.
 ?H:#$usekernprocpathname USE_KERN_PROC_PATHNAME	/**/
 ?H:.

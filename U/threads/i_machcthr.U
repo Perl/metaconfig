@@ -11,12 +11,12 @@
 ?MAKE:i_machcthr: Inhdr usethreads
 ?MAKE:	-pick add $@ %<
 ?S:i_machcthr:
-?S:     This variable conditionally defines the I_MACH_CTHREADS symbol,
-?S:     and indicates whether a C program should include <mach/cthreads.h>.
+?S:	This variable conditionally defines the I_MACH_CTHREADS symbol,
+?S:	and indicates whether a C program should include <mach/cthreads.h>.
 ?S:.
 ?C:I_MACH_CTHREADS:
-?C:     This symbol, if defined, indicates to the C program that it should
-?C:     include <mach/cthreads.h>.
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <mach/cthreads.h>.
 ?C:.
 ?H:#$i_machcthr   I_MACH_CTHREADS	/**/
 ?H:.

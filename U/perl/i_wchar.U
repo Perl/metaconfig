@@ -11,12 +11,12 @@
 ?MAKE:i_wchar: Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:i_wchar:
-?S:     This variable conditionally defines the I_WCHAR symbol,
-?S:     that indicates whether a C program may include <wchar.h>.
+?S:	This variable conditionally defines the I_WCHAR symbol,
+?S:	that indicates whether a C program may include <wchar.h>.
 ?S:.
 ?C:I_WCHAR:
-?C:     This symbol, if defined, indicates to the C program that <wchar.h>
-?C:     is available for inclusion
+?C:	This symbol, if defined, indicates to the C program that <wchar.h>
+?C:	is available for inclusion
 ?C:.
 ?H:#$i_wchar   I_WCHAR	/**/
 ?H:.

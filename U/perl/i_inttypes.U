@@ -11,12 +11,12 @@
 ?MAKE:i_inttypes: Inhdr cat rm_try Setvar Compile
 ?MAKE:	-pick add $@ %<
 ?S:i_inttypes:
-?S:     This variable conditionally defines the I_INTTYPES symbol,
-?S:     and indicates whether a C program should include <inttypes.h>.
+?S:	This variable conditionally defines the I_INTTYPES symbol,
+?S:	and indicates whether a C program should include <inttypes.h>.
 ?S:.
 ?C:I_INTTYPES:
-?C:     This symbol, if defined, indicates to the C program that it should
-?C:     include <inttypes.h>.
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <inttypes.h>.
 ?C:.
 ?H:#$i_inttypes   I_INTTYPES                /**/
 ?H:.

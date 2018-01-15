@@ -23,22 +23,22 @@
 ?C:	available to classify doubles.  Available for example in HP-UX.
 ?C:	The returned values are defined in <math.h> and are
 ?C:
-?C:           FP_NORMAL     Normalized
-?C:           FP_ZERO       Zero
-?C:           FP_INFINITE   Infinity
-?C:           FP_SUBNORMAL  Denormalized
-?C:           FP_NAN        NaN
+?C:	  FP_NORMAL     Normalized
+?C:	  FP_ZERO       Zero
+?C:	  FP_INFINITE   Infinity
+?C:	  FP_SUBNORMAL  Denormalized
+?C:	  FP_NAN        NaN
 ?C:
 ?C:.
 ?C:HAS_FP_CLASSIFY:
 ?C:	This symbol, if defined, indicates that the fp_classify routine is
 ?C:	available to classify doubles. The values are defined in <math.h>
 ?C:
-?C:           FP_NORMAL     Normalized
-?C:           FP_ZERO       Zero
-?C:           FP_INFINITE   Infinity
-?C:           FP_SUBNORMAL  Denormalized
-?C:           FP_NAN        NaN
+?C:	  FP_NORMAL     Normalized
+?C:	  FP_ZERO       Zero
+?C:	  FP_INFINITE   Infinity
+?C:	  FP_SUBNORMAL  Denormalized
+?C:	  FP_NAN        NaN
 ?C:
 ?C:.
 ?H:#$d_fpclassify	HAS_FPCLASSIFY		/**/

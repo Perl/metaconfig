@@ -11,7 +11,7 @@
 ?S:d_mbrtowc:
 ?S:	This variable conditionally defines the HAS_MBRTOWC symbol if the
 ?S:	mbrtowc() routine is available to be used to convert a multi-byte
-?S:     character into a wide character.
+?S:	character into a wide character.
 ?S:.
 ?C:HAS_MBRTOWC:
 ?C:	This symbol, if defined, indicates that the mbrtowc routine is

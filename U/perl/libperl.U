@@ -34,7 +34,8 @@
 ?S:	or
 ?S:		shrpenv=''
 ?S:	See the main perl Makefile.SH for actual working usage.
-?S: Alternatively, we might be able to use a command line option such
+?S:
+?S:	Alternatively, we might be able to use a command line option such
 ?S:	as -R $archlibexp/CORE (Solaris) or -Wl,-rpath
 ?S:	$archlibexp/CORE (Linux).
 ?S:.

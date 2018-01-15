@@ -38,7 +38,7 @@
 ?C:HAS_TIMES (TIMES):
 ?C:	This symbol, if defined, indicates that the times() routine exists.
 ?C:	Note that this became obsolete on some systems (SUNOS), which now
-?C: use getrusage(). It may be necessary to include <sys/times.h>.
+?C:	use getrusage(). It may be necessary to include <sys/times.h>.
 ?C:.
 ?C:Clock_t (CLOCKTYPE):
 ?C:	This symbol holds the type returned by times(). It can be long,
