@@ -159,8 +159,15 @@ $cat >attrib.c <<EOCP
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
+#$i_inttypes I_INTTYPES
+#ifdef I_INTTYPES
+#include <inttypes.h>
+#endif
+#ifndef INTPTR_MAX
+#define intptr_t int
+#endif
 int null_printf (char* pat,...) __attribute__((__format__(__printf__,1,2)));
-int null_printf (char* pat,...) { return (int)pat; }
+int null_printf (char* pat,...) { return (int)(intptr_t)pat; }
 int main () { exit(null_printf(NULL)); }
 EOCP
 	if $cc $ccflags -o attrib attrib.c >attrib.out 2>&1 ; then
