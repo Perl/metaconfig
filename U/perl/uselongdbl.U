@@ -42,7 +42,7 @@ EOM
 rp='Try to use long doubles if available?'
 . ./myread
 case "$ans" in
-y|Y) 	val="$define"	;;
+y|Y)	val="$define"	;;
 *)      val="$undef"	;;
 esac
 set uselongdouble

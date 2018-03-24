@@ -83,8 +83,8 @@ EOM
    rp='Try to understand large files, if available?'
    . ./myread
    case "$ans" in
-   y|Y) 	val="$define" ;;
-   *)   	val="$undef"  ;;
+   y|Y)	val="$define" ;;
+   *)	val="$undef"  ;;
    esac
    ;;
 esac

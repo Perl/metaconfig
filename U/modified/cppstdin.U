@@ -55,7 +55,7 @@
 ?C:CPPSTDIN:
 ?C:	This symbol contains the first part of the string which will invoke
 ?C:	the C preprocessor on the standard input and produce to standard
-?C:	output.	 Typical value of "cc -E" or "/lib/cpp", but it can also
+?C:	output.  Typical value of "cc -E" or "/lib/cpp", but it can also
 ?C:	call a wrapper. See CPPRUN.
 ?C:.
 ?C:CPPMINUS:

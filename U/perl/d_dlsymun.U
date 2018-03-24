@@ -23,7 +23,7 @@
 ?C:	makes sense if you *have* dlsym, which we will presume is the
 ?C:	case if you're using dl_dlopen.xs.
 ?C:.
-?H:#$d_dlsymun 	DLSYM_NEEDS_UNDERSCORE 	/**/
+?H:#$d_dlsymun	DLSYM_NEEDS_UNDERSCORE	/**/
 ?H:.
 ?LINT:set d_dlsymun
 ?T: xxx

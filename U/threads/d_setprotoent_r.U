@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_setprotoent_r
 ?C:	is defined.
 ?C:.
-?H:#$d_setprotoent_r HAS_SETPROTOENT_R	   /**/
-?H:#define SETPROTOENT_R_PROTO $setprotoent_r_proto	   /**/
+?H:#$d_setprotoent_r HAS_SETPROTOENT_R	/**/
+?H:#define SETPROTOENT_R_PROTO $setprotoent_r_proto	/**/
 ?H:.
 ?T:try hdrs d_setprotoent_r_proto
 : see if setprotoent_r exists
@@ -58,7 +58,7 @@ case "$d_setprotoent_r" in
 	esac
 	case "$setprotoent_r_proto" in
 	''|0)	d_setprotoent_r=undef
- 	        setprotoent_r_proto=0
+		setprotoent_r_proto=0
 		echo "Disabling setprotoent_r, cannot determine prototype." >&4 ;;
 	* )	case "$setprotoent_r_proto" in
 		REENTRANT_PROTO*) ;;

@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getgrent_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getgrent_r HAS_GETGRENT_R	   /**/
-?H:#define GETGRENT_R_PROTO $getgrent_r_proto	   /**/
+?H:#$d_getgrent_r HAS_GETGRENT_R	/**/
+?H:#define GETGRENT_R_PROTO $getgrent_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getgrent_r_proto
 : see if getgrent_r exists
@@ -74,7 +74,7 @@ case "$d_getgrent_r" in
 	esac
 	case "$getgrent_r_proto" in
 	''|0)	d_getgrent_r=undef
- 	        getgrent_r_proto=0
+		getgrent_r_proto=0
 		echo "Disabling getgrent_r, cannot determine prototype." >&4 ;;
 	* )	case "$getgrent_r_proto" in
 		REENTRANT_PROTO*) ;;

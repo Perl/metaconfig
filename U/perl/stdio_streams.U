@@ -39,7 +39,7 @@ $cat >&4 <<EOM
 Checking how to access stdio streams by file descriptor number...
 EOM
 case "$stdio_stream_array" in
-'') 	$cat >try.c <<EOCP
+'')	$cat >try.c <<EOCP
 #include <stdio.h>
 int main() {
   if (&STDIO_STREAM_ARRAY[fileno(stdin)] == stdin)
@@ -50,7 +50,7 @@ EOCP
 	do
 	        set try -DSTDIO_STREAM_ARRAY=$s
 		if eval $compile; then
-		    	case "`$run ./try`" in
+			case "`$run ./try`" in
 			yes)	stdio_stream_array=$s; break ;;
 			esac
 		fi

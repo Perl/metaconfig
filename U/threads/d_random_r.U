@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_random_r
 ?C:	is defined.
 ?C:.
-?H:#$d_random_r HAS_RANDOM_R	   /**/
-?H:#define RANDOM_R_PROTO $random_r_proto	   /**/
+?H:#$d_random_r HAS_RANDOM_R	/**/
+?H:#define RANDOM_R_PROTO $random_r_proto	/**/
 ?H:.
 ?T:try hdrs d_random_r_proto
 : see if random_r exists
@@ -62,7 +62,7 @@ case "$d_random_r" in
 	esac
 	case "$random_r_proto" in
 	''|0)	d_random_r=undef
- 	        random_r_proto=0
+		random_r_proto=0
 		echo "Disabling random_r, cannot determine prototype." >&4 ;;
 	* )	case "$random_r_proto" in
 		REENTRANT_PROTO*) ;;

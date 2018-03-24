@@ -14,7 +14,7 @@
 ?C:HAS_FPOS64_T:
 ?C:	This symbol will be defined if the C compiler supports fpos64_t.
 ?C:.
-?H:#$d_fpos64_t	HAS_FPOS64_T    	/**/
+?H:#$d_fpos64_t	HAS_FPOS64_T	/**/
 ?H:.
 ?LINT:set d_fpos64_t
 : check for fpos64_t

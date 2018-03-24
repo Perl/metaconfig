@@ -17,7 +17,7 @@
 ?S:i_syssock:
 ?S:	This variable conditionally defines the I_SYS_SOCKET symbol, and indicates
 ?S:	whether a C program should include <sys/socket.h> before performing socket
-?S: operations.
+?S:	operations.
 ?S:.
 ?C:I_SYS_SOCKET:
 ?C:	This symbol, if defined, indicates to the C program that it should

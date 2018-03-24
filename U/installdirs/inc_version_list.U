@@ -31,7 +31,7 @@
 ?S:	5.005.
 ?S:.
 ?S:inc_version_list_init:
-?S:     This variable holds the same list as inc_version_list, but
+?S:	This variable holds the same list as inc_version_list, but
 ?S:	each item is enclosed in double quotes and separated by commas,
 ?S:	suitable for use in the PERL_INC_VERSION_LIST initialization.
 ?S:.

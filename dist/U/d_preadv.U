@@ -19,7 +19,7 @@
 ?C:HAS_PREADV :
 ?C:	This symbol, if defined, indicates that the preadv routine is
 ?C:	available to perform vectored reads on a file descriptor at a
-?C: given offset.
+?C:	given offset.
 ?C:.
 ?H:#$d_preadv HAS_PREADV		/**/
 ?H:.

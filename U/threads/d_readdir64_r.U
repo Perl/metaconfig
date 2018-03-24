@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_readdir64_r
 ?C:	is defined.
 ?C:.
-?H:#$d_readdir64_r HAS_READDIR64_R	   /**/
-?H:#define READDIR64_R_PROTO $readdir64_r_proto	   /**/
+?H:#$d_readdir64_r HAS_READDIR64_R	/**/
+?H:#define READDIR64_R_PROTO $readdir64_r_proto	/**/
 ?H:.
 ?T:try hdrs d_readdir64_r_proto
 : see if readdir64_r exists
@@ -58,7 +58,7 @@ case "$d_readdir64_r" in
 	esac
 	case "$readdir64_r_proto" in
 	''|0)	d_readdir64_r=undef
- 	        readdir64_r_proto=0
+		readdir64_r_proto=0
 		echo "Disabling readdir64_r, cannot determine prototype." >&4 ;;
 	* )	case "$readdir64_r_proto" in
 		REENTRANT_PROTO*) ;;

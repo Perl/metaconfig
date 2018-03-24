@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getnetbyaddr_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getnetbyaddr_r HAS_GETNETBYADDR_R	   /**/
-?H:#define GETNETBYADDR_R_PROTO $getnetbyaddr_r_proto	   /**/
+?H:#$d_getnetbyaddr_r HAS_GETNETBYADDR_R	/**/
+?H:#define GETNETBYADDR_R_PROTO $getnetbyaddr_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getnetbyaddr_r_proto
 : see if getnetbyaddr_r exists
@@ -82,7 +82,7 @@ case "$d_getnetbyaddr_r" in
 	esac
 	case "$getnetbyaddr_r_proto" in
 	''|0)	d_getnetbyaddr_r=undef
- 	        getnetbyaddr_r_proto=0
+		getnetbyaddr_r_proto=0
 		echo "Disabling getnetbyaddr_r, cannot determine prototype." >&4 ;;
 	* )	case "$getnetbyaddr_r_proto" in
 		REENTRANT_PROTO*) ;;

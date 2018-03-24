@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getservbyport_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getservbyport_r HAS_GETSERVBYPORT_R	   /**/
-?H:#define GETSERVBYPORT_R_PROTO $getservbyport_r_proto	   /**/
+?H:#$d_getservbyport_r HAS_GETSERVBYPORT_R	/**/
+?H:#define GETSERVBYPORT_R_PROTO $getservbyport_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getservbyport_r_proto
 : see if getservbyport_r exists
@@ -62,7 +62,7 @@ case "$d_getservbyport_r" in
 	esac
 	case "$getservbyport_r_proto" in
 	''|0)	d_getservbyport_r=undef
- 	        getservbyport_r_proto=0
+		getservbyport_r_proto=0
 		echo "Disabling getservbyport_r, cannot determine prototype." >&4 ;;
 	* )	case "$getservbyport_r_proto" in
 		REENTRANT_PROTO*) ;;

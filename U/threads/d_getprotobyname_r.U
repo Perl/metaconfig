@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getprotobyname_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getprotobyname_r HAS_GETPROTOBYNAME_R	   /**/
-?H:#define GETPROTOBYNAME_R_PROTO $getprotobyname_r_proto	   /**/
+?H:#$d_getprotobyname_r HAS_GETPROTOBYNAME_R	/**/
+?H:#define GETPROTOBYNAME_R_PROTO $getprotobyname_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getprotobyname_r_proto
 : see if getprotobyname_r exists
@@ -62,7 +62,7 @@ case "$d_getprotobyname_r" in
 	esac
 	case "$getprotobyname_r_proto" in
 	''|0)	d_getprotobyname_r=undef
- 	        getprotobyname_r_proto=0
+		getprotobyname_r_proto=0
 		echo "Disabling getprotobyname_r, cannot determine prototype." >&4 ;;
 	* )	case "$getprotobyname_r_proto" in
 		REENTRANT_PROTO*) ;;

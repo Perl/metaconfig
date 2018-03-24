@@ -19,7 +19,7 @@
 ?S:.
 ?C:INSTALL_USR_BIN_PERL:
 ?C:	This symbol, if defined, indicates that Perl is to be installed
-?C: 	also as /usr/bin/perl.
+?C:	also as /usr/bin/perl.
 ?C:.
 ?H:#$installusrbinperl INSTALL_USR_BIN_PERL	/**/
 ?H:.

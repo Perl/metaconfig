@@ -83,10 +83,10 @@
 ?C:.
 ?H:#$i_db I_DB		/**/
 ?H:#define DB_Hash_t	$db_hashtype		/**/
-?H:#define DB_Prefix_t	$db_prefixtype  	/**/
-?H:#define DB_VERSION_MAJOR_CFG	$db_version_major  	/**/
-?H:#define DB_VERSION_MINOR_CFG	$db_version_minor  	/**/
-?H:#define DB_VERSION_PATCH_CFG	$db_version_patch  	/**/
+?H:#define DB_Prefix_t	$db_prefixtype		/**/
+?H:#define DB_VERSION_MAJOR_CFG	$db_version_major	/**/
+?H:#define DB_VERSION_MINOR_CFG	$db_version_minor	/**/
+?H:#define DB_VERSION_PATCH_CFG	$db_version_patch	/**/
 ?H:.
 ?F:!try
 ?LINT:change libs

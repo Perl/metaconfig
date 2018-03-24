@@ -37,9 +37,9 @@
 ?S:	wether a set of headers exist or not. A typical use is:
 ?S:		set header i_header [ header2 i_header2 ... ]
 ?S:		eval $inhdr
-?S:	That will print a message, saying wether header was found or
-?S:	not and set i_header* accordingly. If the first header is not
-?S: found, we try the next one, until the list is empty or one is found.
+?S:	That will print a message, saying wether header was found or not
+?S:	and set i_header* accordingly. If the first header is not found,
+?S:	we try the next one, until the list is empty or one is found.
 ?S:.
 ?T:xxx xxf var td xxnf tu yyy instead was cont
 : define an alternate in-header-list? function

@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_gethostent_r
 ?C:	is defined.
 ?C:.
-?H:#$d_gethostent_r HAS_GETHOSTENT_R	   /**/
-?H:#define GETHOSTENT_R_PROTO $gethostent_r_proto	   /**/
+?H:#$d_gethostent_r HAS_GETHOSTENT_R	/**/
+?H:#define GETHOSTENT_R_PROTO $gethostent_r_proto	/**/
 ?H:.
 ?T:try hdrs d_gethostent_r_proto
 : see if gethostent_r exists
@@ -74,7 +74,7 @@ case "$d_gethostent_r" in
 	esac
 	case "$gethostent_r_proto" in
 	''|0)	d_gethostent_r=undef
- 	        gethostent_r_proto=0
+		gethostent_r_proto=0
 		echo "Disabling gethostent_r, cannot determine prototype." >&4 ;;
 	* )	case "$gethostent_r_proto" in
 		REENTRANT_PROTO*) ;;

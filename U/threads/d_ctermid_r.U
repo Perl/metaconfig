@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_ctermid_r
 ?C:	is defined.
 ?C:.
-?H:#$d_ctermid_r HAS_CTERMID_R	   /**/
-?H:#define CTERMID_R_PROTO $ctermid_r_proto	   /**/
+?H:#$d_ctermid_r HAS_CTERMID_R	/**/
+?H:#define CTERMID_R_PROTO $ctermid_r_proto	/**/
 ?H:.
 ?T:try hdrs d_ctermid_r_proto
 : see if ctermid_r exists
@@ -54,7 +54,7 @@ case "$d_ctermid_r" in
 	esac
 	case "$ctermid_r_proto" in
 	''|0)	d_ctermid_r=undef
- 	        ctermid_r_proto=0
+		ctermid_r_proto=0
 		echo "Disabling ctermid_r, cannot determine prototype." >&4 ;;
 	* )	case "$ctermid_r_proto" in
 		REENTRANT_PROTO*) ;;

@@ -22,7 +22,7 @@
 ?C:	This variable is set if this system runs with the Sun version
 ?C:	of scanf.
 ?C:.
-?H:#$sunscanf 	SUNSCANF  /**/
+?H:#$sunscanf	SUNSCANF  /**/
 ?H:.
 ?LINT:set sunscanf
 ?F:!scanf

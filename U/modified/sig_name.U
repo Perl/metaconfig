@@ -129,17 +129,17 @@ case "$doinit" in
 yes)
 	echo "Generating a list of signal names and numbers..." >&4
 	. ./signal_cmd
- 	sig_count=`$awk '/^NSIG/ { printf "%d", $2 }' signal.lst`
- 	sig_name=`$awk 'BEGIN { printf "ZERO " }
- 			!/^NSIG/ { printf "%s ", $1 }' signal.lst`
- 	sig_num=`$awk  'BEGIN { printf "0 " }
- 			!/^NSIG/ { printf "%d ", $2 }' signal.lst`
- 	sig_name_init=`$awk 'BEGIN	{ printf "\"ZERO\", " }
- 			     !/^NSIG/	{ printf "\"%s\", ", $1 }
- 			     END	{ printf "0\n" }' signal.lst`
- 	sig_num_init=`$awk  'BEGIN	{ printf "0, " }
- 			     !/^NSIG/	{ printf "%d, ", $2}
- 			     END	{ printf "0\n"}' signal.lst`
+	sig_count=`$awk '/^NSIG/ { printf "%d", $2 }' signal.lst`
+	sig_name=`$awk 'BEGIN { printf "ZERO " }
+			!/^NSIG/ { printf "%s ", $1 }' signal.lst`
+	sig_num=`$awk  'BEGIN { printf "0 " }
+			!/^NSIG/ { printf "%d ", $2 }' signal.lst`
+	sig_name_init=`$awk 'BEGIN	{ printf "\"ZERO\", " }
+			     !/^NSIG/	{ printf "\"%s\", ", $1 }
+			     END	{ printf "0\n" }' signal.lst`
+	sig_num_init=`$awk  'BEGIN	{ printf "0, " }
+			     !/^NSIG/	{ printf "%d, ", $2}
+			     END	{ printf "0\n"}' signal.lst`
 	;;
 esac
 echo "The following $sig_count signals are available:"

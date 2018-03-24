@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_drand48_r
 ?C:	is defined.
 ?C:.
-?H:#$d_drand48_r HAS_DRAND48_R	   /**/
-?H:#define DRAND48_R_PROTO $drand48_r_proto	   /**/
+?H:#$d_drand48_r HAS_DRAND48_R	/**/
+?H:#define DRAND48_R_PROTO $drand48_r_proto	/**/
 ?H:.
 ?T:try hdrs d_drand48_r_proto
 : see if drand48_r exists
@@ -54,7 +54,7 @@ case "$d_drand48_r" in
 	esac
 	case "$drand48_r_proto" in
 	''|0)	d_drand48_r=undef
- 	        drand48_r_proto=0
+		drand48_r_proto=0
 		echo "Disabling drand48_r, cannot determine prototype." >&4 ;;
 	* )	case "$drand48_r_proto" in
 		REENTRANT_PROTO*) ;;

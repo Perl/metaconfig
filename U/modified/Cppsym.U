@@ -205,7 +205,7 @@ cat <<'EOSH' >> Cppsym.try
     printf "#ifdef _%s\nprintf(\"_%s=%%s\\n\", STRINGIFY(_%s));\n#endif\n", $1, $1, $1
     printf "#ifdef __%s\nprintf(\"__%s=%%s\\n\", STRINGIFY(__%s));\n#endif\n", $1, $1, $1
     printf "#ifdef __%s__\nprintf(\"__%s__=%%s\\n\", STRINGIFY(__%s__));\n#endif\n", $1, $1, $1
-}'	 >> try.c
+}' >> try.c
 echo 'return 0;}' >> try.c
 EOSH
 cat <<EOSH >> Cppsym.try

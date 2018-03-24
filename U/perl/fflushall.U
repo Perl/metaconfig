@@ -38,8 +38,8 @@
 ?C:	Note that if fflushNULL is defined, fflushall will not
 ?C:	even be probed for and will be left undefined.
 ?C:.
-?H:#$fflushNULL	FFLUSH_NULL 		/**/
-?H:#$fflushall	FFLUSH_ALL 		/**/
+?H:#$fflushNULL	FFLUSH_NULL		/**/
+?H:#$fflushall	FFLUSH_ALL		/**/
 ?H:.
 ?T:output code
 ?F:!try.out !try !tryp
@@ -148,7 +148,7 @@ if $test "X$fflushNULL" = X -o "X$fflushall" = X; then
 fi
 : check for fflush NULL behavior
 case "$fflushNULL" in
-'') 	set try -DTRY_FFLUSH_NULL $output
+'')	set try -DTRY_FFLUSH_NULL $output
 	if eval $compile; then
 		$run ./try 2>/dev/null
 		code="$?"
@@ -282,7 +282,7 @@ Good, at least fflush(stdin) seems to behave okay when stdin is a pipe.
 EOM
 		: now check for fflushall behaviour
 		case "$fflushall" in
-		'') 	set try -DTRY_FFLUSH_ALL $output
+		'')	set try -DTRY_FFLUSH_ALL $output
 			if eval $compile; then
 				$cat >&4 <<EOM
 (Now testing the other method--but note that this also may fail.)

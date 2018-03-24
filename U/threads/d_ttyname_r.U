@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_ttyname_r
 ?C:	is defined.
 ?C:.
-?H:#$d_ttyname_r HAS_TTYNAME_R	   /**/
-?H:#define TTYNAME_R_PROTO $ttyname_r_proto	   /**/
+?H:#$d_ttyname_r HAS_TTYNAME_R	/**/
+?H:#define TTYNAME_R_PROTO $ttyname_r_proto	/**/
 ?H:.
 ?T:try hdrs d_ttyname_r_proto
 : see if ttyname_r exists
@@ -62,7 +62,7 @@ case "$d_ttyname_r" in
 	esac
 	case "$ttyname_r_proto" in
 	''|0)	d_ttyname_r=undef
- 	        ttyname_r_proto=0
+		ttyname_r_proto=0
 		echo "Disabling ttyname_r, cannot determine prototype." >&4 ;;
 	* )	case "$ttyname_r_proto" in
 		REENTRANT_PROTO*) ;;

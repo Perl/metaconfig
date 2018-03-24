@@ -45,7 +45,7 @@ EOM
 rp='Try to use long longs if available?'
 . ./myread
 case "$ans" in
-y|Y) 	val="$define"	;;
+y|Y)	val="$define"	;;
 *)      val="$undef"	;;
 esac
 set uselonglong

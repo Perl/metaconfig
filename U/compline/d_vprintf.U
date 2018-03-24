@@ -37,7 +37,7 @@
 ?C:	symbol.
 ?C:.
 ?H:#$d_vprintf HAS_VPRINTF	/**/
-?H:#$d_charvspr USE_CHAR_VSPRINTF 	/**/
+?H:#$d_charvspr USE_CHAR_VSPRINTF	/**/
 ?H:.
 ?T:val2
 ?F:!try

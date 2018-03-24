@@ -178,7 +178,7 @@ case "$myhostname" in
 ?X: remove comments, insert trailing space for later use.
 ?X: Test to be sure we *have* a hostcat command.  os390 doesn't.
 			test "X$hostcat" != "X" &&
-		     	$hostcat | $sed -n -e "s/[	 ]*#.*//; s/\$/ /
+			$hostcat | $sed -n -e "s/[	 ]*#.*//; s/\$/ /
 					/[	 ]$myhostname[	. ]/p" > hosts
 		}
 		tmp_re="[	. ]"
@@ -212,7 +212,7 @@ case "$myhostname" in
 				.) dflt=.`$sed -n -e 's/	/ /g' \
 				     -e 's/^domain  *\([^ ]*\).*/\1/p' $tans \
 				     -e 1q 2>/dev/null`
-  					;;
+					;;
 				esac
 			fi
 			;;

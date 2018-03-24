@@ -22,7 +22,7 @@
 ?S:d_gettimeod:
 ?S:	This variable conditionally defines the HAS_GETTIMEOFDAY symbol, which
 ?S:	indicates that the gettimeofday() system call exists (to obtain a
-?S: sub-second accuracy clock). You should probably include <sys/resource.h>.
+?S:	sub-second accuracy clock). You should probably include <sys/resource.h>.
 ?S:.
 ?C:HAS_FTIME (FTIMER):
 ?C:	This symbol, if defined, indicates that the ftime() routine exists.

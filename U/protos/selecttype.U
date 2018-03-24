@@ -35,7 +35,7 @@
 ?C:	is defined, and 'int *' otherwise.  This is only useful if you
 ?C:	have select(), of course.
 ?C:.
-?H:#define Select_fd_set_t 	$selecttype	/**/
+?H:#define Select_fd_set_t	$selecttype	/**/
 ?H:.
 ?T:xxx nfd tmo try hdrs val
 : check for type of arguments to select.

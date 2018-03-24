@@ -13,7 +13,7 @@
 ?C:HAS_PTRDIFF_T:
 ?C:	This symbol will be defined if the C compiler supports ptrdiff_t.
 ?C:.
-?H:#$d_ptrdiff_t	HAS_PTRDIFF_T    		/**/
+?H:#$d_ptrdiff_t	HAS_PTRDIFF_T		/**/
 ?H:.
 ?LINT:set d_ptrdiff_t
 : check for ptrdiff_t

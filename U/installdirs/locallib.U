@@ -61,7 +61,7 @@
 ?C:	This symbol contains the ~name expanded version of LOCALLIB, to be used
 ?C:	in programs that are not prepared to deal with ~ expansion at run-time.
 ?C:.
-?H:#$uselocallib USELOCALLIB 		/**/
+?H:#$uselocallib USELOCALLIB		/**/
 ?H:#define LOCALLIB "$locallib"		/**/
 ?H:#define LOCALLIB_EXP "$locallibexp"		/**/
 ?H:.

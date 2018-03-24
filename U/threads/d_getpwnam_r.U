@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwnam_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getpwnam_r HAS_GETPWNAM_R	   /**/
-?H:#define GETPWNAM_R_PROTO $getpwnam_r_proto	   /**/
+?H:#$d_getpwnam_r HAS_GETPWNAM_R	/**/
+?H:#define GETPWNAM_R_PROTO $getpwnam_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getpwnam_r_proto
 : see if getpwnam_r exists
@@ -66,7 +66,7 @@ case "$d_getpwnam_r" in
 	esac
 	case "$getpwnam_r_proto" in
 	''|0)	d_getpwnam_r=undef
- 	        getpwnam_r_proto=0
+		getpwnam_r_proto=0
 		echo "Disabling getpwnam_r, cannot determine prototype." >&4 ;;
 	* )	case "$getpwnam_r_proto" in
 		REENTRANT_PROTO*) ;;

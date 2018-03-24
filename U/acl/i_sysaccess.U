@@ -11,12 +11,12 @@
 ?MAKE:i_sysaccess: Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:i_sysaccess:
-?S:     This variable conditionally defines the I_SYS_ACCESS symbol,
-?S:     and indicates whether a C program should include <sys/access.h>.
+?S:	This variable conditionally defines the I_SYS_ACCESS symbol,
+?S:	and indicates whether a C program should include <sys/access.h>.
 ?S:.
 ?C:I_SYS_ACCESS:
-?C:     This symbol, if defined, indicates to the C program that it should
-?C:     include <sys/access.h>.
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <sys/access.h>.
 ?C:.
 ?H:#$i_sysaccess   I_SYS_ACCESS                /**/
 ?H:.

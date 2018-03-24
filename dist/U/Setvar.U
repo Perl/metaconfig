@@ -32,7 +32,7 @@
 ?S:setvar:
 ?S:	This shell variable is used internally by Configure to set a value
 ?S:	to a given symbol that is defined or not. A typical use is:
-?S:     val=<value computed>
+?S:	val=<value computed>
 ?S:		set d_variable
 ?S:		eval $setvar
 ?S:	That will print a message in case the $val value is not the same

@@ -19,15 +19,15 @@
 ?MAKE:	-pick add $@ %<
 ?S:chorder_short (d_cos d_bos):
 ?S:	Holds the value describing the byte ordering of characters in a short.
-?S: On a Big-Endian machine, that would be "c0c1".
+?S:	On a Big-Endian machine, that would be "c0c1".
 ?S:.
 ?S:chorder_int (charoder):
 ?S:	Holds the value describing the byte ordering of characters in an int.
-?S: For instance, on a Big-Endian machine, this would be: "c0c1c2c3".
+?S:	For instance, on a Big-Endian machine, this would be: "c0c1c2c3".
 ?S:.
 ?S:chorder_long (d_col d_bol):
 ?S:	Holds the value describing the byte ordering of characters in a long.
-?S: On a 64 bits Big-Endian machine, that would yield: "c0c1c2c3c4c5c6c7".
+?S:	On a 64 bits Big-Endian machine, that would yield: "c0c1c2c3c4c5c6c7".
 ?S:.
 ?C:CHAR_ORDER_SHORT:
 ?C:	Holds the byte ordering of characters in a short. It's a string

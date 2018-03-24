@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getgrgid_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getgrgid_r HAS_GETGRGID_R	   /**/
-?H:#define GETGRGID_R_PROTO $getgrgid_r_proto	   /**/
+?H:#$d_getgrgid_r HAS_GETGRGID_R	/**/
+?H:#define GETGRGID_R_PROTO $getgrgid_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getgrgid_r_proto
 : see if getgrgid_r exists
@@ -66,7 +66,7 @@ case "$d_getgrgid_r" in
 	esac
 	case "$getgrgid_r_proto" in
 	''|0)	d_getgrgid_r=undef
- 	        getgrgid_r_proto=0
+		getgrgid_r_proto=0
 		echo "Disabling getgrgid_r, cannot determine prototype." >&4 ;;
 	* )	case "$getgrgid_r_proto" in
 		REENTRANT_PROTO*) ;;

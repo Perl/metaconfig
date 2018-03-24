@@ -44,7 +44,7 @@
 ?C:	a signal handler using "Signal_t (*handler)()", and define the
 ?C:	handler using "Signal_t handler(sig)".
 ?C:.
-?H:#$d_voidsig VOIDSIG 	/**/
+?H:#$d_voidsig VOIDSIG	/**/
 ?H:#define Signal_t $signal_t	/* Signal handler's return type */
 ?H:.
 ?T:xxx

@@ -370,8 +370,8 @@ EOM
 			;;
 		nonstop-ux) osname=nonstopux ;;
 		openbsd) osname=openbsd
-                	osvers="$3"
-                	;;
+			osvers="$3"
+			;;
 		os2)	osname=os2
 			osvers="$4"
 			;;

@@ -28,7 +28,7 @@
 ?C:	of significant digits in a double precision number.  If this
 ?C:	symbol is not defined, a guess of 15 is usually pretty good.
 ?C:.
-?H:#$d_dbl_dig HAS_DBL_DIG 	/**/
+?H:#$d_dbl_dig HAS_DBL_DIG	/**/
 ?H:.
 ?F:!dbl_dig.c
 ?LINT:set d_dbl_dig

@@ -18,7 +18,7 @@
 ?C:	This symbol, if defined, indicates that this system uses
 ?C:	EBCDIC encoding.
 ?C:.
-?H:#$ebcdic	EBCDIC 		/**/
+?H:#$ebcdic	EBCDIC		/**/
 ?H:.
 ?F:!try
 ?LINT:set ebcdic

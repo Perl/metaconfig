@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getpwuid_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getpwuid_r HAS_GETPWUID_R	   /**/
-?H:#define GETPWUID_R_PROTO $getpwuid_r_proto	   /**/
+?H:#$d_getpwuid_r HAS_GETPWUID_R	/**/
+?H:#define GETPWUID_R_PROTO $getpwuid_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getpwuid_r_proto
 : see if getpwuid_r exists
@@ -66,7 +66,7 @@ case "$d_getpwuid_r" in
 	esac
 	case "$getpwuid_r_proto" in
 	''|0)	d_getpwuid_r=undef
- 	        getpwuid_r_proto=0
+		getpwuid_r_proto=0
 		echo "Disabling getpwuid_r, cannot determine prototype." >&4 ;;
 	* )	case "$getpwuid_r_proto" in
 		REENTRANT_PROTO*) ;;

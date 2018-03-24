@@ -48,12 +48,12 @@
 ?S:	variable can be used in Configure to do the right thing.
 ?S:.
 ?S:mistrustnm:
-?S: 	This variable can be used to establish a fallthrough for the cases
-?S: 	where nm fails to find a symbol.  If usenm is false or usenm is true
-?S: 	and mistrustnm is false, this variable has no effect.  If usenm is true
-?S: 	and mistrustnm is "compile", a test program will be compiled to try to
-?S: 	find any symbol that can't be located via nm lookup.  If mistrustnm is
-?S: 	"run", the test program will be run as well as being compiled.
+?S:	This variable can be used to establish a fallthrough for the cases
+?S:	where nm fails to find a symbol.  If usenm is false or usenm is true
+?S:	and mistrustnm is false, this variable has no effect.  If usenm is true
+?S:	and mistrustnm is "compile", a test program will be compiled to try to
+?S:	find any symbol that can't be located via nm lookup.  If mistrustnm is
+?S:	"run", the test program will be run as well as being compiled.
 ?S:.
 ?V:csym
 ?T:tval tx tlook tf tdc

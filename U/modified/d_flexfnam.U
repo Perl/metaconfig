@@ -41,8 +41,8 @@ if (echo hi >$first) 2>/dev/null; then
 		echo 'You cannot have filenames longer than 14 characters.  Sigh.' >&4
 		val="$undef"
 	else
- 		echo 'You can have filenames longer than 14 characters.'>&4
- 		val="$define"
+		echo 'You can have filenames longer than 14 characters.'>&4
+		val="$define"
 	fi
 else
 	$cat <<'EOM'

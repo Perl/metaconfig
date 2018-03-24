@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_asctime_r
 ?C:	is defined.
 ?C:.
-?H:#$d_asctime_r HAS_ASCTIME_R	   /**/
-?H:#define ASCTIME_R_PROTO $asctime_r_proto	   /**/
+?H:#$d_asctime_r HAS_ASCTIME_R	/**/
+?H:#define ASCTIME_R_PROTO $asctime_r_proto	/**/
 ?H:.
 ?T:try hdrs d_asctime_r_proto
 : see if asctime_r exists
@@ -66,7 +66,7 @@ case "$d_asctime_r" in
 	esac
 	case "$asctime_r_proto" in
 	''|0)	d_asctime_r=undef
- 	        asctime_r_proto=0
+		asctime_r_proto=0
 		echo "Disabling asctime_r, cannot determine prototype." >&4 ;;
 	* )	case "$asctime_r_proto" in
 		REENTRANT_PROTO*) ;;

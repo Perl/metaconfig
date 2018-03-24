@@ -26,7 +26,7 @@
 ?C:	is either n or 32*ceil(n/32), especially many little-endians do
 ?C:	the latter.  This is only useful if you have select(), naturally.
 ?C:.
-?H:#define SELECT_MIN_BITS 	$selectminbits	/**/
+?H:#define SELECT_MIN_BITS	$selectminbits	/**/
 ?H:.
 ?T:bits
 ?T:safebits

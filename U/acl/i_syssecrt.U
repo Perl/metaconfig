@@ -11,12 +11,12 @@
 ?MAKE:i_syssecrt: Inhdr
 ?MAKE:	-pick add $@ %<
 ?S:i_syssecrt:
-?S:     This variable conditionally defines the I_SYS_SECURITY symbol,
-?S:     and indicates whether a C program should include <sys/security.h>.
+?S:	This variable conditionally defines the I_SYS_SECURITY symbol,
+?S:	and indicates whether a C program should include <sys/security.h>.
 ?S:.
 ?C:I_SYS_SECURITY:
-?C:     This symbol, if defined, indicates to the C program that it should
-?C:     include <sys/security.h>.
+?C:	This symbol, if defined, indicates to the C program that it should
+?C:	include <sys/security.h>.
 ?C:.
 ?H:#$i_syssecrt   I_SYS_SECURITY	/**/
 ?H:.

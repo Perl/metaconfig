@@ -125,16 +125,16 @@
 ?C:	This macro will only be defined if both STDIO_CNT_LVALUE and
 ?C:	STDIO_PTR_LVALUE are defined.
 ?C:.
-?H:?d_stdstdio:#$d_stdstdio USE_STDIO_PTR 	/**/
+?H:?d_stdstdio:#$d_stdstdio USE_STDIO_PTR	/**/
 ?H:?d_stdstdio:#ifdef USE_STDIO_PTR
 ?H:#define FILE_ptr(fp)	$stdio_ptr
-?H:#$d_stdio_ptr_lval STDIO_PTR_LVALUE 		/**/
+?H:#$d_stdio_ptr_lval STDIO_PTR_LVALUE		/**/
 ?H:#define FILE_cnt(fp)	$stdio_cnt
-?H:#$d_stdio_cnt_lval STDIO_CNT_LVALUE 		/**/
+?H:#$d_stdio_cnt_lval STDIO_CNT_LVALUE		/**/
 ?H:#$d_stdio_ptr_lval_sets_cnt STDIO_PTR_LVAL_SETS_CNT	/**/
 ?H:#$d_stdio_ptr_lval_nochange_cnt STDIO_PTR_LVAL_NOCHANGE_CNT	/**/
 ?H:?FILE_filbuf:#if defined(STDIO_PTR_LVALUE) && defined(STDIO_CNT_LVALUE)
-?H:?FILE_filbuf:#define FILE_filbuf(fp)	$stdio_filbuf 		/**/
+?H:?FILE_filbuf:#define FILE_filbuf(fp)	$stdio_filbuf		/**/
 ?H:?FILE_filbuf:#endif
 ?H:?d_stdstdio:#endif
 ?H:.
@@ -159,7 +159,7 @@
 ?C:	structure pointed to its argument. This macro will always be defined
 ?C:	if USE_STDIO_BASE is defined.
 ?C:.
-?H:?d_stdiobase:#$d_stdiobase USE_STDIO_BASE 	/**/
+?H:?d_stdiobase:#$d_stdiobase USE_STDIO_BASE	/**/
 ?H:?d_stdiobase:#ifdef USE_STDIO_BASE
 ?H:#define FILE_base(fp)	$stdio_base
 ?H:#define FILE_bufsiz(fp)	$stdio_bufsiz
@@ -432,7 +432,7 @@ int main() {
 EOP
 	set try
 	if eval $compile && $to try.c; then
- 		case `$run ./try` in
+		case `$run ./try` in
 		Pass_changed)
 			echo "Increasing ptr in your stdio decreases cnt by the same amount.  Good." >&4
 			d_stdio_ptr_lval_sets_cnt="$define" ;;

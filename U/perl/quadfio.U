@@ -117,7 +117,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"d"'; sPRIi64='"i"'; sPRIu64='"u"';
-                	sPRIo64='"o"'; sPRIx64='"x"'; sPRIXU64='"X"';
+			sPRIo64='"o"'; sPRIx64='"x"'; sPRIXU64='"X"';
 			echo "We will use %d."
 			;;
 		esac
@@ -139,7 +139,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"ld"'; sPRIi64='"li"'; sPRIu64='"lu"';
-                	sPRIo64='"lo"'; sPRIx64='"lx"'; sPRIXU64='"lX"';
+			sPRIo64='"lo"'; sPRIx64='"lx"'; sPRIXU64='"lX"';
 			echo "We will use %ld."
 			;;
 		esac
@@ -162,7 +162,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64=PRId64; sPRIi64=PRIi64; sPRIu64=PRIu64;
-                	sPRIo64=PRIo64; sPRIx64=PRIx64; sPRIXU64=PRIXU64;
+			sPRIo64=PRIo64; sPRIx64=PRIx64; sPRIXU64=PRIXU64;
 			echo "We will use the C9X style."
 			;;
 		esac
@@ -184,7 +184,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"Ld"'; sPRIi64='"Li"'; sPRIu64='"Lu"';
-                	sPRIo64='"Lo"'; sPRIx64='"Lx"'; sPRIXU64='"LX"';
+			sPRIo64='"Lo"'; sPRIx64='"Lx"'; sPRIXU64='"LX"';
 			echo "We will use %Ld."
 			;;
 		esac
@@ -206,7 +206,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"lld"'; sPRIi64='"lli"'; sPRIu64='"llu"';
-                	sPRIo64='"llo"'; sPRIx64='"llx"'; sPRIXU64='"llX"';
+			sPRIo64='"llo"'; sPRIx64='"llx"'; sPRIXU64='"llX"';
 			echo "We will use the %lld style."
 			;;
 		esac
@@ -228,7 +228,7 @@ EOCP
 		case "$yyy" in
 		12345678901)
 			sPRId64='"qd"'; sPRIi64='"qi"'; sPRIu64='"qu"';
-                	sPRIo64='"qo"'; sPRIx64='"qx"'; sPRIXU64='"qX"';
+			sPRIo64='"qo"'; sPRIx64='"qx"'; sPRIXU64='"qX"';
 			echo "We will use %qd."
 			;;
 		esac

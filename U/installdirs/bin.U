@@ -52,11 +52,11 @@
 ?S:.
 ?D:userelocatableinc=''
 ?S:userelocatableinc:
-?S: 	This variable is set to true to indicate that perl should relocate
-?S: 	@INC entries at runtime based on the path to the perl binary.
-?S: 	Any @INC paths starting ".../" are relocated relative to the directory
-?S: 	containing the perl binary, and a logical cleanup of the path is then
-?S: 	made around the join point (removing "dir/../" pairs)
+?S:	This variable is set to true to indicate that perl should relocate
+?S:	@INC entries at runtime based on the path to the perl binary.
+?S:	Any @INC paths starting ".../" are relocated relative to the directory
+?S:	containing the perl binary, and a logical cleanup of the path is then
+?S:	made around the join point (removing "dir/../" pairs)
 ?S:.
 ?S:initialinstalllocation:
 ?S:	When userelocatableinc is true, this variable holds the location
@@ -80,7 +80,7 @@
 ?C:.
 ?H:#define BIN "$bin"	/**/
 ?H:#define BIN_EXP "$binexp"	/**/
-?H:#define PERL_RELOCATABLE_INC "$userelocatableinc" 		/**/
+?H:#define PERL_RELOCATABLE_INC "$userelocatableinc"		/**/
 ?H:.
 ?D:bin='/usr/local/bin'
 ?LINT:change prefix

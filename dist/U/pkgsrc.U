@@ -14,7 +14,7 @@
 ?S:	This variable holds the absolute path of the package source.
 ?S:.
 ?C:PACKAGE_SOURCE_DIR:
-?C: Holds the directory name holding the package source.
+?C:	Holds the directory name holding the package source.
 ?C:.
 ?H:#define PACKAGE_SOURCE_DIR "$pkgsrc"
 ?H:.

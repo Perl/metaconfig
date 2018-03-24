@@ -31,7 +31,7 @@
 ?C:	This symbol contains the number of bytes required to align a
 ?C:	double, or a long double when applicable. Usual values are 2,
 ?C:	4 and 8. The default is eight, for safety.  For cross-compiling
-?C:  	or multiarch support, Configure will set a minimum of 8.
+?C:	or multiarch support, Configure will set a minimum of 8.
 ?C:.
 ?H:?%<:#define MEM_ALIGNBYTES $alignbytes
 ?H:.

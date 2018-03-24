@@ -30,7 +30,7 @@
 ?C:	the GNU C library is being used.  A better check is to use
 ?C:	the __GLIBC__ and __GLIBC_MINOR__ symbols supplied with glibc.
 ?C:.
-?H:#$d_gnulibc HAS_GNULIBC  	/**/
+?H:#$d_gnulibc HAS_GNULIBC	/**/
 ?H:?%<:#if defined(HAS_GNULIBC) && !defined(_GNU_SOURCE)
 ?H:?%<:#   define _GNU_SOURCE
 ?H:?%<:#endif

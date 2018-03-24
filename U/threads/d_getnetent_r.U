@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_getnetent_r
 ?C:	is defined.
 ?C:.
-?H:#$d_getnetent_r HAS_GETNETENT_R	   /**/
-?H:#define GETNETENT_R_PROTO $getnetent_r_proto	   /**/
+?H:#$d_getnetent_r HAS_GETNETENT_R	/**/
+?H:#define GETNETENT_R_PROTO $getnetent_r_proto	/**/
 ?H:.
 ?T:try hdrs d_getnetent_r_proto
 : see if getnetent_r exists
@@ -74,7 +74,7 @@ case "$d_getnetent_r" in
 	esac
 	case "$getnetent_r_proto" in
 	''|0)	d_getnetent_r=undef
- 	        getnetent_r_proto=0
+		getnetent_r_proto=0
 		echo "Disabling getnetent_r, cannot determine prototype." >&4 ;;
 	* )	case "$getnetent_r_proto" in
 		REENTRANT_PROTO*) ;;

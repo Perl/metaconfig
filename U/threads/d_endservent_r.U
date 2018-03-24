@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_endservent_r
 ?C:	is defined.
 ?C:.
-?H:#$d_endservent_r HAS_ENDSERVENT_R	   /**/
-?H:#define ENDSERVENT_R_PROTO $endservent_r_proto	   /**/
+?H:#$d_endservent_r HAS_ENDSERVENT_R	/**/
+?H:#define ENDSERVENT_R_PROTO $endservent_r_proto	/**/
 ?H:.
 ?T:try hdrs d_endservent_r_proto
 : see if endservent_r exists
@@ -58,7 +58,7 @@ case "$d_endservent_r" in
 	esac
 	case "$endservent_r_proto" in
 	''|0)	d_endservent_r=undef
- 	        endservent_r_proto=0
+		endservent_r_proto=0
 		echo "Disabling endservent_r, cannot determine prototype." >&4 ;;
 	* )	case "$endservent_r_proto" in
 		REENTRANT_PROTO*) ;;

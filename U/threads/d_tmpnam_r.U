@@ -30,8 +30,8 @@
 ?C:	REENTRANT_PROTO_T_ABC macros of reentr.h if d_tmpnam_r
 ?C:	is defined.
 ?C:.
-?H:#$d_tmpnam_r HAS_TMPNAM_R	   /**/
-?H:#define TMPNAM_R_PROTO $tmpnam_r_proto	   /**/
+?H:#$d_tmpnam_r HAS_TMPNAM_R	/**/
+?H:#define TMPNAM_R_PROTO $tmpnam_r_proto	/**/
 ?H:.
 ?T:try hdrs d_tmpnam_r_proto
 : see if tmpnam_r exists
@@ -54,7 +54,7 @@ case "$d_tmpnam_r" in
 	esac
 	case "$tmpnam_r_proto" in
 	''|0)	d_tmpnam_r=undef
- 	        tmpnam_r_proto=0
+		tmpnam_r_proto=0
 		echo "Disabling tmpnam_r, cannot determine prototype." >&4 ;;
 	* )	case "$tmpnam_r_proto" in
 		REENTRANT_PROTO*) ;;

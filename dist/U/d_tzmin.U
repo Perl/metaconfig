@@ -24,7 +24,7 @@
 ?C:TZ_MINUTESWEST:
 ?C:	This symbol is defined if this system uses tz_minuteswest
 ?C:	in time header instead of timezone.
-?C: If not defined, you may have to use struct timeb and ftime() rather
+?C:	If not defined, you may have to use struct timeb and ftime() rather
 ?C:	than the new gettimeofday() system call.
 ?C:.
 ?H:#$d_tzmin TZ_MINUTESWEST		/**/

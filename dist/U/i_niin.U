@@ -20,12 +20,12 @@
 ?S:i_niin:
 ?S:	This variable conditionally defines I_NETINET_IN, which indicates
 ?S:	to the C program that it should include <netinet/in.h>. Otherwise,
-?S: you may try <sys/in.h>.
+?S:	you may try <sys/in.h>.
 ?S:.
 ?S:i_sysin:
 ?S:	This variable conditionally defines I_SYS_IN, which indicates
 ?S:	to the C program that it should include <sys/in.h> instead of
-?S: <netinet/in.h>.
+?S:	<netinet/in.h>.
 ?S:.
 ?C:I_NETINET_IN:
 ?C:	This symbol, if defined, indicates to the C program that it should

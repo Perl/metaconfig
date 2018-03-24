@@ -19,7 +19,7 @@
 ?C:HAS_PWRITEV :
 ?C:	This symbol, if defined, indicates that the pwritev routine is
 ?C:	available to perform vectored writes on a file descriptor at a
-?C: given offset.
+?C:	given offset.
 ?C:.
 ?H:#$d_pwritev HAS_PWRITEV		/**/
 ?H:.
