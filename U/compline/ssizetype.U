@@ -37,7 +37,7 @@
 ?C:	to get any typedef'ed information.
 ?C:	We will pick a type such that sizeof(SSize_t) == sizeof(Size_t).
 ?C:.
-?H:#define SSize_t $ssizetype	 /* signed count of bytes */
+?H:#define SSize_t $ssizetype	/* signed count of bytes */
 ?H:.
 ?F:!try
 : see what type is used for signed size_t
