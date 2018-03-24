@@ -24,7 +24,8 @@
 	d_attribute_nonnull d_attribute_noreturn d_attribute_pure \
 	d_attribute_unused d_attribute_warn_unused_result \
 	d_printf_format_null: \
-	    Myread Oldconfig cat cc ccflags rm Setvar contains i_stdlib run
+	    Myread Oldconfig cat cc ccflags rm Setvar contains i_stdlib run \
+	    i_inttypes
 ?MAKE:	-pick add $@ %<
 ?S:d_attribute_format:
 ?S:	This variable conditionally defines HASATTRIBUTE_FORMAT, which
