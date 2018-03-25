@@ -8,7 +8,7 @@
 ?RCS: $Log: Extensions.U,v $
 ?RCS:
 ?MAKE:known_extensions extensions dynamic_ext static_ext nonxs_ext \
-	useposix useopcode : \
+	useposix useopcode uselanginfo : \
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
 	d_ndbm usethreads use5005threads package test cat rsrc \
 	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
@@ -57,11 +57,19 @@
 ?S:	for users to skip the Opcode extension from the Configure
 ?S:	command line.
 ?S:.
+?S:uselanginfo:
+?S:	This variable holds either 'true' or 'false' to indicate
+?S:	whether the I18N::Langinfo extension should be used.  The sole
+?S:	use for this currently is to allow an easy mechanism for users to skip
+?S:	this extension from the Configure command line.
+?S:.
 ?T:xxx avail_ext this_ext tdir xs_extensions nonxs_extensions find_extensions
 ?INIT:: set useposix=false in your hint file to disable the POSIX extension.
 ?INIT:useposix=true
 ?INIT:: set useopcode=false in your hint file to disable the Opcode extension.
 ?INIT:useopcode=true
+?INIT:: set uselanginfo=false in your hint file to disable the I18N::Langinfo extension.
+?INIT:uselanginfo=true
 ?LINT:extern noextensions
 ?LINT:extern onlyextensions
 ?T:keepextensions i
@@ -165,11 +173,6 @@ for xxx in $xs_extensions ; do
 		$define) avail_ext="$avail_ext $xxx" ;;
 		esac
 		;;
-	I18N/Langinfo|i18n_lan)
-		case "$i_langinfo$d_nl_langinfo" in
-		$define$define) avail_ext="$avail_ext $xxx" ;;
-		esac
-		;;
 	IPC/SysV|ipc/sysv)
 		: XXX Do we need a useipcsysv variable here
 		case "${d_msg}${d_sem}${d_shm}" in
@@ -221,6 +224,11 @@ for xxx in $xs_extensions ; do
 	Socket|socket)
 		case "$d_socket" in
 		true|$define|y) avail_ext="$avail_ext $xxx" ;;
+		esac
+		;;
+	I18N/Langinfo|langinfo)
+		case "$uselanginfo" in
+		true|define|y) avail_ext="$avail_ext $xxx" ;;
 		esac
 		;;
 	Sys/Syslog|sys/syslog)
