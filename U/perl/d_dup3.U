@@ -1,0 +1,25 @@
+?RCS: Copyright (c) 2017-2018, H.Merijn Brand
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:d_dup3: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_dup3:
+?S:	This variable conditionally defines HAS_DUP3 if dup3() is
+?S:	available to duplicate file descriptors.
+?S:.
+?C:HAS_DUP3:
+?C:	This symbol, if defined, indicates that the dup3 routine is
+?C:	available to duplicate file descriptors.
+?C:.
+?H:#$d_dup3 HAS_DUP3	/**/
+?H:.
+?LINT:set d_dup3
+: see if dup3 exists
+set dup3 d_dup3
+eval $inlibc
+

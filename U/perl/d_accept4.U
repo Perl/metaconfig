@@ -1,0 +1,25 @@
+?RCS: Copyright (c) 2017-2018, H.Merijn Brand
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:d_accept4: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_accept4:
+?S:	This variable conditionally defines HAS_ACCEPT4 if accept4() is
+?S:	available to accept socket connections.
+?S:.
+?C:HAS_ACCEPT4:
+?C:	This symbol, if defined, indicates that the accept4 routine is
+?C:	available to accept socket connections.
+?C:.
+?H:#$d_accept4 HAS_ACCEPT4	/**/
+?H:.
+?LINT:set d_accept4
+: see if accept4 exists
+set accept4 d_accept4
+eval $inlibc
+
