@@ -36,4 +36,3 @@ eval $inlibc
 set fstatvfs d_fstatvfs
 eval $inlibc
 
-

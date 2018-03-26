@@ -35,5 +35,3 @@ esac
 set d_faststdio
 eval $setvar
 
-
-

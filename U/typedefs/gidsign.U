@@ -58,4 +58,3 @@ else
 	echo "(I can't compile the test program--guessing unsigned.)" >&4
 fi
 
-

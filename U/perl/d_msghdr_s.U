@@ -28,4 +28,3 @@ case "$d_msghdr_s" in
 *)              echo "No, it doesn't." ;;
 esac
 
-
