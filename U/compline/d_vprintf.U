@@ -13,7 +13,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:d_vprintf d_charvspr: Compile Guess cat Csym Setvar run rm_try \
-	i_stdlib i_unistd i_stdarg i_varargs
+	i_stdlib i_unistd
 ?MAKE:	-pick add $@ %<
 ?S:d_vprintf:
 ?S:	This variable conditionally defines the HAS_VPRINTF symbol, which
@@ -48,17 +48,11 @@ if set vprintf val -f d_vprintf; eval $csym; $val; then
 	echo 'vprintf() found.' >&4
 	val="$define"
 	$cat >try.c <<EOF
-#$i_stdarg I_STDARG  /* Only one of these can be defined by i_varhrd */
-#$i_varargs I_VARARGS
 
 #$i_stdlib I_STDLIB
 #$i_unistd I_UNISTD
 
-#ifdef I_STDARG
-#  include <stdarg.h>
-#else /* I_VARARGS */
-#  include <varargs.h>
-#endif
+#include <stdarg.h>
 
 #ifdef I_UNISTD
 #  include <unistd.h>
@@ -70,7 +64,6 @@ if set vprintf val -f d_vprintf; eval $csym; $val; then
 
 #include <stdio.h> /* vsprintf prototype */
 
-#ifdef I_STDARG
 void xxx(int n, ...)
 {
     va_list args;
@@ -79,20 +72,6 @@ void xxx(int n, ...)
     exit((unsigned long)vsprintf(buf,"%s",args) > 10L);
 }
 int main() { xxx(1, "foo"); }
-
-#else /* I_VARARGS */
-
-xxx(va_alist)
-va_dcl
-{
-    va_list args;
-    char buf[10];
-    va_start(args);
-    exit((unsigned long)vsprintf(buf,"%s",args) > 10L);
-}
-int main() { xxx("foo"); }
-
-#endif
 
 EOF
 	set try
