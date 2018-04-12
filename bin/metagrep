@@ -13,7 +13,7 @@ GetOptions (
     "F|fixed!"	=> \$opt_F,
     ) or die "usage: metagrep [-w] [-l] [-F] pattern\n";
 
-use Cwd qw(getcwd);
+use Cwd qw(getcwd abs_path);
 use File::Find;
 use FindBin;
 
@@ -23,10 +23,10 @@ $opt_w and $pat = "\\b$pat\\b";
 $pat = qr/$pat/i;
 
 my $cwd    = getcwd;
-my $mcpath = "$FindBin::Bin/../";
+my $mcpath = abs_path "$FindBin::Bin/../";
 my $onmeta = $cwd =~ m{CPAN/meta[^/]+$} ? 1 : 0;
 
-my @dir = ($mcpath, "$mcpath/dist/U");
+my @dir = ($mcpath, $onmeta ? "dist/U" : "$mcpath/dist/U");
 my %dir; # I don't want a file for which any path component symlinks
 find (sub {
     -l and return;
