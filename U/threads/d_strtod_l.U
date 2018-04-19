@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2000 Jarkko Hietaniemi
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_strtod_l: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_strtod_l:
+?S:	This variable conditionally defines the HAS_STRTOD_L symbol, which
+?S:	indicates to the C program that the strtod_l() routine is available.
+?S:.
+?C:HAS_STRTOD_L:
+?C:	This symbol, if defined, indicates that the strtod_l routine is
+?C:	available to convert strings to long doubles.
+?C:.
+?H:#$d_strtod_l HAS_STRTOD_L		/**/
+?H:.
+?LINT:set d_strtod_l
+: see if strtod_l exists
+set strtod_l d_strtod_l
+eval $inlibc
+
