@@ -1704,11 +1704,28 @@ sub extract_dependencies {
 		line: while (<FILE>) {
 			$line = $_;					# Save last processed unit line
 			if (s/^\?([\w\-]+)://) { 	# We may have found a control line
-				$proc = $Depend{$1};	# Look for a procedure to handle it
+				my $type = $1;
+				$proc = $Depend{$type};	# Look for a procedure to handle it
 				unless ($proc) {		# Unknown control line
-					$proc = $1;			# p_unknown expects symbol in '$proc'
+					$proc = $type;			# p_unknown expects symbol in '$proc'
 					eval '&p_unknown';	# Signal error (metalint only)
 					next line;			# And go on next line
+				}
+				if ($type =~ m/^[A-WYZ]$/ && m/^(\s+)\S/) { # No check on :X?, :RCS?
+				    my $white = $1;
+				    (my $f = $file) =~ s{.*/(?=U/)}{};
+				    if ($type eq "O") {
+					# Obsolete, we don't care
+				    }
+				    elsif ($type =~ m/^[FT]$/) {
+					$white eq " " or
+					    warn sprintf "%-32s %3d: Inconsistent whitespace (not a single space) after :$type?: %s", $f, $., $_;
+				    }
+				    else {
+					$white =~ m/^ / and
+					    warn sprintf "%-32s %3d: Blanks after :$type? contain leading space(s): %s",
+						$f, $., $_;
+				    }
 				}
 				# Long lines may be escaped with a final backslash
 				$_ .= &complete_line(FILE) if s/\\\s*$//;
