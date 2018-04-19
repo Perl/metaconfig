@@ -11,7 +11,7 @@
 	useposix useopcode uselanginfo : \
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
 	d_ndbm usethreads use5005threads package test cat rsrc \
-	d_msg d_shm osname use64bitint i_langinfo d_nl_langinfo \
+	d_msg d_shm osname use64bitint \
 	libs d_cplusplus sed ls rm contains trnl sort
 ?MAKE:	-pick add $@ %<
 ?Y:BOTTOM
