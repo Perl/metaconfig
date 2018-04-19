@@ -17,7 +17,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:09:59  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:vaproto: prototype Setvar
+?MAKE:vaproto: prototype i_stdarg Setvar
 ?MAKE:	-pick add $@ %<
 ?S:vaproto:
 ?S:	This variable conditionally defines CAN_VAPROTO on systems supporting
@@ -49,8 +49,8 @@
 ?LINT:set vaproto
 : see if prototypes support variable argument declarations
 echo " "
-case "$prototype" in
-$define)
+case "$prototype$i_stdarg" in
+$define$define)
 	echo "It appears we'll be able to prototype varargs functions." >&4
 	val="$define"
 	;;
