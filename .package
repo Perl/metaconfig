@@ -1,4 +1,4 @@
-: This file was created by running packinit on ma 28 syys   17.56.27 1998.
+: This file was created by running packinit on Thu Apr 19 17:35:50 CEST 2018.
 : Do not hand edit -- run packinit again if changes are to be made.
 packver='3.036'
 : Basic variables
@@ -20,6 +20,8 @@ changercs=0
 : File lookup extensions
 cext='.xs'
 shext=''
+: File to consult for symbol exclusions
+exclusions_file='.metaconf-exclusions.txt'
 : Mailing list variables
 list_users='false'
 list_name=''
@@ -30,4 +32,3 @@ list_sub=''
 list_unsub=''
 : Derivative variables -- do not change
 revbranch="$baserev.$patchbranch"
-

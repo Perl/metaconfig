@@ -88,7 +88,7 @@ Development workflow:
 
     $ export MC5=/your/path/to/metaconfig
     $ alias ml="perl $MC5/bin/mlint -O"
-    $ alias mc="perl $MC5/bin/mconfig -m -O -X .metaconf-exclusions.txt"
+    $ alias mc="perl $MC5/bin/mconfig -m -O"
 
     examples in the rest of this README will just refer to mlint and mconfig
     as if they appear in your $PATH
@@ -144,8 +144,7 @@ Development workflow:
     string HAS_STRTOLD_L at the end of the comment.  This can be removed once
     the code base has actual uses of the unit.
 
-(f) "mconfig -m -O -X .metaconf-exclusions.txt" to regenerate Configure and
-    config_h.SH
+(f) "mconfig -m -O" to regenerate Configure and config_h.SH
 
     Make *sure* your mconfig is the correct one in your $PATH, as the mono-web
     package will install /usr/bin/mconfig which will do something completely

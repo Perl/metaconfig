@@ -60,7 +60,7 @@ chop($date = `date`);
 &usage unless getopts("dhkmoOstvwGMVL:X:");
 
 my %excluded_symbol;
-read_exclusions($opt_X) if defined $opt_X;
+read_exclusions($opt_X);
 $MC = $opt_L if $opt_L;			# May override public library path
 $MC = &tilda_expand($MC);		# ~name expansion
 chop($WD = `pwd`);				# Working directory
@@ -142,7 +142,7 @@ sub init_except {
 # Print out metaconfig's usage and exits
 sub usage {
 	print STDERR <<'EOH';
-Usage: metaconfig [-dhkmostvwGMV] [-L dir]
+Usage: metaconfig [-dhkmostvwGMV] [-L dir] [-X file]
   -d : debug mode.
   -h : print this help message and exits.
   -k : keep temporary directory.
@@ -156,7 +156,7 @@ Usage: metaconfig [-dhkmostvwGMV] [-L dir]
   -L : specify main units repository.
   -M : activate production of confmagic.h.
   -V : print version number and exits.
-  -X FILE : read symbol exclusions from FILE
+  -X : read symbol exclusions from file (overriding .package)
 EOH
 	exit 1;
 }
@@ -815,6 +815,10 @@ sub q {
 
 sub read_exclusions {
 	my ($filename) = @_;
+	if (!defined $filename) {
+		$filename = $exclusions_file; # default to name from .package
+		return if !defined $filename || $filename eq '';
+	}
 	print "Reading exclusions from $filename...\n" unless $opt_s;
 	open(EXCLUSIONS, "< $filename\0") || die "Can't read $filename: $!\n";
 	local $_;
