@@ -359,6 +359,9 @@ EOM
 			;;
 		MiNT)	osname=mint
 			;;
+		minix)	osname=minix
+			osvers=`$uname -r`
+			;;
 		netbsd*) osname=netbsd
 			osvers="$3"
 			;;
