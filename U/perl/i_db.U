@@ -23,7 +23,7 @@
 ?MAKE:i_db db_hashtype db_prefixtype \
 	db_version_major db_version_minor db_version_patch : \
 	Inhdr +cc +ccflags rm_try contains cat \
-	Compile d_const libs sed run i_stdlib
+	Compile libs sed run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:i_db:
 ?S:	This variable conditionally defines the I_DB symbol, and indicates
@@ -100,10 +100,6 @@ $define)
 	echo " "
 	echo "Checking Berkeley DB version ..." >&4
 	$cat >try.c <<EOCP
-#$d_const HASCONST
-#ifndef HASCONST
-#define const
-#endif
 #include <sys/types.h>
 #include <stdio.h>
 #$i_stdlib I_STDLIB
@@ -195,10 +191,6 @@ define)
 	echo " "
 	echo "Checking return type needed for hash for Berkeley DB ..." >&4
 	$cat >try.c <<EOCP
-#$d_const HASCONST
-#ifndef HASCONST
-#define const
-#endif
 #include <sys/types.h>
 #include <db.h>
 
@@ -241,10 +233,6 @@ define)
 	echo " "
 	echo "Checking return type needed for prefix for Berkeley DB ..." >&4
 	cat >try.c <<EOCP
-#$d_const HASCONST
-#ifndef HASCONST
-#define const
-#endif
 #include <sys/types.h>
 #include <db.h>
 
