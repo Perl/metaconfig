@@ -1,0 +1,209 @@
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS: Copyright (c) 2019, Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:d_setlocale d_setlocale_accepts_any_locale_name d_has_C_UTF8: cat Compile run rm_try i_stdlib i_locale i_wctype d_towupper
+?MAKE:	-pick add $@ %<
+?S:d_has_C_UTF8:
+?S:	This variable is set to either "true" or "false" depending on
+?S:	whether the compilation system supports the C.UTF-8 locale.
+?S:.
+?S:d_setlocale:
+?S:	This variable conditionally defines HAS_SETLOCALE if setlocale() is
+?S:	available to handle locale-specific ctype implementations.
+?S:.
+?S:d_setlocale_accepts_any_locale_name:
+?S:	This variable conditionally defines SETLOCALE_ACCEPTS_ANY_LOCALE_NAME
+?S:	if setlocale() accepts any locale name.
+?S:.
+?C:HAS_SETLOCALE:
+?C:	This symbol, if defined, indicates that the setlocale routine is
+?C:	available to handle locale-specific ctype implementations.
+?C:.
+?C:SETLOCALE_ACCEPTS_ANY_LOCALE_NAME:
+?C:	This symbol, if defined, indicates that the setlocale routine is
+?C:	available and it accepts any input locale name as valid.
+?C:.
+?H:#$d_setlocale HAS_SETLOCALE	/**/
+?H:#$d_setlocale_accepts_any_locale_name SETLOCALE_ACCEPTS_ANY_LOCALE_NAME	/**/
+?H:.
+?F:!try
+?T:LC_CTYPE
+: check for setlocale function and behavior
+$cat <<EOM
+
+Checking to see if you have setlocale() and its behavior
+EOM
+$cat >try.c <<EOCP
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#  include <stdlib.h>
+#endif
+#include <string.h>
+#$i_locale I_LOCALE
+#ifdef I_LOCALE
+#  include <locale.h>
+#endif
+#$i_wctype I_WCTYPE
+#ifdef I_WCTYPE
+#  include <wctype.h>
+#endif
+
+int main() {
+    const char * invalid_name = "\a";   /* This is really invalid! */
+    int accepts_any_locale_name = 0;
+    int has_C_UTF8 = 0;
+    unsigned char bad_setlocale = 255;
+
+    /* If LC_CTYPE isn't defined the compilation will fail, and locales will be
+     * disabled.  It's hard to imagine an instance where meaningful locale
+     * handling could be done without LC_CTYPE */
+    const char *  name = setlocale(LC_CTYPE, "C");
+
+    if (name == NULL || strcmp(name, "C") != 0) {
+        exit(bad_setlocale);
+    }
+
+    name = setlocale(LC_CTYPE, invalid_name);
+    if (name != NULL) {
+
+        /* Let it pass if it accepts the name but gives back one of the C
+         * locales */
+        if (strcmp(name, "C") != 0 && strcmp(name, "C.UTF-8") != 0) {
+            accepts_any_locale_name = 1;
+        }
+    }
+
+    name = setlocale(LC_CTYPE, "C.UTF-8");
+    if (name != NULL) {
+        unsigned char y_with_diaeresis = ('A' == 193) ? 0xDF : 0xFF;
+
+#$d_towupper HAS_TOWUPPER
+#ifdef HAS_TOWUPPER
+
+        /* We assume that if the machine doesn't have the C99 towupper, it
+         * doesn't have C.UTF-8, even if we successfully changed locales to
+         * include it.  This seems safer even on platforms that didn't accept
+         * the really invalid name */
+
+        if (towupper(y_with_diaeresis) == 0x178) {
+            has_C_UTF8 = 1;
+        }
+
+#endif
+
+    }
+
+#if 0
+
+    /* Currently unused code to determine if LC_ALL with disparate values uses
+     * category = value pairs or positional, and to determine the separator
+     * between the categories.  We could add code so that if the separator were
+     * > '9', we subtract 10; similarly for 'Z' and 'z', and then just about
+     * every possible ASCII separator would fit in the 5 bits available in the
+     * exit code.  This would not be true in EBCDIC.  And then if LC_ALL is
+     * positional, we probably would want to know the order of the categories.
+     * Using a file between the C program and the shell script would really be
+     * require to do that */
+#ifdef LC_ALL
+
+    unsigned char min_separator = ' ' - 1;
+    unsigned char separator = min_separator;
+    int uses_name_value_pair_names = 0;
+
+    name = setlocale(LC_ALL, "C");
+    if (name == NULL || strcmp(name, "C") != 0) {
+        exit(bad_setlocale);
+    }
+
+    if (has_C_UTF8) {
+        char * pos;
+
+        name = setlocale(LC_CTYPE, "C.UTF-8");
+        if (name == NULL) {
+            exit(bad_setlocale);
+        }
+        name = setlocale(LC_ALL, NULL);
+        if (name == NULL) {
+            exit(bad_setlocale);
+        }
+
+        pos = strstr(name, "LC_CTYPE" "=C.UTF-8");
+        if (pos != NULL) {
+            uses_name_value_pair_names = 1;
+            if (pos == name) {
+                separator = name[sizeof("LC_CTYPE=C.UTF-8") - 1];
+            }
+            else {
+                separator = *(pos - 1);
+            }
+        }
+        else {
+            pos = strstr(name, "C.UTF-8");
+            if (pos == NULL) {
+                /* bad */
+            }
+            else if (pos == name) {
+                separator = name[sizeof("C.UTF-8") - 1];
+            }
+            else {
+                separator = *(pos - 1);
+            }
+        }
+    }
+
+#endif
+#endif
+
+    exit( 0 /* (separator - min_separator) << 3
+        | uses_name_value_pair_names      << 2
+          */
+        | has_C_UTF8                      << 1
+        | accepts_any_locale_name);
+
+}
+EOCP
+set try
+if eval $compile; then
+    echo "Your system has setlocale()..." >&4
+    $run ./try
+    case $? in
+        0) echo "and it seems sane" >&4
+           d_setlocale="$define"
+           d_setlocale_accepts_any_locale_name="$undef"
+           d_has_C_UTF8="false"
+           ;;
+        1) echo "and it seems sane, but accepts any locale name as valid" >&4
+           d_setlocale="$define"
+           d_setlocale_accepts_any_locale_name="$define"
+           d_has_C_UTF8="false"
+           ;;
+        2) echo "and it seems sane" >&4
+           d_setlocale="$define"
+           d_setlocale_accepts_any_locale_name="$undef"
+           d_has_C_UTF8="true"
+           ;;
+        3) echo "and it seems sane, but accepts any locale name as valid" >&4
+           d_setlocale="$define"
+           d_setlocale_accepts_any_locale_name="$define"
+           d_has_C_UTF8="true"
+           ;;
+        *) echo "but it doesn't seem to work, so we won't use it." >&4
+           d_setlocale="$undef"
+           d_setlocale_accepts_any_locale_name="$undef"
+           d_has_C_UTF8="false"
+           ;;
+    esac
+else
+    echo "your system does not have setlocale()" >&4
+    d_setlocale="$undef"
+    d_setlocale_accepts_any_locale_name="$undef"
+    d_has_C_UTF8="false"
+fi
+$rm_try
+
