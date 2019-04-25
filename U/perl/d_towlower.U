@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2019 Karl Williamson
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_towlower: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_towlower:
+?S:	This variable conditionally defines the HAS_TOWLOWER symbol, which
+?S:	indicates to the C program that the towlower() routine is available.
+?S:.
+?C:HAS_TOWLOWER:
+?C:	This symbol, if defined, indicates that the towlower () routine is
+?C:	available to do case conversion.
+?C:.
+?H:#$d_towlower HAS_TOWLOWER		/**/
+?H:.
+?LINT:set d_towlower
+: see if towlower exists
+set towlower d_towlower
+eval $inlibc
+

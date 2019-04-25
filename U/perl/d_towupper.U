@@ -1,0 +1,24 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2019 Karl Williamson
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_towupper: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_towupper:
+?S:	This variable conditionally defines the HAS_TOWUPPER symbol, which
+?S:	indicates to the C program that the towupper() routine is available.
+?S:.
+?C:HAS_TOWUPPER:
+?C:	This symbol, if defined, indicates that the towupper () routine is
+?C:	available to do case conversion.
+?C:.
+?H:#$d_towupper HAS_TOWUPPER		/**/
+?H:.
+?LINT:set d_towupper
+: see if towupper exists
+set towupper d_towupper
+eval $inlibc
+
