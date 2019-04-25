@@ -1,7 +1,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_memmem: Inlibc d_gnulibc Hasproto
+?MAKE:d_memmem: Hasproto Inlibc Setvar d_gnulibc
 ?MAKE:	-pick add $@ %<
 ?S:d_memmem:
 ?S:	This variable conditionally defines the HAS_MEMMEM symbol, which
@@ -13,6 +13,9 @@
 ?C:	This symbol, if defined, indicates that the memmem routine is
 ?C:	available to return a pointer to the start of the first occurance
 ?C:	of a substring in a memory area (or NULL if not found).
+?C:	In glibc, memmem is a GNU extension.  The function is visible in
+?C:	libc, but the prototype is only visible if _GNU_SOURCE is #defined.
+?C:	Thus we only define this if both the prototype and symbol are found.
 ?C:.
 ?H:#$d_memmem HAS_MEMMEM		/**/
 ?H:.

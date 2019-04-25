@@ -20,6 +20,10 @@
 ?X:	set d_getnetent_proto getnetent $hdrs
 ?X:	eval $hasproto
 ?X:
+?X:	There is also an 'escape' hatch built in.  If you have a pair
+?X:	of args   'literal 'stuff' then 'stuff' gets included literally
+?X:	into the test program.  See Protochk.U for more details.
+?X:
 ?MAKE:Hasproto: Setvar cppstdin cppflags cppminus contains rm_try test
 ?MAKE:	-pick add $@ %<
 ?T:func varname
@@ -30,6 +34,7 @@ hasproto='varname=$1; func=$2; shift; shift;
 while $test $# -ge 2; do
 	case "$1" in
 	$define) echo "#include <$2>";;
+	literal) echo "$2" ;;
 	esac ;
     shift 2;
 done > try.c;
