@@ -65,7 +65,10 @@ if ($opt_V) {
 
 $NEWMANI = $opt_f || (-f 'MANIFEST.new' ? 'MANIFEST.new' : 'MANIFEST');
 
+&readpackage;							# Merely get the package's name
 &init;									# Various initializations
+my %excluded_symbol;
+read_exclusions($opt_X);				# Load -X or .package equivalent
 `mkdir .MT 2>&1` unless -d '.MT';		# For private temporary files
 unlink 'Obsolete';						# Obsolete file rebuilt
 
