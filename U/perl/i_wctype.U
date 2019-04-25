@@ -1,0 +1,26 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2017, 2019, Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:i_wctype: Inhdr
+?MAKE:	-pick add $@ %<
+?S:i_wctype:
+?S:	This variable conditionally defines the I_WCTYPE symbol,
+?S:	that indicates whether a C program may include <wctype.h>.
+?S:.
+?C:I_WCTYPE:
+?C:	This symbol, if defined, indicates that <wctype.h> exists.
+?C:.
+?H:#$i_wctype	I_WCTYPE		/**/
+?H:.
+?LINT:set i_wctype
+: see if this system has wctype.h
+set wctype.h i_wctype
+eval $inhdr
+
