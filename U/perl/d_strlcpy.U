@@ -5,7 +5,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_strlcpy: Inlibc
+?MAKE:d_strlcpy: Inlibc Hasproto d_gnulibc
 ?MAKE:	-pick add $@ %<
 ?S:d_strlcpy:
 ?S:	This variable conditionally defines the HAS_STRLCPY symbol, which
@@ -17,8 +17,26 @@
 ?C:.
 ?H:#$d_strlcpy HAS_STRLCPY		/**/
 ?H:.
+?T:d_strlcpy_proto xx1 xx2 xx3 xx4
 ?LINT:set d_strlcpy
 : see if strlcpy exists
-set strlcpy d_strlcpy
-eval $inlibc
+: We need both a prototype in string.h and the symbol in libc.
+echo " "
+d_strlcpy_proto=''
+xx1="#$d_gnulibc HAS_GNULIBC"
+xx2='#if defined(HAS_GNULIBC) && !defined(_GNU_SOURCE)'
+xx3='#   define _GNU_SOURCE'
+xx4='#endif'
+set d_strlcpy_proto strlcpy literal "$xx1" literal "$xx2" literal "$xx3" literal "$xx4" define string.h
+eval $hasproto
+case "$d_strlcpy_proto" in
+    define) # see if strlcpy exists
+	set strlcpy d_strlcpy
+	eval $inlibc
+	;;
+    *)  val=$undef
+	set d_strlcpy
+	eval $setvar
+	;;
+esac
 
