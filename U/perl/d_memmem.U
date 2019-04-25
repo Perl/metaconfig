@@ -1,7 +1,7 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_memmem: Inlibc
+?MAKE:d_memmem: Inlibc d_gnulibc Hasproto
 ?MAKE:	-pick add $@ %<
 ?S:d_memmem:
 ?S:	This variable conditionally defines the HAS_MEMMEM symbol, which
@@ -16,8 +16,26 @@
 ?C:.
 ?H:#$d_memmem HAS_MEMMEM		/**/
 ?H:.
-?LINT:set d_memmem
+?T:d_memmem_proto xx1 xx2 xx3 xx4
+?LINT:set d_memmem 
 : see if memmem exists
-set memmem d_memmem
-eval $inlibc
+: We need both a prototype in string.h and the symbol in libc.
+echo " "
+d_memmem_proto=''
+xx1="#$d_gnulibc HAS_GNULIBC"
+xx2='#if defined(HAS_GNULIBC) && !defined(_GNU_SOURCE)'
+xx3='#   define _GNU_SOURCE'
+xx4='#endif'
+set d_memmem_proto memmem literal "$xx1" literal "$xx2" literal "$xx3" literal "$xx4" define string.h
+eval $hasproto
+case "$d_memmem_proto" in
+    define) # see if memmem exists
+	set memmem d_memmem
+	eval $inlibc
+	;;
+    *)  val=$undef
+	set d_memmem
+	eval $setvar
+	;;
+esac
 
