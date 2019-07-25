@@ -46,14 +46,9 @@
 ?H:.
 : determine root of directory hierarchy where package will be installed.
 case "$prefix" in
-'')
-	dflt=`./loc . /usr/local /usr/local /local /opt /usr`
+'')	dflt=`./loc . /usr/local /usr/local /local /opt /usr`
 	;;
-*?/)
-	dflt=`echo "$prefix" | sed 's/.$//'`
-	;;
-*)
-	dflt="$prefix"
+*)	dflt="$prefix"
 	;;
 esac
 $cat <<EOM
@@ -72,14 +67,23 @@ rp='Installation prefix to use?'
 . ./getfile
 oldprefix=''
 case "$prefix" in
-'') ;;
-*)
-	case "$ans" in
+'')	;;
+*)	case "$ans" in
 	"$prefix") ;;
 	*) oldprefix="$prefix";;
 	esac
 	;;
 esac
-prefix="$ans"
-prefixexp="$ansexp"
+
+case "$ans" in
+*?/)	prefix=`echo "$ans" | sed 's/.$//'`
+	;;
+*)	prefix="$ans"
+esac
+
+case "$ansexp" in
+*?/)	prefixexp=`echo "$ansexp" | sed 's/.$//'`
+	;;
+*)	prefixexp="$ansexp"
+esac
 
