@@ -14,11 +14,11 @@
 ?S:	This variable indicates whether we are compiling with backtrace
 ?S:	support.
 ?S:.
-?C:USE_CBACKTRACE:
+?C:USE_C_BACKTRACE:
 ?C:	This symbol, if defined, indicates that Perl should
 ?C:	be built with support for backtrace.
 ?C:.
-?H:#$usecbacktrace USE_CBACKTRACE		/**/
+?H:#$usecbacktrace USE_C_BACKTRACE		/**/
 ?H:.
 ?LINT:extern ccflags
 ?LINT:change ccflags
