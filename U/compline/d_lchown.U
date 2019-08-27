@@ -14,7 +14,7 @@
 ?RCS: Revision 3.0.1.1  1994/08/29  16:07:14  ram
 ?RCS: patch32: created by ADO
 ?RCS:
-?MAKE:d_lchown: Compile Setvar cat echo
+?MAKE:d_lchown: Compile Setvar cat echo i_unistd rm_try
 ?MAKE:	-pick add $@ %<
 ?S:d_lchown:
 ?S:	This variable conditionally defines the HAS_LCHOWN symbol, which
@@ -52,27 +52,28 @@ echo " "
 ?X:  I really ought to enhance the inlibc test to check for this, but
 ?X:  I don't have time now.  --A.D.  5/1998
 ?X:
-$cat > try.c <<'EOCP'
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char lchown(); below.  */
-#include <assert.h>
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char lchown();
-int main() {
-    /*  The GNU C library defines this for functions which it implements
-        to always fail with ENOSYS.  Some functions are actually named
-	something starting with __ and the normal name is an alias.  */
-#if defined (__stub_lchown) || defined (__stub___lchown)
-choke me
-#else
-lchown();
+?X: Unfortunately, this trick fails under clang++-7.  Apparently to
+?X: cover both the stub issue and clang's requirements, we need to do
+?X: a compile and run test. -- A.D. 8/2019
+?X:
+$cat > try.c <<EOCP
+#include <pwd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#$i_unistd	I_UNISTD
+#ifdef I_UNISTD
+#  include <unistd.h>
 #endif
-; return 0; }
+int main(int argc, char *argv[])
+{
+   if (lchown("./try.c", -1, getgid()) == -1) {
+       exit(EXIT_FAILURE);
+   }
+   exit(EXIT_SUCCESS);
+}
 EOCP
 set try
-if eval $compile; then
+if eval $compile && ./try; then
     $echo "lchown() found." >&4
     val="$define"
 else
@@ -81,4 +82,5 @@ else
 fi
 set d_lchown
 eval $setvar
+$rm_try
 
