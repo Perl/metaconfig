@@ -8,7 +8,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_malloc_size d_malloc_good_size: Inlibc
+?MAKE:d_malloc_size d_malloc_good_size d_malloc_usable_size: Inlibc
 ?MAKE:	-pick add $@ %<
 ?S:d_malloc_size:
 ?S:	This symbol, if defined, indicates that the malloc_size
@@ -16,6 +16,10 @@
 ?S:.
 ?S:d_malloc_good_size:
 ?S:	This symbol, if defined, indicates that the malloc_good_size
+?S:	routine is available for use.
+?S:.
+?S:d_malloc_usable_size:
+?S:	This symbol, if defined, indicates that the malloc_usable_size
 ?S:	routine is available for use.
 ?S:.
 ?C:HAS_MALLOC_SIZE:
@@ -30,13 +34,24 @@
 ?C:.
 ?H:#$d_malloc_good_size HAS_MALLOC_GOOD_SIZE	/**/
 ?H:.
+?C:HAS_MALLOC_USABLE_SIZE:
+?C:	This symbol, if defined, indicates that the malloc_usable_size
+?C:	routine is available for use.
+?C:.
+?H:#$d_malloc_usable_size HAS_MALLOC_USABLE_SIZE		/**/
+?H:.
 ?LINT:set d_malloc_size
 ?LINT:set d_malloc_good_size
+?LINT:set d_malloc_usable_size
 : see if malloc_size exists
 set malloc_size d_malloc_size
 eval $inlibc
 
 : see if malloc_size_good exists
 set malloc_good_size d_malloc_good_size
+eval $inlibc
+
+: see if malloc_usable_size exists
+set malloc_usable_size d_malloc_usable_size
 eval $inlibc
 
