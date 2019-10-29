@@ -13,7 +13,7 @@ sufficient).
 
 You have presumably obtained the metaconfig from the repository e.g.
 
-  $ git clone github.com:perl5-metaconfig/metaconfig metaconfig
+  $ git clone github.com:Perl/metaconfig metaconfig
 
 When working with metaconfig you will generally have two git checkouts
 next to each other:  (1) this metaconfig checkout; and (2) a checkout of
