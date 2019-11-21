@@ -18,7 +18,7 @@
 echo "Checking to see if you have isless..." >&4
 $cat >try.c <<EOCP
 #include <math.h>
-int main() { return isless(0.0); }
+int main() { return isless(2.0, 1.0); }
 EOCP
 set try
 if eval $compile; then
