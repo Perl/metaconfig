@@ -23,7 +23,7 @@
 ?MAKE:d_attribute_deprecated d_attribute_format d_attribute_malloc \
 	d_attribute_nonnull d_attribute_noreturn d_attribute_pure \
 	d_attribute_unused d_attribute_warn_unused_result \
-	d_printf_format_null: \
+	d_printf_format_null d_attribute_always_inline: \
 	    Myread Oldconfig cat cc ccflags rm Setvar contains i_stdlib run \
 	    i_inttypes
 ?MAKE:	-pick add $@ %<
@@ -73,6 +73,11 @@
 ?S:	compiler can know that certain functions have a return values
 ?S:	that must not be ignored, such as malloc() or open().
 ?S:.
+?S:d_attribute_always_inline:
+?S:	This variable conditionally defines HASATTRIBUTE_ALWAYS_INLINE,
+?S:	which indicates that the C compiler can know that certain
+?S:	functions should always be inlined.
+?S:.
 ?C:HASATTRIBUTE_FORMAT ~ %< (GNUC_ATTRIBUTE_CHECK):
 ?C:	Can we handle GCC attribute for checking printf-style formats
 ?C:.
@@ -100,6 +105,10 @@
 ?C:HASATTRIBUTE_WARN_UNUSED_RESULT ~ %< (HASATTRIBUTE):
 ?C:	Can we handle GCC attribute for warning on unused results
 ?C:.
+?C:HASATTRIBUTE_ALWAYS_INLINE:
+?C:	Can we handle GCC attribute for functions that should always be
+?C:	inlined.
+?C:.
 ?H:?%<:#$d_attribute_deprecated HASATTRIBUTE_DEPRECATED	/**/
 ?H:?%<:#$d_attribute_format HASATTRIBUTE_FORMAT	/**/
 ?H:?%<:#$d_printf_format_null PRINTF_FORMAT_NULL_OK	/**/
@@ -109,6 +118,7 @@
 ?H:?%<:#$d_attribute_pure HASATTRIBUTE_PURE	/**/
 ?H:?%<:#$d_attribute_unused HASATTRIBUTE_UNUSED	/**/
 ?H:?%<:#$d_attribute_warn_unused_result HASATTRIBUTE_WARN_UNUSED_RESULT	/**/
+?H:?%<:#$d_attribute_always_inline HASATTRIBUTE_ALWAYS_INLINE	/**/
 ?H:.
 ?F:!attrib !attrib.out !attrib.c
 ?LINT:set d_attribute_deprecated
@@ -120,6 +130,7 @@
 ?LINT:set d_attribute_pure
 ?LINT:set d_attribute_unused
 ?LINT:set d_attribute_warn_unused_result
+?LINT:set d_attribute_always_inline
 : Look for GCC-style attribute format
 case "$d_attribute_format" in
 '')
@@ -392,6 +403,34 @@ fi
 *) val="$d_attribute_warn_unused_result" ;;
 esac
 set d_attribute_warn_unused_result
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute always_inline
+case "$d_attribute_always_inline" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((always_inline)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+static __inline__ __attribute__((always_inline)) int I_will_always_be_inlined(void);
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $contains 'warning' attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((always_inline))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((always_inline))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_always_inline" ;;
+esac
+set d_attribute_always_inline
 eval $setvar
 $rm -f attrib*
 
