@@ -37,9 +37,9 @@ EOM
 #define strtoll _strtoll
 #endif
 #include <stdio.h>
-extern long long int strtoll(char *s, char **, int);
+#include <stdlib.h>
 static int bad = 0;
-int check(char *s, long long ell, int een) {
+void check(const char *s, long long ell, int een) {
 	long long gll;
 	errno = 0;
 	gll = strtoll(s, 0, 10);

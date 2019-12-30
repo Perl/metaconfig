@@ -32,10 +32,10 @@ EOM
 #ifdef __hpux
 #define strtoull __strtoull
 #endif
+#include <stdlib.h>
 #include <stdio.h>
-extern unsigned long long int strtoull(char *s, char **, int);
 static int bad = 0;
-int check(char *s, long long eull, int een) {
+void check(const char *s, long long eull, int een) {
 	long long gull;
 	errno = 0;
 	gull = strtoull(s, 0, 10);
