@@ -50,6 +50,7 @@ case "$d_getpgrp" in
 	echo " "
 	echo "Checking to see which flavor of getpgrp is in use..."
 	$cat >try.c <<EOP
+#include <stdio.h>
 #$i_unistd I_UNISTD
 #include <sys/types.h>
 #ifdef I_UNISTD
