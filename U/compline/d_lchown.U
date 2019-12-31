@@ -28,6 +28,7 @@
 ?C:.
 ?H:#$d_lchown HAS_LCHOWN		/**/
 ?H:.
+?F:!try
 ?LINT:set d_lchown
 : see if lchown exists
 echo " "
