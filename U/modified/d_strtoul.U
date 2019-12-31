@@ -40,9 +40,9 @@ EOM
 	$cat >try.c <<'EOCP'
 #include <errno.h>
 #include <stdio.h>
-extern unsigned long int strtoul(char *s, char **, int);
+#include <stdlib.h>
 static int bad = 0;
-void check(char *s, unsigned long eul, int een) {
+void check(const char *s, unsigned long eul, int een) {
 	unsigned long gul;
 	errno = 0;
 	gul = strtoul(s, 0, 10);
