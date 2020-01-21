@@ -28,11 +28,11 @@ case "$d_longlong-$d_strtoull" in
 Checking whether your strtoull() works okay...
 EOM
 	$cat >try.c <<'EOCP'
+#include <stdlib.h>
 #include <errno.h>
 #ifdef __hpux
 #define strtoull __strtoull
 #endif
-#include <stdlib.h>
 #include <stdio.h>
 static int bad = 0;
 void check(const char *s, long long eull, int een) {

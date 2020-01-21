@@ -38,9 +38,9 @@ case "$d_strtoul" in
 Checking whether your strtoul() works okay...
 EOM
 	$cat >try.c <<'EOCP'
+#include <stdlib.h>
 #include <errno.h>
 #include <stdio.h>
-#include <stdlib.h>
 static int bad = 0;
 void check(const char *s, unsigned long eul, int een) {
 	unsigned long gul;
