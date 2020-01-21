@@ -99,7 +99,7 @@
 ?X:
 
 # Generated using [metaconfig <VERSION> PL<PATCHLEVEL>]
-# (with additional metaconfig patches by <MAINTLOC>)
+# with additional metaconfig patches from https://github.com/Perl/metaconfig
 
 cat >c1$$ <<EOF
 ARGGGHHHH!!!!!
