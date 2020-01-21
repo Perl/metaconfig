@@ -184,14 +184,14 @@ fi
 case "$hint" in
 default|recommended)
 	case "$gccversion" in
-	1*) dflt="$dflt -fpcc-struct-return" ;;
+	1.*) dflt="$dflt -fpcc-struct-return" ;;
 	esac
 	case "$optimize:$DEBUGGING" in
 	*-g*:old) dflt="$dflt -DDEBUGGING";;
 	esac
 ?X: check for POSIXized ISC
 	case "$gccversion" in
-	2*) if $test -d /etc/conf/kconfig.d &&
+	2.*) if $test -d /etc/conf/kconfig.d &&
 			$contains _POSIX_VERSION $usrinc/sys/unistd.h >/dev/null 2>&1
 		then
 			# Interactive Systems (ISC) POSIX mode.
@@ -205,7 +205,7 @@ default|recommended)
 ?X: greater than 2.8.
 ?X:	--Andy Dougherty  27 Aug 1999
 	case "$gccversion" in
-	1*) ;;
+	1.*) ;;
 	2.[0-8]*) ;;
 	?*)	set strict-aliasing -fno-strict-aliasing
 		eval $checkccflag
@@ -331,7 +331,7 @@ case "$cppflags" in
     ;;
 esac
 case "$gccversion" in
-1*) cppflags="$cppflags -D__GNUC__"
+1.*) cppflags="$cppflags -D__GNUC__"
 esac
 case "$mips_type" in
 '');;
