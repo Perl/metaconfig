@@ -48,10 +48,7 @@ compile='
 mc_file=$1;
 shift;
 case "$usedevel" in $define|true|[yY]*) if $test ! -f "${mc_file}.c"; then
-cat >&4 <<EOM
-Internal Configure script bug - compiler test file ${mc_file}.c is missing.
-Please report this to <$maintloc>
-EOM
+echo "Internal Configure script bug - compiler test file ${mc_file}.c is missing. Please report this to <$maintloc>" >&4;
 exit 1;
 fi;
 esac;
