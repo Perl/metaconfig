@@ -232,7 +232,7 @@ system 'perl', '-S', 'patdiff', $changelog;
 
 exit 0;		# All done.
 
-# Returns true if .clog and .rlog (it it exists) are newer than .xlog.
+# Returns true if .clog and .rlog (if it exists) are newer than .xlog.
 sub newertmp {
 	return 1 unless -f ".xlog$bnum";	# To force regeneration
 	return 1 if &newer(".clog$bnum", ".xlog$bnum") ||

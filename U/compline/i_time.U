@@ -39,11 +39,11 @@
 ?S:.
 ?S:d_tm_tm_zone:
 ?S:	This variable conditionally defines HAS_TM_TM_ZONE, which indicates
-?S:	indicates to the C program that the struct tm has the tm_zone field.
+?S:	to the C program that the struct tm has the tm_zone field.
 ?S:.
 ?S:d_tm_tm_gmtoff:
 ?S:	This variable conditionally defines HAS_TM_TM_GMTOFF, which indicates
-?S:	indicates to the C program that the struct tm has the tm_gmtoff field.
+?S:	to the C program that the struct tm has the tm_gmtoff field.
 ?S:.
 ?C:I_TIME (USE_TIME_H):
 ?C:	This symbol is always defined, and indicates to the C program that
