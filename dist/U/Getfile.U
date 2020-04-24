@@ -48,7 +48,7 @@
 ?X: those are prefixes for the filename.  Unless $gfpthkeep is set to 'y',
 ?X: gfpth is cleared on return from Getfile.
 ?X:
-?X: If is is followed by a ~, then ~name substitution will occur. Upon return,
+?X: If it is followed by a ~, then ~name substitution will occur. Upon return,
 ?X: $ans is set with the filename value. If a / is specified, then only a full
 ?X: path name is accepted (but ~ substitution occurs before, if needed). The
 ?X: expanded path name is returned in that case.

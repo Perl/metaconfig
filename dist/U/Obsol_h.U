@@ -20,7 +20,7 @@
 ?MAKE:	-pick prepend $@ ./Obsol_h
 ?LINT:nocomment
 /*
- * The following symbols are obsolete. They are mapped to the the new
+ * The following symbols are obsolete. They are mapped to the new
  * symbols only to ease the transition process. The sources should be
  * updated so as to use the new symbols only, as the support for these
  * obsolete symbols may end without notice.

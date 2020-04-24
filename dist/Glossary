@@ -4052,7 +4052,7 @@ TM_IN_SYS:
 	Wants: contains Setvar Findhdr
 
 	This symbol is defined if this system declares "struct tm" in
-	in <sys/time.h> rather than <time.h>.  We can't just say
+	<sys/time.h> rather than <time.h>.  We can't just say
 	-I/usr/include/sys because some systems have both time files, and
 	the -I trick gets the wrong one.
 
