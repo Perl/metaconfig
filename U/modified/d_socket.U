@@ -21,7 +21,8 @@
 ?MAKE:d_socket d_oldsock d_sockpair socketlib sockethdr \
 	d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy \
 	d_scm_rights d_sockaddr_sa_len d_sockaddr_in6 d_sin6_scope_id \
-	d_ip_mreq d_ip_mreq_source d_ipv6_mreq d_ipv6_mreq_source: \
+	d_ip_mreq d_ip_mreq_source d_ipv6_mreq d_ipv6_mreq_source \
+	d_sockaddr_storage: \
 	contains echo n c ar nm nm_opt nm_extract Inlibc Csym _a \
 	Compile cat rm_try Setvar Hasfield sysroot
 ?MAKE:	-pick add $@ %<
@@ -75,6 +76,10 @@
 ?S:d_sockaddr_in6:
 ?S:	This variable conditionally defines the HAS_SOCKADDR_IN6 symbol, which
 ?S:	indicates the availability of a struct sockaddr_in6.
+?S:.
+?S:d_sockaddr_storage:
+?S:	This variable conditionally defines the HAS_SOCKADDR_STORAGE symbol,
+?S:	which indicates the availability of a struct sockaddr_storage.
 ?S:.
 ?S:d_sin6_scope_id:
 ?S:	This variable conditionally defines the HAS_SIN6_SCOPE_ID symbol, which
@@ -155,6 +160,10 @@
 ?C:	This symbol, if defined, indicates the availability of
 ?C:	struct sockaddr_in6;
 ?C:.
+?C:HAS_SOCKADDR_STORAGE:
+?C:	This symbol, if defined, indicates the availability of
+?C:	struct sockaddr_storage;
+?C:.
 ?C:HAS_SIN6_SCOPE_ID:
 ?C:	This symbol, if defined, indicates that the struct sockaddr_in6
 ?C:	structure has a member called sin6_scope_id.
@@ -186,6 +195,7 @@
 ?H:#$d_msg_proxy	HAS_MSG_PROXY	/**/
 ?H:#$d_scm_rights	HAS_SCM_RIGHTS	/**/
 ?H:#$d_sockaddr_in6	HAS_SOCKADDR_IN6	/**/
+?H:#$d_sockaddr_storage	HAS_SOCKADDR_STORAGE	/**/
 ?H:#$d_sin6_scope_id	HAS_SIN6_SCOPE_ID	/**/
 ?H:#$d_ip_mreq	HAS_IP_MREQ	/**/
 ?H:#$d_ip_mreq_source	HAS_IP_MREQ_SOURCE	/**/
@@ -196,7 +206,7 @@
 ?LINT:set d_sockpair d_sockaddr_sa_len
 ?LINT:set d_msg_ctrunc d_msg_dontroute d_msg_oob d_msg_peek d_msg_proxy
 ?LINT:set d_scm_rights d_sockaddr_in6 d_sin6_scope_id d_ip_mreq
-?LINT:set d_ip_mreq_source d_ipv6_mreq d_ipv6_mreq_source
+?LINT:set d_ip_mreq_source d_ipv6_mreq d_ipv6_mreq_source d_sockaddr_storage
 : see whether socket exists
 socketlib=''
 sockethdr=''
@@ -305,6 +315,25 @@ set try; if eval $compile; then
     val="$define"
 fi
 set d_sockaddr_in6; eval $setvar
+$rm_try
+
+echo " "
+?X: ...
+echo "Checking the availability struct sockaddr_storage ..." >&4
+$cat >try.c <<EOF
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+int main() {
+struct sockaddr_storage sastor;
+return (sastor.ss_family);
+}
+EOF
+val="$undef"
+set try; if eval $compile; then
+    val="$define"
+fi
+set d_sockaddr_storage; eval $setvar
 $rm_try
 
 echo " "
