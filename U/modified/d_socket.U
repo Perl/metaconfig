@@ -280,8 +280,6 @@ eval $inlibc
 
 @end
 
-echo " "
-?X: ...
 echo "Checking the availability sa_len in the sock struct ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -298,8 +296,6 @@ fi
 set d_sockaddr_sa_len; eval $setvar
 $rm_try
 
-echo " "
-?X: ...
 echo "Checking the availability struct sockaddr_in6 ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -317,8 +313,6 @@ fi
 set d_sockaddr_in6; eval $setvar
 $rm_try
 
-echo " "
-?X: ...
 echo "Checking the availability struct sockaddr_storage ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -336,8 +330,6 @@ fi
 set d_sockaddr_storage; eval $setvar
 $rm_try
 
-echo " "
-?X: ...
 echo "Checking the availability sin6_scope_id in struct sockaddr_in6 ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -355,8 +347,6 @@ fi
 set d_sin6_scope_id; eval $setvar
 $rm_try
 
-echo " "
-?X: ...
 echo "Checking the availability struct ip_mreq ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -374,8 +364,6 @@ fi
 set d_ip_mreq; eval $setvar
 $rm_try
 
-echo " "
-?X: ...
 echo "Checking the availability struct ip_mreq_source ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -393,8 +381,6 @@ fi
 set d_ip_mreq_source; eval $setvar
 $rm_try
 
-echo " "
-?X: ...
 echo "Checking the availability struct ipv6_mreq ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -412,8 +398,6 @@ fi
 set d_ipv6_mreq; eval $setvar
 $rm_try
 
-echo " "
-?X: ...
 echo "Checking the availability struct ipv6_mreq_source ..." >&4
 $cat >try.c <<EOF
 #include <sys/types.h>
@@ -431,7 +415,6 @@ fi
 set d_ipv6_mreq_source; eval $setvar
 $rm_try
 
-echo " "
 ?X: these constants are known to be troublesomely defined as enums
 ?X: so that ifdef will not work for detecting their presence.
 echo "Checking the availability of certain socket constants..." >&4
