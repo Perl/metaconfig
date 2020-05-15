@@ -88,7 +88,7 @@ case "$sh" in
 $me:  Fatal Error:  I can't find a Bourne Shell anywhere.
 
 Usually it's in /bin/sh.  How did you even get this far?
-Please contact me (<$maintname>) at <$maintloc>
+Please report this issue at <$maintloc>
 and we'll try to straighten this all out.
 EOM
 	exit 1
