@@ -34,7 +34,7 @@
 ?RCS:
 ?MAKE:libs ignore_versioned_solibs libsfound libsfiles libsdirs libspath: \
 	test cat Myread Oldconfig Loc libpth package xlibpth so _a \
-	usesocks sed uselongdouble usequadmath
+	usesocks sed uselongdouble
 ?MAKE:	-pick add $@ %<
 ?S:libs:
 ?S:	This variable holds the additional libraries we want to use.
@@ -109,9 +109,6 @@ case "$usesocks" in
 esac
 case "$usecbacktrace" in
 "$define") libswanted="$libswanted bfd" ;;
-esac
-case "$usequadmath" in
-"$define") libswanted="$libswanted quadmath" ;;
 esac
 libsfound=''
 libsfiles=''
