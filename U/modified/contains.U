@@ -38,6 +38,7 @@ contains*)
 	cat >contains <<'EOSS'
 grep "$1" "$2" >.greptmp && cat .greptmp && test -s .greptmp
 EOSS
-chmod +x contains
+contains=./contains
+chmod +x $contains
 esac
 
