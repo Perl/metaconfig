@@ -1,0 +1,58 @@
+?RCS: $Id: d_attribut.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 2020, Raphael Manfredi, Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_non_int_bitfields: \
+	    Myread Oldconfig cat cc ccflags Setvar compiler_warning rm_try
+?MAKE:	-pick add $@ %<
+?S:d_non_int_bitfields:
+?S:	This variable conditionally defines HAS_NON_INT_BITFIELDS
+?S:	which indicates that the C compiler accepts struct bitfields of sizes
+?S:	that aren't 'int' or 'unsigned int'
+?S:.
+?C:HAS_NON_INT_BITFIELDS:
+?C:	This symbol, if defined, indicates that the C compiler accepts, without
+?C:	error or warning, struct bitfields that are declared with sizes other
+?C:	than plain 'int'; for example 'unsigned char' is accepted.
+?C:.
+?H:?%<:#$d_non_int_bitfields HAS_NON_INT_BITFIELDS	/**/
+?H:.
+?LINT:set d_non_int_bitfields
+?F:!try.out !try.c
+: Look for non 'int'-sized bitfields
+case "$d_non_int_bitfields" in
+'')
+echo " " >&4
+echo "Checking whether your compiler can handle struct bitfields that aren't 'int' or 'unsigned int' ..." >&4
+$cat >try.c <<'EOCP'
+#include <stdio.h>
+struct foo {
+    unsigned char byte:1;
+    unsigned short halfword:1;
+} bar;
+EOCP
+if $cc $ccflags -c try.c >try.out 2>&1 ; then
+	if $compiler_warning try.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support struct bitfields that aren't 'int' or 'unsigned int'." >&4
+		val="$undef"
+	else
+		echo "Your C compiler supports struct bitfields besides 'int' and 'unsigned int'." >&4
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand struct bitfields that aren't 'int' or 'unsigned int' at all." >&4
+	val="$undef"
+fi
+;;
+*) val="$d_non_int_bitfields" ;;
+esac
+set d_non_int_bitfields
+eval $setvar
+$rm_try
+
