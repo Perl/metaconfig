@@ -1,0 +1,28 @@
+?RCS: $Id: contains.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 2020, Raphael Manfredi and Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:compiler_warning: contains osname
+?MAKE:	-pick add $@ %<
+?S:compiler_warning:
+?S:	This variable holds the command to check if the file specified as a
+?S:	parameter contains a compiler warning
+?S:.
+: See if a file contains compiler warnings
+case "$osname" in
+         # Sample for aix:
+         # "op.h", line 203.5: 1506-159 (E) Bit field type specified for op_type
+         # The '.5' indicates the column number in the line
+         # This grep stops before the dash in the error number
+  'aix') compiler_warning="$contains -E '\.\", line [1-9[0-9]*\.[1-9][0-9]*: [1-9][0-9]*'
+    ;;
+     # Maybe a colon after the 'warning' would be appropriate
+  *) compiler_warning="$contains -i warning"
+    ;;
+esac
