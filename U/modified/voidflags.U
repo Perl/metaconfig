@@ -18,7 +18,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:10:01  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:voidflags defvoidused: cat rm_try contains +cc +ccflags package \
+?MAKE:voidflags defvoidused: cat rm_try compiler_warning +cc +ccflags package \
 	Oldconfig Myread i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:voidflags:
@@ -98,7 +98,7 @@ EOCP
 	if $cc $ccflags -c -DTRY=$defvoidused try.c >.out 2>&1 ; then
 		voidflags=$defvoidused
 	echo "Good.  It appears to support void to the level $package wants.">&4
-		if $contains warning .out >/dev/null 2>&1; then
+		if $compiler_warning .out >/dev/null 2>&1; then
 			echo "However, you might get some warnings that look like this:"
 			$cat .out
 		fi
