@@ -39,5 +39,6 @@ contains*)
 grep "$1" "$2" >.greptmp && cat .greptmp && test -s .greptmp
 EOSS
 chmod +x contains
+contains=./UU/contains
 esac
 
