@@ -80,7 +80,7 @@
 # you should use metaconfig. Perl uses a modified version of this
 # tool, and this, together with the metaconfig units, are available
 # in the git repository:
-#    $ git clone https://github.com/perl5-metaconfig/metaconfig metaconfig
+#    $ git clone https://github.com/Perl/metaconfig metaconfig
 # The original dist package (including metaconfig) is available on github:
 #    $ git clone https://github.com/rmanfredi/dist.git dist-git
 #
