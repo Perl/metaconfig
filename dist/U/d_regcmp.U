@@ -20,17 +20,17 @@
 ?S:d_regcomp:
 ?S:	This variable conditionally defines the HAS_REGCOMP symbol, which
 ?S:	indicates to the C program that the regcomp() routine is available
-?S:	for regular pattern matching (usally on POSIX.2 conforming systems).
+?S:	for regular pattern matching (usually on POSIX.2 conforming systems).
 ?S:.
 ?S:d_regcmp:
 ?S:	This variable conditionally defines the HAS_REGCMP symbol, which
 ?S:	indicates to the C program that the regcmp() routine is available
-?S:	for regular pattern matching (usally on System V).
+?S:	for regular pattern matching (usually on System V).
 ?S:.
 ?S:d_re_comp:
 ?S:	This variable conditionally defines the HAS_RECOMP symbol, which
 ?S:	indicates to the C program that the re_comp() routine is available
-?S:	for regular pattern matching (usally on BSD). If so, it is likely that
+?S:	for regular pattern matching (usually on BSD). If so, it is likely that
 ?S:	re_exec() exists.
 ?S:.
 ?C:HAS_REGCOMP (REGCOMP):
