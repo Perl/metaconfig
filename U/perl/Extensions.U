@@ -10,7 +10,7 @@
 ?MAKE:known_extensions extensions dynamic_ext static_ext nonxs_ext \
 	useposix useopcode uselanginfo : \
 	Myread hint usedl d_sem d_socket i_db i_dbm i_rpcsvcdbm i_gdbm \
-	d_ndbm usethreads use5005threads package test cat rsrc \
+	d_ndbm usethreads package test cat rsrc \
 	d_msg d_shm osname use64bitint \
 	libs d_cplusplus sed ls rm contains trnl sort
 ?MAKE:	-pick add $@ %<
@@ -240,14 +240,6 @@ for xxx in $xs_extensions ; do
 			true|$define|y) avail_ext="$avail_ext $xxx" ;;
 			esac
 			;;
-		esac
-		;;
-	Thread|thread)
-                case "$usethreads" in
-                true|$define|y)
-                        case "$use5005threads" in
-                        $define|true|[yY]*) avail_ext="$avail_ext $xxx" ;;
-                        esac
 		esac
 		;;
 	threads|threads/shared)
