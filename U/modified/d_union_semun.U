@@ -26,11 +26,11 @@
 ?C:	This symbol, if defined, indicates that the union semun is
 ?C:	defined by including <sys/sem.h>.  If not, the user code
 ?C:	probably needs to define it as:
-?C:	union semun {
+?C:	 union semun {
 ?C:	    int val;
 ?C:	    struct semid_ds *buf;
 ?C:	    unsigned short *array;
-?C:	}
+?C:	 }
 ?C:.
 ?C:USE_SEMCTL_SEMUN:
 ?C:	This symbol, if defined, indicates that union semun is
