@@ -8,7 +8,7 @@
 ?RCS: $Log: usethreads.U,v $
 ?RCS:
 ?MAKE:usethreads useithreads d_oldpthreads usereentrant: \
-	Myread Oldconfig Setvar test cat patchlevel
+	Myread Oldconfig Setvar test cat
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:usethreads:
