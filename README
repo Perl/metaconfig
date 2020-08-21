@@ -51,7 +51,7 @@ Development workflow:
     it) or the versions that are included in this checkout: just add the full
     name of this folder/bin to your $PATH. If you are not planning to analyse
     differences of the current state with upstream dist, you can skip the rest
-    op step (a) now.
+    of step (a) now.
 
     If you also want to play with or compare to the original meta/dist, you
     can checkout that too.
