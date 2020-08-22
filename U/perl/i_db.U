@@ -22,7 +22,7 @@
 ?RCS:
 ?MAKE:i_db db_hashtype db_prefixtype \
 	db_version_major db_version_minor db_version_patch : \
-	Inhdr +cc +ccflags rm_try contains cat \
+	Inhdr +cc +ccflags rm_try compiler_warning cat \
 	Compile libs sed run i_stdlib
 ?MAKE:	-pick add $@ %<
 ?S:i_db:
@@ -207,7 +207,7 @@ int main()
 #endif
 EOCP
 	if $cc $ccflags -c try.c >try.out 2>&1 ; then
-		if $contains warning try.out >>/dev/null 2>&1 ; then
+		if $compiler_warning try.out >>/dev/null 2>&1 ; then
 			db_hashtype='int'
 		else
 			db_hashtype='u_int32_t'
@@ -249,7 +249,7 @@ int main()
 #endif
 EOCP
 	if $cc $ccflags -c try.c  >try.out 2>&1 ; then
-		if $contains warning try.out >>/dev/null 2>&1 ; then
+		if $compiler_warning try.out >>/dev/null 2>&1 ; then
 			db_prefixtype='int'
 		else
 			db_prefixtype='size_t'

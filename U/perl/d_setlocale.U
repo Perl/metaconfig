@@ -7,7 +7,8 @@
 ?RCS: that same Artistic Licence; a copy of which may be found at the root
 ?RCS: of the source tree for dist 4.0.
 ?RCS:
-?MAKE:d_setlocale d_setlocale_accepts_any_locale_name d_has_C_UTF8: cat Compile run rm_try i_locale i_wctype d_towupper
+?MAKE:d_setlocale d_setlocale_accepts_any_locale_name d_has_C_UTF8: \
+	cat Compile run rm_try i_locale i_wctype d_towupper Setvar Myread
 ?MAKE:	-pick add $@ %<
 ?S:d_has_C_UTF8:
 ?S:	This variable is set to either "true" or "false" depending on
@@ -33,9 +34,11 @@
 ?H:#$d_setlocale_accepts_any_locale_name SETLOCALE_ACCEPTS_ANY_LOCALE_NAME	/**/
 ?H:.
 ?F:!try
-?T:LC_CTYPE
+?T:LC_CTYPE c_utf8_locale
 : check for setlocale function and behavior
-$cat <<EOM
+case "$d_setlocale" in
+'')
+$cat >&4 <<EOM
 
 Checking to see if you have setlocale() and its behavior
 EOM
@@ -165,42 +168,86 @@ int main() {
 
 }
 EOCP
-set try
-if eval $compile; then
-    echo "Your system has setlocale()..." >&4
-    $run ./try
-    case $? in
-        0) echo "and it seems sane" >&4
-           d_setlocale="$define"
-           d_setlocale_accepts_any_locale_name="$undef"
-           d_has_C_UTF8="false"
-           ;;
-        1) echo "and it seems sane, but accepts any locale name as valid" >&4
-           d_setlocale="$define"
-           d_setlocale_accepts_any_locale_name="$define"
-           d_has_C_UTF8="false"
-           ;;
-        2) echo "and it seems sane" >&4
-           d_setlocale="$define"
-           d_setlocale_accepts_any_locale_name="$undef"
-           d_has_C_UTF8="true"
-           ;;
-        3) echo "and it seems sane, but accepts any locale name as valid" >&4
-           d_setlocale="$define"
-           d_setlocale_accepts_any_locale_name="$define"
-           d_has_C_UTF8="true"
-           ;;
-        *) echo "but it doesn't seem to work, so we won't use it." >&4
+val=
+set d_setlocale
+eval $setvar
+case $d_setlocale in
+    $undef) d_setlocale_accepts_any_locale_name="$undef"
+            d_has_C_UTF8="false"
+            ;;
+    *) set try
+       if eval $compile; then
+           echo "Your system has setlocale()..." >&4
+           $run ./try
+           case $? in
+               0) echo "and it seems sane; you don't have a C.UTF8 locale" >&4
+                  d_setlocale="$define"
+                  d_setlocale_accepts_any_locale_name="$undef"
+                  d_has_C_UTF8="false"
+                  ;;
+               1) echo "and it seems sane, but accepts any locale name as valid" >&4
+                  d_setlocale="$define"
+                  d_setlocale_accepts_any_locale_name="$define"
+                  d_has_C_UTF8="false"
+                  ;;
+               2) echo "and it seems sane; you have a C.UTF8 locale" >&4
+                  d_setlocale="$define"
+                  d_setlocale_accepts_any_locale_name="$undef"
+                  d_has_C_UTF8="true"
+                  ;;
+               3) echo "and it seems sane, but accepts any locale name as valid" >&4
+                  d_setlocale="$define"
+                  d_setlocale_accepts_any_locale_name="$define"
+                  d_has_C_UTF8="true"
+                  ;;
+               *) echo "but it doesn't seem to work, so we won't use it." >&4
+                  d_setlocale="$undef"
+                  d_setlocale_accepts_any_locale_name="$undef"
+                  d_has_C_UTF8="false"
+                  ;;
+           esac
+       else
+           echo "your system does not have setlocale()" >&4
            d_setlocale="$undef"
            d_setlocale_accepts_any_locale_name="$undef"
            d_has_C_UTF8="false"
-           ;;
-    esac
-else
-    echo "your system does not have setlocale()" >&4
-    d_setlocale="$undef"
-    d_setlocale_accepts_any_locale_name="$undef"
-    d_has_C_UTF8="false"
-fi
+       fi
+esac
 $rm_try
+;;
+*) val="$d_setlocale"
+    set d_setlocale
+    eval $setvar
+    case "$d_setlocale" in
+        $undef) echo "There may be other ways to set the locale on your system, so we need to ask:" >&4
+        ;;
+    esac
+    rp="Does your system have the C.UTF8 locale?"
+    dflt=n
+    . ./myread
+    case "$ans" in
+        [Yy]*) d_has_C_UTF8="true"
+               c_utf8_locale=" or C.UTF8"
+               ;;
+        *)     d_has_C_UTF8="false"
+               c_utf8_locale=""
+               ;;
+    esac
+    case "$d_setlocale" in
+        $define)
+            rp="When you set your locale to something besides C$c_utf8_locale, does it do so, or just pretend to?" >&4
+            dflt=n
+            . ./myread
+            case "$ans" in
+                true|[Yy]*)
+		   d_setlocale_accepts_any_locale_name="$undef"
+		   ;;
+		*) d_setlocale_accepts_any_locale_name="$define"
+		   ;;
+            esac
+            ;;
+        *) d_setlocale_accepts_any_locale_name="$undef"
+	   ;;
+    esac
+esac
 

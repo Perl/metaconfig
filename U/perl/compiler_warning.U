@@ -1,0 +1,36 @@
+?RCS: $Id: contains.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 2020, Raphael Manfredi and Karl Williamson
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?MAKE:compiler_warning: contains grep osname
+?MAKE:	-pick add $@ %<
+?S:compiler_warning:
+?S:	This variable holds the command to check if the file specified as a
+?S:	parameter contains a compiler warning
+?S:.
+: See if a file contains compiler warnings
+: See if a file contains compiler warnings
+case "$osname" in
+  'aix')
+	cat >compiler_warning <<EOSS
+# Sample for aix ('.5' indicates the column number in the line):
+#    "op.h", line 203.5: 1506-159 (E) Bit field type specified for op_type
+# Since the word 'warning' isn't present, use a fairly rigorous match of what
+# warning messages look like
+#            "    o        p        .  h   ", line    203      .   5        :   1506     -    159      (  E  )
+$grep -E "^\\"[A-Za-z][A-Za-z0-9_]*\.[ch]\\", line [1-9][0-9]*[.][1-9][0-9]*: [1-9][0-9]*-[1-9][0-9]* \([EW][)] " "\$1"
+EOSS
+        compiler_warning=./compiler_warning
+        chmod +x $compiler_warning
+    ;;
+     # Maybe a colon after the 'warning' would be appropriate
+  *) compiler_warning="$contains -i warning"
+    ;;
+esac
+
