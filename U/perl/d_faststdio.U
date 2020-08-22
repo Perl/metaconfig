@@ -26,7 +26,7 @@ case "$d_stdstdio:$d_stdio_ptr_lval" in
 "$define:$define")
 	case "$d_stdio_cnt_lval$d_stdio_ptr_lval_sets_cnt" in
 	*$define*)
-		echo "You seem to have 'fast stdio' to directly manipulate the stdio buffers." >& 4
+		echo "You seem to have 'fast stdio' to directly manipulate the stdio buffers." >&4
 		val="$define"
 		;;
 	esac
