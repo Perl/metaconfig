@@ -43,6 +43,7 @@
 ?H:?%<:#define L_R_TZSET
 ?H:?%<:#endif
 ?H:.
+?W:%<:L_R_TZSET
 ?C:L_R_TZSET:
 ?C:	If localtime_r() needs tzset, it is defined in this define
 ?C:.
