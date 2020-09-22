@@ -1,0 +1,45 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usedefaultstrict: Setvar Myread
+?MAKE:	-pick add $@ %<
+?LINT:set usedefaultstrict
+?S:usedefaultstrict:
+?S:	This setting provides a mechanism for perl developers to enable
+?S:	strict by default. These defaults do not apply when perl is run
+?S:	via -e or -E.
+?S:.
+?C:USE_STRICT_BY_DEFAULT:
+?C:	This symbol, if defined, enables additional defaults.
+?C:	At this time it only enables implicit strict by default.
+?C:.
+?H:#$usedefaultstrict USE_STRICT_BY_DEFAULT	/* use strict by default */
+?H:.
+: Ask about strict by default.
+case "$usedefaultstrict" in
+    $define|true|[Yy]*)
+       dflt="y"
+       ;;
+    *)
+       dflt="n"
+       ;;
+    esac
+
+cat <<EOM
+
+EXPERIMENTAL: Perl can now be built with strict on by default when not
+invoked with -e or -E. This is a diagnostic tool for development.
+
+Unless you are familiar with this feature, you should probably answer 'no'.
+
+EOM
+
+rp='Would you like to build perl with strict enabled by default?'
+. ./myread
+case "$ans" in
+y|Y) val="$define" ;;
+*)   val="$undef"  ;;
+esac
+set usedefaultstrict
+eval $setvar
+
