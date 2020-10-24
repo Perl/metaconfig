@@ -26,7 +26,7 @@ my $cwd    = getcwd;
 my $mcpath = abs_path "$FindBin::Bin/../";
 my $onmeta = $cwd =~ m{CPAN/meta[^/]+$} ? 1 : 0;
 
-my @dir = ($mcpath, $onmeta ? "dist/U" : "$mcpath/dist/U");
+my @dir = grep { -d } $mcpath, $onmeta ? "dist/U" : "$mcpath/dist/U";
 my %dir; # I don't want a file for which any path component symlinks
 find (sub {
     -l and return;
