@@ -45,7 +45,7 @@
 ?RCS: Revision 3.0  1993/08/18  12:05:31  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:ccflags ldflags lkflags cppflags optimize locincpth: test cat osname \
+?MAKE:ccflags ldflags lkflags cppflags optimize locincpth: test cat \
 	Myread Guess Options Oldconfig +gccversion mips_type +usrinc \
 	package contains rm +cc cppstdin cppminus cpprun cpplast libpth \
 	libs loclibpth hint usesocks sh run rm_try sysroot
@@ -231,23 +231,24 @@ default|recommended)
 	# is to add the flag to the flags passed to the compiler at link time,
 	# as that way the compiler can do the right implementation dependant
 	# thing. (NWC)
-	case "$osname" in
-	amigaos) ;; # -fstack-protector builds but doesn't work
-	*)	case "$gccversion" in
-		?*)	set stack-protector-strong -fstack-protector-strong
-			eval $checkccflag
-			case "$dflt" in
-			*-fstack-protector-strong*) ;; # It got added.
-			*) # Try the plain/older -fstack-protector.
-			   set stack-protector -fstack-protector
-			   eval $checkccflag
-			   ;;
-			esac
-			;;
+	case "$ccflags" in
+	*-fno-stack-protector*)
+	    echo "Do not add -fstack-protector nor -fstack-protector-strong" 2>&1
+	    ;;
+	*) case "$gccversion" in
+	   ?*)  set stack-protector-strong -fstack-protector-strong
+		eval $checkccflag
+		case "$dflt" in
+		*-fstack-protector-strong*) ;; # It got added.
+		*) # Try the plain/older -fstack-protector.
+		   set stack-protector -fstack-protector
+		   eval $checkccflag
+		   ;;
 		esac
 		;;
+	    esac
+	    ;;
 	esac
-	;;
 esac
 
 ?X: In USG mode, a MIPS system may need some BSD includes
