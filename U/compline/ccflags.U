@@ -236,7 +236,7 @@ default|recommended)
 	    echo "Do not add -fstack-protector nor -fstack-protector-strong" 2>&1
 	    ;;
 	*) case "$gccversion" in
-	   ?*)  set stack-protector-strong -fstack-protector-strong
+	   ?*)	set stack-protector-strong -fstack-protector-strong
 		eval $checkccflag
 		case "$dflt" in
 		*-fstack-protector-strong*) ;; # It got added.
