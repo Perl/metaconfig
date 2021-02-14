@@ -19,11 +19,11 @@
 ?S:d_mblen:
 ?S:	This variable conditionally defines the HAS_MBLEN symbol, which
 ?S:	indicates to the C program that the mblen() routine is available
-?S:	to find the number of bytes in a multibye character.
+?S:	to find the number of bytes in a multibyte character.
 ?S:.
 ?C:HAS_MBLEN:
 ?C:	This symbol, if defined, indicates that the mblen routine is available
-?C:	to find the number of bytes in a multibye character.
+?C:	to find the number of bytes in a multibyte character.
 ?C:.
 ?H:#$d_mblen HAS_MBLEN		/**/
 ?H:.

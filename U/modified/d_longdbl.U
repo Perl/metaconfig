@@ -55,7 +55,7 @@
 ?S:	This variable conditionally defines LONG_DOUBLE_STYLE_IEEE_EXTENDED
 ?S:	if the long double is the 80-bit IEEE 754 extended precision.
 ?S:	Note that despite the 'extended' this is less than the 'std',
-?S:	since thisis an extension of the double precision.
+?S:	since this is an extension of the double precision.
 ?S:.
 ?S:d_long_double_style_ieee_std:
 ?S:	This variable conditionally defines LONG_DOUBLE_STYLE_IEEE_STD
