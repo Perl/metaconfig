@@ -1,0 +1,110 @@
+?RCS: $Id: d_getenv_thread.U,v 0RCS:
+?RCS: Copyright (c) 2021 H.Merijn Brand, Karl Williamson
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:d_getenv_preserves_other_thread: echo cat i_stdlib i_pthread run rm_try \
+	Compile Setvar
+?MAKE:	-pick add $@ %<
+?S:d_getenv_preserves_other_thread:
+?S:	This variable conditionally defines the GETENV_PRESERVES_OTHER_THREAD
+?S:	symbol, which indicates to the C program that the getenv() system call
+?S:	does not zap the static buffer in a different thread.
+?S:.
+?C:GETENV_PRESERVES_OTHER_THREAD:
+?C:	This symbol, if defined, indicates that the getenv system call doesn't
+?C:	zap the static buffer of getenv() in a different thread.
+?C:
+?C:	The typical getenv() implementation will return a pointer to the proper
+?C:	position in **environ.  But some may instead copy them to a static
+?C:	buffer in getenv().  If there is a per-thread instance of that buffer,
+?C:	or the return points to **environ, then a many-reader/1-writer mutex
+?C:	will work; otherwise an exclusive locking mutex is required to prevent
+?C:	races.
+?C:.
+?H:#$d_getenv_preserves_other_thread GETENV_PRESERVES_OTHER_THREAD	/**/
+?H:.
+?T:rc
+?F:!try
+?LINT:set d_getenv_preserves_other_thread
+: check for getenv behavior
+case "$d_getenv_preserves_other_thread" in
+'')
+$echo "Checking to see if getenv() preserves a different thread's results" >&4
+$cat >try.c <<EOCP
+#$i_stdlib I_STDLIB
+#ifdef I_STDLIB
+#  include <stdlib.h>
+#endif
+#include <stdio.h>
+#include <string.h>
+#$i_pthread I_PTHREAD
+#ifdef I_PTHREAD
+#  include <pthread.h>
+#endif
+
+void *
+thread_start(void * arg)
+{
+    (void *) getenv("HOME");
+}
+
+int main() {
+    char * main_buffer;
+    char save_main_buffer[1000];
+    pthread_t subthread;
+    pthread_attr_t attr;
+
+    main_buffer = getenv("PATH");
+
+    /* If too large for our generous allowance, return we couldn't figure it
+     * out. */
+    if (strlen(main_buffer) >= sizeof(save_main_buffer)) {
+        exit(2);
+    }
+
+    strcpy(save_main_buffer, main_buffer);
+
+    if (pthread_attr_init(&attr) != 0) {
+        exit(2);
+    }
+
+    if (pthread_create(&subthread, &attr, thread_start, NULL) != 0) {
+        exit(2);
+    }
+
+    if (pthread_join(subthread, NULL) != 0) {
+        exit(2);
+    }
+
+    exit(! strcmp(main_buffer, save_main_buffer) == 0);
+}
+EOCP
+val=
+set try
+if eval $compile_ok; then
+	$run ./try
+	rc=$?
+	case "$rc" in
+	    0) echo "getenv() didn't destroy another thread's buffer" >&4
+	       val=$define
+	       ;;
+	    1) echo "getenv() does destroy another thread's buffer" >&4
+	       val=$undef
+	       ;;
+	    *) echo "Couldn't determine if getenv() destroys another thread's return value (code=$rc); assuming it does" >&4
+	       val=$undef
+	       ;;
+	esac
+else
+    echo "(I can't seem to compile the test program.)" >&4
+    echo "Assuming that your C library's getenv destroys another thread's return value." >&4
+    val=$undef
+fi
+set d_getenv_preserves_other_thread
+eval $setvar
+$rm_try
+;;
+esac
+
