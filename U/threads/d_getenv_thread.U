@@ -84,19 +84,19 @@ EOCP
 val=
 set try
 if eval $compile_ok; then
-	$run ./try
-	rc=$?
-	case "$rc" in
-	    0) echo "getenv() didn't destroy another thread's buffer" >&4
-	       val=$define
-	       ;;
-	    1) echo "getenv() does destroy another thread's buffer" >&4
-	       val=$undef
-	       ;;
-	    *) echo "Couldn't determine if getenv() destroys another thread's return value (code=$rc); assuming it does" >&4
-	       val=$undef
-	       ;;
-	esac
+    $run ./try
+    rc=$?
+    case "$rc" in
+	0) echo "getenv() didn't destroy another thread's buffer" >&4
+	   val=$define
+	   ;;
+	1) echo "getenv() does destroy another thread's buffer" >&4
+	   val=$undef
+	   ;;
+	*) echo "Couldn't determine if getenv() destroys another thread's return value (code=$rc); assuming it does" >&4
+	   val=$undef
+	   ;;
+    esac
 else
     echo "(I can't seem to compile the test program.)" >&4
     echo "Assuming that your C library's getenv destroys another thread's return value." >&4
