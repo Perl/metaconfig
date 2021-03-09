@@ -1,16 +1,27 @@
 #!/usr/bin/perl
 
-use strict;
+use 5.12.0;
 use warnings;
 
+our $VERSION = "0.01 - 20181213";
+our $CMD = $0 =~ s{.*/}{}r;
+
+sub usage {
+    my $err = shift and select STDERR;
+    say "usage: $CMD [-l] [-w] [-F] [-v[#]] pattern";
+    say "    -w     --word         Word-anchored matches";
+    say "    -l     --list         List matched filenames only";
+    say "    -F     --fixed        Fixed pattern (quotemeta regex)";
+    say "    -v [#] --verbose[=#]  Verbosity";
+    exit $err;
+    } # usage
+
 use Getopt::Long qw(:config bundling nopermute passthrough);
-my $opt_l = 0;
-my $opt_w = 0;
-my $opt_F = 0;
 GetOptions (
-    "w|word!"	=> \$opt_w,
-    "l|list!"	=> \$opt_l,
-    "F|fixed!"	=> \$opt_F,
+    "w|word!"		=> \(my $opt_w = 0),
+    "l|list!"		=> \(my $opt_l = 0),
+    "F|fixed!"		=> \(my $opt_F = 0),
+    "v|verbose:1"	=> \(my $opt_v = 0),
     ) or die "usage: metagrep [-w] [-l] [-F] pattern\n";
 
 use Cwd qw(getcwd abs_path);
@@ -36,20 +47,22 @@ find (sub {
 print STDERR "<$pat>\n";
 my %seen;
 find (sub {
-    -l and return;
-    -f or  return;
-    m/\.U$/ or return;
+    -l					and return;
+    -f					or  return;
+    m/\.U$/				or  return;
 
-    exists $dir{$File::Find::dir} or return;
-    #print STDERR "$File::Find::dir - $_\n";
+    exists $dir{$File::Find::dir}	or  return;
+    $opt_v and warn "$File::Find::dir - $_\n";
 
-    $seen{$File::Find::name}++ and return;
+    $seen{abs_path ($_)}++		and return;
 
-    $File::Find::dir =~ m{^(?:$cwd/)?dist-3} and return;
+    my $fqdn = abs_path ($File::Find::dir);
+    $fqdn =~ m{/dist-3}			and return;
+    $fqdn =~ m{/_metaconfig_perl}	and return;
 
-    open my $f, "<$_" or die "$File::Find::name: $!\n";
     my $fnm = $File::Find::name;
     $fnm =~ s{^$cwd/}{};
+    open my $f, "<$_" or die "$fnm: $!\n";
     for (grep /$pat/, <$f>) {
 	if ($opt_l) {
 	    print "$fnm\n";
