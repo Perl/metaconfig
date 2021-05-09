@@ -5,26 +5,36 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_thread_safe_nl_langinfo_l: Compile cat rm_try Oldconfig \
+?MAKE:d_nl_langinfo_l d_thread_safe_nl_langinfo_l: Compile cat rm_try Oldconfig \
 	i_pthread i_stdlib i_langinfo i_locale		\
 	usethreads run
 ?MAKE:	-pick add $@ %<
+?S:d_nl_langinfo_l:
+?S:	This variable contains the eventual value of the
+?S:	HAS_NL_LANGINFO_L symbol, which indicates if the
+?S:	nl_langinfo_l() function exists.
+?S:.
 ?S:d_thread_safe_nl_langinfo_l:
 ?S:	This variable contains the eventual value of the
 ?S:	HAS_THREAD_SAFE_NL_LANGINFO_L symbol, which indicates if the
 ?S:	nl_langinfo_l() function exists and is thread-safe.
 ?S:.
+?C:HAS_NL_LANGINFO_L:
+?C:	This symbol, when defined, indicates presence of the nl_langinfo_l()
+?C:	function
+?C:.
 ?C:HAS_THREAD_SAFE_NL_LANGINFO_L:
 ?C:	This symbol, when defined, indicates presence of the nl_langinfo_l()
 ?C:	function, and that it is thread-safe.
 ?C:.
+?H:#$d_nl_langinfo_l HAS_NL_LANGINFO_L	/**/
 ?H:#$d_thread_safe_nl_langinfo_l HAS_THREAD_SAFE_NL_LANGINFO_L	/**/
 ?H:.
 ?F:!try
-: check for thread_safe_nl_langinfo_l item
+: check for nl_langinfo_l item
 $cat <<EOM
 
-Checking to see if you have nl_langinfo_l() and that it is thread-safe
+Checking to see if you have nl_langinfo_l(), and that it is thread-safe
 EOM
 ?X: Despite claiming that nl_langinfo_l() is thread-safe, the POSIX 2008
 ?X: standard allows for a non-safe implementation:
@@ -33,9 +43,6 @@ EOM
 ?X:	uses (in all threads) the same buffer that nl_langinfo_l() uses in the
 ?X:	initial thread. There can be interactions, but only when
 ?X:	nl_langinfo_l() is called in the initial thread"
-?X:
-?X: If nl_langinfo_l() isn't thread safe, might as well just use plain
-?X: nl_langinfo().
 ?X:
 ?X: This program calls nl_langinfo_l(), then creates a thread, calling plain
 ?X: nl_langinfo() from within it, then sees if the buffer in the original
@@ -101,12 +108,14 @@ case "$usethreads" in
         set try
         if eval $compile; then
             echo "Your system has nl_langinfo_l()..." >&4
+            d_nl_langinfo_l="$define"
+            echo "$d_nl_langinfo_l" >&4
             if $run ./try; then
                 echo "and it is thread-safe (just as I'd hoped)." >&4
                 d_thread_safe_nl_langinfo_l="$define"
                 echo "$d_thread_safe_nl_langinfo_l" >&4
             else
-                echo "but it isn't thread-safe, so we won't use it." >&4
+                echo "but it isn't thread-safe." >&4
             fi
         else
             echo "your system does not have nl_langinfo_l()" >&4
@@ -114,6 +123,9 @@ case "$usethreads" in
         ;;
     *) echo "Since threads aren't selected, we won't bother looking for nl_langinfo_l()" >&4
 esac
+if test X"$d_nl_langinfo_l" = X; then
+	d_nl_langinfo_l="$undef"
+fi
 if test X"$d_thread_safe_nl_langinfo_l" = X; then
 	d_thread_safe_nl_langinfo_l="$undef"
 fi
