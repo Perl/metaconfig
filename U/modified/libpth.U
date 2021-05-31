@@ -67,7 +67,7 @@
 ?S:	right one, as in "$incpath/usr/include" or "$incpath/usr/lib".
 ?S:	Value can be "" or "/bsd43" on mips.
 ?S:.
-?T: xxx dlist i j croak
+?T: xxx dlist i j croak realpath inclibpth
 ?LINT:extern incpth
 ?LINT:change usrinc
 ?INIT:: change the next line if compiling for Xenix/286 on Xenix/386
@@ -109,7 +109,7 @@ case "$ccname" in
 	$echo 'extern int foo;' > try.c
 	set X `$cppstdin -v try.c 2>&1 | $awk '/^#include </,/^End of search /'|$cppfilter $grep '/include'`
 	shift
-	inclinpth=""
+	inclibpth=""
 	if $test $# -gt 0; then
 	    for i in $*; do
 		case $realpath in
