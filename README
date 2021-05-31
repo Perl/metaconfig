@@ -13,7 +13,7 @@ sufficient).
 
 You have presumably obtained the metaconfig from the repository e.g.
 
-  $ git clone github.com:Perl/metaconfig metaconfig
+  $ git clone git@github.com:Perl/metaconfig metaconfig
 
 When working with metaconfig you will generally have two git checkouts
 next to each other:  (1) this metaconfig checkout; and (2) a checkout of
@@ -84,7 +84,7 @@ Development workflow:
 (aa) We have not yet arranged for metaconfig to use perl's versions of the
     'units' by default so you need some housekeeping in the perl directory...
 
-    Then add metaconfig/bin to your $PATH or create aliases like
+    Add metaconfig/bin to your $PATH or create aliases like
 
     $ export MC5=/your/path/to/metaconfig
     $ alias ml="perl $MC5/bin/mlint -O"

@@ -90,7 +90,7 @@ EOM
                     if $test -f UU/myread; then
                         . ./UU/myread
                     else
-                        echo "Cannot find myread, sorry.  Aborting." >&2
+                        echo "Cannot find myread, sorry.  Aborting." >&4
                         exit 1
                     fi
                 fi
