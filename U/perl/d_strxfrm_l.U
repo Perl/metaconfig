@@ -1,0 +1,33 @@
+?RCS: $Id: d_strxfrm_l.U 1 2006-08-24 12:32:52Z rmanfredi $
+?RCS:
+?RCS: Copyright (c) 1991-1997, 2004-2006, Raphael Manfredi
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 4.0.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: d_strxfrm_l.U,v $
+?RCS: Revision 3.0.1.1  1994/08/29  16:12:04  ram
+?RCS: patch32: created by ADO
+?RCS:
+?MAKE:d_strxfrm_l: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_strxfrm_l:
+?S:	This variable conditionally defines HAS_STRXFRM_L if strxfrm_l() is
+?S:	available to transform strings.
+?S:.
+?C:HAS_STRXFRM_L:
+?C:	This symbol, if defined, indicates that the strxfrm_l() routine is
+?C:	available to transform strings.
+?C:.
+?H:#$d_strxfrm_l HAS_STRXFRM_L	/**/
+?H:.
+?LINT:set d_strxfrm_l
+: see if strxfrm_l exists
+set strxfrm_l d_strxfrm_l
+eval $inlibc
+
