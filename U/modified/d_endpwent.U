@@ -15,7 +15,7 @@
 ?S:	for sequential access of the passwd database.
 ?S:.
 ?C:HAS_ENDPWENT:
-?C:	This symbol, if defined, indicates that the getgrent routine is
+?C:	This symbol, if defined, indicates that the endpwent routine is
 ?C:	available for finalizing sequential access of the passwd database.
 ?C:.
 ?H:#$d_endpwent HAS_ENDPWENT		/**/
