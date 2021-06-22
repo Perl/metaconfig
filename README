@@ -45,7 +45,7 @@ Contents of this directory:
 
 Development workflow:
 
-(a) In order to assemble Configure from its units, you need mlint/metaline and
+(a) In order to assemble Configure from its units, you need mlint/metalint and
     mconfig/metaconfig from the "dist" package installed and available in your
     $PATH. You can either use the version that comes with your OS (Debian ships
     it) or the versions that are included in this checkout: just add the full
