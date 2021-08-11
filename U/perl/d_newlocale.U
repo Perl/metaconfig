@@ -1,7 +1,9 @@
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
-?MAKE:d_newlocale d_freelocale d_uselocale d_duplocale d_querylocale i_xlocale: Inlibc Inhdr
+?MAKE:d_newlocale d_freelocale d_uselocale d_duplocale d_querylocale \
+	i_xlocale xlocale_needed: Inlibc Inhdr Compile cat rm_try run \
+	d_localeconv_l
 ?MAKE:	-pick add $@ %<
 ?S:d_newlocale:
 ?S:	This variable conditionally defines the HAS_NEWLOCALE symbol, which
@@ -29,8 +31,12 @@
 ?S:	to return the name of the locale for a category mask.
 ?S:.
 ?S:i_xlocale:
-?S:	This symbol, if defined, indicates to the C program that it should
-?S:	include <xlocale.h> to get uselocale() and its friends
+?S:	This symbol, if defined, indicates to the C program that the
+?S:	header xlocale.h is available.  See also xlocale_needed.
+?S:.
+?S:xlocale_needed:
+?S:	This symbol, if defined, indicates that the C program should
+?S:	include <xlocale.h> to get newlocale() and its friends.
 ?S:.
 ?C:HAS_NEWLOCALE:
 ?C:	This symbol, if defined, indicates that the newlocale routine is
@@ -54,14 +60,19 @@
 ?C:	available to return the name of the locale for a category mask.
 ?C:.
 ?C:I_XLOCALE:
-?C:	This symbol, if defined, indicates to the C program that it should
-?C:	include <xlocale.h> to get uselocale() and its friends.
+?C:	This symbol, if defined, indicates to the C program that the
+?C:	header xlocale.h is available.  See also NEED_XLOCALE_H
+?C:.
+?C:NEED_XLOCALE_H:
+?C:	This symbol, if defined, indicates that the C program should
+?C:	include <xlocale.h> to get newlocale() and its friends.
 ?C:.
 ?H:#$d_newlocale	HAS_NEWLOCALE	/**/
 ?H:#$d_freelocale	HAS_FREELOCALE	/**/
 ?H:#$d_uselocale	HAS_USELOCALE	/**/
 ?H:#$d_duplocale	HAS_DUPLOCALE	/**/
 ?H:#$d_querylocale	HAS_QUERYLOCALE	/**/
+?H:#$xlocale_needed	NEED_XLOCALE_H	/**/
 ?H:#$i_xlocale	I_XLOCALE               /**/
 ?H:.
 ?LINT:set i_xlocale
@@ -70,6 +81,7 @@
 ?LINT:set d_uselocale
 ?LINT:set d_duplocale
 ?LINT:set d_querylocale
+?F:!try
 : see if this is an xlocale.h system
 set xlocale.h i_xlocale
 eval $inhdr
@@ -93,4 +105,52 @@ eval $inlibc
 : see if querylocale exists
 set querylocale d_querylocale
 eval $inlibc
+
+: if we have xlocale.h, check whether it is needed
+case "$i_xlocale$d_newlocale$xlocale_needed" in
+"$define$define")
+	echo "Checking if xlocale.h is needed..." >&4
+	$cat >try.c <<EOF
+#include <locale.h>
+#include <stdio.h>
+#ifdef TRY_XLOCALE
+#include <xlocale.h>
+#endif
+#$d_localeconv_l HAVE_LOCALECONV_L
+
+#ifdef HAVE_LOCALECONV_L
+struct lconv *(*lcptr)(locale_t) = localeconv_l;
+#endif
+
+int main(void) {
+  locale_t lc = newlocale(LC_ALL_MASK, "C", (locale_t)0);
+
+#ifdef HAVE_LOCALECONV_L
+  /* FreeBSD hides only localeconv_l() in xlocale.h */
+  struct lconv *lcbuf = localeconv_l(lc);
+  printf("decimal: %s\n", lcbuf->decimal_point);
+#endif
+
+  freelocale(lc);
+  return 0;
+}
+EOF
+	set try
+	if eval $compile && $run ./try > /dev/null 2>&1 ; then
+		echo "xlocale.h isn't needed" >&4
+		xlocale_needed=$undef
+	else
+		set try -DTRY_XLOCALE
+		if eval $compile && $run ./try > /dev/null 2>&1 ; then
+			xlocale_needed=$define
+			echo "xlocale.h is needed" >&4
+		else
+			echo "I can't build my test either way" >&4
+			xlocale_needed=$undef
+		fi
+	fi
+	$rm_try
+	;;
+*) xlocale_needed=$undef ;;
+esac
 
