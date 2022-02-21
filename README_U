@@ -27,7 +27,9 @@ Line	Description
 	dependency lines.  Those commands will be executed when the
 	unit is wanted to load them into "Configure".
 	Note that the leading <tab> character is required before the
-	"command".
+	"command". Most likely your command will be "-pick add $@ %<".
+	If you omit this line, mlint won't complain, but the unit will
+	not be included.
 
 ?INIT:	Initializations printed verbatim
 
