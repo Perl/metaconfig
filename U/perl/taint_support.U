@@ -1,0 +1,53 @@
+?RCS: $Id: taint_support.U,v 0RCS:
+?RCS: Copyright (c) 2022 Neil Bowers
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:taint_support: ccflags Setvar Myread
+?MAKE:	-pick add $@ %<
+?S:taint_support:
+?S:	This setting provides a mechanism for deciding whether to include
+?S:	taint support in perl.
+?S:.
+?C:HAS_TAINT_SUPPORT:
+?C:	This symbol, if defined, indicates whether taint support is available.
+?C:.
+?H:#$taint_support HAS_TAINT_SUPPORT	/**/
+?H:.
+?LINT:change ccflags
+?LINT:set taint_support
+: U/perl/taint_support.U - do we want taint support?
+case "$taint_support" in
+    $undef|false|[Nn]*)
+       dflt="n"
+       ;;
+    *)
+       dflt="y"
+       ;;
+esac
+cat >&4 <<EOM
+
+
+Perl can provide a set of special security checks, which are known
+as taint mode.  The most well-known of these is that data derived
+from outside your program should not be trusted ("is tainted")
+until you have checked it.
+
+These days there are many more security considerations, and as a result
+taint mode isn't widely used. But support for it adds a runtime overhead,
+whether or not you use it.  As a result, you can choose to build Perl
+without taint support.
+
+EOM
+rp='Do you want to build Perl with taint support?'
+. ./myread
+case "$ans" in
+$undef|false|n|N)    val="$undef"
+        ccflags="$ccflags -DSILENT_NO_TAINT_SUPPORT"
+        ;;
+*)      val="$define" ;;
+esac
+set taint_support
+eval $setvar
+
