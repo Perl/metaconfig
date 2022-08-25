@@ -29,7 +29,7 @@
 ?RCS:
 ?MAKE:bin binexp installbin userelocatableinc initialinstalllocation: \
 	Myread Prefixit Getfile Setvar Setprefixvar Oldconfig \
-	test prefix prefixexp taint_support
+	test prefix prefixexp
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?D:bin=''
@@ -113,13 +113,7 @@ cat <<EOM
 Would you like to build Perl so that the installation is relocatable, so that
 library paths in @INC are determined relative to the path of the perl binary?
 This is not advised for system Perl installs, or if you need to run setid
-EOM
-if test "X$taint_support" = "X$define"; then
-    echo "scripts or scripts under taint mode." >&4
-else
-    echo "scripts." >&4
-fi
-cat <<EOM
+scripts or scripts under taint mode.
 
 If this doesn't make any sense to you, just accept the default '$dflt'.
 EOM
