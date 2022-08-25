@@ -23,7 +23,8 @@
 ?MAKE:d_attribute_deprecated d_attribute_format d_attribute_malloc \
 	d_attribute_nonnull d_attribute_noreturn d_attribute_pure \
 	d_attribute_unused d_attribute_warn_unused_result \
-	d_printf_format_null d_attribute_always_inline: \
+	d_printf_format_null d_attribute_always_inline \
+	d_attribute_visibility: \
 	    Myread Oldconfig cat cc ccflags rm Setvar compiler_warning \
             i_stdlib run i_inttypes
 ?MAKE:	-pick add $@ %<
@@ -78,6 +79,10 @@
 ?S:	which indicates that the C compiler can know that certain
 ?S:	functions should always be inlined.
 ?S:.
+?S:d_attribute_visibility:
+?S:	This variable conditionally defines the HASATTRIBUTE_VISIBILITY symbol,
+?S:	and indicates different GCC attribute visibility
+?S:.
 ?C:HASATTRIBUTE_FORMAT ~ %< (GNUC_ATTRIBUTE_CHECK):
 ?C:	Can we handle GCC attribute for checking printf-style formats
 ?C:.
@@ -109,6 +114,10 @@
 ?C:	Can we handle GCC attribute for functions that should always be
 ?C:	inlined.
 ?C:.
+?C:HASATTRIBUTE_VISIBILITY:
+?C:	Can we handle GCC attribute for functions that should have a
+?C:	different visibility.
+?C:.
 ?H:?%<:#$d_attribute_deprecated HASATTRIBUTE_DEPRECATED	/**/
 ?H:?%<:#$d_attribute_format HASATTRIBUTE_FORMAT	/**/
 ?H:?%<:#$d_printf_format_null PRINTF_FORMAT_NULL_OK	/**/
@@ -119,6 +128,7 @@
 ?H:?%<:#$d_attribute_unused HASATTRIBUTE_UNUSED	/**/
 ?H:?%<:#$d_attribute_warn_unused_result HASATTRIBUTE_WARN_UNUSED_RESULT	/**/
 ?H:?%<:#$d_attribute_always_inline HASATTRIBUTE_ALWAYS_INLINE	/**/
+?H:?%<:#$d_attribute_visibility HASATTRIBUTE_VISIBILITY	/**/
 ?H:.
 ?F:!attrib !attrib.out !attrib.c
 ?LINT:set d_attribute_deprecated
@@ -131,6 +141,7 @@
 ?LINT:set d_attribute_unused
 ?LINT:set d_attribute_warn_unused_result
 ?LINT:set d_attribute_always_inline
+?LINT:set d_attribute_visibility
 : Look for GCC-style attribute format
 case "$d_attribute_format" in
 '')
@@ -431,6 +442,34 @@ fi
 *) val="$d_attribute_always_inline" ;;
 esac
 set d_attribute_always_inline
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute visibility
+case "$d_attribute_visibility" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((visibility)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+__attribute__((visibility("hidden"))) int I_will_be_hidden(void);
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $compiler_warning attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((visibility))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((visibility))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_visibility" ;;
+esac
+set d_attribute_visibility
 eval $setvar
 $rm -f attrib*
 
