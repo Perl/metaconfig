@@ -19,7 +19,7 @@
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
 ?MAKE:byteorder: cat Myread Oldconfig Loc Compile rm_try run \
-	multiarch uvtype uvsize i_stdlib
+	multiarch uvtype uvsize i_stdlib i_inttypes
 ?MAKE:	-pick add $@ %<
 ?S:byteorder:
 ?S:	This variable holds the byte order in a UV. In the following,
@@ -88,6 +88,10 @@ EOM
 #$i_stdlib I_STDLIB
 #ifdef I_STDLIB
 #include <stdlib.h>
+#endif
+#$i_inttypes I_INTTYPES
+#ifdef I_INTTYPES
+#include <inttypes.h>
 #endif
 #include <sys/types.h>
 typedef $uvtype UV;
