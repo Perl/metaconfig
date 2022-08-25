@@ -132,6 +132,16 @@ for thislib in $libswanted; do
 		$test -f "$xxx" && libstyle=shared
 	    fi
 	    if test ! -f "$xxx"; then
+		xxx=$thisdir/lib$thislib.$so$_a
+		$test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle="import"
+	    fi
+	    if test ! -f "$xxx"; then
+		xxx=$thisdir/$thislib.$so$_a
+		$test -f "$xxx" && eval $libscheck
+		$test -f "$xxx" && libstyle="import"
+	    fi
+	    if test ! -f "$xxx"; then
 		xxx=$thisdir/lib$thislib.$so
 	        $test -f "$xxx" && eval $libscheck
 		$test -f "$xxx" && libstyle=shared
@@ -166,14 +176,14 @@ for thislib in $libswanted; do
 		case " $dflt " in
 		*"-l$thislib "*);;
 		*) dflt="$dflt -l$thislib"
-                   libsfound="$libsfound $xxx"
-                   yyy=`basename $xxx`
-                   libsfiles="$libsfiles $yyy"
-                   yyy=`echo $xxx|$sed -e "s%/$yyy\\$%%"`
-                   case " $libsdirs " in
-                   *" $yyy "*) ;;
-                   *) libsdirs="$libsdirs $yyy" ;;
-                   esac
+		   libsfound="$libsfound $xxx"
+		   yyy=`basename $xxx`
+		   libsfiles="$libsfiles $yyy"
+		   yyy=`echo $xxx|$sed -e "s%/$yyy\\$%%"`
+		   case " $libsdirs " in
+		   *" $yyy "*) ;;
+		   *) libsdirs="$libsdirs $yyy" ;;
+		   esac
 		   ;;
 		esac
 		break
