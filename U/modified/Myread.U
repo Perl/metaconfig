@@ -96,6 +96,7 @@ $myecho
 ?X: since this is used to wait for the "return" key.
 ?X:
 ans='!'
+counter=42
 case "\$fastread" in
 yes) case "\$dflt" in
 	'') ;;
