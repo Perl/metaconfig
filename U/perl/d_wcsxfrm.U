@@ -15,7 +15,7 @@
 ?S:.
 ?C:HAS_WCSXFRM:
 ?C:	This symbol, if defined, indicates that the wcsxfrm routine is
-?C:	available to tranform a wide character string for wcscmp().
+?C:	available to transform a wide character string for wcscmp().
 ?C:.
 ?H:#$d_wcsxfrm HAS_WCSXFRM	/**/
 ?H:.
