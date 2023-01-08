@@ -1,14 +1,16 @@
 ?RCS: $Id$
 ?RCS:
-?RCS: Copyright (c) 1999 Jarkko Hietaniemi
+?RCS: Copyright (c) 1999 Jarkko Hietaniemi, 2022 TAKAI Kousuke
 ?RCS:
 ?RCS: You may distribute under the terms of either the GNU General Public
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:ivdformat uvuformat uvoformat uvxformat uvXUformat \
 	nvEUformat nvFUformat nvGUformat \
-	nveformat nvfformat nvgformat: \
-	ivsize longsize intsize shortsize \
+	nveformat nvfformat nvgformat \
+        i32dformat u32uformat u32oformat u32xformat u32XUformat \
+      : \
+	ivsize longsize intsize shortsize i32type \
 	sPRId64 sPRIu64 sPRIo64 sPRIx64 sPRIXU64 \
 	uselongdouble d_longdbl usequadmath d_PRIgldbl \
 	sPRIEUldbl sPRIFUldbl sPRIGUldbl sPRIeldbl sPRIfldbl sPRIgldbl \
@@ -58,6 +60,26 @@
 ?S:	This variable contains the format string used for printing
 ?S:	a Perl NV using %G-ish floating point format.
 ?S:.
+?S:i32dformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl I32 as a signed decimal integer.
+?S:.
+?S:u32uformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl U32 as an unsigned decimal integer.
+?S:.
+?S:u32oformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl U32 as an unsigned octal integer.
+?S:.
+?S:u32xformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl U32 as an unsigned hexadecimal integer in lowercase abcdef.
+?S:.
+?S:u32XUformat:
+?S:	This variable contains the format string used for printing
+?S:	a Perl U32 as an unsigned hexadecimal integer in uppercase ABCDEF.
+?S:.
 ?C:IVdf:
 ?C:	This symbol defines the format string used for printing a Perl IV
 ?C:	as a signed decimal integer.
@@ -102,6 +124,26 @@
 ?C:	This symbol defines the format string used for printing a Perl NV
 ?C:	using %G-ish floating point format.
 ?C:.
+?C:I32df:
+?C:	This symbol defines the format string used for printing a Perl I32
+?C:	as a signed decimal integer.
+?C:.
+?C:U32uf:
+?C:	This symbol defines the format string used for printing a Perl U32
+?C:	as an unsigned decimal integer.
+?C:.
+?C:U32of:
+?C:	This symbol defines the format string used for printing a Perl U32
+?C:	as an unsigned octal integer.
+?C:.
+?C:U32xf:
+?C:	This symbol defines the format string used for printing a Perl U32
+?C:	as an unsigned hexadecimal integer in lowercase abcdef.
+?C:.
+?C:U32Xf:
+?C:	This symbol defines the format string used for printing a Perl U32
+?C:	as an unsigned hexadecimal integer in uppercase ABCDEF.
+?C:.
 ?H:#define	IVdf		$ivdformat		/**/
 ?H:#define	UVuf		$uvuformat		/**/
 ?H:#define	UVof		$uvoformat		/**/
@@ -113,6 +155,11 @@
 ?H:#define	NVEf		$nvEUformat		/**/
 ?H:#define	NVFf		$nvFUformat		/**/
 ?H:#define	NVGf		$nvGUformat		/**/
+?H:#define	I32df		$i32dformat		/**/
+?H:#define	U32uf		$u32uformat		/**/
+?H:#define	U32of		$u32oformat		/**/
+?H:#define	U32xf		$u32xformat		/**/
+?H:#define	U32Xf		$u32XUformat		/**/
 ?H:.
 : Check format strings for internal types
 echo " "
@@ -178,6 +225,45 @@ fi
 
 case "$ivdformat" in
 '') echo "$0: Fatal: failed to find format strings, cannot continue." >&4
+    exit 1
+    ;;
+esac
+
+case "$i32dformat" in
+'')	case "$i32type" in
+	int)
+		i32dformat='"d"'
+		u32uformat='"u"'
+		u32oformat='"o"'
+		u32xformat='"x"'
+		u32XUformat='"X"'
+		;;
+	long)
+		i32dformat='"ld"'
+		u32uformat='"lu"'
+		u32oformat='"lo"'
+		u32xformat='"lx"'
+		u32XUformat='"lX"'
+		;;
+	int_least32_t)			: will not happen currently
+		i32dformat=PRIdLEAST32
+		u32uformat=PRIuLEAST32
+		u32oformat=PRIoLEAST32
+		u32xformat=PRIxLEAST32
+		u32XUformat=PRIXLEAST32
+		;;
+	int32_t)
+		i32dformat=PRId32
+		u32uformat=PRIu32
+		u32oformat=PRIo32
+		u32xformat=PRIx32
+		u32XUformat=PRIX32
+		;;
+	esac ;;
+esac
+
+case "$i32dformat" in
+'') echo "$0: Fatal: failed to find format strings for 32-bit integers, cannot continue." >&4
     exit 1
     ;;
 esac
