@@ -20,9 +20,9 @@
 ?C:	does have the f_flags member containing the mount flags of
 ?C:	the filesystem containing the file.
 ?C:	This kind of struct statfs is coming from <sys/mount.h> (BSD 4.3),
-?C:	not from <sys/statfs.h> (SYSV).  Older BSDs (like Ultrix) do not
-?C:	have statfs() and struct statfs, they have ustat() and getmnt()
-?C:	with struct ustat and struct fs_data.
+?C:	not from <sys/statfs.h> (SYSV).  Older BSDs do not have statfs() and
+?C:	struct statfs, they have ustat() and getmnt() with struct ustat and
+?C:	struct fs_data.
 ?C:.
 ?H:#$d_statfs_f_flags HAS_STRUCT_STATFS_F_FLAGS		/**/
 ?H:.
