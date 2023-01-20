@@ -15,6 +15,7 @@
 	shortsize intsize longsize i_stdlib libs gccversion \
 	cat Compile i_inttypes test signal_t run
 ?MAKE:	-pick add $@ %<
+?LINT:change libs
 ?S:ivtype:
 ?S:	This variable contains the C type used for Perl's IV.
 ?S:.
@@ -233,6 +234,7 @@
 ?H:?%<:#endif
 ?H:.
 ?T:xxx
+?T:yyy
 ?T:d
 ?F:!try
 : Check basic sizes
