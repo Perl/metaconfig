@@ -36,7 +36,7 @@ case "$dlsrc" in
 dl_dlopen.xs)
 	echo "Checking whether your dlsym() needs a leading underscore ..." >&4
 	$cat >dyna.c <<'EOM'
-fred () { }
+void fred (void) { }
 EOM
 
 $cat >fred.c<<EOM
@@ -55,7 +55,7 @@ $cat >fred.c<<EOM
 #include <link.h>
 #endif
 
-extern int fred() ;
+extern void fred(void) ;
 
 int main()
 {

@@ -59,7 +59,7 @@ EOM
 			for nfd in 'int' 'size_t' 'unsigned long' 'unsigned' ; do
 				for tmo in 'struct timeval *' 'const struct timeval *'; do
 					case "$val" in
-					'')	try="$extern_C select _(($nfd, $xxx, $xxx, $xxx, $tmo));"
+					'')	try="$extern_C int select _(($nfd, $xxx, $xxx, $xxx, $tmo));"
 						if ./protochk "$try" $hdrs; then
 							echo "Your system accepts $xxx."
 							val="$xxx"

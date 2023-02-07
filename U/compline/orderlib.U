@@ -48,13 +48,15 @@ echo "Checking how to generate random libraries on your machine..." >&4
 ?X: This set of tests seems the minimum necessary to check out Linux.
 ?X: We need to explicitly put the entries in out-of-order so that Sun's ld
 ?X: will fail.  (Otherwise it complains, but gives an exit status of 0.)
-echo 'int bar1() { return bar2(); }' > bar1.c
+echo 'extern int bar2(); int bar1() { return bar2(); }' > bar1.c
 echo 'int bar2() { return 2; }' > bar2.c
 $cat > foo.c <<EOP
 #$i_stdlib I_STDLIB
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
+#include <stdio.h>
+extern int bar1();
 int main() { printf("%d\n", bar1()); exit(0); }
 EOP
 $cc $ccflags -c bar1.c >/dev/null 2>&1
