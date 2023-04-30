@@ -15,7 +15,7 @@
 ?S:	variable called dd_fd.
 ?S:.
 ?C:HAS_DIR_DD_FD:
-?C:	This symbol, if defined, indicates that the the DIR* dirstream
+?C:	This symbol, if defined, indicates that the DIR* dirstream
 ?C:	structure contains a member variable named dd_fd.
 ?C:.
 ?H:#$d_dir_dd_fd HAS_DIR_DD_FD		/**/
