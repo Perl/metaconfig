@@ -2190,7 +2190,7 @@ sub tsort'load_sort {
 	foreach $succ (split(' ', $Succ{$item})) {
 		# The test for definedness is necessary, since when a cycle is found,
 		# one item is forced out of %Prec. If we had the guarantee of no
-		# cycle, the the test would not be necessary and no decrementation
+		# cycle, the test would not be necessary and no decrementation
 		# could go past 0.
 		$Prec{$succ}-- if defined $Prec{$succ};
 	}
