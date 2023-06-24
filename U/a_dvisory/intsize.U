@@ -62,6 +62,7 @@ case "$intsize" in
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
+#include <stdio.h>
 int main()
 {
 @if INTSIZE || intsize

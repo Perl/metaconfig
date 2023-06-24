@@ -1,6 +1,7 @@
 ?RCS: $Id$
 ?RCS:
 ?RCS: Copyright (c) 2001 Jarkko Hietaniemi
+?RCS:               2023 Tony Cook & H.Merijn Brand
 ?RCS:
 ?RCS: You may redistribute only under the terms of the Artistic License,
 ?RCS: as specified in the README file that comes with the distribution.
@@ -8,7 +9,7 @@
 ?RCS: that same Artistic License; a copy of which may be found at the root
 ?RCS: of the source tree for dist 3.0.
 ?RCS:
-?MAKE:d_syscallproto: Hasproto i_unistd
+?MAKE:d_syscallproto: Hasproto i_unistd i_syssyscall
 ?MAKE:	-pick add $@ %<
 ?S:d_syscallproto:
 ?S:	This variable conditionally defines the HAS_SYSCALL_PROTO symbol,
@@ -28,6 +29,6 @@
 ?LINT:set d_syscallproto
 : see if prototype for syscall is available
 echo " "
-set d_syscallproto syscall $i_unistd unistd.h
+set d_syscallproto syscall $i_unistd unistd.h $i_syssyscall sys/syscall.h
 eval $hasproto
 

@@ -39,6 +39,7 @@ case "$doublesize" in
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
+#include <stdio.h>
 int main()
 {
     printf("%d\n", (int)sizeof(double));

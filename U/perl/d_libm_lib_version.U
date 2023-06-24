@@ -25,6 +25,7 @@ echo "Checking to see if your libm supports _LIB_VERSION..." >&4
 $cat >try.c <<EOCP
 #include <unistd.h>
 #include <math.h>
+#include <stdio.h>
 int main (int argc, char *argv[])
 {
     printf ("%d\n", _LIB_VERSION);
