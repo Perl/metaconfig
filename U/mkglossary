@@ -13,7 +13,7 @@ chdir "$p5_metaconfig_base/perl" or
     die "Cannot use $p5_metaconfig_base/perl to find config.sh\n";
 my @config = sort { -M $a <=> -M $b }
 	     grep { -s }
-	     qw( config.sh uconfig.sh Porting/config.sh );
+	     qw( config.sh Porting/config.sh );
 @config or die "Build (and test) perl before generating the Glossary\n";
 # Get the list of config.sh symbols.  Be sure this is up to date!
 # (I run the Porting/mksample script first to be sure.)

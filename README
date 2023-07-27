@@ -213,7 +213,6 @@ Development workflow:
     $ cd perl
     $ make veryclean    # Only if Configure already has been run
     $ ./Configure -Duse64bitall -Dusethreads -Dusedevel -des
-    $ perl regen/uconfig_h.pl
 
     Then make and make test or make test_harness
 
