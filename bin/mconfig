@@ -164,17 +164,17 @@ EOH
 package locate;
 
 # Locate the units and push their path in @ARGV (sorted alphabetically)
-sub main'locate_units {
-	print "Locating units...\n" unless $main'opt_s;
-	local(*WD) = *main'WD;			# Current working directory
-	local(*MC) = *main'MC;			# Public metaconfig library
+sub main::locate_units {
+	print "Locating units...\n" unless $main::opt_s;
+	local(*WD) = *main::WD;			# Current working directory
+	local(*MC) = *main::MC;			# Public metaconfig library
 	undef %myUlist;					# Records private units paths
 	undef %myUseen;					# Records private/public conflicts
 	&private_units;					# Locate private units in @myUlist
 	&public_units;					# Locate public units in @ARGV
 	@ARGV = sort @ARGV;				# Sort it alphabetically
 	push(@ARGV, sort @myUlist);		# Append user's units sorted
-	&dump_list if $main'opt_v;		# Dump the list of units
+	&dump_list if $main::opt_v;		# Dump the list of units
 }
 
 # Dump the list of units on stdout
@@ -212,7 +212,7 @@ sub public_units {
 	chdir($WD) || die "Can't go back to directory $WD.\n";
 	local($path);					# Relative path from $WD
 	local($unit_name);				# Unit's name (without .U)
-	local(*Unit) = *main'Unit;		# Unit is a global from main package
+	local(*Unit) = *main::Unit;		# Unit is a global from main package
 	local(@kept);					# Units kept
 	local(%warned);					# Units which have already issued a message
 	# Loop over all the units and keep only the ones that were not found in
@@ -228,7 +228,7 @@ sub public_units {
 			$path =~ s|^$WD/||o;		# Weed out leading working dir path
 			$::opt_O and next;
 			print "    Your private $path overrides the public one.\n"
-				unless $main'opt_s;
+				unless $main::opt_s;
 		} else {
 			push(@kept, $_);			# We may keep this one
 		}
@@ -244,12 +244,12 @@ sub units_path {
 	local(@contents);					# Contents of the directory
 	local($unit_name);					# Unit's name, without final .U
 	local($path);						# Full path of a unit
-	local(*Unit) = *main'Unit;			# Unit is a global from main package
+	local(*Unit) = *main::Unit;			# Unit is a global from main package
 	unless (opendir(DIR, $dir)) {
 		warn("Cannot open directory $dir.\n");
 		return;
 	}
-	print "Locating in $MC/$dir...\n" if $main'opt_v;
+	print "Locating in $MC/$dir...\n" if $main::opt_v;
 	@contents = readdir DIR;			# Slurp the whole thing
 	closedir DIR;						# And close dir, ready for recursion
 	foreach (sort @contents) {
@@ -259,7 +259,7 @@ sub units_path {
 			$path = "$MC/$dir/$_";				# Full path of unit
 			push(@ARGV, $path);					# Record its path
 			if (defined $Unit{$unit_name}) {	# Already seen this unit
-				if ($main'opt_v) {
+				if ($main::opt_v) {
 					($path) = $Unit{$unit_name} =~ m|^(.*)/.*|;
 					print "    We've already seen $unit_name.U in $path.\n";
 				}
@@ -271,11 +271,11 @@ sub units_path {
 		# We have found a file which does not look like a unit. If it is a
 		# directory, then scan it. Otherwise skip the file.
 		unless (-d "$dir/$_") {
-			print "    Skipping file $_ in $dir.\n" if $main'opt_v;
+			print "    Skipping file $_ in $dir.\n" if $main::opt_v;
 			next;
 		}
 		&units_path("$dir/$_");
-		print "Back to $MC/$dir...\n" if $main'opt_v;
+		print "Back to $MC/$dir...\n" if $main::opt_v;
 	}
 }
 
@@ -1584,7 +1584,7 @@ sub add_configure {
 package interpreter;
 
 # States used by our interpeter -- in sync with @Keep
-sub main'init_keep {
+sub main::init_keep {
 	# Status in which we keep lines -- $Keep[$status]
 	@Keep = (0, 1, 1, 0, 1);
 
@@ -1597,24 +1597,24 @@ sub main'init_keep {
 }
 
 # Priorities for operators -- magic numbers :-)
-sub main'init_priority {
+sub main::init_priority {
 	$Priority{'&&'} = 4;
 	$Priority{'||'} = 3;
 }
 
 # Initializes the state stack of the interpreter
-sub main'init_interp {
+sub main::init_interp {
 	@state = ();
 	push(@state, $OUT);
 }
 
 # Print error messages -- asssumes $unit and $. correctly set.
 sub error {
-	warn "\"$main'file\", line $.: @_.\n";
+	warn "\"$main::file\", line $.: @_.\n";
 }
 
 # If some states are still in the stack, warn the user
-sub main'check_state {
+sub main::check_state {
 	&error("one statement pending") if $#state == 1;
 	&error("$#state statements pending") if $#state > 1;
 }
@@ -1732,18 +1732,18 @@ sub eval_expr {
 			$tmp = $1;
 			# Test for wanted
 			if ($tmp =~ s/^\?//) {
-				&push_val(($main'symwanted{$tmp})? 1 : 0);
+				&push_val(($main::symwanted{$tmp})? 1 : 0);
 			}
 			# Test for conditionally wanted
 			elsif ($tmp =~ s/^%//) {
-				&push_val(($main'condwanted{$tmp})? 1 : 0);
+				&push_val(($main::condwanted{$tmp})? 1 : 0);
 			}
 			# Default: test for definition (see op @define)
 			else {
 				&push_val((
-					$main'symwanted{$tmp} ||
-					$main'cmaster{$tmp} ||
-					$main'userdef{$tmp}) ? 1 : 0);
+					$main::symwanted{$tmp} ||
+					$main::cmaster{$tmp} ||
+					$main::userdef{$tmp}) ? 1 : 0);
 			}
 		}
 		# An error occured -- we did not recognize the expression
@@ -1784,7 +1784,7 @@ sub evaluate {
 # If there is no command in the line, then we return the boolean state.
 # Otherwise, the command is analysed and a new state is computed.
 # The returned value of interpret is 1 if the line is to be printed.
-sub main'interpret {
+sub main::interpret {
 	local($value);
 	local($status) = $state[$#state];		# Current status
 	if (s|^\s*@\s*(\w+)\s*(.*)|$2|) {
