@@ -188,14 +188,15 @@ Development workflow:
     machine to run dmake on to complete the process, but that can be done
     later by someone with such access.
 
-    For VMS, ('configure.com'), it may be best to add the units as 'undef' and
-    let the VMS experts deal with them later.  However, you can set them to
-    'define' if they are non-tricky (such as being basic functions having
-    standard signatures across architectures), and are in the oldest release of
-    VMS that perl can be compiled on, which is 7.3-2.  Appendix A of "HP C
-    Run-Time Library Reference Manual for OpenVMS Systems" gives you that
-    information.  As of October 2017, the latest version online is available
-    at: http://h41379.www4.hpe.com/doc/84final/5763/5763profile.html
+    For VMS, ('configure.com'), you will have to add things manually.  It may
+    be best to add the units as 'undef' and let the VMS experts deal with them
+    later.  However, you can set them to 'define' if they are non-tricky (such
+    as being basic functions having standard signatures across architectures),
+    and are in the oldest release of VMS that perl can be compiled on, which is
+    7.3-2.  Appendix A of "HP C Run-Time Library Reference Manual for OpenVMS
+    Systems" gives you that information.  As of October 2017, the latest
+    version online is available at:
+    http://h41379.www4.hpe.com/doc/84final/5763/5763profile.html
 
     In configure.com, if there is an existing probe that is essentially the
     same (except for the names) as the one you're adding, you can copy, paste,
