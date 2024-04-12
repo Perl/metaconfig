@@ -36,7 +36,7 @@ EOCP
 	fi;
 	$rm_try
 	;;
-*)      d_lc_monetary_2008="$undef"
+*)	d_lc_monetary_2008="$undef"
 	;;
 esac
 
