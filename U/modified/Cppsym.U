@@ -269,7 +269,7 @@ fi
 
 ?X: canonicalize symbols for easier sort/uniq/comm usage: append =1 if no = sign
 ?X: the awk script must be on two lines for older awk programs, sigh! -- ADO
-$awk '/\=/ { print $0; next }
+$awk '/=/ { print $0; next }
 	{ print $0"=1" }' ccsym.raw >ccsym.list
 $comm -13 Cppsym.true ccsym.list >ccsym.own
 $comm -12 Cppsym.true ccsym.list >ccsym.com
