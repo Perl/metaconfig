@@ -1,0 +1,139 @@
+?RCS: $Id: man7dir.U,v $
+?RCS:
+?RCS: Copyright (c) 2024 H.Merijn Brand (bases dn Andy's work)
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?X:	Read the comments in man3dir for historic context
+?X:
+?MAKE:man7dir man7direxp man7ext installman7dir: cat nroff Loc Oldconfig \
+	sed man1dir spackage package Getfile Setprefixvar Prefixit Prefixup \
+	d_flexfnam privlib Myread test
+?MAKE:	-pick add $@ %<
+?Y:TOP
+?D:man7dir=''
+?S:man7dir:
+?S:	This variable contains the name of the directory in which manual
+?S:	source pages are to be put.  It is the responsibility of the
+?S:	Makefile.SH to get the value of this into the proper command.
+?S:	You must be prepared to do the ~name expansion yourself.
+?S:.
+?D:man7direxp=''
+?S:man7direxp:
+?S:	This variable is the same as the man7dir variable, but is filename
+?S:	expanded at configuration time, for convenient use in makefiles.
+?S:.
+?D:installman7dir=''
+?S:installman7dir:
+?S:	This variable is really the same as man7direxp, unless you are using
+?S:	AFS in which case it points to the read/write location whereas
+?S:	man7direxp only points to the read-only access location. For extra
+?S:	portability, you should only use this variable within your makefiles.
+?S:.
+?S:man7ext:
+?S:	This variable contains the extension that the manual page should
+?S:	have: one of 'n', 'l', or '7'.  The Makefile must supply the '.'.
+?S:	See man7dir.
+?S:.
+?T:prog tdflt
+?LINT:change prefixvar
+?LINT:set man7direxp
+: determine where library module manual pages go
+set man7dir man7dir none
+eval $prefixit
+$cat <<EOM
+
+$spackage has manual pages for many of the library modules.
+EOM
+
+case "$nroff" in
+nroff)
+	$cat <<'EOM'
+However, you don't have nroff, so they're probably useless to you.
+EOM
+	case "$man7dir" in
+	'') man7dir="none";;
+	esac;;
+esac
+
+case "$d_flexfnam" in
+undef)
+	$cat <<'EOM'
+However, your system can't handle the long file names like File::Basename.7.
+EOM
+	case "$man7dir" in
+	'') man7dir="none";;
+	esac;;
+esac
+
+echo "If you don't want the manual sources installed, answer 'none'."
+prog=`echo $package | $sed 's/-*[0-9.]*$//'`
+case "$man7dir" in
+'')	dflt=`echo "$man1dir" | $sed -e 's/man1/man7/g' -e 's/man\.1/man\.7/g'`
+	if $test -d "$privlib/man/man7"; then
+		cat <<EOM >&4
+
+WARNING:  Previous versions of perl installed man7 pages into
+$privlib/man/man7.  This version will suggest a
+new default of $dflt.
+EOM
+		tdflt=$dflt
+		dflt='n'
+		rp='Do you wish to preserve the old behavior?(y/n)'
+		. ./myread
+		case "$ans" in
+		y*) dflt="$privlib/man/man7" ;;
+		*)  dflt=$tdflt ;;
+		esac
+    fi
+	;;
+*)	dflt="$man7dir" ;;
+esac
+case "$dflt" in
+' ') dflt=none ;;
+esac
+echo " "
+fn=dn+~
+rp="Where do the $package library man pages (source) go?"
+. ./getfile
+prefixvar=man7dir
+. ./setprefixvar
+
+case "$man7dir" in
+'')	man7dir=' '
+	installman7dir='';;
+esac
+
+: What suffix to use on installed man pages
+case "$man7dir" in
+' ')
+	man7ext='0'
+	;;
+*)
+	rp="What suffix should be used for the $package library man pages?"
+	case "$man7ext" in
+	'')	case "$man7dir" in
+		*7)  dflt=7 ;;
+		*7p) dflt=7p ;;
+		*7pm) dflt=7pm ;;
+		*l) dflt=l;;
+		*n) dflt=n;;
+		*o) dflt=o;;
+		*p) dflt=p;;
+		*C) dflt=C;;
+		*L) dflt=L;;
+		*L7) dflt=L7;;
+		*) dflt=7;;
+		esac
+		;;
+	*)	dflt="$man7ext";;
+	esac
+	. ./myread
+	man7ext="$ans"
+	;;
+esac
+
