@@ -38,7 +38,7 @@ case "$vendorprefix" in
 '')	vendorman7dir=''
 	vendorman7direxp=''
 	;;
-*)	: determine where vendor-supplied module manual pages go.
+*)	: determine where vendor-supplied miscellaneous manual pages go.
 	case "$vendorman7dir" in
 	'') dflt=`echo "$man7dir" | $sed "s#^$prefix#$vendorprefix#"` ;;
 	*)	dflt=$vendorman7dir ;;

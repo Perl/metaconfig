@@ -13,11 +13,11 @@
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?S:vendorhtml7dir:
-?S:	This variable contains the name of the directory for html
-?S:	library pages.  It may have a ~ on the front.
+?S:	This variable contains the name of the directory for
+?S:	miscellaneous html pages.  It may have a ~ on the front.
 ?S:	The standard distribution will put nothing in this directory.
 ?S:	Vendors who distribute perl may wish to place their own
-?S:	html pages for modules and extensions in this directory with
+?S:	miscellanenous html pages in this directory with
 ?S:		MakeMaker Makefile.PL INSTALLDIRS=vendor
 ?S:	or equivalent.  See INSTALL for details.
 ?S:.
@@ -38,7 +38,7 @@ case "$vendorprefix" in
 '')	vendorhtml7dir=''
 	vendorhtml7direxp=''
 	;;
-*)	: determine where vendor-supplied module html pages go.
+*)	: determine where vendor-supplied miscellanenous html pages go.
 	: There is no standard location, so try to copy the previously-selected
 	: directory structure for the core html pages.
 	: XXX Better default suggestions would be welcome.
@@ -50,7 +50,7 @@ case "$vendorprefix" in
 	''|' ') dflt=none ;;
 	esac
 	fn=dn+~
-	rp='Pathname for the vendor-supplied html pages?'
+	rp='Pathname for miscellanenous vendor-supplied html pages?'
 	. ./getfile
 	vendorhtml7dir="$ans"
 	vendorhtml7direxp="$ansexp"

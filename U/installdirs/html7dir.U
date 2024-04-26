@@ -17,9 +17,9 @@
 ?D:html7dir=''
 ?S:html7dir:
 ?S:	This variable contains the name of the directory in which html
-?S:	source pages are to be put.  This directory is for pages
-?S:	that describe libraries or modules.  It is intended to
-?S:	correspond roughly to section 7 of the Unix manuals.
+?S:	source pages are to be put.  This directory is for miscellaneous
+?S:	pages that don't correspond ot scripts, modules or libraries.  It
+?S:	is intended to correspond roughly to section 7 of the Unix manuals.
 ?S:.
 ?D:html7direxp=''
 ?S:html7direxp:

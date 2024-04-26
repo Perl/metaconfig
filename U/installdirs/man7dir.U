@@ -12,7 +12,7 @@
 ?X:
 ?MAKE:man7dir man7direxp man7ext installman7dir: cat nroff Loc Oldconfig \
 	sed man1dir spackage package Getfile Setprefixvar Prefixit Prefixup \
-	d_flexfnam privlib Myread test
+	d_flexfnam Myread test
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?D:man7dir=''
@@ -42,12 +42,12 @@
 ?T:prog tdflt
 ?LINT:change prefixvar
 ?LINT:set man7direxp
-: determine where library module manual pages go
+: determine where miscellaneous manual pages go
 set man7dir man7dir none
 eval $prefixit
 $cat <<EOM
 
-$spackage has manual pages for many of the library modules.
+$spackage has many miscellaneous manual pages.
 EOM
 
 case "$nroff" in
@@ -73,24 +73,7 @@ esac
 echo "If you don't want the manual sources installed, answer 'none'."
 prog=`echo $package | $sed 's/-*[0-9.]*$//'`
 case "$man7dir" in
-'')	dflt=`echo "$man1dir" | $sed -e 's/man1/man7/g' -e 's/man\.1/man\.7/g'`
-	if $test -d "$privlib/man/man7"; then
-		cat <<EOM >&4
-
-WARNING:  Previous versions of perl installed man7 pages into
-$privlib/man/man7.  This version will suggest a
-new default of $dflt.
-EOM
-		tdflt=$dflt
-		dflt='n'
-		rp='Do you wish to preserve the old behavior?(y/n)'
-		. ./myread
-		case "$ans" in
-		y*) dflt="$privlib/man/man7" ;;
-		*)  dflt=$tdflt ;;
-		esac
-    fi
-	;;
+'')	dflt=`echo "$man1dir" | $sed -e 's/man1/man7/g' -e 's/man\.1/man\.7/g'` ;;
 *)	dflt="$man7dir" ;;
 esac
 case "$dflt" in
@@ -98,7 +81,7 @@ case "$dflt" in
 esac
 echo " "
 fn=dn+~
-rp="Where do the $package library man pages (source) go?"
+rp="Where do the $package miscellaneous man pages (source) go?"
 . ./getfile
 prefixvar=man7dir
 . ./setprefixvar
@@ -114,7 +97,7 @@ case "$man7dir" in
 	man7ext='0'
 	;;
 *)
-	rp="What suffix should be used for the $package library man pages?"
+	rp="What suffix should be used for the $package miscellaneous man pages?"
 	case "$man7ext" in
 	'')	case "$man7dir" in
 		*7)  dflt=7 ;;

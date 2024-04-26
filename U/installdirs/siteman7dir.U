@@ -15,8 +15,8 @@
 ?D:siteman7dir=''
 ?S:siteman7dir:
 ?S:	This variable contains the name of the directory in which site-specific
-?S:	library man source pages are to be put.  It is the responsibility of the
-?S:	Makefile.SH to get the value of this into the proper command.
+?S:	miscellaneous man source pages are to be put.  It is the responsibility
+?S:	of the Makefile.SH to get the value of this into the proper command.
 ?S:	You must be prepared to do the ~name expansion yourself.
 ?S:	The standard distribution will put nothing in this directory.
 ?S:	After perl has been installed, users may install their own local
@@ -40,7 +40,7 @@
 ?LINT:set installsiteman7dir
 ?LINT:set siteman7dir
 ?LINT:set siteman7direxp
-: determine where add-on library man pages go
+: determine where add-on miscellaneous man pages go
 case "$siteman7dir" in
 '')	dflt=`echo $man7dir | $sed "s#^$prefix#$siteprefix#"` ;;
 *)	dflt=$siteman7dir ;;
@@ -49,7 +49,7 @@ case "$dflt" in
 ''|' ') dflt=none ;;
 esac
 fn=dn+~
-rp='Pathname where the site-specific library manual pages should be installed?'
+rp='Pathname where the site-specific miscellaneous manual pages should be installed?'
 . ./getfile
 prefixvar=siteman7dir
 . ./setprefixvar
