@@ -12,7 +12,7 @@
 ?X:
 ?MAKE:man7dir man7direxp man7ext installman7dir: cat nroff Loc Oldconfig \
 	sed man1dir spackage package Getfile Setprefixvar Prefixit Prefixup \
-	d_flexfnam Myread test
+	d_flexfnam Myread
 ?MAKE:	-pick add $@ %<
 ?Y:TOP
 ?D:man7dir=''
@@ -39,7 +39,7 @@
 ?S:	have: one of 'n', 'l', or '7'.  The Makefile must supply the '.'.
 ?S:	See man7dir.
 ?S:.
-?T:prog tdflt
+?T:prog
 ?LINT:change prefixvar
 ?LINT:set man7direxp
 : determine where miscellaneous manual pages go
