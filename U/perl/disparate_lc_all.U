@@ -61,9 +61,9 @@
 ?C:	LC_ALL_SEPARATOR, then the category given by element [1] and so on.
 ?C:.
 ?X:XXX set to 0 on non setlocale
-?H:#$d_perl_lc_all_uses_name_value_pairs PERL_LC_ALL_USES_NAME_VALUE_PAIRS
-?H:#define  PERL_LC_ALL_SEPARATOR $perl_lc_all_separator
-?H:#define  PERL_LC_ALL_CATEGORY_POSITIONS_INIT  $perl_lc_all_category_positions_init
+?H:#$d_perl_lc_all_uses_name_value_pairs PERL_LC_ALL_USES_NAME_VALUE_PAIRS  	/**/
+?H:#$d_perl_lc_all_separator  PERL_LC_ALL_SEPARATOR $perl_lc_all_separator	/**/
+?H:#$d_perl_lc_all_category_positions_init  PERL_LC_ALL_CATEGORY_POSITIONS_INIT  $perl_lc_all_category_positions_init	/**/
 ?H:.
 ?D:d_perl_lc_all_uses_name_value_pairs=$undef
 ?T:output
