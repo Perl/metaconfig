@@ -12,7 +12,7 @@
       d_nv_zero_is_allbits_zero: \
 	echo rm_try use64bitint d_quad quadtype uquadtype usequadmath \
 	d_longdbl uselongdouble longdblsize doublesize i_quadmath \
-	shortsize intsize longsize i_stdlib libs gccversion \
+	shortsize intsize longsize ptrsize i_stdlib libs gccversion \
 	cat Compile i_inttypes test signal_t run
 ?MAKE:	-pick add $@ %<
 ?LINT:change libs
@@ -254,6 +254,11 @@ define:define:?*)
 	uvsize=$longsize
 	;;
 esac
+
+if test $ivsize -lt $ptrsize; then
+    echo "Re-run Configure adding -Duse64bitint so as to make integers as large as pointer values" >&4
+    exit 1
+fi
 
 case "$uselongdouble:$d_longdbl" in
 define:define)
