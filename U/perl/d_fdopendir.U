@@ -1,0 +1,27 @@
+?RCS: Copyright (c) 2025 H.Merijn Brand
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the
+?RCS: root of the source tree for dist 4.0.
+?RCS:
+?MAKE:d_fdopendir: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_fdopendir:
+?S:	This variable conditionally defines HAS_FDOPENDIR if fdopendir() is
+?S:	available to open a directory using an opened file descriptor already
+?S:	referring to that directory.
+?S:.
+?C:HAS_FDOPENDIR:
+?C:	This symbol, if defined, indicates that the fdopendir() routine is
+?C:	available to open directories using an opened file descriptor already
+?C:	referring to that directory.
+?C:.
+?H:#$d_fdopendir HAS_FDOPENDIR		/**/
+?H:.
+?LINT:set d_fdopendir
+: see if fdopendir exists
+set fdopendir d_fdopendir
+eval $inlibc
+
