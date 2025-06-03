@@ -2,6 +2,8 @@ U/all
 /perl
 dist-git
 dist-svn
+dist-3.0at70
+dist-3.0at70b
 dist-3.5-20
 dist-3.5-20.txz
 .*.swp
