@@ -15,7 +15,7 @@
 ?H:#$i_stdint I_STDINT		/**/
 ?H:.
 ?LINT:set i_stdint
-: see if stdint is available
+: stdint.h should be available, but this makes sure it gets in config.h
 set stdint.h i_stdint
 eval $inhdr
 

@@ -20,11 +20,15 @@
 ?RCS: Revision 3.0  1993/08/18  12:08:52  ram
 ?RCS: Baseline for dist 3.0 netwide release.
 ?RCS:
-?MAKE:intsize longsize shortsize: Compile Myread cat run i_stdlib rm_try
+?MAKE:intsize intmaxsize longsize shortsize: Compile Myread cat run i_stdlib i_stdint rm_try
 ?MAKE:	-pick add $@ %<
 ?S:intsize:
 ?S:	This variable contains the value of the INTSIZE symbol, which
 ?S:	indicates to the C program how many bytes there are in an int.
+?S:.
+?S:intmaxsize:
+?S:	This variable contains the value of the INTMAXSIZE symbol, which
+?S:	indicates to the C program how many bytes there are in an intmax_t.
 ?S:.
 ?S:longsize:
 ?S:	This variable contains the value of the LONGSIZE symbol, which
@@ -38,6 +42,10 @@
 ?C:	This symbol contains the value of sizeof(int) so that the C
 ?C:	preprocessor can make decisions based on it.
 ?C:.
+?C:INTMAXSIZE:
+?C:	This symbol contains the value of sizeof(uintmax_t) so that the C
+?C:	preprocessor can make decisions based on it.
+?C:.
 ?C:LONGSIZE:
 ?C:	This symbol contains the value of sizeof(long) so that the C
 ?C:	preprocessor can make decisions based on it.
@@ -47,6 +55,7 @@
 ?C:	preprocessor can make decisions based on it.
 ?C:.
 ?H:#define INTSIZE $intsize		/**/
+?H:#define INTMAXSIZE $intmaxsize	/**/
 ?H:#define LONGSIZE $longsize		/**/
 ?H:#define SHORTSIZE $shortsize		/**/
 ?H:.
@@ -62,6 +71,8 @@ case "$intsize" in
 #ifdef I_STDLIB
 #include <stdlib.h>
 #endif
+#$i_stdint I_STDINT
+#include <stdint.h>
 #include <stdio.h>
 int main()
 {
@@ -74,6 +85,9 @@ int main()
 @if SHORTSIZE || shortsize
 	printf("shortsize=%d;\n", (int)sizeof(short));
 @end
+?X:@if INTMAXSIZE || intmaxsize
+	printf("intmaxsize=%d;\n", (int)sizeof(intmax_t));
+?X:@end
 	exit(0);
 }
 EOCP
@@ -89,6 +103,9 @@ EOCP
 @if SHORTSIZE || shortsize
 		echo "Your short integers are $shortsize bytes long."
 @end
+?X:@if INTMAXSIZE || intmaxsize
+		echo "Your longest integers are $intmaxsize bytes long."
+?X:@end
 	else
 		$cat >&4 <<EOM
 !
@@ -115,6 +132,12 @@ EOM
 		. ./myread
 		shortsize="$ans"
 @end
+?X:@if INTMAXSIZE || intmaxsize
+		dflt=$longsize
+		rp="What is the size of a intmax_t integer (in bytes)?"
+		. ./myread
+		intmaxsize="$ans"
+?X:@end
 	fi
 	;;
 esac
