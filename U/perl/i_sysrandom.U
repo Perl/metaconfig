@@ -1,0 +1,24 @@
+?RCS: $Id: i_sysrandom.U,v $
+?RCS:
+?RCS: Copyright (c) 2026 H.Merijn Brand
+?RCS:
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:i_sysrandom: Inhdr Hasfield
+?MAKE:	-pick add $@ %<
+?S:i_sysrandom:
+?S:	This variable conditionally defines the I_SYS_RANDOM symbol,
+?S:	and indicates whether a C program should include <sys/random.h>.
+?S:.
+?C:I_SYS_RANDOM:
+?C:	This symbol, if defined, indicates that <sys/random.h> exists and
+?C:	should be included.
+?C:.
+?H:#$i_sysrandom	I_SYS_RANDOM		/**/
+?H:.
+?LINT:set i_sysrandom
+: see if this is a sys/random.h system
+set sys/random.h i_sysrandom
+eval $inhdr
+

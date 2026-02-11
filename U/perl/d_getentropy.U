@@ -1,0 +1,27 @@
+?RCS: $Id$
+?RCS:
+?RCS: Copyright (c) 2026 H.Merijn Brand
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?MAKE:d_getentropy: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_getentropy:
+?S:	This variable conditionally defines HAS_GETENTROPY if getentropy()
+?S:	is available to fill a buffer with random bytes.
+?S:.
+?C:HAS_GETENTROPY:
+?C:	This symbol, if defined, indicates that the getentropy system call
+?C:	is available to retrieve fill a buffer with random bytes.
+?C:.
+?H:#$d_getentropy HAS_GETENTROPY		/**/
+?H:.
+?LINT:set d_getentropy
+: see if getentropy exists
+set getentropy d_getentropy
+eval $inlibc
+
