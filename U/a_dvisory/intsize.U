@@ -42,10 +42,6 @@
 ?C:	This symbol contains the value of sizeof(int) so that the C
 ?C:	preprocessor can make decisions based on it.
 ?C:.
-?C:INTMAXSIZE:
-?C:	This symbol contains the value of sizeof(uintmax_t) so that the C
-?C:	preprocessor can make decisions based on it.
-?C:.
 ?C:LONGSIZE:
 ?C:	This symbol contains the value of sizeof(long) so that the C
 ?C:	preprocessor can make decisions based on it.
@@ -54,10 +50,14 @@
 ?C:	This symbol contains the value of sizeof(short) so that the C
 ?C:	preprocessor can make decisions based on it.
 ?C:.
+?C:INTMAXSIZE:
+?C:	This symbol contains the value of sizeof(intmax_t) so that the C
+?C:	preprocessor can make decisions based on it.
+?C:.
 ?H:#define INTSIZE $intsize		/**/
-?H:#define INTMAXSIZE $intmaxsize	/**/
 ?H:#define LONGSIZE $longsize		/**/
 ?H:#define SHORTSIZE $shortsize		/**/
+?H:#define INTMAXSIZE $intmaxsize		/**/
 ?H:.
 ?F:!try
 : check for lengths of integral types
@@ -72,7 +72,9 @@ case "$intsize" in
 #include <stdlib.h>
 #endif
 #$i_stdint I_STDINT
+#ifdef I_STDINT
 #include <stdint.h>
+#endif
 #include <stdio.h>
 int main()
 {

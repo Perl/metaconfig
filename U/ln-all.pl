@@ -1,44 +1,49 @@
 #!/usr/bin/perl
 
-# (c)'11 H.Merijn Brand [ 26 Aug 2011 ]
+# (c)'26 H.Merijn Brand [ 05 May 2026 ]
 
 # Small script to regenerate the links in U/all, that should
 # represent all the modules used in the current Configure
 # except the default dist libs
 
-use strict;
+use 5.012001;
 use warnings;
 
+use Cwd qw( abs_path getcwd );
 use File::Copy;
-use FindBin;
 
-my $meta = "$FindBin::Bin/../";
-my $perl = "/pro/3gl/CPAN/perl-current";
+# Needs to be run from metaconfig
+-d "modified" && -d "compline" and chdir "..";
+
+my $meta = abs_path (getcwd);
+my $perl = abs_path ("$meta/../perl-current");
 # the files that metaconfig might (probably will) overwrite:
 my @safe = qw( Configure config_h.SH );
 
-chdir $meta or die "no $meta";
-mkdir  "U/all";	# Ignore error if already exists
+$meta && chdir $meta or die "no $meta";
+-d     "U"     or die "You $meta isn't meta\n";
+mkdir  "U/all" unless -d "U/all";
 chdir  "U/all";
-unlink <*.U >;
+unlink glob ("*.U");
 
 for (@safe) {
     unlink $_;
     copy "$perl/$_", $_;
     }
 
-@ARGV = ("$FindBin::Bin/mconfig -v -m -O 2>&1 |");
-while (<>) {
+chdir $meta;
+open my $ch, "-|", "bin/mconfig", "-v", "-m", "-O";
+while (<$ch>) {
     s{^\s+$perl/U}{} or next;
     chomp;
-    (my $f = $_) =~ s{.*/}{};
+    my $f = s{.*/}{}r;
     (my $l = "../$_") =~ s{//+}{/}g;
-    symlink $l, $f;
+    symlink $l, "U/all/$f";
     }
 
-for (qw( Configure config_h.SH )) {
+for (@safe) {
     unlink "$perl/$_";
-    move $_, "$perl/$_";
+    move "U/all/$_" => "$perl/$_";
     }
 
 __END__
