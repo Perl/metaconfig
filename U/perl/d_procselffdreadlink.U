@@ -1,0 +1,82 @@
+?RCS: Copyright (c) 2026 Michal Josef Spacek
+?RCS:
+?RCS: You may redistribute only under the terms of the Artistic License,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic License; a copy of which may be found at the
+?RCS: root of the source tree for dist 4.0.
+?RCS:
+?MAKE:d_procselffdreadlink: \
+	Oldconfig Setvar rm_try rm cat Compile run d_readlink test
+?MAKE:	-pick add $@ %<
+?S:d_procselffdreadlink:
+?S:	Defined if readlink() on /proc/self/fd/%d returns a pathname
+?S:	for an open file descriptor.
+?S:.
+?C:HAS_PROCSELF_FD_READLINK:
+?C:	This symbol is defined if readlink() on /proc/self/fd/%d returns
+?C:	a pathname for an open file descriptor.
+?C:.
+?H:#$d_procselffdreadlink HAS_PROCSELF_FD_READLINK	/**/
+?H:.
+?T:tmpfile
+?F:!try
+?LINT: set d_procselffdreadlink
+: Check whether readlink on /proc/self/fd/%d returns a pathname
+: for an open file descriptor.
+: We honor hints of d_procselffdreadlink=$undef.
+: AmigaOS will attempt to mount proc: aka /proc, if /proc/... is
+: referenced, and AmigaOS does not have a proc filesystem anyway.
+echo " "
+val="$undef"
+if $test "X$d_procselffdreadlink" = Xundef; then
+        :
+elif $test "X$d_readlink" = Xdefine; then
+        tmpfile="$$.fdtest"
+        echo foo > "$tmpfile"
+        $cat >try.c <<EOF
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/stat.h>
+
+int main(void) {
+    const char *original_path = "$tmpfile";
+    int fd = open(original_path, O_RDONLY);
+    if (fd < 0)
+        return 2;
+
+    char proc_path[64];
+    char resolved[4096];
+    ssize_t len;
+
+    snprintf(proc_path, sizeof(proc_path), "/proc/self/fd/%d", fd);
+    len = readlink(proc_path, resolved, sizeof(resolved) - 1);
+    close(fd);
+
+    if (len < 0)
+        return 2;
+
+    resolved[len] = '\\0';
+    struct stat st_orig, st_resolved;
+    if (stat(original_path, &st_orig) < 0)
+        return 2;
+    if (stat(resolved, &st_resolved) < 0)
+        return 2;
+
+    return (st_orig.st_dev == st_resolved.st_dev &&
+            st_orig.st_ino == st_resolved.st_ino) ? 0 : 1;
+}
+EOF
+        set try
+        if eval $compile && $run ./try; then
+                echo "You have functional /proc/self/fd/%d."
+                val="$define"
+        fi
+        $rm_try
+        $rm -f "$tmpfile"
+fi
+set d_procselffdreadlink
+eval $setvar
+
