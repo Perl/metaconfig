@@ -1,0 +1,34 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usetaint: Setvar Myread
+?MAKE:	-pick add $@ %<
+?LINT:set usetaint
+?S:usetaint:
+?S:	This setting controls whether support for taint mode (perl -T)
+?S:	is compiled into the perl binary.
+?S:.
+?C:PERL_USE_TAINT:
+?C:	This symbol, if defined, enables support for taint mode.
+?C:.
+?H:#$usetaint PERL_USE_TAINT	/* use taint */
+?H:.
+: Ask about taint
+case "$usetaint" in
+    $define|true|[Yy]*|'')
+       dflt="y"
+       ;;
+    *)
+       dflt="n"
+       ;;
+    esac
+
+rp='Would you like to build perl with support for taint mode?'
+. ./myread
+case "$ans" in
+y|Y) val="$define" ;;
+*)   val="$undef"  ;;
+esac
+set usetaint
+eval $setvar
+
