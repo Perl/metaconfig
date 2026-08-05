@@ -2,8 +2,8 @@
 ?RCS: License or the Artistic License, as specified in the README file.
 ?RCS:
 ?MAKE:d_newlocale d_freelocale d_uselocale d_duplocale d_querylocale \
-	i_xlocale xlocale_needed: Inlibc Inhdr Compile cat rm_try run \
-	d_localeconv_l
+	i_xlocale xlocale_needed d_getlocale_name_l :		    \
+	Inlibc Inhdr Compile cat rm_try run d_localeconv_l
 ?MAKE:	-pick add $@ %<
 ?S:d_newlocale:
 ?S:	This variable conditionally defines the HAS_NEWLOCALE symbol, which
@@ -29,6 +29,11 @@
 ?S:	This variable conditionally defines the HAS_QUERYLOCALE symbol, which
 ?S:	indicates to the C program that the querylocale() routine is available
 ?S:	to return the name of the locale for a category mask.
+?S:.
+?S:d_getlocale_name_l:
+?S:	This variable conditionally defines the HAS_GETLOCALE_NAME_L symbol,
+?S:	which indicates to the C program that the getlocale_name_l() routine is
+?S:	available to return the name of the locale for a category.
 ?S:.
 ?S:i_xlocale:
 ?S:	This symbol, if defined, indicates to the C program that the
@@ -59,6 +64,10 @@
 ?C:	This symbol, if defined, indicates that the querylocale routine is
 ?C:	available to return the name of the locale for a category mask.
 ?C:.
+?C:HAS_GETLOCALE_NAME_L:
+?C:	This symbol, if defined, indicates that the getlocale_name_l routine is
+?C:	available to return the name of the locale for a category.
+?C:.
 ?C:I_XLOCALE:
 ?C:	This symbol, if defined, indicates to the C program that the
 ?C:	header xlocale.h is available.  See also NEED_XLOCALE_H
@@ -72,6 +81,7 @@
 ?H:#$d_uselocale	HAS_USELOCALE	/**/
 ?H:#$d_duplocale	HAS_DUPLOCALE	/**/
 ?H:#$d_querylocale	HAS_QUERYLOCALE	/**/
+?H:#$d_getlocale_name_l	HAS_GETLOCALE_NAME_L	/**/
 ?H:#$xlocale_needed	NEED_XLOCALE_H	/**/
 ?H:#$i_xlocale	I_XLOCALE               /**/
 ?H:.
@@ -81,6 +91,7 @@
 ?LINT:set d_uselocale
 ?LINT:set d_duplocale
 ?LINT:set d_querylocale
+?LINT:set d_getlocale_name_l
 ?F:!try
 : see if this is an xlocale.h system
 set xlocale.h i_xlocale
@@ -104,6 +115,10 @@ eval $inlibc
 
 : see if querylocale exists
 set querylocale d_querylocale
+eval $inlibc
+
+: see if getlocale_name_l exists
+set getlocale_name_l d_getlocale_name_l
 eval $inlibc
 
 : if we have xlocale.h, check whether it is needed
