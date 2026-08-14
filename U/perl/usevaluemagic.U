@@ -1,0 +1,34 @@
+?RCS: You may distribute under the terms of either the GNU General Public
+?RCS: License or the Artistic License, as specified in the README file.
+?RCS:
+?MAKE:usevaluemagic: Setvar Myread
+?MAKE:	-pick add $@ %<
+?LINT:set usevaluemagic
+?S:usevaluemagic:
+?S:	This setting controls whether support for Value Magic for Magic v2
+?S:	is compiled into the perl binary.
+?S:.
+?C:PERL_USE_VALUEMAGIC:
+?C:	This symbol, if defined, enables support for Value Magic.
+?C:.
+?H:#$usevaluemagic PERL_USE_VALUEMAGIC	/* use value magic */
+?H:.
+: Ask about value magic
+case "$usevaluemagic" in
+    $define|true|[Yy]*)
+       dflt="y"
+       ;;
+    *)
+       dflt="n"
+       ;;
+    esac
+
+rp='Would you like to build perl with support for Value Magic?'
+. ./myread
+case "$ans" in
+y|Y) val="$define" ;;
+*)   val="$undef"  ;;
+esac
+set usevaluemagic
+eval $setvar
+
