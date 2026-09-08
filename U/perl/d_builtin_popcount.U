@@ -1,0 +1,133 @@
+?RCS: Copyright (c) 2026 Richard Leach
+?RCS:
+?RCS: You may distribute this file under the terms of either
+?RCS:     a) the "Artistic License" which comes with Perl, or
+?RCS:     b) the "Artistic License" which comes with dist, or
+?RCS:     c) the GNU General Public License as published by the Free
+?RCS:     Software Foundation; either version 1, or (at your option) any
+?RCS:     later version (see the file "Copying" that comes with the
+?RCS:     Perl distribution).
+?RCS: Which one to use is your choice.
+?RCS: See the U/README file.
+?MAKE:d_builtin_popcount d_builtin_popcountl d_builtin_popcountll: Compile Setvar run rm_try
+?MAKE:	-pick add $@ %<
+?S:d_builtin_popcount:
+?S:	This variable conditionally defines HAS_BUILTIN_POPCOUNT, which
+?S:	indicates that the compiler supports __builtin_popcount(x) for
+?S:	counting the number of bits set in an unsigned int x.
+?S:.
+?S:d_builtin_popcountl:
+?S:	This variable conditionally defines HAS_BUILTIN_POPCOUNTL, which
+?S:	indicates that the compiler supports __builtin_popcountl(x) for
+?S:	counting the number of bits set in an unsigned long x.
+?S:.
+?S:d_builtin_popcountll:
+?S:	This variable conditionally defines HAS_BUILTIN_POPCOUNTLL, which
+?S:	indicates that the compiler supports __builtin_popcountll(x) for
+?S:	counting the number of bits set in an unsigned long long x.
+?S:.
+?C:HAS_BUILTIN_POPCOUNT:
+?C:	This symbol, if defined, indicates that the compiler supports
+?C:	__builtin_popcount for counting the number of bits set in an
+?C:	unsigned int.
+?C:.
+?C:HAS_BUILTIN_POPCOUNTL:
+?C:	This symbol, if defined, indicates that the compiler supports
+?C:	__builtin_popcountl for counting the number of bits set in an
+?C:	unsigned long.
+?C:.
+?C:HAS_BUILTIN_POPCOUNTLL:
+?C:	This symbol, if defined, indicates that the compiler supports
+?C:	__builtin_popcountll for counting the number of bits set in an
+?C:	unsigned long long.
+?C:.
+?H:#$d_builtin_popcount HAS_BUILTIN_POPCOUNT		/**/
+?H:#$d_builtin_popcountl HAS_BUILTIN_POPCOUNTL		/**/
+?H:#$d_builtin_popcountll HAS_BUILTIN_POPCOUNTLL		/**/
+?H:.
+?F:!try
+?LINT:set d_builtin_popcount d_builtin_popcountl d_builtin_popcountll
+: Check if _builtin_popcount is supported by the compiler
+case "$d_builtin_popcount" in
+'')
+    echo " "
+    echo "Checking whether your compiler can handle __builtin_popcount ..." >&4
+    cat >try.c <<'EOCP'
+int main(void) {
+    unsigned int x = 42;
+    const int phooey = __builtin_popcount(x);
+    return 0;
+}
+EOCP
+    set try
+    if eval $compile && $run ./try; then
+        echo "Your C compiler supports __builtin_popcount."
+        val="$define"
+    else
+        echo "Your C compiler doesn't seem to understand __builtin_popcount."
+        val="$undef"
+    fi
+    ;;
+*) val="$d_builtin_popcount" ;;
+esac
+
+set d_builtin_popcount
+eval $setvar
+$rm_try
+
+: Check if _builtin_popcountl is supported by the compiler
+case "$d_builtin_popcountl" in
+'')
+    echo " "
+    echo "Checking whether your compiler can handle __builtin_popcountl ..." >&4
+    cat >try.c <<'EOCP'
+int main(void) {
+    unsigned long x = 42;
+    const int phooey = __builtin_popcountl(x);
+    return 0;
+}
+EOCP
+    set try
+    if eval $compile && $run ./try; then
+        echo "Your C compiler supports __builtin_popcountl."
+        val="$define"
+    else
+        echo "Your C compiler doesn't seem to understand __builtin_popcountl."
+        val="$undef"
+    fi
+    ;;
+*) val="$d_builtin_popcountl" ;;
+esac
+
+set d_builtin_popcountl
+eval $setvar
+$rm_try
+
+: Check if _builtin_popcountll is supported by the compiler
+case "$d_builtin_popcountll" in
+'')
+    echo " "
+    echo "Checking whether your compiler can handle __builtin_popcountll ..." >&4
+    cat >try.c <<'EOCP'
+int main(void) {
+    unsigned long long x = 42;
+    const int phooey = __builtin_popcountll(x);
+    return 0;
+}
+EOCP
+    set try
+    if eval $compile && $run ./try; then
+        echo "Your C compiler supports __builtin_popcountll."
+        val="$define"
+    else
+        echo "Your C compiler doesn't seem to understand __builtin_popcountll."
+        val="$undef"
+    fi
+    ;;
+*) val="$d_builtin_popcountll" ;;
+esac
+
+set d_builtin_popcountll
+eval $setvar
+$rm_try
+
