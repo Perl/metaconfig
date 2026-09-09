@@ -24,7 +24,8 @@
 	d_attribute_nonnull d_attribute_noreturn d_attribute_pure \
 	d_attribute_unused d_attribute_warn_unused_result \
 	d_printf_format_null d_attribute_always_inline \
-	d_attribute_visibility: \
+	d_attribute_visibility d_attribute_noinline \
+        d_attribute_hot d_attribute_cold: \
 	    Myread Oldconfig cat cc ccflags rm Setvar compiler_warning \
             i_stdlib run i_inttypes
 ?MAKE:	-pick add $@ %<
@@ -83,6 +84,18 @@
 ?S:	This variable conditionally defines the HASATTRIBUTE_VISIBILITY symbol,
 ?S:	and indicates different GCC attribute visibility
 ?S:.
+?S:d_attribute_noinline:
+?S:	This variable conditionally defines the HASATTRIBUTE_NOINLINE symbol,
+?S:	which indicates the compiler accepts hints to not inline functions.
+?S:.
+?S:d_attribute_hot:
+?S:	This variable conditionally defines the HASATTRIBUTE_HOT symbol, which
+?S:	can be used to manually tag functions to be optimized for performance.
+?S:.
+?S:d_attribute_cold:
+?S:	This variable conditionally defines the HASATTRIBUTE_COLD symbol, which
+?S:	can be used to manually tag functions to be optimized for size.
+?S:.
 ?C:HASATTRIBUTE_FORMAT ~ %< (GNUC_ATTRIBUTE_CHECK):
 ?C:	Can we handle GCC attribute for checking printf-style formats
 ?C:.
@@ -118,6 +131,16 @@
 ?C:	Can we handle GCC attribute for functions that should have a
 ?C:	different visibility.
 ?C:.
+?C:HASATTRIBUTE_NOINLINE:
+?C:	Can we handle GCC attribute for functions that should not be
+?C:	inlined.
+?C:.
+?C:HASATTRIBUTE_HOT:
+?C:	Can we handle GCC attribute for hot function labelling.
+?C:.
+?C:HASATTRIBUTE_COLD:
+?C:	Can we handle GCC attribute for cold function labelling.
+?C:.
 ?H:?%<:#$d_attribute_deprecated HASATTRIBUTE_DEPRECATED	/**/
 ?H:?%<:#$d_attribute_format HASATTRIBUTE_FORMAT	/**/
 ?H:?%<:#$d_printf_format_null PRINTF_FORMAT_NULL_OK	/**/
@@ -129,6 +152,9 @@
 ?H:?%<:#$d_attribute_warn_unused_result HASATTRIBUTE_WARN_UNUSED_RESULT	/**/
 ?H:?%<:#$d_attribute_always_inline HASATTRIBUTE_ALWAYS_INLINE	/**/
 ?H:?%<:#$d_attribute_visibility HASATTRIBUTE_VISIBILITY	/**/
+?H:?%<:#$d_attribute_visibility HASATTRIBUTE_NOINLINE	/**/
+?H:?%<:#$d_attribute_visibility HASATTRIBUTE_HOT	/**/
+?H:?%<:#$d_attribute_visibility HASATTRIBUTE_COLD	/**/
 ?H:.
 ?F:!attrib !attrib.out !attrib.c
 ?LINT:set d_attribute_deprecated
@@ -142,6 +168,9 @@
 ?LINT:set d_attribute_warn_unused_result
 ?LINT:set d_attribute_always_inline
 ?LINT:set d_attribute_visibility
+?LINT:set d_attribute_noinline
+?LINT:set d_attribute_hot
+?LINT:set d_attribute_cold
 : Look for GCC-style attribute format
 case "$d_attribute_format" in
 '')
@@ -470,6 +499,90 @@ fi
 *) val="$d_attribute_visibility" ;;
 esac
 set d_attribute_visibility
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute noinline
+case "$d_attribute_noinline" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((noinline)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+static __attribute__((noinline))) int I_will_hopefully_not_be_inlined(void);
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $compiler_warning attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((noinline))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((noinline))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_noinline" ;;
+esac
+set d_attribute_noinline
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute hot
+case "$d_attribute_hot" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((hot)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+static __attribute__((hot)) int I_will_be_hot(void);
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $compiler_warning attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((hot))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((hot))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_hot" ;;
+esac
+set d_attribute_hot
+eval $setvar
+$rm -f attrib*
+
+: Look for GCC-style attribute cold
+case "$d_attribute_cold" in
+'')
+echo " "
+echo "Checking whether your compiler can handle __attribute__((cold)) ..." >&4
+$cat >attrib.c <<'EOCP'
+#include <stdio.h>
+static __attribute__((cold)) int I_will_be_cold(void);
+EOCP
+if $cc $ccflags -c attrib.c >attrib.out 2>&1 ; then
+	if $compiler_warning attrib.out >/dev/null 2>&1; then
+		echo "Your C compiler doesn't support __attribute__((cold))."
+		val="$undef"
+	else
+		echo "Your C compiler supports __attribute__((cold))."
+		val="$define"
+	fi
+else
+	echo "Your C compiler doesn't seem to understand __attribute__ at all."
+	val="$undef"
+fi
+;;
+*) val="$d_attribute_cold" ;;
+esac
+set d_attribute_cold
 eval $setvar
 $rm -f attrib*
 
