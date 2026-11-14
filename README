@@ -155,6 +155,10 @@ Development workflow:
 (g) metaconfig does not deal with depends in config_h.SH, so some
     reorganization is needed.
 
+    The bin/mconfig wrapper runs Porting/config_h.pl automatically. Do not
+    run it again: it is not safe to run twice on the same generated file.
+    If you use metaconfig directly instead of the wrapper, run it once:
+
     $ cd perl
     $ perl Porting/config_h.pl
 
