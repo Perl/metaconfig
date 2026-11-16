@@ -57,7 +57,7 @@
 ?H:#$d_shmatprototype HAS_SHMAT_PROTOTYPE	/**/
 ?H:.
 ?LINT:set d_shmat d_shmatprototype
-?T:xxx
+?T:xxx probe_ccflags flag
 : see if shmat exists
 set shmat d_shmat
 eval $inlibc
@@ -68,7 +68,15 @@ case "$d_shmat" in
 #include <sys/shm.h>
 void *shmat();
 END
-	if $cc $ccflags -c shmat.c >/dev/null 2>&1; then
+	# Filter out -Werror so deprecation warnings do not break this probe.
+	probe_ccflags=''
+	for flag in $ccflags; do
+		case "$flag" in
+		-Werror|-Werror=*) ;;
+		*) probe_ccflags="$probe_ccflags $flag" ;;
+		esac
+	done
+	if $cc $probe_ccflags -c shmat.c >/dev/null 2>&1; then
 		shmattype='void *'
 	else
 		shmattype='char *'
